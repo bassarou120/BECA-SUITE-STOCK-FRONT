@@ -1,2 +1,3 @@
-# BECA-GMS
-Module Gestion du Matériel et des Stocks
+# BECA-GRH-GMS
+* Module Gestion des Ressources Humaines
+* Module Gestion du Matériel et des Stocks
