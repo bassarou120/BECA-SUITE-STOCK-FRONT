@@ -30,9 +30,21 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/assets/icons/fontawesome/css/fontawesome.min.css",
+              "src/assets/icons/fontawesome/css/all.min.css",
+              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "node_modules/material-icons/iconfont/material-icons.css",
+              "node_modules/line-awesome/dist/line-awesome/css/line-awesome.css",
+              "node_modules/ngx-toastr/toastr.css",
+
+              "node_modules/bootstrap/scss/bootstrap.scss",
+
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -93,6 +105,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
