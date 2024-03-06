@@ -13,8 +13,8 @@
 >
   <div class="sidebar-headerset">
     <div class="sidebar-headersets">
-      <h2>Customizer</h2>
-      <h3>Customize your overview Page layout</h3>
+      <h2>Personnalisation</h2>
+      <h3>Personnalisez votre Mise en page</h3>
     </div>
     <div class="sidebar-headerclose">
       <a data-bs-dismiss="offcanvas" aria-label="Close"
@@ -56,7 +56,7 @@
           <div class="col-4">
             <div
               class="form-check card-radio p-0"
-              (click)="sideBar.changeLayout('2')" (keydown.enter)="sideBar.changeLayout('2')" tabindex="0" 
+              (click)="sideBar.changeLayout('2')" (keydown.enter)="sideBar.changeLayout('2')" tabindex="0"
               [class.active]="layoutPosition === '2'"
             >
               <input
@@ -310,34 +310,34 @@
             </div>
           </div>
         </div>
-        <div id="layout-position"> 
+        <div id="layout-position">
           <div class="layout-head pt-3">
               <h5>Layout Position</h5>
               <h6>Choose Fixed or Scrollable Layout Position.</h6>
           </div>
-          <div 
-          class="btn-group bor-rad-50 overflow-hidden radio" role="group"> 
-              <input type="radio" 
-                class="btn-check" name="data-layout-position" 
-                id="layout-position-fixed" value="fixed"  
-                (click)="sideBar.changepositionscroll('1')" 
-                [ngClass]="{active:layoutPositionScroll === '1'}"> 
-              <label 
-                class="btn btn-light w-sm" 
-                for="layout-position-fixed" 
-                [class.active]="layoutPositionScroll === '1'">Fixed</label> 
-              <input type="radio" 
-                class="btn-check" 
-                name="data-layout-position" 
-                id="layout-position-scrollable" value="scrollable" 
+          <div
+          class="btn-group bor-rad-50 overflow-hidden radio" role="group">
+              <input type="radio"
+                class="btn-check" name="data-layout-position"
+                id="layout-position-fixed" value="fixed"
+                (click)="sideBar.changepositionscroll('1')"
+                [ngClass]="{active:layoutPositionScroll === '1'}">
+              <label
+                class="btn btn-light w-sm"
+                for="layout-position-fixed"
+                [class.active]="layoutPositionScroll === '1'">Fixed</label>
+              <input type="radio"
+                class="btn-check"
+                name="data-layout-position"
+                id="layout-position-scrollable" value="scrollable"
                 (click)="sideBar.changepositionscroll('2')"
-                [class.active]="layoutPositionScroll === '2'"> 
-              <label 
-                class="btn btn-light w-sm ms-0" 
-                for="layout-position-scrollable" 
-                [class.active]="layoutPositionScroll === '2'">Scrollable</label> 
-          </div> 
-      </div> 
+                [class.active]="layoutPositionScroll === '2'">
+              <label
+                class="btn btn-light w-sm ms-0"
+                for="layout-position-scrollable"
+                [class.active]="layoutPositionScroll === '2'">Scrollable</label>
+          </div>
+      </div>
         <div class="layout-head pt-3">
           <h5>Topbar Color</h5>
           <h6>Choose Light or Dark Topbar Color.</h6>
@@ -668,12 +668,12 @@
         </button>
       </div>
       <div class="col-6">
-        <a
-          href="https://themeforest.net/item/smarthr-bootstrap-admin-panel-template/21153150"
-          target="_blank"
-          class="btn btn-primary w-100 bor-rad-50"
-          >Buy Now</a
-        >
+<!--        <a-->
+<!--          href="https://themeforest.net/item/smarthr-bootstrap-admin-panel-template/21153150"-->
+<!--          target="_blank"-->
+<!--          class="btn btn-primary w-100 bor-rad-50"-->
+<!--          >Buy Now</a-->
+<!--        >-->
       </div>
     </div>
   </div>
