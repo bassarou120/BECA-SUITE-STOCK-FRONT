@@ -86,6 +86,43 @@ export class DataService {
 
       ],
     },
+    {
+      tittle: 'GRH',
+      icon: 'file',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'Fiche de paie',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'money',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Employee Salary',
+              route: routes.employeesalary,
+              base: 'employee-salary',
+            },
+            {
+              menuValue: 'Payslip',
+              route: routes.salaryview,
+              base: 'salary-view',
+            },
+            {
+              menuValue: 'Payroll Items',
+              route: routes.payrollitems,
+              base: 'payroll-items',
+            },
+          ],
+        },
+
+
+      ],
+    },
   ];
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<Array<SideBar>>(this.sideBar);
 
