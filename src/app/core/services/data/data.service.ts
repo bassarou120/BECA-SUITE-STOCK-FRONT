@@ -103,20 +103,11 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Employee Salary',
+              menuValue: 'Salaires',
               route: routes.employeesalary,
               base: 'employee-salary',
             },
-            {
-              menuValue: 'Payslip',
-              route: routes.salaryview,
-              base: 'salary-view',
-            },
-            {
-              menuValue: 'Payroll Items',
-              route: routes.payrollitems,
-              base: 'payroll-items',
-            },
+
           ],
         },
 
