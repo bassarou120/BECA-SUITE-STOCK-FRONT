@@ -27,7 +27,7 @@ const routes: Routes = [
         path: 'employees',
         // canActivate: [AuthService],
         loadChildren: () =>
-          import('./employees/employees.module').then(
+          import('./employes/employees.module').then(
             (m) => m.EmployeesModule
           ),
       },

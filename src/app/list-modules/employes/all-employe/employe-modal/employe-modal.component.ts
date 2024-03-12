@@ -3,16 +3,16 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-employee-modal',
-  templateUrl: './employee-modal.component.html',
-  styleUrls: ['./employee-modal.component.scss']
+  templateUrl: './employe-modal.component.html',
+  styleUrls: ['./employe-modal.component.scss']
 })
-export class EmployeeModalComponent implements OnInit {
+export class EmployeModalComponent implements OnInit {
   public addEmployeeForm!: FormGroup ;
-  public editEmployeeForm!: FormGroup 
+  public editEmployeeForm!: FormGroup
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-  
+
 
     // add employee form validation
     this.addEmployeeForm = this.formBuilder.group({
@@ -47,6 +47,6 @@ export class EmployeeModalComponent implements OnInit {
     });
   }
 
- 
+
 
 }

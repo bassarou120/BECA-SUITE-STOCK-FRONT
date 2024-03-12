@@ -5,10 +5,10 @@ import { DataService, apiResultFormat, getEmployees, routes } from 'src/app/core
 
 @Component({
   selector: 'app-employee-list',
-  templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.scss'],
+  templateUrl: './employe-list.component.html',
+  styleUrls: ['./employe-list.component.scss'],
 })
-export class EmployeeListComponent implements OnInit {
+export class EmployeListComponent implements OnInit {
   selected = 'option1';
   public lstEmployee: Array<getEmployees> = [];
   public searchDataValue = '';
@@ -52,7 +52,7 @@ export class EmployeeListComponent implements OnInit {
     this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
- 
+
   }
 
   public sortData(sort: Sort) {

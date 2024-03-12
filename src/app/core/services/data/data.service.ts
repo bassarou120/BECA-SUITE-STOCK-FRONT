@@ -65,8 +65,8 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Tous les employés',
-              // route: routes.employee_page,
-              route: "#",
+               route: routes.employee_page,
+
               base: 'employee-page',
               base2: 'employee-list',
             },
@@ -116,6 +116,81 @@ export class DataService {
     },
   ];
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<Array<SideBar>>(this.sideBar);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

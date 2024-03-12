@@ -32,6 +32,74 @@ export class routes {
   public static get employee(): string {
     return this.baseUrl + '/dashboard/employee';
   }
+
+  public static get employee_page(): string {
+    return this.baseUrl + '/employees/employee-page';
+  }
+
+  public static get employees(): string {
+    return this.baseUrl + '/employees';
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   public static get apps(): string {
     return this.baseUrl + '/apps';
   }
@@ -62,12 +130,8 @@ export class routes {
   public static get filemanager(): string {
     return this.baseUrl + '/apps/file-manager';
   }
-  public static get employees(): string {
-    return this.baseUrl + '/employees';
-  }
-  public static get employee_page(): string {
-    return this.baseUrl + '/employees/employee-page';
-  }
+
+
   public static get holidays(): string {
     return this.baseUrl + '/employees/holidays';
   }
@@ -275,7 +339,7 @@ export class routes {
   public static get shortlist(): string {
     return this.baseUrl + '/jobs/shortlist';
   }
-  
+
   public static get jobview(): string {
     return this.baseUrl + '/jobs/job-view';
   }

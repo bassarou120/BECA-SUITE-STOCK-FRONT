@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EmployeeListComponent } from './all-employee/employee-list/employee-list.component';
-import { EmployeePageContentComponent } from './all-employee/employee-page-content/employee-page-content.component';
-import { EmployeeProfileComponent } from './all-employee/employee-profile/employee-profile.component';
+import { EmployeListComponent } from './all-employe/employe-list/employe-list.component';
+import { EmployePageContentComponent } from './all-employe/employe-page-content/employe-page-content.component';
+import { EmployeeProfileComponent } from './all-employe/employee-profile/employee-profile.component';
 import { AttendanceAdminComponent } from './attendance-admin/attendance-admin.component';
 import { AttendanceEmployeeComponent } from './attendance-employee/attendance-employee.component';
 import { DepartmentsComponent } from './departments/departments.component';
@@ -18,12 +18,12 @@ import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.componen
 import { TimesheetComponent } from './timesheet/timesheet.component';
 
 const routes: Routes = [
-  { 
-  path: '', 
+  {
+  path: '',
   component: EmployeesComponent,
   children: [
-    { path: "employee-list", component: EmployeeListComponent },
-    { path: "employee-page", component: EmployeePageContentComponent },
+    { path: "employee-list", component: EmployeListComponent },
+    { path: "employee-page", component: EmployePageContentComponent },
     { path: "employee-profile", component: EmployeeProfileComponent },
     { path: "holidays", component: HolidaysComponent },
     { path: "leave-admin", component: LeaveAdminComponent },
@@ -39,7 +39,7 @@ const routes: Routes = [
     { path: "shift-list", component: ShiftListComponent },
   ],
  }];
- 
+
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

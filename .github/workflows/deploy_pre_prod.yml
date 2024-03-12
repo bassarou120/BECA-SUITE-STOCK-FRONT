@@ -1,0 +1,61 @@
+
+name: Esang-frontend-pre-prod CI-CD
+
+on:
+  push:
+    branches: [ "bassarou_pre_prod", "jean_jacques_becken"]
+  pull_request:
+    branches: [ "bassarou_pre_prod" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+      with:
+        path: bassarou_pre_prod
+
+#    - name: Build the Docker image
+#      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+#    - name: Build et push Doker image
+#      uses: mr-smithers-excellent/docker-build-push@v6
+#      with:
+#        image: bassarou120/esang-frontend-pre-prod
+#        tags: latest
+#        registry: docker.io
+#        dockerfile: Dockerfile
+#        username: ${{ secrets.DOCKER_USERNAME }}
+#        password: ${{ secrets.DOCKER_PASSWORD }}
+
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: bassarou120/esang-frontend-pre-prod:latest
+
+
+
+    - name: Deploy Image to CapRrover
+      uses: caprover/deploy-from-github@v1.1.2
+      with:
+        server: "${{ secrets.CAPROVER_SERVER_PRE_PROD }}"
+        app: "${{ secrets.APP_NAME_PRE_PROD }}"
+        token: "${{ secrets.APP_TOKEN_PRE_PROD }}"
+        image: bassarou120/esang-frontend-pre-prod
+
+
+
+
+#  docker pull bassarou120/esang-backend\
+

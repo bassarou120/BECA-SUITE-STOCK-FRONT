@@ -3,10 +3,10 @@ import { CommonModule, DatePipe } from '@angular/common';
 
 import { EmployeesRoutingModule } from './employees-routing.module';
 import { EmployeesComponent } from './employees.component';
-import { EmployeeProfileComponent } from './all-employee/employee-profile/employee-profile.component';
-import { EmployeeListComponent } from './all-employee/employee-list/employee-list.component';
-import { EmployeePageContentComponent } from './all-employee/employee-page-content/employee-page-content.component';
-import { EmployeeModalComponent } from './all-employee/employee-modal/employee-modal.component';
+import { EmployeeProfileComponent } from './all-employe/employee-profile/employee-profile.component';
+import { EmployeListComponent } from './all-employe/employe-list/employe-list.component';
+import { EmployePageContentComponent } from './all-employe/employe-page-content/employe-page-content.component';
+import { EmployeModalComponent } from './all-employe/employe-modal/employe-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { LeaveAdminComponent } from './leave-admin/leave-admin.component';
@@ -26,9 +26,9 @@ import { ShiftListComponent } from './shift-list/shift-list.component';
   declarations: [
     EmployeesComponent,
     EmployeeProfileComponent,
-    EmployeeListComponent,
-    EmployeePageContentComponent,
-    EmployeeModalComponent,
+    EmployeListComponent,
+    EmployePageContentComponent,
+    EmployeModalComponent,
     HolidaysComponent,
     LeaveAdminComponent,
     LeaveEmployeeComponent,
