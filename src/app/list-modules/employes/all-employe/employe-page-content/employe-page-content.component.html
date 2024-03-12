@@ -67,8 +67,11 @@
         <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of lstEmployee;let i = index">
             <div class="profile-widget">
                 <div class="profile-img">
-                    <a [routerLink] = "routes.employeeProfile" class="avatar"><img
+                    <a [routerLink] = "" class="avatar"><img
                             [src]="emp.img" alt=""></a>
+
+<!--                  <a [routerLink] = "routes.employeeProfile" class="avatar"><img-->
+<!--                            [src]="emp.img" alt=""></a>-->
                 </div>
                 <div class="dropdown profile-action">
                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i
