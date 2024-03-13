@@ -7,13 +7,21 @@ import {
   routes,
 } from '../../core.index';
 import { HttpClient } from '@angular/common/http';
+import {environment} from "../../../../environments/environment";
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeService  {
   allAppliedCandidates!: Array<object>;
-
+  url: string = environment.backend ;
   constructor(private http: HttpClient) {}
+
+  save(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/clients`, data);
+  }
+
+
+
 
 
   public getEmployees(): Observable<apiResultFormat> {
