@@ -1,0 +1,50 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: BECA-SUITE-GRH-FRONT CI-CD
+
+on:
+  push:
+    branches: [ "bassarou_dev" ]
+  pull_request:
+    branches: [ "bassarou_dev" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+#    - name: Build the Docker image
+#      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+    - name: Build et push Doker image
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: bassarou120/beca_suite_grh_font
+        tags: latest
+        registry: docker.io
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+
+    - name: Deploy Image to CapRrover
+      uses: caprover/deploy-from-github@v1.1.2
+      with:
+        server: "${{ secrets.CAPROVER_SERVER }}"
+        app: "${{ secrets.APP_NAME }}"
+        token: "${{ secrets.APP_TOKEN }}"
+        image: bassarou120/beca_suite_grh_font
+
+
+
+
+#  docker pull bassarou120/esang-backend\
+

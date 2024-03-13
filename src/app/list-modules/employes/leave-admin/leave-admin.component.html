@@ -1,0 +1,426 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Leaves</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Leaves</li>
+                </ul>
+            </div>
+            <div class="col-auto float-end ms-auto">
+                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_leave"><i class="fa-solid fa-plus"></i>
+                    Add Leave</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <!-- Leave Statistics -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stats-info">
+                <h6>Today Presents</h6>
+                <h4>12 / 5</h4>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-info">
+                <h6>Planned Leaves</h6>
+                <h4>8 <span>Today</span></h4>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-info">
+                <h6>Unplanned Leaves</h6>
+                <h4>1 <span>Today</span></h4>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-info">
+                <h6>Pending Requests</h6>
+                <h4>12</h4>
+            </div>
+        </div>
+    </div>
+    <!-- /Leave Statistics -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="input-block mb-3 form-focus inputs">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Employee ID</mat-label>
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="input-block mb-3 form-focus select-focus select">
+                <mat-form-field appearance="fill">
+                  <mat-label>Leave Type</mat-label>
+                  <mat-select  [(value)]="selected2">
+                    <mat-option> -- Select -- </mat-option>
+                    <mat-option value="option1">Casual Leave</mat-option>
+                    <mat-option value="option2">Medical Leave</mat-option>
+                    <mat-option value="option3">Loss of Pay</mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="input-block mb-3 form-focus select-focus select">
+                <mat-form-field appearance="fill">
+                  <mat-label>Leave Status</mat-label>
+                  <mat-select [(value)]="selected3">
+                    <mat-option> -- Select -- </mat-option>
+                    <mat-option value="option1">Pending</mat-option>
+                    <mat-option value="option2">Approved</mat-option>
+                    <mat-option value="option3">Rejected</mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="input-block mb-3 form-focus inputs date-input1">
+                <mat-form-field class="example-full-width cal-icon">
+                    <mat-label>From</mat-label>
+                    <input  bsDatepicker container=".date-input1" type="text" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="input-block mb-3 form-focus inputs date-input2">
+                <mat-form-field class="example-full-width cal-icon">
+                    <mat-label>To</mat-label>
+                    <input  bsDatepicker container=".date-input2" type="text" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <a class="btn btn-success w-100"> Search </a>
+        </div>
+    </div>
+    <!-- /Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table_header">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length">
+                             <label class="col-form-label" for="">
+                                Show
+                                <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
+                                    class="form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                Entries
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table matSort (matSortChange)="sortData($event)" id="datatable"
+                    class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th mat-sort-header="employeeName">Employee</th>
+                            <th mat-sort-header="leaveType">Leave Type</th>
+                            <th mat-sort-header="from">From</th>
+                            <th mat-sort-header="to">To</th>
+                            <th mat-sort-header="noofDays">No of Days</th>
+                            <th mat-sort-header="reason">Reason</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of lstLeave;let i = index">
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a [routerLink] = "routes.employeeProfile" class="avatar"><img alt=""
+                                            src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    <a
+                                        [routerLink] = "routes.employeeProfile">{{row.employeeName}} <span>{{row.designation}}</span></a>
+                                </h2>
+                            </td>
+                            <td>{{row.leaveType}}</td>
+                            <td>{{row.from }}</td>
+                            <td>{{row.to }}</td>
+                            <td>{{row.noofDays}}</td>
+                            <td>{{row.reason}}</td>
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-regular fa-circle-dot me-1"  [ngClass]="{'text-success': row.status === 'Approved','text-danger': row.status === 'Declined','text-purple':row.status === 'New'}"></i>{{row.status || statusValue}}
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-circle-dot text-purple"></i> New</a>
+                                        <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-circle-dot text-info"></i> Pending</a>
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#approve_leave"><i class="fa-regular fa-circle-dot text-success"></i> Approved</a>
+                                        <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-circle-dot text-danger"></i> Declined</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_leave"><i
+                                                class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#delete_approve"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="lstLeave.length === 0">
+                            <td colspan="10">
+                                <h5 style="text-align: center;">No data found</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table_footer">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info">
+                        Showing {{ serialNumberArray[0] }} to
+                        {{ serialNumberArray[serialNumberArray.length - 1] }} of
+                        {{ totalData }} entries
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7">
+                    <div class="pagination_section">
+                        <ul class="pagination">
+                            <li class="page-item" [ngClass]="{
+                          disabled: currentPage === 1
+                        }">
+                                <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                                    tabindex="-1">Previous</a>
+                            </li>
+
+                            <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                                <li class="page-item" [class.active]="item === currentPage" [ngClass]="
+                            (pageNumberArray[currentPage - 2] > item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6) ||
+                            (pageNumberArray[currentPage] < item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6 &&
+                              pageNumberArray.length !== item)
+                              ? 'hide-page-no'
+                              : 'show-page-no'
+                          ">
+                                    <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                                        {{ item }}
+                                    </a>
+                                </li>
+                                <li class="page-item" *ngIf="
+                            i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                                <li *ngIf="
+                            i === pageNumberArray.length - 2 &&
+                            pageNumberArray.length > 6
+                          " [hidden]="
+                            currentPage >=
+                              pageNumberArray[pageNumberArray.length - 2] ||
+                            totalData < serialNumberArray[serialNumberArray.length - 1]
+                          " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                            </ng-container>
+
+                            <li class="page-item" [ngClass]="{
+                          disabled:
+                            currentPage ===
+                              pageNumberArray[pageNumberArray.length - 1] ||
+                              lstLeave.length === 0
+                        }">
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Next
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+<!-- Add Leave Modal -->
+<div id="add_leave" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Leave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label" for="">Leave Type <span class="text-danger">*</span></label>
+                        <mat-select  class="input-block mb-3 form-control"placeholder="Select Leave Type">
+                            <mat-option value="leave">Select Leave Type</mat-option>
+                            <mat-option value="2">Casual Leave 12 Days</mat-option>
+                            <mat-option value="3">Medical Leave</mat-option>
+                            <mat-option value="4">Loss of Pay</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="input-block mb-3 date-input3">
+                        <label class="col-form-label" for="">From <span class="text-danger">*</span></label>
+                        <div class="cal-icon">
+                            <input class="form-control datetimepicker" bsDatepicker container=".date-input3" type="text">
+                        </div>
+                    </div>
+                    <div class="input-block mb-3 date-input4">
+                        <label class="col-form-label" for="">To <span class="text-danger">*</span></label>
+                        <div class="cal-icon">
+                            <input class="form-control datetimepicker" bsDatepicker container=".date-input4" type="text">
+                        </div>
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label" for="">Number of days <span class="text-danger">*</span></label>
+                        <input class="form-control" readonly type="text">
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label" for="">Remaining Leaves <span class="text-danger">*</span></label>
+                        <input class="form-control" readonly value="12" type="text">
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label" for="">Leave Reason <span class="text-danger">*</span></label>
+                        <textarea rows="4" class="form-control"></textarea>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Leave Modal -->
+
+<!-- Edit Leave Modal -->
+<div id="edit_leave" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Leave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="input-block mb-3">
+                         <label class="col-form-label" for="">Leave Type <span class="text-danger">*</span></label>
+                        <mat-select class="input-block mb-3 form-control"placeholder="Select Leave Type" [(value)]="selected1">
+                            <mat-option value="type">Select Leave Type</mat-option>
+                            <mat-option value="10">Casual Leave 12 Days</mat-option>
+                            <mat-option value="11">Medical Leave</mat-option>
+                            <mat-option value="12">Loss of Pay</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="input-block mb-3 date-input5">
+                         <label class="col-form-label" for="">From <span class="text-danger">*</span></label>
+                        <div class="cal-icon">
+                            <input class="form-control datetimepicker" bsDatepicker container=".date-input5" type="text">
+                        </div>
+                    </div>
+                    <div class="input-block mb-3 date-input6">
+                         <label class="col-form-label" for="">To <span class="text-danger">*</span></label>
+                        <div class="cal-icon">
+                            <input class="form-control datetimepicker" bsDatepicker container=".date-input6" type="text">
+                        </div>
+                    </div>
+                    <div class="input-block mb-3">
+                         <label class="col-form-label" for="">Number of days <span class="text-danger">*</span></label>
+                        <input class="form-control" readonly type="text" value="2">
+                    </div>
+                    <div class="input-block mb-3">
+                         <label class="col-form-label" for="">Remaining Leaves <span class="text-danger">*</span></label>
+                        <input class="form-control" readonly value="12" type="text">
+                    </div>
+                    <div class="input-block mb-3">
+                         <label class="col-form-label" for="">Leave Reason <span class="text-danger">*</span></label>
+                        <textarea rows="4" class="form-control">Going to hospital</textarea>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Leave Modal -->
+
+<!-- Approve Leave Modal -->
+<div class="modal custom-modal fade" id="approve_leave" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Leave Approve</h3>
+                    <p>Are you sure want to approve for this leave?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Approve</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Decline</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Approve Leave Modal -->
+
+<!-- Delete Leave Modal -->
+<div class="modal custom-modal fade" id="delete_approve" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Leave</h3>
+                    <p>Are you sure want to delete this leave?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Leave Modal -->
