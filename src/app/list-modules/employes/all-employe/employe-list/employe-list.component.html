@@ -6,15 +6,15 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title">Employee</h3>
+        <h3 class="page-title">Employé</h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Dashboard</a></li>
-          <li class="breadcrumb-item active">Employee</li>
+          <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+          <li class="breadcrumb-item active">Employé</li>
         </ul>
       </div>
       <div class="col-auto float-end ms-auto">
-        <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa-solid fa-plus"></i> Add
-          Employee</a>
+        <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa-solid fa-plus"></i> Ajouter
+          Employé</a>
         <div class="view-icons">
           <a [routerLink]="'/employees/employee-page'" class="grid-view btn btn-link "><i class="fa fa-th"></i></a>
           <a [routerLink]="'/employees/employee-list'" class="list-view btn btn-link active"><i
@@ -30,7 +30,7 @@
     <div class="col-sm-6 col-md-3">
       <div class="input-block mb-3 form-focus inputs">
         <mat-form-field class="example-full-width">
-          <mat-label>Employee ID</mat-label>
+          <mat-label>ID Employé </mat-label>
           <input type="text" matInput>
         </mat-form-field>
       </div>
@@ -38,7 +38,7 @@
     <div class="col-sm-6 col-md-3">
       <div class="input-block mb-3 form-focus inputs">
         <mat-form-field class="example-full-width">
-          <mat-label>Employee Name</mat-label>
+          <mat-label>Nom employé</mat-label>
           <input type="text" matInput>
         </mat-form-field>
       </div>
@@ -46,9 +46,9 @@
     <div class="col-sm-6 col-md-3">
       <div class="input-block mb-3 form-focus select-focus select">
         <mat-form-field appearance="fill">
-          <mat-label>Designation</mat-label>
+          <mat-label>Poste</mat-label>
           <mat-select [(value)]="selected">
-            <mat-option value="option1">Select Designation</mat-option>
+            <mat-option value="option1">Selectinnez le poste</mat-option>
             <mat-option value="option2">Web Developer</mat-option>
             <mat-option value="option3">Web Designer</mat-option>
             <mat-option value="option4">Android Developer</mat-option>
@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="col-sm-6 col-md-3">
-      <a class="btn btn-success w-100"> Search </a>
+      <a class="btn btn-success w-100"> Recherche </a>
     </div>
   </div>
   <!-- /Search Filter -->
@@ -80,20 +80,20 @@
               </label>
             </div>
           </div>
-        </div> 
+        </div>
 
-       
+
       </div>
       <div class="table-responsive">
         <table matSort (matSortChange)="sortData($event)" class="table table-striped custom-table datatable">
           <thead>
             <tr>
-              <th mat-sort-header="firstname">Name</th>
-              <th mat-sort-header="employeeId">Employee ID</th>
+              <th mat-sort-header="firstname">Nom</th>
+              <th mat-sort-header="employeeId">ID Employé </th>
               <th mat-sort-header="email">Email</th>
-              <th mat-sort-header="mobile">Mobile</th>
-              <th mat-sort-header="joindate" class="text-nowrap">Join Date</th>
-              <th mat-sort-header="designation">Role</th>
+              <th mat-sort-header="mobile">Telephone</th>
+              <th mat-sort-header="joindate" class="text-nowrap">Date d'arrivée</th>
+<!--              <th mat-sort-header="designation">Role</th>-->
               <th class="text-end no-sort">Action</th>
             </tr>
           </thead>
@@ -111,19 +111,19 @@
               <td>{{row.email}}</td>
               <td>{{row.mobile}}</td>
               <td>{{row.joindate }}</td>
-              <td>
-                <div class="dropdown">
-                  <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown"
-                    aria-expanded="false">{{row.designation}}</a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item">Software Engineer</a>
-                    <a class="dropdown-item">Software Tester</a>
-                    <a class="dropdown-item">Frontend Developer</a>
-                    <a class="dropdown-item">UI/UX Developer</a>
-                    <a class="dropdown-item">Web Developer</a>
-                  </div>
-                </div>
-              </td>
+<!--              <td>-->
+<!--                <div class="dropdown">-->
+<!--                  <a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown"-->
+<!--                    aria-expanded="false">{{row.designation}}</a>-->
+<!--                  <div class="dropdown-menu">-->
+<!--                    <a class="dropdown-item">Software Engineer</a>-->
+<!--                    <a class="dropdown-item">Software Tester</a>-->
+<!--                    <a class="dropdown-item">Frontend Developer</a>-->
+<!--                    <a class="dropdown-item">UI/UX Developer</a>-->
+<!--                    <a class="dropdown-item">Web Developer</a>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </td>-->
               <td class="text-end">
                 <div class="dropdown dropdown-action">
                   <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i
