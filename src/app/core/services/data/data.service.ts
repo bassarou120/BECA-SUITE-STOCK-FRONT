@@ -138,9 +138,9 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Type de conge',
-              route: routes.employeesalary,
-              base: 'employee-salary',
+              menuValue: 'Departement',
+              route: routes.departement,
+              base: 'departement',
             },
 
           ],
