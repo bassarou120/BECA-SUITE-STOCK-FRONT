@@ -9,33 +9,33 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addEmployeeForm">
+                <form [formGroup]="addEmployeeForm" (ngSubmit)="onClickSubmitAddEmployee()" novalidate>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Prenom <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="">Nom <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text"
-                                    [class.invalid]="addEmployeeForm.get('FirstName')?.invalid && addEmployeeForm.get('FirstName')?.touched"
-                                    formControlName="FirstName">
+                                    [class.invalid]="addEmployeeForm.get('nom')?.invalid && addEmployeeForm.get('nom')?.touched"
+                                    formControlName="nom">
                                 <div
-                                    *ngIf="addEmployeeForm.get('FirstName')?.invalid && addEmployeeForm.get('FirstName')?.touched">
+                                    *ngIf="addEmployeeForm.get('nom')?.invalid && addEmployeeForm.get('nom')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('FirstName')?.invalid && addEmployeeForm.get('FirstName')?.touched"
-                                        class="text-danger"> *Firstname is required</small>
+                                        *ngIf="addEmployeeForm.get('nom')?.invalid && addEmployeeForm.get('nom')?.touched"
+                                        class="text-danger"> *le nom est obligatoir</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Nom</label>
+                                <label class="col-form-label" for="">Prénom</label>
                                 <input class="form-control" type="text"
-                                    [class.invalid]="addEmployeeForm.get('LastName')?.invalid && addEmployeeForm.get('LastName')?.touched"
-                                    formControlName="LastName">
+                                    [class.invalid]="addEmployeeForm.get('prenom')?.invalid && addEmployeeForm.get('prenom')?.touched"
+                                    formControlName="prenom">
                                 <div
-                                    *ngIf="addEmployeeForm.get('LastName')?.invalid && addEmployeeForm.get('LastName')?.touched">
+                                    *ngIf="addEmployeeForm.get('prenom')?.invalid && addEmployeeForm.get('prenom')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('LastName')?.invalid && addEmployeeForm.get('LastName')?.touched"
-                                        class="text-danger"> *Lastname is required</small>
+                                        *ngIf="addEmployeeForm.get('prenom')?.invalid && addEmployeeForm.get('prenom')?.touched"
+                                        class="text-danger"> *le prenom est obligatoir</small>
                                 </div>
                             </div>
                         </div>
@@ -44,26 +44,26 @@
                                 <label class="col-form-label" for="">Username <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text"
                                     [class.invalid]="addEmployeeForm.get('UserName')?.invalid && addEmployeeForm.get('UserName')?.touched"
-                                    formControlName="UserName">
+                                    formControlName="username">
                                 <div
                                     *ngIf="addEmployeeForm.get('UserName')?.invalid && addEmployeeForm.get('UserName')?.touched">
                                     <small
                                         *ngIf="addEmployeeForm.get('UserName')?.invalid && addEmployeeForm.get('UserName')?.touched"
-                                        class="text-danger"> *Username is required</small>
+                                        class="text-danger"> *Username est obligatoir </small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Email <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="">email <span class="text-danger">*</span></label>
                                 <input class="form-control" type="email"
-                                    [class.invalid]="addEmployeeForm.get('Email')?.invalid && addEmployeeForm.get('Email')?.touched"
-                                    formControlName="Email">
+                                    [class.invalid]="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched"
+                                    formControlName="email">
                                 <div
-                                    *ngIf="addEmployeeForm.get('Email')?.invalid && addEmployeeForm.get('Email')?.touched">
+                                    *ngIf="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('Email')?.invalid && addEmployeeForm.get('Email')?.touched"
-                                        class="text-danger"> *Email is required</small>
+                                        *ngIf="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched"
+                                        class="text-danger"> *email est obligatoir</small>
                                 </div>
                             </div>
                         </div>
@@ -71,13 +71,13 @@
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="">Mot de passe</label>
                                 <input class="form-control" type="password"
-                                    [class.invalid]="addEmployeeForm.get('Password')?.invalid && addEmployeeForm.get('Password')?.touched"
-                                    formControlName="Password">
+                                    [class.invalid]="addEmployeeForm.get('password')?.invalid && addEmployeeForm.get('password')?.touched"
+                                    formControlName="password">
                                 <div
-                                    *ngIf="addEmployeeForm.get('Password')?.invalid && addEmployeeForm.get('Password')?.touched">
+                                    *ngIf="addEmployeeForm.get('password')?.invalid && addEmployeeForm.get('password')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('Password')?.invalid && addEmployeeForm.get('Password')?.touched"
-                                        class="text-danger"> *Password is required</small>
+                                        *ngIf="addEmployeeForm.get('password')?.invalid && addEmployeeForm.get('password')?.touched"
+                                        class="text-danger"> *le mot de passe est obligatoir</small>
                                 </div>
                             </div>
                         </div>
@@ -85,42 +85,42 @@
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="">Confirmez mot de passe</label>
                                 <input class="form-control" type="password"
-                                    [class.invalid]="addEmployeeForm.get('ConfirmPassword')?.invalid && addEmployeeForm.get('ConfirmPassword')?.touched"
-                                    formControlName="ConfirmPassword">
+                                    [class.invalid]="addEmployeeForm.get('c_password')?.invalid && addEmployeeForm.get('c_password')?.touched"
+                                    formControlName="c_password">
                                 <div
-                                    *ngIf="addEmployeeForm.get('ConfirmPassword')?.invalid && addEmployeeForm.get('ConfirmPassword')?.touched">
+                                    *ngIf="addEmployeeForm.get('c_password')?.invalid && addEmployeeForm.get('c_password')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('ConfirmPassword')?.invalid && addEmployeeForm.get('ConfirmPassword')?.touched"
-                                        class="text-danger"> *ConfirmPassword is required</small>
+                                        *ngIf="addEmployeeForm.get('c_password')?.invalid && addEmployeeForm.get('c_password')?.touched"
+                                        class="text-danger"> *c_password  </small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Id Employé <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control"
-                                    [class.invalid]="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched"
-                                    formControlName="EmployeeID">
-                                <div
-                                    *ngIf="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched">
-                                    <small
-                                        *ngIf="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched"
-                                        class="text-danger"> *Employee ID is required</small>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="col-sm-6">-->
+<!--                            <div class="input-block mb-3">-->
+<!--                                <label class="col-form-label" for="">Id Employé <span class="text-danger">*</span></label>-->
+<!--                                <input type="text" class="form-control"-->
+<!--                                    [class.invalid]="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched"-->
+<!--                                    formControlName="EmployeeID">-->
+<!--                                <div-->
+<!--                                    *ngIf="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched">-->
+<!--                                    <small-->
+<!--                                        *ngIf="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched"-->
+<!--                                        class="text-danger"> *Employee ID is required</small>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="col-sm-6">
                             <div class="input-block mb-3 date-input1">
                                 <label class="col-form-label" for="">Date d'arrivée <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                        [class.invalid]="addEmployeeForm.get('JoinDate')?.invalid && addEmployeeForm.get('JoinDate')?.touched"
-                                        formControlName="JoinDate">
+                                        [class.invalid]="addEmployeeForm.get('date_arrivee')?.invalid && addEmployeeForm.get('date_arrivee')?.touched"
+                                        formControlName="date_arrivee">
                                     <div
-                                        *ngIf="addEmployeeForm.get('JoinDate')?.invalid && addEmployeeForm.get('JoinDate')?.touched">
+                                        *ngIf="addEmployeeForm.get('date_arrivee')?.invalid && addEmployeeForm.get('date_arrivee')?.touched">
                                         <small
-                                            *ngIf="addEmployeeForm.get('JoinDate')?.invalid && addEmployeeForm.get('JoinDate')?.touched"
-                                            class="text-danger"> *JoinDate is required</small>
+                                            *ngIf="addEmployeeForm.get('date_arrivee')?.invalid && addEmployeeForm.get('date_arrivee')?.touched"
+                                            class="text-danger"> *date_arrivee est obligatoir</small>
                                     </div>
                                 </div>
                             </div>
@@ -129,13 +129,13 @@
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="">Téléphone </label>
                                 <input class="form-control" type="text"
-                                    [class.invalid]="addEmployeeForm.get('PhoneNumber')?.invalid && addEmployeeForm.get('PhoneNumber')?.touched"
-                                    formControlName="PhoneNumber">
+                                    [class.invalid]="addEmployeeForm.get('telephone')?.invalid && addEmployeeForm.get('telephone')?.touched"
+                                    formControlName="telephone">
                                 <div
-                                    *ngIf="addEmployeeForm.get('PhoneNumber')?.invalid && addEmployeeForm.get('PhoneNumber')?.touched">
+                                    *ngIf="addEmployeeForm.get('telephone')?.invalid && addEmployeeForm.get('telephone')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('PhoneNumber')?.invalid && addEmployeeForm.get('PhoneNumber')?.touched"
-                                        class="text-danger"> *Phone is required</small>
+                                        *ngIf="addEmployeeForm.get('telephone')?.invalid && addEmployeeForm.get('telephone')?.touched"
+                                        class="text-danger"> *Phone </small>
                                 </div>
                             </div>
                         </div>
@@ -160,18 +160,18 @@
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="">Department <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addEmployeeForm.get('DepartmentName')?.invalid && addEmployeeForm.get('DepartmentName')?.touched"
-                                    formControlName="DepartmentName" placeholder="Select Department">
-                                    <mat-option value="select">Select Department</mat-option>
-                                    <mat-option value="development">Web Development</mat-option>
-                                    <mat-option value="it">IT Management</mat-option>
-                                    <mat-option value="marketing">Marketing</mat-option>
+                                    [class.invalid]="addEmployeeForm.get('departement_id')?.invalid && addEmployeeForm.get('departement_id')?.touched"
+                                    formControlName="departement_id" placeholder="Select Department">
+                                    <mat-option value="1">Select Department</mat-option>
+                                    <mat-option value="1">Web Development</mat-option>
+                                    <mat-option value="1">IT Management</mat-option>
+                                    <mat-option value="1">Marketing</mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="addEmployeeForm.get('DepartmentName')?.invalid && addEmployeeForm.get('DepartmentName')?.touched">
+                                    *ngIf="addEmployeeForm.get('departement_id')?.invalid && addEmployeeForm.get('departement_id')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('DepartmentName')?.invalid && addEmployeeForm.get('DepartmentName')?.touched"
-                                        class="text-danger"> *Department Name required</small>
+                                        *ngIf="addEmployeeForm.get('departement_id')?.invalid && addEmployeeForm.get('departement_id')?.touched"
+                                        class="text-danger"> *Department est obligatoir</small>
                                 </div>
                             </div>
                         </div>
@@ -179,18 +179,18 @@
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="">Poste <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addEmployeeForm.get('Designation')?.invalid && addEmployeeForm.get('Designation')?.touched"
-                                    formControlName="Designation" placeholder="Select Designation">
-                                    <mat-option value="designation">Select Designation</mat-option>
-                                    <mat-option value="designer">Web Designer</mat-option>
-                                    <mat-option value="developer">Web Developer</mat-option>
-                                    <mat-option value="android">Android Developer</mat-option>
+                                    [class.invalid]="addEmployeeForm.get('poste_id')?.invalid && addEmployeeForm.get('poste_id')?.touched"
+                                    formControlName="poste_id" placeholder="Selectinnez le poste ">
+                                    <mat-option value="1">Select poste</mat-option>
+                                    <mat-option value="1">Web Designer</mat-option>
+                                    <mat-option value="1">Web Developer</mat-option>
+                                    <mat-option value="1">Android Developer</mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="addEmployeeForm.get('Designation')?.invalid && addEmployeeForm.get('Designation')?.touched">
+                                    *ngIf="addEmployeeForm.get('poste_id')?.invalid && addEmployeeForm.get('poste_id')?.touched">
                                     <small
-                                        *ngIf="addEmployeeForm.get('Designation')?.invalid && addEmployeeForm.get('Designation')?.touched"
-                                        class="text-danger"> *Designation Name required</small>
+                                        *ngIf="addEmployeeForm.get('poste_id')?.invalid && addEmployeeForm.get('poste_id')?.touched"
+                                        class="text-danger"> *poste  est obligatoir</small>
                                 </div>
                             </div>
                         </div>
@@ -553,12 +553,12 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Prenom <span class="text-danger">*</span></label>
                 <input class="form-control" type="text"
-                       [class.invalid]="addEmployeeForm.get('FirstName')?.invalid && addEmployeeForm.get('FirstName')?.touched"
-                       formControlName="FirstName">
+                       [class.invalid]="addEmployeeForm.get('nom')?.invalid && addEmployeeForm.get('nom')?.touched"
+                       formControlName="nom">
                 <div
-                  *ngIf="addEmployeeForm.get('FirstName')?.invalid && addEmployeeForm.get('FirstName')?.touched">
+                  *ngIf="addEmployeeForm.get('nom')?.invalid && addEmployeeForm.get('nom')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('FirstName')?.invalid && addEmployeeForm.get('FirstName')?.touched"
+                    *ngIf="addEmployeeForm.get('nom')?.invalid && addEmployeeForm.get('nom')?.touched"
                     class="text-danger"> *Firstname is required</small>
                 </div>
               </div>
@@ -567,12 +567,12 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Nom</label>
                 <input class="form-control" type="text"
-                       [class.invalid]="addEmployeeForm.get('LastName')?.invalid && addEmployeeForm.get('LastName')?.touched"
-                       formControlName="LastName">
+                       [class.invalid]="addEmployeeForm.get('prenom')?.invalid && addEmployeeForm.get('prenom')?.touched"
+                       formControlName="prenom">
                 <div
-                  *ngIf="addEmployeeForm.get('LastName')?.invalid && addEmployeeForm.get('LastName')?.touched">
+                  *ngIf="addEmployeeForm.get('prenom')?.invalid && addEmployeeForm.get('prenom')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('LastName')?.invalid && addEmployeeForm.get('LastName')?.touched"
+                    *ngIf="addEmployeeForm.get('prenom')?.invalid && addEmployeeForm.get('prenom')?.touched"
                     class="text-danger"> *Lastname is required</small>
                 </div>
               </div>
@@ -582,7 +582,7 @@
                 <label class="col-form-label" for="">Username <span class="text-danger">*</span></label>
                 <input class="form-control" type="text"
                        [class.invalid]="addEmployeeForm.get('UserName')?.invalid && addEmployeeForm.get('UserName')?.touched"
-                       formControlName="UserName">
+                       formControlName="username">
                 <div
                   *ngIf="addEmployeeForm.get('UserName')?.invalid && addEmployeeForm.get('UserName')?.touched">
                   <small
@@ -593,15 +593,15 @@
             </div>
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="">Email <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="">email <span class="text-danger">*</span></label>
                 <input class="form-control" type="email"
-                       [class.invalid]="addEmployeeForm.get('Email')?.invalid && addEmployeeForm.get('Email')?.touched"
-                       formControlName="Email">
+                       [class.invalid]="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched"
+                       formControlName="email">
                 <div
-                  *ngIf="addEmployeeForm.get('Email')?.invalid && addEmployeeForm.get('Email')?.touched">
+                  *ngIf="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('Email')?.invalid && addEmployeeForm.get('Email')?.touched"
-                    class="text-danger"> *Email is required</small>
+                    *ngIf="addEmployeeForm.get('email')?.invalid && addEmployeeForm.get('email')?.touched"
+                    class="text-danger"> *email is required</small>
                 </div>
               </div>
             </div>
@@ -609,13 +609,13 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Mot de passe</label>
                 <input class="form-control" type="password"
-                       [class.invalid]="addEmployeeForm.get('Password')?.invalid && addEmployeeForm.get('Password')?.touched"
-                       formControlName="Password">
+                       [class.invalid]="addEmployeeForm.get('password')?.invalid && addEmployeeForm.get('password')?.touched"
+                       formControlName="password">
                 <div
-                  *ngIf="addEmployeeForm.get('Password')?.invalid && addEmployeeForm.get('Password')?.touched">
+                  *ngIf="addEmployeeForm.get('password')?.invalid && addEmployeeForm.get('password')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('Password')?.invalid && addEmployeeForm.get('Password')?.touched"
-                    class="text-danger"> *Password is required</small>
+                    *ngIf="addEmployeeForm.get('password')?.invalid && addEmployeeForm.get('password')?.touched"
+                    class="text-danger"> *password is required</small>
                 </div>
               </div>
             </div>
@@ -623,13 +623,13 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Confirmez mot de passe</label>
                 <input class="form-control" type="password"
-                       [class.invalid]="addEmployeeForm.get('ConfirmPassword')?.invalid && addEmployeeForm.get('ConfirmPassword')?.touched"
-                       formControlName="ConfirmPassword">
+                       [class.invalid]="addEmployeeForm.get('c_password')?.invalid && addEmployeeForm.get('c_password')?.touched"
+                       formControlName="c_password">
                 <div
-                  *ngIf="addEmployeeForm.get('ConfirmPassword')?.invalid && addEmployeeForm.get('ConfirmPassword')?.touched">
+                  *ngIf="addEmployeeForm.get('c_password')?.invalid && addEmployeeForm.get('c_password')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('ConfirmPassword')?.invalid && addEmployeeForm.get('ConfirmPassword')?.touched"
-                    class="text-danger"> *ConfirmPassword is required</small>
+                    *ngIf="addEmployeeForm.get('c_password')?.invalid && addEmployeeForm.get('c_password')?.touched"
+                    class="text-danger"> *c_password is required</small>
                 </div>
               </div>
             </div>
@@ -652,13 +652,13 @@
                 <label class="col-form-label" for="">Date d'arrivée <span class="text-danger">*</span></label>
                 <div class="cal-icon">
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                         [class.invalid]="addEmployeeForm.get('JoinDate')?.invalid && addEmployeeForm.get('JoinDate')?.touched"
-                         formControlName="JoinDate">
+                         [class.invalid]="addEmployeeForm.get('date_arrivee')?.invalid && addEmployeeForm.get('date_arrivee')?.touched"
+                         formControlName="date_arrivee">
                   <div
-                    *ngIf="addEmployeeForm.get('JoinDate')?.invalid && addEmployeeForm.get('JoinDate')?.touched">
+                    *ngIf="addEmployeeForm.get('date_arrivee')?.invalid && addEmployeeForm.get('date_arrivee')?.touched">
                     <small
-                      *ngIf="addEmployeeForm.get('JoinDate')?.invalid && addEmployeeForm.get('JoinDate')?.touched"
-                      class="text-danger"> *JoinDate is required</small>
+                      *ngIf="addEmployeeForm.get('date_arrivee')?.invalid && addEmployeeForm.get('date_arrivee')?.touched"
+                      class="text-danger"> *date_arrivee is required</small>
                   </div>
                 </div>
               </div>
@@ -667,12 +667,12 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Téléphone </label>
                 <input class="form-control" type="text"
-                       [class.invalid]="addEmployeeForm.get('PhoneNumber')?.invalid && addEmployeeForm.get('PhoneNumber')?.touched"
-                       formControlName="PhoneNumber">
+                       [class.invalid]="addEmployeeForm.get('telephone')?.invalid && addEmployeeForm.get('telephone')?.touched"
+                       formControlName="telephone">
                 <div
-                  *ngIf="addEmployeeForm.get('PhoneNumber')?.invalid && addEmployeeForm.get('PhoneNumber')?.touched">
+                  *ngIf="addEmployeeForm.get('telephone')?.invalid && addEmployeeForm.get('telephone')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('PhoneNumber')?.invalid && addEmployeeForm.get('PhoneNumber')?.touched"
+                    *ngIf="addEmployeeForm.get('telephone')?.invalid && addEmployeeForm.get('telephone')?.touched"
                     class="text-danger"> *Phone is required</small>
                 </div>
               </div>
@@ -698,17 +698,17 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Department <span class="text-danger">*</span></label>
                 <mat-select  class="select mat-cust-select form-control"
-                             [class.invalid]="addEmployeeForm.get('DepartmentName')?.invalid && addEmployeeForm.get('DepartmentName')?.touched"
-                             formControlName="DepartmentName" placeholder="Select Department">
+                             [class.invalid]="addEmployeeForm.get('departement_id')?.invalid && addEmployeeForm.get('departement_id')?.touched"
+                             formControlName="departement_id" placeholder="Select Department">
                   <mat-option value="select">Select Department</mat-option>
                   <mat-option value="development">Web Development</mat-option>
                   <mat-option value="it">IT Management</mat-option>
                   <mat-option value="marketing">Marketing</mat-option>
                 </mat-select>
                 <div
-                  *ngIf="addEmployeeForm.get('DepartmentName')?.invalid && addEmployeeForm.get('DepartmentName')?.touched">
+                  *ngIf="addEmployeeForm.get('departement_id')?.invalid && addEmployeeForm.get('departement_id')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('DepartmentName')?.invalid && addEmployeeForm.get('DepartmentName')?.touched"
+                    *ngIf="addEmployeeForm.get('departement_id')?.invalid && addEmployeeForm.get('departement_id')?.touched"
                     class="text-danger"> *Department Name required</small>
                 </div>
               </div>
@@ -717,18 +717,18 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Poste <span class="text-danger">*</span></label>
                 <mat-select  class="select mat-cust-select form-control"
-                             [class.invalid]="addEmployeeForm.get('Designation')?.invalid && addEmployeeForm.get('Designation')?.touched"
-                             formControlName="Designation" placeholder="Select Designation">
-                  <mat-option value="designation">Select Designation</mat-option>
+                             [class.invalid]="addEmployeeForm.get('poste_id')?.invalid && addEmployeeForm.get('poste_id')?.touched"
+                             formControlName="poste_id" placeholder="Select poste_id">
+                  <mat-option value="designation">Select poste_id</mat-option>
                   <mat-option value="designer">Web Designer</mat-option>
                   <mat-option value="developer">Web Developer</mat-option>
                   <mat-option value="android">Android Developer</mat-option>
                 </mat-select>
                 <div
-                  *ngIf="addEmployeeForm.get('Designation')?.invalid && addEmployeeForm.get('Designation')?.touched">
+                  *ngIf="addEmployeeForm.get('poste_id')?.invalid && addEmployeeForm.get('poste_id')?.touched">
                   <small
-                    *ngIf="addEmployeeForm.get('Designation')?.invalid && addEmployeeForm.get('Designation')?.touched"
-                    class="text-danger"> *Designation Name required</small>
+                    *ngIf="addEmployeeForm.get('poste_id')?.invalid && addEmployeeForm.get('poste_id')?.touched"
+                    class="text-danger"> *poste_id Name required</small>
                 </div>
               </div>
             </div>
@@ -1107,19 +1107,19 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Email <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="">email <span class="text-danger">*</span></label>
                                 <input class="form-control" value="johndoe@example.com" type="email">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Password</label>
+                                <label class="col-form-label" for="">password</label>
                                 <input class="form-control" value="johndoe" type="password">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Confirm Password</label>
+                                <label class="col-form-label" for="">Confirm password</label>
                                 <input class="form-control" value="johndoe" type="password">
                             </div>
                         </div>
@@ -1164,10 +1164,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="">Designation <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="">poste_id <span class="text-danger">*</span></label>
                                 <mat-select class="select mat-cust-select form-control"
-                                placeholder="Select Designation">
-                                <mat-option>Select Designation</mat-option>
+                                placeholder="Select poste_id">
+                                <mat-option>Select poste_id</mat-option>
                                 <mat-option>Web Designer</mat-option>
                                 <mat-option>Web Developer</mat-option>
                                 <mat-option>Android Developer</mat-option>

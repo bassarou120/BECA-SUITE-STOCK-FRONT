@@ -80,6 +80,12 @@ export class DataService {
               // route: routes.leaveemployee,
               base: 'leave-employee',
             },
+            {
+              menuValue: 'test',
+              route: "#",
+              // route: routes.leaveemployee,
+              base: 'leave-employee',
+            },
 
           ],
         },
@@ -114,6 +120,37 @@ export class DataService {
 
       ],
     },
+
+    {
+      tittle: 'PARAMETRAGE',
+      icon: 'set',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'GENERALE',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'money',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Type de conge',
+              route: routes.employeesalary,
+              base: 'employee-salary',
+            },
+
+          ],
+        },
+
+
+      ],
+    },
+
+
   ];
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<Array<SideBar>>(this.sideBar);
 
