@@ -10,11 +10,11 @@ interface register {
 }
 interface login  {
   email:string;
-  password:string 
+  password:string
 }
 interface returndata  {
   message:string;
-  status:string 
+  status:string
 }
 @Injectable({
   providedIn: 'root',
@@ -67,7 +67,7 @@ export class WebStorage {
         this.Loginvalue.next(returndata);
       }
     } else {
-      returndata.message='Email is  not valid'
+      returndata.message='email is  not valid'
       returndata.status='email'
       this.Loginvalue.next(returndata);
     }
@@ -119,7 +119,7 @@ export class WebStorage {
     if (Eresult) {
       this.Forgotpasswordvalue.next(Eresult);
     } else {
-      this.Forgotpasswordvalue.next('Email Not Valid');
+      this.Forgotpasswordvalue.next('email Not Valid');
     }
   }
 }

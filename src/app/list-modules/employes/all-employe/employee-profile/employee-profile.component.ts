@@ -122,7 +122,7 @@ export class EmployeeProfileComponent implements OnInit {
     { value: 'Marketing' },
   ];
   selectedList13: data[] = [
-    { value: 'Select Designation' },
+    { value: 'Select poste_id' },
     { value: 'Web Designer' },
     { value: 'Web Developer' },
     { value: 'Android Developer' },

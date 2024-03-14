@@ -67,8 +67,10 @@
         <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of lstEmployee;let i = index">
             <div class="profile-widget">
                 <div class="profile-img">
-                    <a [routerLink] = "" class="avatar"><img
-                            [src]="emp.img" alt=""></a>
+                    <a [routerLink] = "" class="avatar">
+                      <img [src]="'assets/img/profiles/avatar-02.jpg'" alt="">
+<!--                      <img [src]="emp.img" alt="">-->
+                    </a>
 
 <!--                  <a [routerLink] = "routes.employeeProfile" class="avatar"><img-->
 <!--                            [src]="emp.img" alt=""></a>-->
@@ -84,10 +86,10 @@
                     </div>
                 </div>
                 <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-                  <a  [routerLink] = "">{{emp.firstname}}</a>
+                  <a  [routerLink] = "">{{emp.nom}} {{emp.nom}}</a>
 <!--                  <a  [routerLink] = "routes.employeeProfile">{{emp.firstname}}</a>-->
                 </h4>
-                <div class="small text-muted">{{emp.designation}}</div>
+                <div class="small text-muted">{{emp.nom_poste}}</div>
             </div>
         </div>
     </div>

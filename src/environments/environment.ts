@@ -8,7 +8,7 @@
 export const environment = {
   production: true,
 
-  backend: "http://127.0.0.1:8000/api",
+  backend: "http://127.0.0.1:80001/api",
   base_url_backend: "http://127.0.0.1:8000",
   // accet_url: "http://127.0.0.1:8000/storage",
 
