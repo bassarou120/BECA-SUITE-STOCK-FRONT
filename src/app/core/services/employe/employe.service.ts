@@ -22,8 +22,8 @@ export class EmployeService  {
 
   getAllEmploye(): Observable<Object> {
 
-     return this.http.get("http://127.0.0.1:8001/api/employe");
-    // return this.http.get(`${this.url}/employe`);
+     // return this.http.get("http://127.0.0.1:8000/api/employe");
+    return this.http.get(`${this.url}/employe`);
   }
 
 

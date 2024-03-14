@@ -40,7 +40,9 @@ export class EmployePageContentComponent  implements OnInit {
 
 
       },
-      (error ) =>{}
+      (error ) =>{
+
+      }
     );
   }
 

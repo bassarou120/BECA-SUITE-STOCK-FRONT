@@ -355,7 +355,7 @@ export interface getAttendReport {
 
 
 
- 
+
 }
 export interface getPromotion {
   id: number;
@@ -554,7 +554,7 @@ export interface getinterview {
   jobtitle: string;
   department: string;
   jobtype: string;
-  
+
 }
 export interface getOfferedJobs {
   id: number;
