@@ -41,6 +41,9 @@ export class routes {
     return this.baseUrl + '/employees';
   }
 
+  public static get holiday_page(): string {
+    return this.baseUrl + '/employees/holidays';
+  }
 
 
 

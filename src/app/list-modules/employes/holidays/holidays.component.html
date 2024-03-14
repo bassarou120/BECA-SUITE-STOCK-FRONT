@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Holidays 2023</h3>
+                <h3 class="page-title">Types de Congés</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Holidays</li>
+                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de Bord</a></li>
+                    <li class="breadcrumb-item active">Types de Congés</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
@@ -27,18 +27,18 @@
                     <thead>
                         <tr>
                             <th mat-sort-header="id">#</th>
-                            <th mat-sort-header="title">Title </th>
-                            <th mat-sort-header="holidaydate">Holiday Date</th>
-                            <th mat-sort-header="day">Day</th>
+                            <th mat-sort-header="title">Libellé </th>
+                            <!-- <th mat-sort-header="holidaydate">Holiday Date</th>
+                            <th mat-sort-header="day">Day</th> -->
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="holiday-completed" *ngFor="let row of lstHolidays">
                             <td>{{row.id}}</td>
-                            <td>{{row.title}}</td>
-                            <td>{{row.holidaydate}}</td>
-                            <td>{{row.day}}</td>
+                            <td>{{row.libelle}}</td>
+                            <!-- <td>{{row.holidaydate}}</td>
+                            <td>{{row.day}}</td> -->
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
