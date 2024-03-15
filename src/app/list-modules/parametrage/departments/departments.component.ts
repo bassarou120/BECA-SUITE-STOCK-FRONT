@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService,apiResultFormat, getDepartment, routes, DepartmentService } from 'src/app/core/core.index';
 
@@ -17,6 +18,7 @@ export class DepartmentsComponent implements OnInit {
   selected = 'option1';
 
   public lstDpt: Array<any>=[];
+  mon_dep: any;
 
 
   public lstDepartment: Array<getDepartment> = [];
@@ -78,6 +80,43 @@ export class DepartmentsComponent implements OnInit {
       });
     }
   }
+
+    saveDepartment(myForm:NgForm){
+      if (!myForm.value.nom_dep) {
+          console.log("Le champ nom departement est vide");
+          return;
+      }else{
+        this.data.saveDepartement(myForm.value).subscribe(response => {
+          console.log(response);
+          location.reload();
+        });
+      }
+
+    }
+
+    getEditForm(row: any){
+       const idInput = document.getElementById('edit_id');
+       const nomdepInput = document.getElementById('edit_nom_dep');
+       if (idInput && nomdepInput) {
+         idInput.setAttribute('value', row.id);
+         nomdepInput.setAttribute('value', row.nom_dep);
+       }else{
+        console.error("Les éléments du formulaire ne sont pas trouvés");
+       }
+    }
+
+    editDepartment(maForm:NgForm){
+      if (!maForm.value.nom_dep) {
+          console.log("Le champ nom departement est vide");
+          return;
+      }else{
+        this.data.editDepartment(1,maForm.value).subscribe(response => {
+          console.log(response);
+          location.reload();
+        });
+      }
+
+    }
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();

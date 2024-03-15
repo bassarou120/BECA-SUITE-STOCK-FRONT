@@ -58,7 +58,7 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
                                             data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Modifier</a>
                                         <a class="dropdown-item" data-bs-toggle="modal"
@@ -156,13 +156,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form (ngSubmit)="saveDepartment(myForm)" #myForm="ngForm">
                     <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Nom du département<span class="text-danger">*</span></label>
-                        <input class="form-control" type="text">
+                        <label class="col-form-label" for="nom_dep">Nom du département<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="nom_dep" ngModel required>
+                        <div *ngIf="myForm.submitted && myForm.controls['nom_dep'].invalid" class="text-danger">Ce champ est requis</div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Enrégister</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                     </div>
                 </form>
             </div>
@@ -182,13 +183,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form (ngSubmit)="editDepartment(maForm)" #maForm="ngForm">
                     <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Nom du Département <span class="text-danger">*</span></label>
-                        <input class="form-control" value="IT Management" type="text">
+                      <input  type="hidden" id="edit_id" name="id">
+                        <label class="col-form-label" for="nom_dep">Nom du Département <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="nom_dep" required id="edit_nom_dep">
+                        <div *ngIf="maForm.submitted && maForm.controls['nom_dep'].invalid" class="text-danger">Ce champ est requis</div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Enrégistrer</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégistrer</button>
                     </div>
                 </form>
             </div>
