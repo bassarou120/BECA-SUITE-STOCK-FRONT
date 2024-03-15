@@ -713,6 +713,11 @@ export interface getPost {
   nom_poste: string;
 }
 
+export interface getTypeAbsence {
+  id: number;
+  libelle: string;
+}
+
 export interface getEmployees {
   firstname: string;
   lastname: string;

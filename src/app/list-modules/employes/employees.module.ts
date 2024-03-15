@@ -22,6 +22,7 @@ import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.componen
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { PostesComponent } from './postes/postes.component';
+import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { PostesComponent } from './postes/postes.component';
     ShiftScheduleComponent,
     ShiftListComponent,
     PostesComponent,
+    TypeAbsenceComponent,
   ],
   imports: [
     CommonModule,

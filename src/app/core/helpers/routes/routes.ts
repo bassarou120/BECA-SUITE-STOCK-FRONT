@@ -49,6 +49,10 @@ export class routes {
     return this.baseUrl + '/employees/postes';
   }
 
+  public static get typeAbsence(): string {
+    return this.baseUrl + '/employees/typeAbsence';
+  }
+
 
 
 

@@ -149,8 +149,8 @@ export class DataService {
             },
             {
               menuValue: 'Type d\'absence',
-              route: routes.departement,
-              base: 'departement',
+              route: routes.typeAbsence,
+              base: 'typeAbsence',
             },
             {
               menuValue: 'Rôle',
