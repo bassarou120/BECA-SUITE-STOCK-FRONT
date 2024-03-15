@@ -44,6 +44,10 @@ export class routes {
   public static get holiday_page(): string {
     return this.baseUrl + '/employees/holidays';
   }
+  public static get departement(): string {
+    return this.baseUrl + '/employees/departments';
+  }
+
 
 
 

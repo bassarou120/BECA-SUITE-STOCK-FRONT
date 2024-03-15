@@ -705,7 +705,7 @@ export interface lstEmployee {
 
 export interface getDepartment {
   id: number;
-  departmentName: string;
+  nom_dep: string;
 }
 export interface getEmployees {
   firstname: string;

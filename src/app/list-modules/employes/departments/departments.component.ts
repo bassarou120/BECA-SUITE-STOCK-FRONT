@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService,apiResultFormat, getDepartment, routes, DepartmentService } from 'src/app/core/core.index';
+
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService, apiResultFormat, getDepartment, routes } from 'src/app/core/core.index';
+
+
 
 @Component({
   selector: 'app-departments',
@@ -9,10 +13,15 @@ import { DataService, apiResultFormat, getDepartment, routes } from 'src/app/cor
   styleUrls: ['./departments.component.scss']
 })
 export class DepartmentsComponent implements OnInit {
+  public routes = routes;
+  selected = 'option1';
+
+  public lstDpt: Array<any>=[];
+
+
   public lstDepartment: Array<getDepartment> = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getDepartment>;
-  public routes = routes;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -27,19 +36,20 @@ export class DepartmentsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: DataService) {}
+  constructor(public router: Router,private data: DepartmentService) {}
 
   ngOnInit(): void {
-    this.getTableData();
+     this.getTableData();
   }
+
 
   private getTableData(): void {
     this.lstDepartment = [];
     this.serialNumberArray = [];
 
-    this.data.getDepartment().subscribe((res: apiResultFormat) => {
-      this.totalData = res.totalData;
-      res.data.map((res: getDepartment, index: number) => {
+    this.data.getAllDepartment().subscribe((res: any) => {
+      this.totalData = res.data.total;
+      res.data.data.map((res: getDepartment, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id = serialNumber;
@@ -51,7 +61,7 @@ export class DepartmentsComponent implements OnInit {
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
- 
+
   }
 
   public sortData(sort: Sort) {

@@ -142,6 +142,11 @@ export class DataService {
               route: routes.holiday_page,
               base: 'holiday',
             },
+            {
+              menuValue: 'Departement',
+              route: routes.departement,
+              base: 'departement',
+            },
 
           ],
         },
