@@ -138,7 +138,7 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Type de congé',
+              menuValue: 'Type de Congé',
               route: routes.holiday_page,
               base: 'holiday',
             },

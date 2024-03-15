@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService, apiResultFormat, getholidays, routes, HolidayService } from 'src/app/core/core.index';
@@ -55,6 +56,34 @@ export class HolidaysComponent implements OnInit {
     });
 
  
+  }
+  
+  saveHoliday(myForm: NgForm) {
+    if (!myForm.value.libelle) {
+      console.log("Le champ libellé est requis.");
+      return;
+    } else {
+      this.data.saveHoliday(myForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    }
+  }
+
+  getEditHoliday(row: any) {
+    const idInput = document.getElementById('edit_id');
+    const libelleInput = document.getElementById('edit_libelle');
+
+    if (idInput && libelleInput) {
+        idInput.setAttribute('value', row.id);
+        libelleInput.setAttribute('value', row.libelle);
+    } else {
+        console.error("Les éléments de formulaire ne peuvent pas être trouvés.");
+    }
+  }
+
+  editHoliday() {
+    // Notihing yet
   }
 
 

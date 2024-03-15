@@ -13,7 +13,7 @@
             </div>
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_holiday"><i class="fa-solid fa-plus"></i>
-                    Add Holiday</a>
+                    Ajouter un type de congé</a>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
                             <th mat-sort-header="title">Libellé </th>
                             <!-- <th mat-sort-header="holidaydate">Holiday Date</th>
                             <th mat-sort-header="day">Day</th> -->
-                            <th class="text-end">Action</th>
+                            <th class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,18 +44,18 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-bs-toggle="modal"
-                                            data-bs-target="#edit_holiday"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" (click)="getEditHoliday(row)" data-bs-toggle="modal"
+                                            data-bs-target="#edit_holiday"><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a>
                                         <a class="dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#delete_holiday"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                            Delete</a>
+                                            Supprimer</a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr *ngIf="lstHolidays.length === 0">
                           <td colspan="10">
-                              <h5 style="text-align: center;">No data found</h5>
+                              <h5 style="text-align: center;">Aucun Résultat</h5>
                           </td>
                         </tr>
                     </tbody>
@@ -64,9 +64,9 @@
             <div class="table_footer">
                 <div class="col-sm-12 col-md-5">
                   <div class="dataTables_info">
-                    Showing {{ serialNumberArray[0] }} to
-                    {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                    {{ totalData }} entries
+                    Affichage de {{ serialNumberArray[0] }} à
+                    {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                    {{ totalData }} entrées
                   </div>
                 </div>
         
@@ -84,7 +84,7 @@
                           class="page-link"
                           href="javascript:void(0);"
                           tabindex="-1"
-                          >Previous</a
+                          >Précédent</a
                         >
                       </li>
         
@@ -152,7 +152,7 @@
                           (click)="getMoreData('next')"
                           class="page-link"
                           href="javascript:void(0);"
-                          >Next
+                          >Suivant
                         </a>
                       </li>
                     </ul>
@@ -168,23 +168,22 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Holiday</h5>
+                <h5 class="modal-title">Ajouter un type de congé</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form (ngSubmit)="saveHoliday(myForm)" #myForm="ngForm">
                     <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Holiday Name <span class="text-danger">*</span></label>
-                        <input class="form-control" type="text">
-                    </div>
-                    <div class="input-block mb-3 date-input1">
-                        <label class="col-form-label" for="">Holiday Date <span class="text-danger">*</span></label>
-                        <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker container=".date-input1" type="text"></div>
+                      <label class="col-form-label" for="libelle">Libellé du type de congé <span class="text-danger">*</span></label>
+                      <input class="form-control" name="libelle" ngModel required>
+                      <div *ngIf="myForm.submitted && myForm.controls['libelle'].invalid" class="text-danger">
+                        Le libellé du type de congé est requis.
+                      </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Submit</button>
+                        <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
                     </div>
                 </form>
             </div>
@@ -195,32 +194,28 @@
 
 <!-- Edit Holiday Modal -->
 <div class="modal custom-modal fade" id="edit_holiday" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Holiday</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Holiday Name <span class="text-danger">*</span></label>
-                        <input class="form-control" value="New Year" type="text">
-                    </div>
-                    <div class="input-block mb-3 date-input2">
-                        <label class="col-form-label" for="">Holiday Date <span class="text-danger">*</span></label>
-                        <div class="cal-icon"><input class="form-control datetimepicker" value="01-01-2023" bsDatepicker container=".date-input2" type="text">
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Modifier type de congé</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form>
+                  <div class="input-block mb-3">
+                      <label class="col-form-label" for="">Nouveau nom du type de congé <span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" name="libelle" id="edit_libelle" required>
+                      <input class="form-control" type="hidden" name="id" id="edit_id" required>
+                  </div>
+                  <div class="submit-section">
+                      <button class="btn btn-primary submit-btn">Save</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
 </div>
 <!-- /Edit Holiday Modal -->
 

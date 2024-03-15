@@ -17,13 +17,11 @@ export class HolidayService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-//   saveEmploye(data:any ): Observable<Object> {
-//     return this.http.post("http://127.0.0.1:8001/api/employe", data);
-//   }
+  saveHoliday(data: any): Observable<any> {
+    return this.http.post(`${this.url}/type_conge`, data);
+  }
 
   getAllHolidays(): Observable<any> {
-
-     // return this.http.get("http://127.0.0.1:8000/api/employe");
     return this.http.get<any>(`${this.url}/type_conge`);
   }
 
