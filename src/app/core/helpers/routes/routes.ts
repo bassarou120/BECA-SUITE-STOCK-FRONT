@@ -52,6 +52,10 @@ export class routes {
   public static get contract_page(): string {
     return this.baseUrl + '/employees/contracts';
   }
+
+  public static get premium_page(): string {
+    return this.baseUrl + '/employees/premiums';
+  }
   
 
 

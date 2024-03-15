@@ -685,6 +685,12 @@ export interface getconstracts {
   // holidaydate: string;
   // day: string;
 }
+export interface getpremiums {
+  id: number;
+  libelle: string;
+  // holidaydate: string;
+  // day: string;
+}
 export interface getDesignations {
   id: number;
   designation: string;

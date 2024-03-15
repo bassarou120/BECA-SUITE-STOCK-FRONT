@@ -148,6 +148,11 @@ export class DataService {
               base: 'contract',
             },
             {
+              menuValue: 'Type de Prime',
+              route: routes.premium_page,
+              base: 'premium',
+            },
+            {
               menuValue: 'Departement',
               route: routes.departement,
               base: 'departement',
