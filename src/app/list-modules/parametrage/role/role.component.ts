@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, routes, posteService, getPost } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, routes, roleService, getRole  } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,20 +8,20 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
-  selector: 'app-postes',
-  templateUrl: './postes.component.html',
-  styleUrls: ['./postes.component.scss']
+  selector: 'app-role',
+  templateUrl: './role.component.html',
+  styleUrls: ['./role.component.scss']
 })
-export class PostesComponent implements OnInit {
+export class RoleComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstPst: Array<any>=[];
+  public lstRl: Array<any>=[];
 
 
-  public lstPoste: Array<getPost> = [];
+  public lstRole: Array<getRole> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getPost>;
+  dataSource!: MatTableDataSource<getRole>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -36,7 +36,7 @@ export class PostesComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(public router: Router,private data: posteService) {}
+  constructor(private data: roleService) {}
 
   ngOnInit(): void {
      this.getTableData();
@@ -44,20 +44,20 @@ export class PostesComponent implements OnInit {
 
 
   private getTableData(): void {
-    this.lstPoste = [];
+    this.lstRole = [];
     this.serialNumberArray = [];
 
-    this.data.getAllPoste().subscribe((res: any) => {
+    this.data.getAllRole().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getPost, index: number) => {
+      res.data.data.map((res: getRole, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstPoste.push(res);
+          this.lstRole.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getPost>(this.lstPoste);
+      this.dataSource = new MatTableDataSource<getRole>(this.lstRole);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -65,13 +65,13 @@ export class PostesComponent implements OnInit {
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstPoste.slice();
+    const data = this.lstRole.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstPoste = data;
+      this.lstRole = data;
     } else {
-      this.lstPoste = data.sort((a: any, b: any) => {
+      this.lstRole = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -81,7 +81,7 @@ export class PostesComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstPoste = this.dataSource.filteredData;
+    this.lstRole = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

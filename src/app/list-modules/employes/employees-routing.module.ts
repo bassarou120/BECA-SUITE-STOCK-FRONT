@@ -5,10 +5,10 @@ import { EmployePageContentComponent } from './all-employe/employe-page-content/
 import { EmployeeProfileComponent } from './all-employe/employee-profile/employee-profile.component';
 import { AttendanceAdminComponent } from './attendance-admin/attendance-admin.component';
 import { AttendanceEmployeeComponent } from './attendance-employee/attendance-employee.component';
-import { DepartmentsComponent } from './departments/departments.component';
+import { DepartmentsComponent } from '../parametrage/departments/departments.component';
 import { DesignationsComponent } from './designations/designations.component';
 import { EmployeesComponent } from './employees.component';
-import { HolidaysComponent } from './holidays/holidays.component';
+import { HolidaysComponent } from '../parametrage/holidays/holidays.component';
 import { LeaveAdminComponent } from './leave-admin/leave-admin.component';
 import { LeaveEmployeeComponent } from './leave-employee/leave-employee.component';
 import { LeaveSettingsComponent } from './leave-settings/leave-settings.component';
@@ -16,11 +16,11 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
-import { ContractsComponent } from './contracts/contracts.component';
-import { PremiumsComponent } from './premiums/premiums.component';
-import { PostesComponent } from './postes/postes.component';
-import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
-import { RoleComponent } from './role/role.component';
+import { ContractsComponent } from '../parametrage/contracts/contracts.component';
+import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
+import { PostesComponent } from '../parametrage/postes/postes.component';
+import { TypeAbsenceComponent } from '../parametrage/typeAbsence/typeAbsence.component';
+import { RoleComponent } from '../parametrage/role/role.component';
 
 const routes: Routes = [
   {

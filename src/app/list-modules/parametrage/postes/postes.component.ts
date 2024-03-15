@@ -1,28 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, routes, typeAbsenceService, getTypeAbsence } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, routes, posteService, getPost } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 
 
-
 @Component({
   selector: 'app-postes',
-  templateUrl: './typeAbsence.component.html',
-  styleUrls: ['./typeAbsence.component.scss']
+  templateUrl: './postes.component.html',
+  styleUrls: ['./postes.component.scss']
 })
-export class TypeAbsenceComponent implements OnInit {
+export class PostesComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstTabs: Array<any>=[];
+  public lstPst: Array<any>=[];
 
 
-  public lstTypeAbsence: Array<getTypeAbsence> = [];
+  public lstPoste: Array<getPost> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getTypeAbsence>;
+  dataSource!: MatTableDataSource<getPost>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -37,7 +36,7 @@ export class TypeAbsenceComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(public router: Router,private data: typeAbsenceService) {}
+  constructor(private data: posteService) {}
 
   ngOnInit(): void {
      this.getTableData();
@@ -45,20 +44,20 @@ export class TypeAbsenceComponent implements OnInit {
 
 
   private getTableData(): void {
-    this.lstTypeAbsence = [];
+    this.lstPoste = [];
     this.serialNumberArray = [];
 
-    this.data.getAllTypeAbsence().subscribe((res: any) => {
+    this.data.getAllPoste().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getTypeAbsence, index: number) => {
+      res.data.data.map((res: getPost, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstTypeAbsence.push(res);
+          this.lstPoste.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getTypeAbsence>(this.lstTypeAbsence);
+      this.dataSource = new MatTableDataSource<getPost>(this.lstPoste);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -66,13 +65,13 @@ export class TypeAbsenceComponent implements OnInit {
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstTypeAbsence.slice();
+    const data = this.lstPoste.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstTypeAbsence = data;
+      this.lstPoste = data;
     } else {
-      this.lstTypeAbsence = data.sort((a: any, b: any) => {
+      this.lstPoste = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -82,7 +81,7 @@ export class TypeAbsenceComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstTypeAbsence = this.dataSource.filteredData;
+    this.lstPoste = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

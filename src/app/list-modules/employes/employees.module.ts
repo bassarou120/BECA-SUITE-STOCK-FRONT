@@ -8,24 +8,24 @@ import { EmployeListComponent } from './all-employe/employe-list/employe-list.co
 import { EmployePageContentComponent } from './all-employe/employe-page-content/employe-page-content.component';
 import { EmployeModalComponent } from './all-employe/employe-modal/employe-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HolidaysComponent } from './holidays/holidays.component';
+import { HolidaysComponent } from '../parametrage/holidays/holidays.component';
 import { LeaveAdminComponent } from './leave-admin/leave-admin.component';
 import { LeaveEmployeeComponent } from './leave-employee/leave-employee.component';
 import { LeaveSettingsComponent } from './leave-settings/leave-settings.component';
 import { AttendanceAdminComponent } from './attendance-admin/attendance-admin.component';
 import { AttendanceEmployeeComponent } from './attendance-employee/attendance-employee.component';
-import { DepartmentsComponent } from './departments/departments.component';
+import { DepartmentsComponent } from '../parametrage/departments/departments.component';
 import { DesignationsComponent } from './designations/designations.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
-import { PostesComponent } from './postes/postes.component';
-import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
-import { RoleComponent } from './role/role.component';
-import { ContractsComponent } from './contracts/contracts.component';
-import { PremiumsComponent } from './premiums/premiums.component';
+import { PostesComponent } from '../parametrage/postes/postes.component';
+import { TypeAbsenceComponent } from '../parametrage/typeAbsence/typeAbsence.component';
+import { RoleComponent } from '../parametrage/role/role.component';
+import { ContractsComponent } from '../parametrage/contracts/contracts.component';
+import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +48,7 @@ import { PremiumsComponent } from './premiums/premiums.component';
     ShiftListComponent,
     PostesComponent,
     TypeAbsenceComponent,
-    RoleComponent,,
+    RoleComponent,
     ContractsComponent,
     PremiumsComponent
   ],

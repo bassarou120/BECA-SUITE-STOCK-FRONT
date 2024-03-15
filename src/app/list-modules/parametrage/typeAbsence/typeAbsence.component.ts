@@ -1,27 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, routes, roleService, getRole  } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, routes, typeAbsenceService, getTypeAbsence } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 
 
+
 @Component({
-  selector: 'app-role',
-  templateUrl: './role.component.html',
-  styleUrls: ['./role.component.scss']
+  selector: 'app-postes',
+  templateUrl: './typeAbsence.component.html',
+  styleUrls: ['./typeAbsence.component.scss']
 })
-export class RoleComponent implements OnInit {
+export class TypeAbsenceComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstRl: Array<any>=[];
+  public lstTabs: Array<any>=[];
 
 
-  public lstRole: Array<getRole> = [];
+  public lstTypeAbsence: Array<getTypeAbsence> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getRole>;
+  dataSource!: MatTableDataSource<getTypeAbsence>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -36,7 +37,7 @@ export class RoleComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(public router: Router,private data: roleService) {}
+  constructor(private data: typeAbsenceService) {}
 
   ngOnInit(): void {
      this.getTableData();
@@ -44,20 +45,20 @@ export class RoleComponent implements OnInit {
 
 
   private getTableData(): void {
-    this.lstRole = [];
+    this.lstTypeAbsence = [];
     this.serialNumberArray = [];
 
-    this.data.getAllRole().subscribe((res: any) => {
+    this.data.getAllTypeAbsence().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getRole, index: number) => {
+      res.data.data.map((res: getTypeAbsence, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstRole.push(res);
+          this.lstTypeAbsence.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getRole>(this.lstRole);
+      this.dataSource = new MatTableDataSource<getTypeAbsence>(this.lstTypeAbsence);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -65,13 +66,13 @@ export class RoleComponent implements OnInit {
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstRole.slice();
+    const data = this.lstTypeAbsence.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstRole = data;
+      this.lstTypeAbsence = data;
     } else {
-      this.lstRole = data.sort((a: any, b: any) => {
+      this.lstTypeAbsence = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -81,7 +82,7 @@ export class RoleComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstRole = this.dataSource.filteredData;
+    this.lstTypeAbsence = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {
