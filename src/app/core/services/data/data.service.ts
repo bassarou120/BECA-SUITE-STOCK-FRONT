@@ -154,8 +154,8 @@ export class DataService {
             },
             {
               menuValue: 'Rôle',
-              route: routes.departement,
-              base: 'departement',
+              route: routes.role,
+              base: 'role',
             },
 
           ],

@@ -718,6 +718,11 @@ export interface getTypeAbsence {
   libelle: string;
 }
 
+export interface getRole {
+  id: number;
+  lib: string;
+}
+
 export interface getEmployees {
   firstname: string;
   lastname: string;
