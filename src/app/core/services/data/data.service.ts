@@ -157,6 +157,21 @@ export class DataService {
               route: routes.departement,
               base: 'departement',
             },
+            {
+              menuValue: 'Poste',
+              route: routes.poste,
+              base: 'poste',
+            },
+            {
+              menuValue: 'Type d\'absence',
+              route: routes.typeAbsence,
+              base: 'typeAbsence',
+            },
+            {
+              menuValue: 'Rôle',
+              route: routes.role,
+              base: 'role',
+            },
 
           ],
         },

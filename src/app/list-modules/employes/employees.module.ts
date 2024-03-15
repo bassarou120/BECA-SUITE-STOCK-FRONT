@@ -21,6 +21,9 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
+import { PostesComponent } from './postes/postes.component';
+import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
+import { RoleComponent } from './role/role.component';
 import { ContractsComponent } from './contracts/contracts.component';
 import { PremiumsComponent } from './premiums/premiums.component';
 
@@ -43,6 +46,9 @@ import { PremiumsComponent } from './premiums/premiums.component';
     OvertimeComponent,
     ShiftScheduleComponent,
     ShiftListComponent,
+    PostesComponent,
+    TypeAbsenceComponent,
+    RoleComponent,,
     ContractsComponent,
     PremiumsComponent
   ],
