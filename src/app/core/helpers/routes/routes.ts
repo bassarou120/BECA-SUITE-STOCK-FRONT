@@ -44,9 +44,21 @@ export class routes {
   public static get holiday_page(): string {
     return this.baseUrl + '/employees/holidays';
   }
-  
+
   public static get departement(): string {
     return this.baseUrl + '/employees/departments';
+  }
+
+  public static get poste(): string {
+    return this.baseUrl + '/employees/postes';
+  }
+
+  public static get typeAbsence(): string {
+    return this.baseUrl + '/employees/typeAbsence';
+  }
+
+  public static get role(): string {
+    return this.baseUrl + '/employees/role';
   }
 
   public static get contract_page(): string {
@@ -56,7 +68,6 @@ export class routes {
   public static get premium_page(): string {
     return this.baseUrl + '/employees/premiums';
   }
-  
 
 
 

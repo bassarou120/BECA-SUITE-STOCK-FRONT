@@ -18,6 +18,9 @@ import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.componen
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { ContractsComponent } from './contracts/contracts.component';
 import { PremiumsComponent } from './premiums/premiums.component';
+import { PostesComponent } from './postes/postes.component';
+import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
+import { RoleComponent } from './role/role.component';
 
 const routes: Routes = [
   {
@@ -39,6 +42,9 @@ const routes: Routes = [
     { path: "overtime", component: OvertimeComponent },
     { path: "shift-schedule", component: ShiftScheduleComponent },
     { path: "shift-list", component: ShiftListComponent },
+    { path: "postes", component: PostesComponent },
+    { path: "typeAbsence", component: TypeAbsenceComponent },
+    { path: "role", component: RoleComponent },
     { path: "contracts", component: ContractsComponent },
     { path: "premiums", component: PremiumsComponent },
   ],
