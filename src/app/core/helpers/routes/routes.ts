@@ -45,6 +45,10 @@ export class routes {
     return this.baseUrl + '/employees/departments';
   }
 
+  public static get poste(): string {
+    return this.baseUrl + '/employees/postes';
+  }
+
 
 
 

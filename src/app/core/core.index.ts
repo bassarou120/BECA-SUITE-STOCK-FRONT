@@ -4,3 +4,4 @@ export * from './services/side-bar/side-bar.service';
 export * from './services/auth/auth.service';
 export * from './services/interface/models';
 export * from './services/department/department.service';
+export * from './services/poste/poste.service';

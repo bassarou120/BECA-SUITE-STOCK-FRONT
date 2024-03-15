@@ -707,6 +707,12 @@ export interface getDepartment {
   id: number;
   nom_dep: string;
 }
+
+export interface getPost {
+  id: number;
+  nom_poste: string;
+}
+
 export interface getEmployees {
   firstname: string;
   lastname: string;

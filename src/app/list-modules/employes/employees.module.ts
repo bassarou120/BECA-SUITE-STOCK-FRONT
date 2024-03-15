@@ -21,6 +21,7 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
+import { PostesComponent } from './postes/postes.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ShiftListComponent } from './shift-list/shift-list.component';
     TimesheetComponent,
     OvertimeComponent,
     ShiftScheduleComponent,
-    ShiftListComponent
+    ShiftListComponent,
+    PostesComponent,
   ],
   imports: [
     CommonModule,

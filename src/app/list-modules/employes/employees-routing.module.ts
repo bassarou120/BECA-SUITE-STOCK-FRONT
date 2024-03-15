@@ -16,6 +16,7 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
+import { PostesComponent } from './postes/postes.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
     { path: "overtime", component: OvertimeComponent },
     { path: "shift-schedule", component: ShiftScheduleComponent },
     { path: "shift-list", component: ShiftListComponent },
+    { path: "postes", component: PostesComponent },
   ],
  }];
 
