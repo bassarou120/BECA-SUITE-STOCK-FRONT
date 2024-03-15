@@ -45,7 +45,7 @@ export class HolidaysComponent implements OnInit {
       res.data.data.map((res: getholidays, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id = serialNumber;
+          res.id;// = serialNumber;
           this.lstHolidays.push(res);
           this.serialNumberArray.push(serialNumber);
         }
