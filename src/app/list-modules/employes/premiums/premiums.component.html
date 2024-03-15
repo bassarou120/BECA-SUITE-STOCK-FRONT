@@ -5,15 +5,15 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Types de Congés</h3>
+                <h3 class="page-title">Types de Primes</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de Bord</a></li>
-                    <li class="breadcrumb-item active">Types de Congés</li>
+                    <li class="breadcrumb-item active">Types de Primes</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_holiday"><i class="fa-solid fa-plus"></i>
-                    Add Holiday</a>
+                    Add Premium</a>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="holiday-completed" *ngFor="let row of lstHolidays">
+                        <tr class="holiday-completed" *ngFor="let row of lstPremiums">
                             <td>{{row.id}}</td>
                             <td>{{row.libelle}}</td>
                             <!-- <td>{{row.holidaydate}}</td>
@@ -53,7 +53,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstHolidays.length === 0">
+                        <tr *ngIf="lstPremiums.length === 0">
                           <td colspan="10">
                               <h5 style="text-align: center;">No data found</h5>
                           </td>
@@ -145,7 +145,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                              lstHolidays.length === 0
+                              lstPremiums.length === 0
                         }"
                       >
                         <a

@@ -675,9 +675,21 @@ export interface getLeave {
 }
 export interface getholidays {
   id: number;
-  title: string;
-  holidaydate: string;
-  day: string;
+  libelle: string;
+  // holidaydate: string;
+  // day: string;
+}
+export interface getconstracts {
+  id: number;
+  libelle: string;
+  // holidaydate: string;
+  // day: string;
+}
+export interface getpremiums {
+  id: number;
+  libelle: string;
+  // holidaydate: string;
+  // day: string;
 }
 export interface getDesignations {
   id: number;
@@ -705,7 +717,7 @@ export interface lstEmployee {
 
 export interface getDepartment {
   id: number;
-  departmentName: string;
+  nom_dep: string;
 }
 export interface getEmployees {
   firstname: string;

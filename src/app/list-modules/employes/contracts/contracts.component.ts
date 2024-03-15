@@ -1,27 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getDepartment, routes, DepartmentService } from 'src/app/core/core.index';
 
-import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
-
+import { DataService, apiResultFormat, getconstracts, routes, ContractService } from 'src/app/core/core.index';
+import { Sort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-departments',
-  templateUrl: './departments.component.html',
-  styleUrls: ['./departments.component.scss']
+  selector: 'app-constracts',
+  templateUrl: './contracts.component.html',
+  styleUrls: ['./contracts.component.scss']
 })
-export class DepartmentsComponent implements OnInit {
+export class ContractsComponent implements OnInit {
+  title = 'pagination';
   public routes = routes;
-  selected = 'option1';
-
-  public lstDpt: Array<any>=[];
-
-
-  public lstDepartment: Array<getDepartment> = [];
+  public lstConstracts: Array<getconstracts> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getDepartment>;
+  dataSource!: MatTableDataSource<getconstracts>;
+
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -36,42 +30,42 @@ export class DepartmentsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(public router: Router,private data: DepartmentService) {}
+  constructor(private data: ContractService) {}
 
   ngOnInit(): void {
-     this.getTableData();
+    this.getTableData();
   }
 
-
   private getTableData(): void {
-    this.lstDepartment = [];
+    this.lstConstracts = [];
     this.serialNumberArray = [];
 
-    this.data.getAllDepartment().subscribe((res: any) => {
+    this.data.getAllConstract().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getDepartment, index: number) => {
+      res.data.data.map((res: getconstracts, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstDepartment.push(res);
+          this.lstConstracts.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getDepartment>(this.lstDepartment);
+      this.dataSource = new MatTableDataSource<getconstracts>(this.lstConstracts);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
-
+ 
   }
 
+
   public sortData(sort: Sort) {
-    const data = this.lstDepartment.slice();
+    const data = this.lstConstracts.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstDepartment = data;
+      this.lstConstracts = data;
     } else {
-      this.lstDepartment = data.sort((a: any, b: any) => {
+      this.lstConstracts = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -81,7 +75,7 @@ export class DepartmentsComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstDepartment = this.dataSource.filteredData;
+    this.lstConstracts = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

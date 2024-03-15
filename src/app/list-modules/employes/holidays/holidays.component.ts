@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService, apiResultFormat, getholidays, routes } from 'src/app/core/core.index';
+import { DataService, apiResultFormat, getholidays, routes, HolidayService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
 
 @Component({
@@ -30,7 +30,7 @@ export class HolidaysComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: DataService) {}
+  constructor(private data: HolidayService) {}
 
   ngOnInit(): void {
     this.getTableData();
@@ -40,12 +40,12 @@ export class HolidaysComponent implements OnInit {
     this.lstHolidays = [];
     this.serialNumberArray = [];
 
-    this.data.getholidays().subscribe((res: apiResultFormat) => {
-      this.totalData = res.totalData;
-      res.data.map((res: getholidays, index: number) => {
+    this.data.getAllHolidays().subscribe((res: any) => {
+      this.totalData = res.data.total;
+      res.data.data.map((res: getholidays, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id = serialNumber;
+          res.id;// = serialNumber;
           this.lstHolidays.push(res);
           this.serialNumberArray.push(serialNumber);
         }

@@ -138,9 +138,24 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Type de conge',
-              route: routes.employeesalary,
-              base: 'employee-salary',
+              menuValue: 'Type de congé',
+              route: routes.holiday_page,
+              base: 'holiday',
+            },
+            {
+              menuValue: 'Type de Contrat',
+              route: routes.contract_page,
+              base: 'contract',
+            },
+            {
+              menuValue: 'Type de Prime',
+              route: routes.premium_page,
+              base: 'premium',
+            },
+            {
+              menuValue: 'Departement',
+              route: routes.departement,
+              base: 'departement',
             },
 
           ],
