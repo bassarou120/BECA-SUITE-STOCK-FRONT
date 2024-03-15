@@ -6,3 +6,4 @@ export * from './services/interface/models';
 
 export * from './services/holiday/holiday.service';
 export * from './services/department/department.service';
+export * from './services/contract/contract.service';

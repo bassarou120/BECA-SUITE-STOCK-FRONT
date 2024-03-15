@@ -143,6 +143,11 @@ export class DataService {
               base: 'holiday',
             },
             {
+              menuValue: 'Type de Contrat',
+              route: routes.contract_page,
+              base: 'contract',
+            },
+            {
               menuValue: 'Departement',
               route: routes.departement,
               base: 'departement',
