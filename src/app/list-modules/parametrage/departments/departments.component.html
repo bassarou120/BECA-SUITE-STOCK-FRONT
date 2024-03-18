@@ -61,7 +61,7 @@
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
                                             data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Modifier</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
                                             data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
                                             Supprimer</a>
                                     </div>
@@ -156,12 +156,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="saveDepartment(myForm)" #myForm="ngForm">
-                    <div class="input-block mb-3">
-                        <label class="col-form-label" for="nom_dep">Nom du département<span class="text-danger">*</span></label>
-                        <input class="form-control" type="text" name="nom_dep" ngModel required>
-                        <div *ngIf="myForm.submitted && myForm.controls['nom_dep'].invalid" class="text-danger">Ce champ est requis</div>
+                <form [formGroup]="addDepartmentForm" (ngSubmit)="onClickSubmitAddDepartement()" novalidate>
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Nom du département <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text"
+                        [class.invalid]="addDepartmentForm.get('nom_dep')?.invalid && addDepartmentForm.get('nom_dep')?.touched"
+                        formControlName="nom_dep">
+                    <div
+                        *ngIf="addDepartmentForm.get('nom_dep')?.invalid && addDepartmentForm.get('nom_dep')?.touched">
+                        <small
+                            *ngIf="addDepartmentForm.get('nom_dep')?.invalid && addDepartmentForm.get('nom_dep')?.touched"
+                            class="text-danger"> *le nom du département est obligatoire</small>
                     </div>
+                </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                     </div>
@@ -183,17 +190,24 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="editDepartment(maForm)" #maForm="ngForm">
-                    <div class="input-block mb-3">
-                      <input  type="hidden" id="edit_id" name="id">
-                        <label class="col-form-label" for="nom_dep">Nom du Département <span class="text-danger">*</span></label>
-                        <input class="form-control" type="text" name="nom_dep" required id="edit_nom_dep">
-                        <div *ngIf="maForm.submitted && maForm.controls['nom_dep'].invalid" class="text-danger">Ce champ est requis</div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégistrer</button>
-                    </div>
-                </form>
+              <form [formGroup]="editDepartmentForm" (ngSubmit)="onClickSubmitEditDepartement()" novalidate>
+                <div class="input-block mb-3">
+                  <input type="hidden" formControlName="id">
+                  <label class="col-form-label" for="">Nom du département <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="editDepartmentForm.get('nom_dep')?.invalid && editDepartmentForm.get('nom_dep')?.touched"
+                      formControlName="nom_dep">
+                  <div
+                      *ngIf="editDepartmentForm.get('nom_dep')?.invalid && editDepartmentForm.get('nom_dep')?.touched">
+                      <small
+                          *ngIf="editDepartmentForm.get('nom_dep')?.invalid && editDepartmentForm.get('nom_dep')?.touched"
+                          class="text-danger"> *le nom du département est obligatoire</small>
+                  </div>
+              </div>
+                  <div class="submit-section">
+                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                  </div>
+              </form>
             </div>
         </div>
     </div>
@@ -212,7 +226,10 @@
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Supprimer</a>
+                          <form [formGroup]="deleteDepartmentForm" (ngSubmit)="onClickSubmitDeleteDepartement()">
+                            <input type="hidden" formControlName="id">
+                            <button class="btn btn-primary continue-btn" type="submit">Supprimer</button>
+                          </form>
                         </div>
                         <div class="col-6">
                             <a href="javascript:void(0);" data-bs-dismiss="modal"

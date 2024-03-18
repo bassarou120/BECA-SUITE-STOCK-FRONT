@@ -24,17 +24,12 @@ export class DepartmentService  {
     return this.http.get<any>(`${this.url}/departement`);
   }
 
-  editDepartment(id: number, data:any): Observable<any> {
-    return this.http.put<any>(`${this.url}/departement/${id}`, data);
+  editDepartment(data:any): Observable<any> {
+    return this.http.put<any>(`${this.url}/departement/${data.id}`, data);
   }
 
-
-  // public getDepartment(): Observable<apiResultFormat> {
-  //   return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
-  //     map((res: apiResultFormat) => {
-  //       return res;
-  //     })
-  //   );
-  // }
+  deleteDepartment(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/departement/${data.id}`);
+  }
 
 }
