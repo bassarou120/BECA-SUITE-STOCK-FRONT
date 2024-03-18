@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService, apiResultFormat, getpremiums, routes, PremiumService } from 'src/app/core/core.index';
@@ -15,6 +16,9 @@ export class PremiumsComponent implements OnInit {
   public lstPremiums: Array<getpremiums> = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getpremiums>;
+  public addPremiumForm!: FormGroup ;
+  public editPremiumForm!: FormGroup;
+  public deletePremiumForm!: FormGroup;
 
   // pagination variables
   public lastIndex = 0;
@@ -30,10 +34,20 @@ export class PremiumsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: PremiumService) {}
+  constructor(private data: PremiumService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getTableData();
+    this.addPremiumForm = this.formBuilder.group({
+      libelle: ['', Validators.required]
+    });
+    this.editPremiumForm = this.formBuilder.group({
+      id: [0, Validators.required],
+      libelle: ['', Validators.required]
+    });
+    this.deletePremiumForm = this.formBuilder.group({
+      id: [0, Validators.required],
+    });
   }
 
   private getTableData(): void {
@@ -53,9 +67,60 @@ export class PremiumsComponent implements OnInit {
       this.dataSource = new MatTableDataSource<getpremiums>(this.lstPremiums);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
-
- 
   }
+
+  savePremium() {
+    // console.log(this.addPremiumForm.value, this.addPremiumForm.valid);
+    if (this.addPremiumForm.valid){
+      this.data.savePremium(this.addPremiumForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    } 
+  }
+
+  getEditPremium(row: any) {
+    this.editPremiumForm.patchValue({
+      id: row.id,
+      libelle: row.libelle
+    })
+  }
+
+  editPremium() {
+    // console.log(this.editHolidayForm.value, this.editHolidayForm.valid);
+    if (this.editPremiumForm.valid){
+      this.data.editPremium(this.editPremiumForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    }
+  }
+
+  getDeletePremium(row: any) {
+    this.deletePremiumForm.patchValue({
+      id: row.id
+    })
+  }
+
+  deletePremium() {
+    // console.log(this.deleteHolidayForm.value, this.deleteHolidayForm.valid);
+    if (this.deletePremiumForm.valid){
+      this.data.deletePremium(this.deletePremiumForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Erreur");
+    }
+  }
+
+
+
+
 
 
   public sortData(sort: Sort) {

@@ -17,29 +17,20 @@ export class PremiumService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-//   saveEmploye(data:any ): Observable<Object> {
-//     return this.http.post("http://127.0.0.1:8001/api/employe", data);
-//   }
+  savePremium(data: any): Observable<any> {
+    return this.http.post(`${this.url}/type_prime`, data);
+  }
 
   getAllPremiums(): Observable<any> {
-
-     // return this.http.get("http://127.0.0.1:8000/api/employe");
     return this.http.get<any>(`${this.url}/type_prime`);
   }
 
+  editPremium(data: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/type_prime/${data.id}`, data);
+  }
 
-
-
-
-
-
-
-  public getEmployees(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    );
+  deletePremium(data: any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/type_prime/${data.id}`);
   }
 
 

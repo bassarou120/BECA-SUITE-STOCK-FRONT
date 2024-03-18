@@ -13,7 +13,7 @@
             </div>
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_holiday"><i class="fa-solid fa-plus"></i>
-                    Add Premium</a>
+                    Ajouter un type de prime</a>
             </div>
         </div>
     </div>
@@ -44,18 +44,18 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-bs-toggle="modal"
-                                            data-bs-target="#edit_holiday"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                        <a class="dropdown-item" (click)="getEditPremium(row)" data-bs-toggle="modal"
+                                            data-bs-target="#edit_holiday"><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a>
+                                        <a class="dropdown-item" (click)="getDeletePremium(row)" data-bs-toggle="modal"
                                             data-bs-target="#delete_holiday"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                            Delete</a>
+                                            Supprimer</a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr *ngIf="lstPremiums.length === 0">
                           <td colspan="10">
-                              <h5 style="text-align: center;">No data found</h5>
+                              <h5 style="text-align: center;">Aucune donnée trouvée</h5>
                           </td>
                         </tr>
                     </tbody>
@@ -64,9 +64,9 @@
             <div class="table_footer">
                 <div class="col-sm-12 col-md-5">
                   <div class="dataTables_info">
-                    Showing {{ serialNumberArray[0] }} to
-                    {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                    {{ totalData }} entries
+                    Affichage de {{ serialNumberArray[0] }} à
+                    {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                    {{ totalData }} entrées
                   </div>
                 </div>
         
@@ -84,7 +84,7 @@
                           class="page-link"
                           href="javascript:void(0);"
                           tabindex="-1"
-                          >Previous</a
+                          >Prédédent</a
                         >
                       </li>
         
@@ -152,7 +152,7 @@
                           (click)="getMoreData('next')"
                           class="page-link"
                           href="javascript:void(0);"
-                          >Next
+                          >Suivant
                         </a>
                       </li>
                     </ul>
@@ -168,25 +168,28 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Holiday</h5>
+                <h5 class="modal-title">Ajouter un type de prime</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Holiday Name <span class="text-danger">*</span></label>
-                        <input class="form-control" type="text">
-                    </div>
-                    <div class="input-block mb-3 date-input1">
-                        <label class="col-form-label" for="">Holiday Date <span class="text-danger">*</span></label>
-                        <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker container=".date-input1" type="text"></div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Submit</button>
-                    </div>
-                </form>
+              <form [formGroup]="addPremiumForm" (ngSubmit)="savePremium()" novalidate>
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="libelle">Libellé du type de prime <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text" formControlName="libelle"
+                  [class.invalid]="addPremiumForm.get('libelle')?.invalid && addPremiumForm.get('libelle')?.touched">
+
+                  <div *ngIf="addPremiumForm.get('libelle')?.touched && addPremiumForm.get('libelle')?.invalid" class="text-danger">
+                    <small *ngIf="addPremiumForm.get('libelle')?.touched && addPremiumForm.get('libelle')?.invalid" class="text-danger">
+                      Le libellé du type de congé est requis.
+                    </small>
+                  </div>
+                </div>
+                <div class="submit-section">
+                    <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
+                </div>
+            </form>
             </div>
         </div>
     </div>
@@ -198,26 +201,29 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Holiday</h5>
+                <h5 class="modal-title">Modifier le type de prime</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Holiday Name <span class="text-danger">*</span></label>
-                        <input class="form-control" value="New Year" type="text">
+              <form [formGroup]="editPremiumForm" (ngSubmit)="editPremium()" novalidate>
+                <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Nouveau nom du type de congé <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" formControlName="libelle"
+                    [class.invalid]="editPremiumForm.get('libelle')?.invalid && editPremiumForm.get('libelle')?.touched">
+                    <input class="form-control" type="hidden" formControlName="id">
+
+                    <div *ngIf="editPremiumForm.get('libelle')?.touched && editPremiumForm.get('libelle')?.invalid" class="text-danger">
+                      <small *ngIf="editPremiumForm.get('libelle')?.touched && editPremiumForm.get('libelle')?.invalid" class="text-danger">
+                        Le libellé du type de congé est requis.
+                      </small>
                     </div>
-                    <div class="input-block mb-3 date-input2">
-                        <label class="col-form-label" for="">Holiday Date <span class="text-danger">*</span></label>
-                        <div class="cal-icon"><input class="form-control datetimepicker" value="01-01-2023" bsDatepicker container=".date-input2" type="text">
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Save</button>
-                    </div>
-                </form>
+                </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+                </div>
+            </form>
             </div>
         </div>
     </div>
@@ -230,19 +236,24 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Delete Holiday</h3>
-                    <p>Are you sure want to delete?</p>
+                    <h3>Supprimer le type de prime</h3>
+                    <p>Êtes vous sûr de vouloir supprimer ce type de prime?</p>
                 </div>
                 <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
-                        </div>
-                        <div class="col-6">
-                            <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Cancel</a>
-                        </div>
+                  <div class="row">
+                    <div class="col-6">
+
+                      <form [formGroup]="deletePremiumForm" (ngSubmit)="deletePremium()" novalidate>
+                        <input class="form-control" type="hidden" formControlName="id">
+                        <button type="submit" class="btn btn-primary continue-btn">Supprimer</button>
+                      </form>
+                      
                     </div>
+                    <div class="col-6">
+                      <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-primary cancel-btn">Annuler</a>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
