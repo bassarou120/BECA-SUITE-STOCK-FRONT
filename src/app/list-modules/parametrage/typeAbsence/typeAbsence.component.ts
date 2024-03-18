@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { DataService,apiResultFormat, routes, typeAbsenceService, getTypeAbsence } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
@@ -37,10 +38,91 @@ export class TypeAbsenceComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: typeAbsenceService) {}
+  public addTypeAbsenceForm!: FormGroup ;
+  public editTypeAbsenceForm!: FormGroup
+  public deleteTypeAbsenceForm!: FormGroup
+
+  constructor(private formBuilder: FormBuilder,public router: Router, private data: typeAbsenceService) {}
 
   ngOnInit(): void {
      this.getTableData();
+    this.addTypeAbsenceForm = this.formBuilder.group({
+      libelle: ["", [Validators.required]],
+   });
+   this.editTypeAbsenceForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+    libelle: ["", [Validators.required]],
+  });
+   this.deleteTypeAbsenceForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+  });
+  }
+
+  onClickSubmitAddTypeAbsence(){
+
+    console.log(this.addTypeAbsenceForm.value)
+
+    if (this.addTypeAbsenceForm.valid){
+      this.data.saveTypeAbsence(this.addTypeAbsenceForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+
+  }
+
+  onClickSubmitEditTypeAbsence(){
+    console.log(this.editTypeAbsenceForm.value)
+
+      if (this.editTypeAbsenceForm.valid){
+        const id = this.editTypeAbsenceForm.value.id;
+        this.data.editTypeAbsence(this.editTypeAbsenceForm.value).subscribe(
+          (data:any)=>{
+            location.reload();
+          }
+        )
+        console.log("success")
+      }else {
+
+        alert("desole le formulaire n'est pas bien renseigné")
+      }
+
+  }
+
+  onClickSubmitDeleteTypeAbsence(){
+    console.log(this.deleteTypeAbsenceForm.value)
+
+      if (this.deleteTypeAbsenceForm.valid){
+        const id = this.deleteTypeAbsenceForm.value.id;
+        this.data.deleteTypeAbsence(this.deleteTypeAbsenceForm.value).subscribe(
+          (data:any)=>{
+            location.reload();
+          }
+        )
+        console.log("success")
+      }else {
+
+        alert("desole le formulaire n'est pas bien renseigné")
+      }
+
+  }
+
+  getEditForm(row: any){
+    this.editTypeAbsenceForm.patchValue({
+     id:row.id,
+     libelle:row.libelle
+    })
+  }
+
+  getDeleteForm(row: any){
+    this.deleteTypeAbsenceForm.patchValue({
+     id:row.id,
+    })
   }
 
 

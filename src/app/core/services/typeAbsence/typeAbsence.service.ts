@@ -16,21 +16,21 @@ export class typeAbsenceService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  // saveDepartment(data:any ): Observable<Object> {
-  //   return this.http.post(`${this.url}/departement`, data);
-  // }
+  saveTypeAbsence(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/type_absence`, data);
+  }
 
   getAllTypeAbsence(): Observable<any> {
     return this.http.get<any>(`${this.url}/type_absence`);
   }
 
 
-  // public getDepartment(): Observable<apiResultFormat> {
-  //   return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
-  //     map((res: apiResultFormat) => {
-  //       return res;
-  //     })
-  //   );
-  // }
+  editTypeAbsence(data:any): Observable<any> {
+    return this.http.put<any>(`${this.url}/type_absence/${data.id}`, data);
+  }
+
+  deleteTypeAbsence(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/type_absence/${data.id}`);
+  }
 
 }

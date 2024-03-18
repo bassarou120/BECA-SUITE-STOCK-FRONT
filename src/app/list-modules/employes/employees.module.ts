@@ -49,8 +49,11 @@ import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
     PostesComponent,
     TypeAbsenceComponent,
     RoleComponent,
+    ShiftListComponent,
+    ContractsComponent,
+
     PremiumsComponent,
-    ContractsComponent
+
   ],
   imports: [
     CommonModule,
