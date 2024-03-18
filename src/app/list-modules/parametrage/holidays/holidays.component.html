@@ -203,14 +203,15 @@
               </button>
           </div>
           <div class="modal-body">
-              <form>
+              <form id="edit_form" (submit)="editHoliday($event)">
                   <div class="input-block mb-3">
                       <label class="col-form-label" for="">Nouveau nom du type de congé <span class="text-danger">*</span></label>
                       <input class="form-control" type="text" name="libelle" id="edit_libelle" required>
                       <input class="form-control" type="hidden" name="id" id="edit_id" required>
+                      <div id="edit_libelle_error" class="text-danger"></div>
                   </div>
                   <div class="submit-section">
-                      <button class="btn btn-primary submit-btn">Save</button>
+                      <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
                   </div>
               </form>
           </div>

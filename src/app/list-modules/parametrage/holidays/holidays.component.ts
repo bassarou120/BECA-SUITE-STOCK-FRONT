@@ -71,8 +71,8 @@ export class HolidaysComponent implements OnInit {
   }
 
   getEditHoliday(row: any) {
-    const idInput = document.getElementById('edit_id');
-    const libelleInput = document.getElementById('edit_libelle');
+    const idInput = document.getElementById('edit_id') as HTMLInputElement;
+    const libelleInput = document.getElementById('edit_libelle') as HTMLInputElement;
 
     if (idInput && libelleInput) {
         idInput.setAttribute('value', row.id);
@@ -82,8 +82,26 @@ export class HolidaysComponent implements OnInit {
     }
   }
 
-  editHoliday() {
-    // Notihing yet
+  editHoliday(event: Event) {
+    event.preventDefault();
+    
+    const libelleInput = document.getElementById('edit_libelle') as HTMLInputElement;
+    
+    if (libelleInput && !libelleInput.validity.valid) {
+        const errorMessage = "Le champ libellé est requis.";
+        const errorDiv = document.getElementById('edit_libelle_error');
+        if (errorDiv) { errorDiv.textContent = errorMessage; }
+    } else {
+        const errorDiv = document.getElementById('edit_libelle_error');
+        if (errorDiv) { errorDiv.textContent = ""; }
+
+        let id = (document.getElementById('edit_id') as HTMLInputElement)?.value;
+        let libelle = (document.getElementById('edit_libelle') as HTMLInputElement)?.value;
+        console.log("ID:", id);
+        console.log("Libellé:", libelle);
+
+        (document.getElementById('edit_form') as HTMLFormElement)?.reset();
+    }
   }
 
 
