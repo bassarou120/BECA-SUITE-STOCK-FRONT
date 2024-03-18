@@ -6,31 +6,38 @@ import {
   apiResultFormat,
   routes,
 } from '../../core.index';
-import { HttpClient } from '@angular/common/http';
-import {environment} from "../../../../environments/environment";
+
+
+import { environment } from '../../../../environments/environment';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeService  {
+export class EmployeService {
   allAppliedCandidates!: Array<object>;
-  url: string = environment.backend ;
-  constructor(private http: HttpClient) {}
+  public url: string = environment.backend;
 
-  saveEmploye(data:any ): Observable<Object> {
-    return this.http.post("http://127.0.0.1:8001/api/employe", data);
+  // token = this.authService.getToken();
+  token = ')IJ';
+
+  httpHeaders = new HttpHeaders({
+    Authorization: `Bearer ${this.token}`,
+    'Content-Type': 'application/json',
+  });
+  constructor(private http: HttpClient ) {}
+
+  saveEmploye(data: any): Observable<Object> {
+    return this.http.post('http://127.0.0.1:8001/api/employe', data);
   }
 
   getAllEmploye(): Observable<Object> {
-
-     // return this.http.get("http://127.0.0.1:8000/api/employe");
-    return this.http.get(`${this.url}/employe`);
+    // return this.http.get();
+    let a=this.http.get('http://127.0.0.1:80001/api/employe');
+    console.log(a)
+    return this.http.get('http://127.0.0.1:80001/api/employe');
+    // return this.http.get<any>(`${this.url}/departement`);
   }
-
-
-
-
-
-
 
 
   public getEmployees(): Observable<apiResultFormat> {
@@ -40,7 +47,6 @@ export class EmployeService  {
       })
     );
   }
-
 
   lstEmployee = [
     {
@@ -59,7 +65,7 @@ export class EmployeService  {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 1,
-      img: "assets/img/profiles/avatar-02.jpg"
+      img: 'assets/img/profiles/avatar-02.jpg',
     },
     {
       firstname: 'Richard Miles',
@@ -77,8 +83,8 @@ export class EmployeService  {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 2,
-      img: "assets/img/profiles/avatar-09.jpg"
-    }
+      img: 'assets/img/profiles/avatar-09.jpg',
+    },
     // {
     //   firstname: 'John Smith',
     //   lastname: 'Manseau',
@@ -259,6 +265,5 @@ export class EmployeService  {
     //   id: 12,
     //   img: "assets/img/profiles/avatar-08.jpg"
     // }
-
   ];
 }

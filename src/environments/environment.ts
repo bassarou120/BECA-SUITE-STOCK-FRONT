@@ -1,5 +1,3 @@
-/** @format */
-
 // The file contents for the current environment will overwrite these during build.
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
@@ -8,8 +6,8 @@
 export const environment = {
   production: true,
 
-  backend: "http://127.0.0.1:8000/api",
-  base_url_backend: "http://127.0.0.1:8000",
+  backend: 'http://127.0.0.1:80001/api',
+  base_url_backend: 'http://127.0.0.1:8000',
   // accet_url: "http://127.0.0.1:8000/storage",
 
   expirationTime: 0,

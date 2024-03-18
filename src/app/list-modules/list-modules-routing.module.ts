@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
-import { AuthService } from '../core/services/auth/auth.service';
+
 const routes: Routes = [
   {
     path: '',
@@ -13,23 +13,17 @@ const routes: Routes = [
     component: ListModulesComponent,
     children: [
       {
-
         path: 'dashboard',
         // canActivate: [AuthService],
         loadChildren: () =>
-          import('./dashboard/dashboard.module').
-          then(
-            (m) => m.DashboardModule
-          ),
+          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
 
       {
         path: 'employees',
         // canActivate: [AuthService],
         loadChildren: () =>
-          import('./employes/employees.module').then(
-            (m) => m.EmployeesModule
-          ),
+          import('./employes/employees.module').then((m) => m.EmployeesModule),
       },
 
       /*
@@ -127,8 +121,6 @@ const routes: Routes = [
       },
 
       */
-
-
     ],
   },
 
@@ -175,9 +167,7 @@ const routes: Routes = [
 
   */
 
-
   { path: '**', redirectTo: 'admin/404' },
-
 ];
 
 @NgModule({
