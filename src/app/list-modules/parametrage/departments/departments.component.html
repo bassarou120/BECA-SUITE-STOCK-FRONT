@@ -92,7 +92,7 @@
                           disabled: currentPage === 1
                         }">
                                 <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
-                                    tabindex="-1">Previous</a>
+                                    tabindex="-1">Précédent</a>
                             </li>
 
                             <ng-container *ngFor="let item of pageNumberArray; let i = index">
@@ -134,7 +134,7 @@
                               pageNumberArray[pageNumberArray.length - 1] ||
                             lstDepartment.length === 0
                         }">
-                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Next
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
                             </li>
                         </ul>
