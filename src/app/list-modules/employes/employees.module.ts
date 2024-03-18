@@ -49,8 +49,6 @@ import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
     PostesComponent,
     TypeAbsenceComponent,
     RoleComponent,
-    ContractsComponent,
-    PremiumsComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +58,6 @@ import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
     // MatTableModule,
     // MatSortModule,
     SharedModule
-
   ],
   providers: [DatePipe]
 })
