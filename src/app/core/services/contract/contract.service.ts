@@ -17,30 +17,22 @@ export class ContractService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-//   saveEmploye(data:any ): Observable<Object> {
-//     return this.http.post("http://127.0.0.1:8001/api/employe", data);
-//   }
+  saveContract(data: any): Observable<any> {
+    return this.http.post(`${this.url}/type_contrat`, data);
+  }
 
   getAllConstract(): Observable<any> {
-
-     // return this.http.get("http://127.0.0.1:8000/api/employe");
     return this.http.get<any>(`${this.url}/type_contrat`);
   }
 
-
-
-
-
-
-
-
-  public getEmployees(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    );
+  editContract(data: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/type_contrat/${data.id}`, data);
   }
+
+  deleteContract(data: any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/type_contrat/${data.id}`);
+  }
+
 
 
   listConstracts = [];

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService, apiResultFormat, getconstracts, routes, ContractService } from 'src/app/core/core.index';
@@ -15,6 +16,9 @@ export class ContractsComponent implements OnInit {
   public lstConstracts: Array<getconstracts> = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getconstracts>;
+  public addContractForm!: FormGroup ;
+  public editContractForm!: FormGroup;
+  public deleteContractForm!: FormGroup;
 
   // pagination variables
   public lastIndex = 0;
@@ -30,10 +34,20 @@ export class ContractsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: ContractService) {}
+  constructor(private data: ContractService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getTableData();
+    this.addContractForm = this.formBuilder.group({
+      libelle: ['', Validators.required]
+    });
+    this.editContractForm = this.formBuilder.group({
+      id: [0, Validators.required],
+      libelle: ['', Validators.required]
+    });
+    this.deleteContractForm = this.formBuilder.group({
+      id: [0, Validators.required],
+    });
   }
 
   private getTableData(): void {
@@ -53,9 +67,61 @@ export class ContractsComponent implements OnInit {
       this.dataSource = new MatTableDataSource<getconstracts>(this.lstConstracts);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
-
- 
   }
+
+  saveContract() {
+    console.log(this.addContractForm.value, this.addContractForm.valid);
+    if (this.addContractForm.valid){
+      this.data.saveContract(this.addContractForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+      console.log(this.addContractForm.value);
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    } 
+  }
+
+  getEditContract(row: any) {
+    this.editContractForm.patchValue({
+      id: row.id,
+      libelle: row.libelle
+    })
+  }
+
+  editContract() {
+    // console.log(this.editContractForm.value, this.editContractForm.valid);
+    if (this.editContractForm.valid){
+      this.data.editContract(this.editContractForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    }
+  }
+
+  getDeleteContract(row: any) {
+    this.deleteContractForm.patchValue({
+      id: row.id
+    })
+  }
+
+  deleteContract() {
+    // console.log(this.deleteContractForm.value, this.deleteContractForm.valid);
+    if (this.deleteContractForm.valid){
+      this.data.deleteContract(this.deleteContractForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Erreur");
+    }
+  }
+
+
+
+
 
 
   public sortData(sort: Sort) {
