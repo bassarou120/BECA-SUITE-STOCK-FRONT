@@ -245,7 +245,8 @@
 
                         <form [formGroup]="deleteContractForm" (ngSubmit)="deleteContract()" novalidate>
                           <input class="form-control" type="hidden" formControlName="id">
-                          <button type="submit" class="btn btn-primary continue-btn">Supprimer</button>
+                          <!-- <button type="submit" class="btn btn-primary continue-btn">Supprimer</button> -->
+                          <a href="javascript:void(0);" (click)="deleteContract()" class="btn btn-primary continue-btn">Supprimer</a>
                         </form>
                         
                       </div>
