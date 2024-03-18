@@ -42,14 +42,11 @@ const routes: Routes = [
     { path: "overtime", component: OvertimeComponent },
     { path: "shift-schedule", component: ShiftScheduleComponent },
     { path: "shift-list", component: ShiftListComponent },
-<<<<<<<<< Temporary merge branch 1
     { path: "contracts", component: ContractsComponent },
     { path: "premiums", component: PremiumsComponent },
-=========
     { path: "postes", component: PostesComponent },
     { path: "typeAbsence", component: TypeAbsenceComponent },
     { path: "role", component: RoleComponent },
->>>>>>>>> Temporary merge branch 2
   ],
  }];
 

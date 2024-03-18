@@ -25,6 +25,14 @@ export class HolidayService  {
     return this.http.get<any>(`${this.url}/type_conge`);
   }
 
+  editHoliday(data: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/type_conge/${data.id}`, data);
+  }
+
+  deleteHoliday(data: any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/type_conge/${data.id}`);
+  }
+
 
 
 

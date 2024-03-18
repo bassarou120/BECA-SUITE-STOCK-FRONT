@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService, apiResultFormat, getholidays, routes, HolidayService } from 'src/app/core/core.index';
@@ -16,6 +16,10 @@ export class HolidaysComponent implements OnInit {
   public lstHolidays: Array<getholidays> = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getholidays>;
+  public addHolidayForm!: FormGroup ;
+  public editHolidayForm!: FormGroup;
+  public deleteHolidayForm!: FormGroup;
+
 
   // pagination variables
   public lastIndex = 0;
@@ -31,10 +35,20 @@ export class HolidaysComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: HolidayService) {}
+  constructor(private data: HolidayService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getTableData();
+    this.addHolidayForm = this.formBuilder.group({
+      libelle: ['', Validators.required]
+    });
+    this.editHolidayForm = this.formBuilder.group({
+      id: [0, Validators.required],
+      libelle: ['', Validators.required]
+    });
+    this.deleteHolidayForm = this.formBuilder.group({
+      id: [0, Validators.required],
+    });
   }
 
   private getTableData(): void {
@@ -58,51 +72,57 @@ export class HolidaysComponent implements OnInit {
  
   }
   
-  saveHoliday(myForm: NgForm) {
-    if (!myForm.value.libelle) {
-      console.log("Le champ libellé est requis.");
-      return;
-    } else {
-      this.data.saveHoliday(myForm.value).subscribe(response => {
+  saveHoliday() {
+    // console.log(this.addHolidayForm.value, this.addHolidayForm.valid);
+    if (this.addHolidayForm.valid){
+      this.data.saveHoliday(this.addHolidayForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
-    }
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    } 
   }
 
   getEditHoliday(row: any) {
-    const idInput = document.getElementById('edit_id') as HTMLInputElement;
-    const libelleInput = document.getElementById('edit_libelle') as HTMLInputElement;
+    this.editHolidayForm.patchValue({
+      id: row.id,
+      libelle: row.libelle
+    })
+  }
 
-    if (idInput && libelleInput) {
-        idInput.setAttribute('value', row.id);
-        libelleInput.setAttribute('value', row.libelle);
+  editHoliday() {
+    // console.log(this.editHolidayForm.value, this.editHolidayForm.valid);
+    if (this.editHolidayForm.valid){
+      this.data.editHoliday(this.editHolidayForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
     } else {
-        console.error("Les éléments de formulaire ne peuvent pas être trouvés.");
+      console.log("Desolé le formulaire n'est pas bien renseigné");
     }
   }
 
-  editHoliday(event: Event) {
-    event.preventDefault();
-    
-    const libelleInput = document.getElementById('edit_libelle') as HTMLInputElement;
-    
-    if (libelleInput && !libelleInput.validity.valid) {
-        const errorMessage = "Le champ libellé est requis.";
-        const errorDiv = document.getElementById('edit_libelle_error');
-        if (errorDiv) { errorDiv.textContent = errorMessage; }
+  getDeleteHoliday(row: any) {
+    this.deleteHolidayForm.patchValue({
+      id: row.id
+    })
+  }
+
+  deleteHoliday() {
+    // console.log(this.deleteHolidayForm.value, this.deleteHolidayForm.valid);
+    if (this.deleteHolidayForm.valid){
+      this.data.deleteHoliday(this.deleteHolidayForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
     } else {
-        const errorDiv = document.getElementById('edit_libelle_error');
-        if (errorDiv) { errorDiv.textContent = ""; }
-
-        let id = (document.getElementById('edit_id') as HTMLInputElement)?.value;
-        let libelle = (document.getElementById('edit_libelle') as HTMLInputElement)?.value;
-        console.log("ID:", id);
-        console.log("Libellé:", libelle);
-
-        (document.getElementById('edit_form') as HTMLFormElement)?.reset();
+      console.log("Erreur");
     }
   }
+
+
+
 
 
   public sortData(sort: Sort) {
