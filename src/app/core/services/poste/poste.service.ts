@@ -25,12 +25,12 @@ export class posteService  {
   }
 
 
-  // public getDepartment(): Observable<apiResultFormat> {
-  //   return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
-  //     map((res: apiResultFormat) => {
-  //       return res;
-  //     })
-  //   );
-  // }
+  editPoste(data:any): Observable<any> {
+    return this.http.put<any>(`${this.url}/postes/${data.id}`, data);
+  }
+
+  deletePoste(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/postes/${data.id}`);
+  }
 
 }

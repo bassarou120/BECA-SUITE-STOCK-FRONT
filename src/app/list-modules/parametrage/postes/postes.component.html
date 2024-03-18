@@ -58,12 +58,12 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
                                             data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
-                                            Edit</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                            Modifier</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
                                             data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                            Delete</a>
+                                            Supprimer</a>
                                     </div>
                                 </div>
                             </td>
@@ -177,28 +177,37 @@
         </div>
     </div>
 </div>
-<!-- /Add Department Modal -->
+<!-- /Add Poste Modal -->
 
-<!-- Edit Department Modal -->
+<!-- Edit poste Modal -->
 <div id="edit_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Department</h5>
+                <h5 class="modal-title">Modifier le Poste</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Department Name <span class="text-danger">*</span></label>
-                        <input class="form-control" value="IT Management" type="text">
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Save</button>
-                    </div>
-                </form>
+              <form [formGroup]="editPosteForm" (ngSubmit)="onClickSubmitEditPoste()" novalidate>
+                <div class="input-block mb-3">
+                  <input type="hidden" formControlName="id">
+                  <label class="col-form-label" for="">Nom du Poste <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="editPosteForm.get('nom_poste')?.invalid && editPosteForm.get('nom_poste')?.touched"
+                      formControlName="nom_poste">
+                  <div
+                      *ngIf="editPosteForm.get('nom_poste')?.invalid && editPosteForm.get('nom_poste')?.touched">
+                      <small
+                          *ngIf="editPosteForm.get('nom_poste')?.invalid && editPosteForm.get('nom_poste')?.touched"
+                          class="text-danger"> *le nom du Poste est obligatoire</small>
+                  </div>
+              </div>
+                  <div class="submit-section">
+                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                  </div>
+              </form>
             </div>
         </div>
     </div>
@@ -211,17 +220,20 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Delete Department</h3>
-                    <p>Are you sure want to delete?</p>
+                    <h3>Supprimer le département</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                          <form [formGroup]="deletePosteForm" (ngSubmit)="onClickSubmitDeletePoste()">
+                            <input type="hidden" formControlName="id">
+                            <button class="btn btn-primary continue-btn" type="submit">Supprimer</button>
+                          </form>
                         </div>
                         <div class="col-6">
                             <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Cancel</a>
+                                class="btn btn-primary cancel-btn">Annuler</a>
                         </div>
                     </div>
                 </div>
