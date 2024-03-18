@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { DataService,apiResultFormat, routes, posteService, getPost } from 'src/app/core/core.index';
 
@@ -36,11 +37,36 @@ export class PostesComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: posteService) {}
+  public addPosteForm!: FormGroup ;
+  public editPosteForm!: FormGroup
+  public deletePosteForm!: FormGroup
+
+  constructor(private formBuilder: FormBuilder,public router: Router, private data: posteService) {}
 
   ngOnInit(): void {
-     this.getTableData();
+    this.getTableData();
+    this.addPosteForm = this.formBuilder.group({
+      nom_poste: ["", [Validators.required]],
+   });
+ }
+
+ onClickSubmitAddPoste(){
+
+  console.log(this.addPosteForm.value)
+
+  if (this.addPosteForm.valid){
+    this.data.savePoste(this.addPosteForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+
+    alert("desole le formulaire n'est pas bien renseigné")
   }
+
+
+}
 
 
   private getTableData(): void {

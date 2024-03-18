@@ -16,9 +16,9 @@ export class posteService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  // saveDepartment(data:any ): Observable<Object> {
-  //   return this.http.post(`${this.url}/departement`, data);
-  // }
+  savePoste(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/postes`, data);
+  }
 
   getAllPoste(): Observable<any> {
     return this.http.get<any>(`${this.url}/postes`);
