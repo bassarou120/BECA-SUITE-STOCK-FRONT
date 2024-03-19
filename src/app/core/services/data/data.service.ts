@@ -144,7 +144,7 @@ export class DataService {
             },
             {
               menuValue: 'Type de Contrat',
-              route: routes.contract_page,
+              route: routes.type_contrat,
               base: 'contract',
             },
             {

@@ -28,13 +28,13 @@
                         <tr>
                             <th mat-sort-header="id">#</th>
                             <th mat-sort-header="title">Libellé </th>
-                            <!-- <th mat-sort-header="holidaydate">Holiday Date</th>
+                            <!-- <th mat-sort-header="holidaydate">Contract Date</th>
                             <th mat-sort-header="day">Day</th> -->
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="holiday-completed" *ngFor="let row of lstConstracts">
+                        <tr class="holiday-completed" *ngFor="let row of lstTypeContrats">
                             <td>{{row.id}}</td>
                             <td>{{row.libelle}}</td>
                             <!-- <td>{{row.holidaydate}}</td>
@@ -44,16 +44,16 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" (click)="getEditContract(row)" data-bs-toggle="modal"
+                                        <a class="dropdown-item" (click)="getEditTypeContrat(row)" data-bs-toggle="modal"
                                             data-bs-target="#edit_holiday"><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a>
-                                        <a class="dropdown-item" (click)="getDeleteContract(row)" data-bs-toggle="modal"
+                                        <a class="dropdown-item" (click)="getDeleteTypeContrat(row)" data-bs-toggle="modal"
                                             data-bs-target="#delete_holiday"><i class="fa-regular fa-trash-can m-r-5"></i>
                                             Supprimer</a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstConstracts.length === 0">
+                        <tr *ngIf="lstTypeContrats.length === 0">
                           <td colspan="10">
                               <h5 style="text-align: center;">Aucune donnée trouvée</h5>
                           </td>
@@ -145,7 +145,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                              lstConstracts.length === 0
+                              lstTypeContrats.length === 0
                         }"
                       >
                         <a
@@ -163,7 +163,7 @@
     </div>
 </div>
 <!-- /Page Content -->
-<!-- Add Holiday Modal -->
+<!-- Add Contract Modal -->
 <div class="modal custom-modal fade" id="add_holiday" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -174,14 +174,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addContractForm" (ngSubmit)="saveContract()" novalidate>
+                <form [formGroup]="addTypeContratForm" (ngSubmit)="saveTypeContrat()" novalidate>
                   <div class="input-block mb-3">
                     <label class="col-form-label" for="libelle">Libellé du type de contrat <span class="text-danger">*</span></label>
                     <input class="form-control" type="text" formControlName="libelle"
-                    [class.invalid]="addContractForm.get('libelle')?.invalid && addContractForm.get('libelle')?.touched">
+                    [class.invalid]="addTypeContratForm.get('libelle')?.invalid && addTypeContratForm.get('libelle')?.touched">
 
-                    <div *ngIf="addContractForm.get('libelle')?.touched && addContractForm.get('libelle')?.invalid" class="text-danger">
-                      <small *ngIf="addContractForm.get('libelle')?.touched && addContractForm.get('libelle')?.invalid" class="text-danger">
+                    <div *ngIf="addTypeContratForm.get('libelle')?.touched && addTypeContratForm.get('libelle')?.invalid" class="text-danger">
+                      <small *ngIf="addTypeContratForm.get('libelle')?.touched && addTypeContratForm.get('libelle')?.invalid" class="text-danger">
                         Le libellé du type de congé est requis.
                       </small>
                     </div>
@@ -194,9 +194,9 @@
         </div>
     </div>
 </div>
-<!-- /Add Holiday Modal -->
+<!-- /Add Contract Modal -->
 
-<!-- Edit Holiday Modal -->
+<!-- Edit Contract Modal -->
 <div class="modal custom-modal fade" id="edit_holiday" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -207,15 +207,15 @@
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="editContractForm" (ngSubmit)="editContract()" novalidate>
+              <form [formGroup]="editTypeContratForm" (ngSubmit)="editTypeContrat()" novalidate>
                 <div class="input-block mb-3">
                     <label class="col-form-label" for="">Nouveau nom du type de congé <span class="text-danger">*</span></label>
                     <input class="form-control" type="text" formControlName="libelle"
-                    [class.invalid]="editContractForm.get('libelle')?.invalid && editContractForm.get('libelle')?.touched">
+                    [class.invalid]="editTypeContratForm.get('libelle')?.invalid && editTypeContratForm.get('libelle')?.touched">
                     <input class="form-control" type="hidden" formControlName="id">
 
-                    <div *ngIf="editContractForm.get('libelle')?.touched && editContractForm.get('libelle')?.invalid" class="text-danger">
-                      <small *ngIf="editContractForm.get('libelle')?.touched && editContractForm.get('libelle')?.invalid" class="text-danger">
+                    <div *ngIf="editTypeContratForm.get('libelle')?.touched && editTypeContratForm.get('libelle')?.invalid" class="text-danger">
+                      <small *ngIf="editTypeContratForm.get('libelle')?.touched && editTypeContratForm.get('libelle')?.invalid" class="text-danger">
                         Le libellé du type de congé est requis.
                       </small>
                     </div>
@@ -228,9 +228,9 @@
         </div>
     </div>
 </div>
-<!-- /Edit Holiday Modal -->
+<!-- /Edit Contract Modal -->
 
-<!-- Delete Holiday Modal -->
+<!-- Delete Contract Modal -->
 <div class="modal custom-modal fade" id="delete_holiday" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -243,10 +243,10 @@
                     <div class="row">
                       <div class="col-6">
 
-                        <form [formGroup]="deleteContractForm" (ngSubmit)="deleteContract()" novalidate>
+                        <form [formGroup]="deleteTypeContratForm" (ngSubmit)="deleteTypeContrat()" novalidate>
                           <input class="form-control" type="hidden" formControlName="id">
                           <!-- <button type="submit" class="btn btn-primary continue-btn">Supprimer</button> -->
-                          <a href="javascript:void(0);" (click)="deleteContract()" class="btn btn-primary continue-btn">Supprimer</a>
+                          <a href="javascript:void(0);" (click)="deleteTypeContrat()" class="btn btn-primary continue-btn">Supprimer</a>
                         </form>
                         
                       </div>
@@ -260,4 +260,4 @@
         </div>
     </div>
 </div>
-<!-- /Delete Holiday Modal -->
+<!-- /Delete Contract Modal -->

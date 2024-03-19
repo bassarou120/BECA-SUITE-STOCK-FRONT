@@ -23,10 +23,10 @@ import { ShiftListComponent } from './shift-list/shift-list.component';
 import { PostesComponent } from '../parametrage/postes/postes.component';
 import { TypeAbsenceComponent } from '../parametrage/typeAbsence/typeAbsence.component';
 import { RoleComponent } from '../parametrage/role/role.component';
-import { ContractsComponent } from '../parametrage/contracts/contracts.component';
 import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
 
 import { TypeCongeComponent } from '../parametrage/typeConge/typeConge.component';
+import { TypeContratComponent } from '../parametrage/typeContrat/typeContrat.component';
 
 @NgModule({
   declarations: [
@@ -50,12 +50,11 @@ import { TypeCongeComponent } from '../parametrage/typeConge/typeConge.component
     TypeAbsenceComponent,
     RoleComponent,
     PremiumsComponent,
-    ContractsComponent,
     ShiftListComponent,
-    ContractsComponent,
     PremiumsComponent,
-
+    
     TypeCongeComponent,
+    TypeContratComponent,
   ],
   imports: [
     CommonModule,

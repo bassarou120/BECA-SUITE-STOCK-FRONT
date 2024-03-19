@@ -42,7 +42,7 @@ export class routes {
   }
 
   public static get type_conge(): string {
-    return this.baseUrl + '/employees/type_conge';
+    return this.baseUrl + '/employees/holidays';
   }
 
   public static get departement(): string {
@@ -61,7 +61,7 @@ export class routes {
     return this.baseUrl + '/employees/role';
   }
 
-  public static get contract_page(): string {
+  public static get type_contrat(): string {
     return this.baseUrl + '/employees/contracts';
   }
 

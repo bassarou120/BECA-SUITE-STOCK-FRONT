@@ -679,7 +679,7 @@ export interface getTypeConge {
   // holidaydate: string;
   // day: string;
 }
-export interface getconstracts {
+export interface getTypeContrat {
   id: number;
   libelle: string;
   // holidaydate: string;

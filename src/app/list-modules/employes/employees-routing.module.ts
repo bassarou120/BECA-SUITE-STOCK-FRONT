@@ -15,13 +15,13 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
-import { ContractsComponent } from '../parametrage/contracts/contracts.component';
 import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
 import { PostesComponent } from '../parametrage/postes/postes.component';
 import { TypeAbsenceComponent } from '../parametrage/typeAbsence/typeAbsence.component';
 import { RoleComponent } from '../parametrage/role/role.component';
 
 import { TypeCongeComponent } from '../parametrage/typeConge/typeConge.component';
+import { TypeContratComponent } from '../parametrage/typeContrat/typeContrat.component';
 
 const routes: Routes = [
   {
@@ -42,13 +42,13 @@ const routes: Routes = [
     { path: "overtime", component: OvertimeComponent },
     { path: "shift-schedule", component: ShiftScheduleComponent },
     { path: "shift-list", component: ShiftListComponent },
-    { path: "contracts", component: ContractsComponent },
     { path: "premiums", component: PremiumsComponent },
     { path: "postes", component: PostesComponent },
     { path: "typeAbsence", component: TypeAbsenceComponent },
     { path: "role", component: RoleComponent },
-
+    
     { path: "holidays", component: TypeCongeComponent },
+    { path: "contracts", component: TypeContratComponent },
   ],
  }];
 
