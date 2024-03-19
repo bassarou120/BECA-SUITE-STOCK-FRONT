@@ -42,31 +42,31 @@ export class routes {
   }
 
   public static get type_conge(): string {
-    return this.baseUrl + '/employees/holidays';
+    return this.baseUrl + '/parametrage/type-conge';
   }
 
   public static get departement(): string {
-    return this.baseUrl + '/employees/departments';
+    return this.baseUrl + '/parametrage/departments';
   }
 
   public static get poste(): string {
-    return this.baseUrl + '/employees/postes';
+    return this.baseUrl + '/parametrage/postes';
   }
 
   public static get typeAbsence(): string {
-    return this.baseUrl + '/employees/typeAbsence';
+    return this.baseUrl + '/parametrage/type-absence';
   }
 
   public static get role(): string {
-    return this.baseUrl + '/employees/role';
+    return this.baseUrl + '/parametrage/role';
   }
 
   public static get type_contrat(): string {
-    return this.baseUrl + '/employees/contracts';
+    return this.baseUrl + '/parametrage/type-contrat';
   }
 
   public static get type_prime(): string {
-    return this.baseUrl + '/employees/premiums';
+    return this.baseUrl + '/parametrage/type-prime';
   }
 
 

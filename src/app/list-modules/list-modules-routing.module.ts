@@ -32,6 +32,15 @@ const routes: Routes = [
           ),
       },
 
+      {
+        path: 'parametrage',
+        // canActivate: [AuthService],
+        loadChildren: () =>
+          import('./parametrage/parametrage.module').then(
+            (m) => m.ParametrageModule
+          ),
+      },
+
       /*
 
       {

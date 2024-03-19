@@ -140,17 +140,17 @@ export class DataService {
             {
               menuValue: 'Type de Congé',
               route: routes.type_conge,
-              base: 'holiday',
+              base: 'type-contrat',
             },
             {
               menuValue: 'Type de Contrat',
               route: routes.type_contrat,
-              base: 'contract',
+              base: 'type-contrat',
             },
             {
               menuValue: 'Type de Prime',
               route: routes.type_prime,
-              base: 'premium',
+              base: 'type-prime',
             },
             {
               menuValue: 'Département',
@@ -165,7 +165,7 @@ export class DataService {
             {
               menuValue: 'Type d\'absence',
               route: routes.typeAbsence,
-              base: 'typeAbsence',
+              base: 'type-absence',
             },
             {
               menuValue: 'Rôle',

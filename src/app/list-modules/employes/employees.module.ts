@@ -13,20 +13,12 @@ import { LeaveEmployeeComponent } from './leave-employee/leave-employee.componen
 import { LeaveSettingsComponent } from './leave-settings/leave-settings.component';
 import { AttendanceAdminComponent } from './attendance-admin/attendance-admin.component';
 import { AttendanceEmployeeComponent } from './attendance-employee/attendance-employee.component';
-import { DepartmentsComponent } from '../parametrage/departments/departments.component';
 import { DesignationsComponent } from './designations/designations.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
-import { PostesComponent } from '../parametrage/postes/postes.component';
-import { TypeAbsenceComponent } from '../parametrage/typeAbsence/typeAbsence.component';
-import { RoleComponent } from '../parametrage/role/role.component';
-
-import { TypeCongeComponent } from '../parametrage/typeConge/typeConge.component';
-import { TypeContratComponent } from '../parametrage/typeContrat/typeContrat.component';
-import { TypePrimeComponent } from '../parametrage/typePrime/typePrime.component';
 
 @NgModule({
   declarations: [
@@ -40,20 +32,12 @@ import { TypePrimeComponent } from '../parametrage/typePrime/typePrime.component
     LeaveSettingsComponent,
     AttendanceAdminComponent,
     AttendanceEmployeeComponent,
-    DepartmentsComponent,
     DesignationsComponent,
     TimesheetComponent,
     OvertimeComponent,
     ShiftScheduleComponent,
     ShiftListComponent,
-    PostesComponent,
-    TypeAbsenceComponent,
-    RoleComponent,
-    ShiftListComponent,
-    
-    TypeCongeComponent,
-    TypeContratComponent,
-    TypePrimeComponent,
+    ShiftListComponent
   ],
   imports: [
     CommonModule,
