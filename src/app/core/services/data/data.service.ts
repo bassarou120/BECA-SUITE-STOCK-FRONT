@@ -149,7 +149,7 @@ export class DataService {
             },
             {
               menuValue: 'Type de Prime',
-              route: routes.premium_page,
+              route: routes.type_prime,
               base: 'premium',
             },
             {

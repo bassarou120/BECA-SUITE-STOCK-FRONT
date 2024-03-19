@@ -65,7 +65,7 @@ export class routes {
     return this.baseUrl + '/employees/contracts';
   }
 
-  public static get premium_page(): string {
+  public static get type_prime(): string {
     return this.baseUrl + '/employees/premiums';
   }
 

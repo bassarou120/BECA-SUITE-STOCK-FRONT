@@ -685,7 +685,7 @@ export interface getTypeContrat {
   // holidaydate: string;
   // day: string;
 }
-export interface getpremiums {
+export interface getTypePrime {
   id: number;
   libelle: string;
   // holidaydate: string;
