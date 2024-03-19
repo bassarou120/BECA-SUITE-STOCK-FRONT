@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { DataService,apiResultFormat, routes, posteService, getPost } from 'src/app/core/core.index';
 
@@ -36,11 +37,92 @@ export class PostesComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: posteService) {}
+  public addPosteForm!: FormGroup ;
+  public editPosteForm!: FormGroup
+  public deletePosteForm!: FormGroup
+
+  constructor(private formBuilder: FormBuilder,public router: Router, private data: posteService) {}
 
   ngOnInit(): void {
-     this.getTableData();
+    this.getTableData();
+    this.addPosteForm = this.formBuilder.group({
+      nom_poste: ["", [Validators.required]],
+   });
+   this.editPosteForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+    nom_poste: ["", [Validators.required]],
+  });
+   this.deletePosteForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+  });
+ }
+
+ onClickSubmitAddPoste(){
+
+  console.log(this.addPosteForm.value)
+
+  if (this.addPosteForm.valid){
+    this.data.savePoste(this.addPosteForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+
+    alert("desole le formulaire n'est pas bien renseigné")
   }
+
+
+}
+
+onClickSubmitEditPoste(){
+  console.log(this.editPosteForm.value)
+
+    if (this.editPosteForm.valid){
+      const id = this.editPosteForm.value.id;
+      this.data.editPoste(this.editPosteForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+onClickSubmitDeletePoste(){
+  console.log(this.deletePosteForm.value)
+
+    if (this.deletePosteForm.valid){
+      const id = this.deletePosteForm.value.id;
+      this.data.deletePoste(this.deletePosteForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+getEditForm(row: any){
+  this.editPosteForm.patchValue({
+   id:row.id,
+   nom_poste:row.nom_poste
+  })
+}
+
+getDeleteForm(row: any){
+  this.deletePosteForm.patchValue({
+   id:row.id,
+  })
+}
 
 
   private getTableData(): void {

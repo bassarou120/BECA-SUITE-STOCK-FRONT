@@ -5,15 +5,15 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Roles</h3>
+                <h3 class="page-title">Rôles</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">roles</li>
+                    <li class="breadcrumb-item active">rôles</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Add Department</a>
+                        class="fa-solid fa-plus"></i> Ajouter un Rôle</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
                     <div class="col-sm-12 col-md-6">
                         <div class="dataTables_length">
                             <label class="col-form-label" for="">
-                                Show
+                              Afficher
                                 <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
                                     class="form-control form-control-sm">
                                     <option value="10">10</option>
@@ -33,7 +33,7 @@
                                     <option value="50">50</option>
                                     <option value="100">100</option>
                                 </select>
-                                Entries
+                                Entrées
                             </label>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
-                            <th mat-sort-header="departmentName">Nom Role</th>
+                            <th mat-sort-header="departmentName">Nom du Rôle</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
@@ -58,19 +58,19 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
                                             data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
-                                            Edit</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                            Modifier</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
                                             data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                            Delete</a>
+                                            Supprimer</a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr *ngIf="lstRole.length === 0">
                             <td colspan="10">
-                                <h5 style="text-align: center;">No data found</h5>
+                                <h5 style="text-align: center;">Aucun Résultat</h5>
                             </td>
                         </tr>
                     </tbody>
@@ -79,9 +79,9 @@
             <div class="table_footer">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_info">
-                        Showing {{ serialNumberArray[0] }} to
-                        {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                        {{ totalData }} entries
+                      Affichage de {{ serialNumberArray[0] }} à
+                        {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                        {{ totalData }} Entrées
                     </div>
                 </div>
 
@@ -92,7 +92,7 @@
                           disabled: currentPage === 1
                         }">
                                 <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
-                                    tabindex="-1">Previous</a>
+                                    tabindex="-1">Précédent</a>
                             </li>
 
                             <ng-container *ngFor="let item of pageNumberArray; let i = index">
@@ -134,7 +134,7 @@
                               pageNumberArray[pageNumberArray.length - 1] ||
                             lstRole.length === 0
                         }">
-                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Next
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
                             </li>
                         </ul>
@@ -145,75 +145,95 @@
     </div>
 </div>
 <!-- /Page Content -->
-<!-- Add Department Modal -->
+<!-- Add role Modal -->
 <div id="add_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Department</h5>
+                <h5 class="modal-title">Ajouter un rôle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Department Name <span class="text-danger">*</span></label>
-                        <input class="form-control" type="text">
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Submit</button>
-                    </div>
-                </form>
+              <form [formGroup]="addRoleForm" (ngSubmit)="onClickSubmitAddRole()" novalidate>
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Nom du Rôle <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="addRoleForm.get('lib')?.invalid && addRoleForm.get('lib')?.touched"
+                      formControlName="lib">
+                  <div
+                      *ngIf="addRoleForm.get('lib')?.invalid && addRoleForm.get('lib')?.touched">
+                      <small
+                          *ngIf="addRoleForm.get('lib')?.invalid && addRoleForm.get('lib')?.touched"
+                          class="text-danger"> *le nom du Rôle est obligatoire</small>
+                  </div>
+              </div>
+                  <div class="submit-section">
+                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                  </div>
+              </form>
             </div>
         </div>
     </div>
 </div>
-<!-- /Add Department Modal -->
+<!-- /Add role Modal -->
 
-<!-- Edit Department Modal -->
+<!-- Edit role Modal -->
 <div id="edit_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Department</h5>
+                <h5 class="modal-title">Modifier le Rôle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="input-block mb-3">
-                        <label class="col-form-label" for="">Department Name <span class="text-danger">*</span></label>
-                        <input class="form-control" value="IT Management" type="text">
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Save</button>
-                    </div>
-                </form>
+              <form [formGroup]="editRoleForm" (ngSubmit)="onClickSubmitEditRole()" novalidate>
+                <div class="input-block mb-3">
+                  <input type="hidden" formControlName="id">
+                  <label class="col-form-label" for="">Nom du Rôle <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="editRoleForm.get('lib')?.invalid && editRoleForm.get('lib')?.touched"
+                      formControlName="lib">
+                  <div
+                      *ngIf="editRoleForm.get('lib')?.invalid && editRoleForm.get('lib')?.touched">
+                      <small
+                          *ngIf="editRoleForm.get('lib')?.invalid && editRoleForm.get('lib')?.touched"
+                          class="text-danger"> *le nom du Rôle est obligatoire</small>
+                  </div>
+              </div>
+                  <div class="submit-section">
+                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                  </div>
+              </form>
             </div>
         </div>
     </div>
 </div>
-<!-- /Edit Department Modal -->
+<!-- /Edit role Modal -->
 
-<!-- Delete Department Modal -->
+<!-- Delete role Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Delete Department</h3>
-                    <p>Are you sure want to delete?</p>
+                  <h3>Supprimer le département</h3>
+                  <p>Êtes-vous sûr de vouloir supprimer ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                          <form [formGroup]="deleteRoleForm" (ngSubmit)="onClickSubmitDeleteRole()">
+                            <input type="hidden" formControlName="id">
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteRole()">Supprimer</a>
+                          </form>
                         </div>
                         <div class="col-6">
                             <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Cancel</a>
+                                class="btn btn-primary cancel-btn">Annuler</a>
                         </div>
                     </div>
                 </div>
@@ -221,4 +241,4 @@
         </div>
     </div>
 </div>
-<!-- /Delete Department Modal -->
+<!-- /Delete role Modal -->

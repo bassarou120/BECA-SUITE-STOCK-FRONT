@@ -153,7 +153,7 @@ export class DataService {
               base: 'premium',
             },
             {
-              menuValue: 'Departement',
+              menuValue: 'Département',
               route: routes.departement,
               base: 'departement',
             },

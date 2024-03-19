@@ -16,21 +16,21 @@ export class roleService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  // saveDepartment(data:any ): Observable<Object> {
-  //   return this.http.post(`${this.url}/departement`, data);
-  // }
+  saveRole(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/role`, data);
+  }
 
   getAllRole(): Observable<any> {
     return this.http.get<any>(`${this.url}/role`);
   }
 
 
-  // public getDepartment(): Observable<apiResultFormat> {
-  //   return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
-  //     map((res: apiResultFormat) => {
-  //       return res;
-  //     })
-  //   );
-  // }
+  editRole(data:any): Observable<any> {
+    return this.http.put<any>(`${this.url}/role/${data.id}`, data);
+  }
+
+  deleteRole(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/role/${data.id}`);
+  }
 
 }
