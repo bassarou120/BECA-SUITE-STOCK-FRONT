@@ -8,7 +8,6 @@ import { EmployeListComponent } from './all-employe/employe-list/employe-list.co
 import { EmployePageContentComponent } from './all-employe/employe-page-content/employe-page-content.component';
 import { EmployeModalComponent } from './all-employe/employe-modal/employe-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HolidaysComponent } from '../parametrage/holidays/holidays.component';
 import { LeaveAdminComponent } from './leave-admin/leave-admin.component';
 import { LeaveEmployeeComponent } from './leave-employee/leave-employee.component';
 import { LeaveSettingsComponent } from './leave-settings/leave-settings.component';
@@ -27,6 +26,8 @@ import { RoleComponent } from '../parametrage/role/role.component';
 import { ContractsComponent } from '../parametrage/contracts/contracts.component';
 import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
 
+import { TypeCongeComponent } from '../parametrage/typeConge/typeConge.component';
+
 @NgModule({
   declarations: [
     EmployeesComponent,
@@ -34,7 +35,6 @@ import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
     EmployeListComponent,
     EmployePageContentComponent,
     EmployeModalComponent,
-    HolidaysComponent,
     LeaveAdminComponent,
     LeaveEmployeeComponent,
     LeaveSettingsComponent,
@@ -53,7 +53,9 @@ import { PremiumsComponent } from '../parametrage/premiums/premiums.component';
     ContractsComponent,
     ShiftListComponent,
     ContractsComponent,
-    PremiumsComponent
+    PremiumsComponent,
+
+    TypeCongeComponent,
   ],
   imports: [
     CommonModule,

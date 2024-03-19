@@ -41,8 +41,8 @@ export class routes {
     return this.baseUrl + '/employees';
   }
 
-  public static get holiday_page(): string {
-    return this.baseUrl + '/employees/holidays';
+  public static get type_conge(): string {
+    return this.baseUrl + '/employees/type_conge';
   }
 
   public static get departement(): string {

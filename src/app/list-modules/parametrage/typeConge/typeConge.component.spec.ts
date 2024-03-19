@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HolidaysComponent } from './holidays.component';
+import { TypeCongeComponent } from './typeConge.component';
 
-describe('HolidaysComponent', () => {
-  let component: HolidaysComponent;
-  let fixture: ComponentFixture<HolidaysComponent>;
+describe('TypeCongeComponent', () => {
+  let component: TypeCongeComponent;
+  let fixture: ComponentFixture<TypeCongeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HolidaysComponent ]
+      declarations: [ TypeCongeComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HolidaysComponent);
+    fixture = TestBed.createComponent(TypeCongeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

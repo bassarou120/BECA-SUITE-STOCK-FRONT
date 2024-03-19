@@ -8,7 +8,6 @@ import { AttendanceEmployeeComponent } from './attendance-employee/attendance-em
 import { DepartmentsComponent } from '../parametrage/departments/departments.component';
 import { DesignationsComponent } from './designations/designations.component';
 import { EmployeesComponent } from './employees.component';
-import { HolidaysComponent } from '../parametrage/holidays/holidays.component';
 import { LeaveAdminComponent } from './leave-admin/leave-admin.component';
 import { LeaveEmployeeComponent } from './leave-employee/leave-employee.component';
 import { LeaveSettingsComponent } from './leave-settings/leave-settings.component';
@@ -22,15 +21,16 @@ import { PostesComponent } from '../parametrage/postes/postes.component';
 import { TypeAbsenceComponent } from '../parametrage/typeAbsence/typeAbsence.component';
 import { RoleComponent } from '../parametrage/role/role.component';
 
+import { TypeCongeComponent } from '../parametrage/typeConge/typeConge.component';
+
 const routes: Routes = [
   {
-  path: '',
+    path: '',
   component: EmployeesComponent,
   children: [
     { path: "employee-list", component: EmployeListComponent },
     { path: "employee-page", component: EmployePageContentComponent },
     { path: "employee-profile", component: EmployeeProfileComponent },
-    { path: "holidays", component: HolidaysComponent },
     { path: "leave-admin", component: LeaveAdminComponent },
     { path: "leave-employee", component: LeaveEmployeeComponent },
     { path: "leave-settings", component: LeaveSettingsComponent },
@@ -47,6 +47,8 @@ const routes: Routes = [
     { path: "postes", component: PostesComponent },
     { path: "typeAbsence", component: TypeAbsenceComponent },
     { path: "role", component: RoleComponent },
+
+    { path: "holidays", component: TypeCongeComponent },
   ],
  }];
 

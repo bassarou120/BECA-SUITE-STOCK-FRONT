@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="holiday-completed" *ngFor="let row of lstHolidays">
+                        <tr class="holiday-completed" *ngFor="let row of lstTypeConges">
                             <td>{{row.id}}</td>
                             <td>{{row.libelle}}</td>
                             <!-- <td>{{row.holidaydate}}</td>
@@ -44,16 +44,16 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" (click)="getEditHoliday(row)" data-bs-toggle="modal"
+                                        <a class="dropdown-item" (click)="getEditTypeConge(row)" data-bs-toggle="modal"
                                             data-bs-target="#edit_holiday"><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a>
-                                        <a class="dropdown-item" (click)="getDeleteHoliday(row)" data-bs-toggle="modal"
+                                        <a class="dropdown-item" (click)="getDeleteTypeConge(row)" data-bs-toggle="modal"
                                             data-bs-target="#delete_holiday"><i class="fa-regular fa-trash-can m-r-5"></i>
                                             Supprimer</a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstHolidays.length === 0">
+                        <tr *ngIf="lstTypeConges.length === 0">
                           <td colspan="10">
                               <h5 style="text-align: center;">Aucun Résultat</h5>
                           </td>
@@ -145,7 +145,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                              lstHolidays.length === 0
+                              lstTypeConges.length === 0
                         }"
                       >
                         <a
@@ -174,14 +174,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addHolidayForm" (ngSubmit)="saveHoliday()" novalidate>
+                <form [formGroup]="addTypeCongeForm" (ngSubmit)="saveTypeConge()" novalidate>
                     <div class="input-block mb-3">
                       <label class="col-form-label" for="libelle">Libellé du type de congé <span class="text-danger">*</span></label>
                       <input class="form-control" type="text" formControlName="libelle"
-                      [class.invalid]="addHolidayForm.get('libelle')?.invalid && addHolidayForm.get('libelle')?.touched">
+                      [class.invalid]="addTypeCongeForm.get('libelle')?.invalid && addTypeCongeForm.get('libelle')?.touched">
 
-                      <div *ngIf="addHolidayForm.get('libelle')?.touched && addHolidayForm.get('libelle')?.invalid" class="text-danger">
-                        <small *ngIf="addHolidayForm.get('libelle')?.touched && addHolidayForm.get('libelle')?.invalid" class="text-danger">
+                      <div *ngIf="addTypeCongeForm.get('libelle')?.touched && addTypeCongeForm.get('libelle')?.invalid" class="text-danger">
+                        <small *ngIf="addTypeCongeForm.get('libelle')?.touched && addTypeCongeForm.get('libelle')?.invalid" class="text-danger">
                           Le libellé du type de congé est requis.
                         </small>
                       </div>
@@ -207,15 +207,15 @@
               </button>
           </div>
           <div class="modal-body">
-              <form [formGroup]="editHolidayForm" (ngSubmit)="editHoliday()" novalidate>
+              <form [formGroup]="editTypeCongeForm" (ngSubmit)="editTypeConge()" novalidate>
                   <div class="input-block mb-3">
                       <label class="col-form-label" for="">Nouveau nom du type de congé <span class="text-danger">*</span></label>
                       <input class="form-control" type="text" formControlName="libelle"
-                      [class.invalid]="editHolidayForm.get('libelle')?.invalid && editHolidayForm.get('libelle')?.touched">
+                      [class.invalid]="editTypeCongeForm.get('libelle')?.invalid && editTypeCongeForm.get('libelle')?.touched">
                       <input class="form-control" type="hidden" formControlName="id">
 
-                      <div *ngIf="editHolidayForm.get('libelle')?.touched && editHolidayForm.get('libelle')?.invalid" class="text-danger">
-                        <small *ngIf="editHolidayForm.get('libelle')?.touched && editHolidayForm.get('libelle')?.invalid" class="text-danger">
+                      <div *ngIf="editTypeCongeForm.get('libelle')?.touched && editTypeCongeForm.get('libelle')?.invalid" class="text-danger">
+                        <small *ngIf="editTypeCongeForm.get('libelle')?.touched && editTypeCongeForm.get('libelle')?.invalid" class="text-danger">
                           Le libellé du type de congé est requis.
                         </small>
                       </div>
@@ -243,10 +243,10 @@
                     <div class="row">
                         <div class="col-6">
 
-                          <form [formGroup]="deleteHolidayForm" (ngSubmit)="deleteHoliday()" novalidate>
+                          <form [formGroup]="deleteTypeCongeForm" (ngSubmit)="deleteTypeConge()" novalidate>
                             <input class="form-control" type="hidden" formControlName="id">
                             <!-- <button type="submit" class="btn btn-primary continue-btn">Supprimer</button> -->
-                            <a href="javascript:void(0);" (click)="deleteHoliday()" class="btn btn-primary continue-btn">Supprimer</a>
+                            <a href="javascript:void(0);" (click)="deleteTypeConge()" class="btn btn-primary continue-btn">Supprimer</a>
                           </form>
                           
                         </div>

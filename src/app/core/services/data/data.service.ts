@@ -139,7 +139,7 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Type de Congé',
-              route: routes.holiday_page,
+              route: routes.type_conge,
               base: 'holiday',
             },
             {

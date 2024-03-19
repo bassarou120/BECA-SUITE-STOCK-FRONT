@@ -673,7 +673,7 @@ export interface getLeave {
   reason: string;
   status: string;
 }
-export interface getholidays {
+export interface getTypeConge {
   id: number;
   libelle: string;
   // holidaydate: string;
