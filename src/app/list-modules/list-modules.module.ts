@@ -24,7 +24,6 @@ import {ListModulesComponent} from "./list-modules.component";
     HeaderTwoComponent,
     HeaderThreeComponent,
 
-
   ],
   imports: [
     CommonModule,

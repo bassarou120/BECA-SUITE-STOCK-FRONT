@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+
 
 import { EmployeesRoutingModule } from './employees-routing.module';
 import { EmployeesComponent } from './employees.component';
@@ -19,7 +18,10 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
+import {NgModule} from "@angular/core";
+import {CommonModule, DatePipe} from "@angular/common";
 
+// @ts-ignore
 @NgModule({
   declarations: [
     EmployeesComponent,

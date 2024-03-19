@@ -5,10 +5,8 @@ import { Component, NgZone } from '@angular/core';
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.scss']
 })
-
-
 export class EmployeesComponent {
-  
+
 
   constructor(private ngZone: NgZone) {
   }

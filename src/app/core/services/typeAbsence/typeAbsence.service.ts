@@ -24,13 +24,12 @@ export class typeAbsenceService  {
     return this.http.get<any>(`${this.url}/type_absence`);
   }
 
-
   editTypeAbsence(data:any): Observable<any> {
     return this.http.put<any>(`${this.url}/type_absence/${data.id}`, data);
   }
-
   deleteTypeAbsence(data:any): Observable<any> {
     return this.http.delete<any>(`${this.url}/type_absence/${data.id}`);
   }
+
 
 }

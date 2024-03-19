@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+
+
 import { EmployeListComponent } from './all-employe/employe-list/employe-list.component';
 import { EmployePageContentComponent } from './all-employe/employe-page-content/employe-page-content.component';
 import { EmployeeProfileComponent } from './all-employe/employee-profile/employee-profile.component';
@@ -14,6 +14,8 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
+import {RouterModule, Routes} from "@angular/router";
+import {NgModule} from "@angular/core";
 
 const routes: Routes = [
   {
