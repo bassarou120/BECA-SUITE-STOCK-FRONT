@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContractsComponent } from './contracts.component';
+import { TypeCongeComponent } from './typeConge.component';
 
-describe('ContractsComponent', () => {
-  let component: ContractsComponent;
-  let fixture: ComponentFixture<ContractsComponent>;
+describe('TypeCongeComponent', () => {
+  let component: TypeCongeComponent;
+  let fixture: ComponentFixture<TypeCongeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContractsComponent ]
+      declarations: [ TypeCongeComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ContractsComponent);
+    fixture = TestBed.createComponent(TypeCongeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,15 +5,15 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Types de Primes</h3>
+                <h3 class="page-title">Types de Contrats</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de Bord</a></li>
-                    <li class="breadcrumb-item active">Types de Primes</li>
+                    <li class="breadcrumb-item active">Types de Contrats</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_holiday"><i class="fa-solid fa-plus"></i>
-                    Ajouter un type de prime</a>
+                    Ajouter un type de contrat</a>
             </div>
         </div>
     </div>
@@ -28,13 +28,13 @@
                         <tr>
                             <th mat-sort-header="id">#</th>
                             <th mat-sort-header="title">Libellé </th>
-                            <!-- <th mat-sort-header="holidaydate">Holiday Date</th>
+                            <!-- <th mat-sort-header="holidaydate">Contract Date</th>
                             <th mat-sort-header="day">Day</th> -->
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="holiday-completed" *ngFor="let row of lstPremiums">
+                        <tr class="holiday-completed" *ngFor="let row of lstTypeContrats">
                             <td>{{row.id}}</td>
                             <td>{{row.libelle}}</td>
                             <!-- <td>{{row.holidaydate}}</td>
@@ -44,16 +44,16 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" (click)="getEditPremium(row)" data-bs-toggle="modal"
+                                        <a class="dropdown-item" (click)="getEditTypeContrat(row)" data-bs-toggle="modal"
                                             data-bs-target="#edit_holiday"><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a>
-                                        <a class="dropdown-item" (click)="getDeletePremium(row)" data-bs-toggle="modal"
+                                        <a class="dropdown-item" (click)="getDeleteTypeContrat(row)" data-bs-toggle="modal"
                                             data-bs-target="#delete_holiday"><i class="fa-regular fa-trash-can m-r-5"></i>
                                             Supprimer</a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstPremiums.length === 0">
+                        <tr *ngIf="lstTypeContrats.length === 0">
                           <td colspan="10">
                               <h5 style="text-align: center;">Aucune donnée trouvée</h5>
                           </td>
@@ -84,7 +84,7 @@
                           class="page-link"
                           href="javascript:void(0);"
                           tabindex="-1"
-                          >Prédédent</a
+                          >Précédent</a
                         >
                       </li>
         
@@ -145,7 +145,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                              lstPremiums.length === 0
+                              lstTypeContrats.length === 0
                         }"
                       >
                         <a
@@ -163,59 +163,59 @@
     </div>
 </div>
 <!-- /Page Content -->
-<!-- Add Holiday Modal -->
+<!-- Add Contract Modal -->
 <div class="modal custom-modal fade" id="add_holiday" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter un type de prime</h5>
+                <h5 class="modal-title">Ajouter un type de contrat</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="addPremiumForm" (ngSubmit)="savePremium()" novalidate>
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for="libelle">Libellé du type de prime <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text" formControlName="libelle"
-                  [class.invalid]="addPremiumForm.get('libelle')?.invalid && addPremiumForm.get('libelle')?.touched">
+                <form [formGroup]="addTypeContratForm" (ngSubmit)="saveTypeContrat()" novalidate>
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="libelle">Libellé du type de contrat <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" formControlName="libelle"
+                    [class.invalid]="addTypeContratForm.get('libelle')?.invalid && addTypeContratForm.get('libelle')?.touched">
 
-                  <div *ngIf="addPremiumForm.get('libelle')?.touched && addPremiumForm.get('libelle')?.invalid" class="text-danger">
-                    <small *ngIf="addPremiumForm.get('libelle')?.touched && addPremiumForm.get('libelle')?.invalid" class="text-danger">
-                      Le libellé du type de congé est requis.
-                    </small>
+                    <div *ngIf="addTypeContratForm.get('libelle')?.touched && addTypeContratForm.get('libelle')?.invalid" class="text-danger">
+                      <small *ngIf="addTypeContratForm.get('libelle')?.touched && addTypeContratForm.get('libelle')?.invalid" class="text-danger">
+                        Le libellé du type de congé est requis.
+                      </small>
+                    </div>
                   </div>
-                </div>
-                <div class="submit-section">
-                    <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
-                </div>
-            </form>
+                  <div class="submit-section">
+                      <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
+                  </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-<!-- /Add Holiday Modal -->
+<!-- /Add Contract Modal -->
 
-<!-- Edit Holiday Modal -->
+<!-- Edit Contract Modal -->
 <div class="modal custom-modal fade" id="edit_holiday" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le type de prime</h5>
+                <h5 class="modal-title">Modifier le type de contrat</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="editPremiumForm" (ngSubmit)="editPremium()" novalidate>
+              <form [formGroup]="editTypeContratForm" (ngSubmit)="editTypeContrat()" novalidate>
                 <div class="input-block mb-3">
                     <label class="col-form-label" for="">Nouveau nom du type de congé <span class="text-danger">*</span></label>
                     <input class="form-control" type="text" formControlName="libelle"
-                    [class.invalid]="editPremiumForm.get('libelle')?.invalid && editPremiumForm.get('libelle')?.touched">
+                    [class.invalid]="editTypeContratForm.get('libelle')?.invalid && editTypeContratForm.get('libelle')?.touched">
                     <input class="form-control" type="hidden" formControlName="id">
 
-                    <div *ngIf="editPremiumForm.get('libelle')?.touched && editPremiumForm.get('libelle')?.invalid" class="text-danger">
-                      <small *ngIf="editPremiumForm.get('libelle')?.touched && editPremiumForm.get('libelle')?.invalid" class="text-danger">
+                    <div *ngIf="editTypeContratForm.get('libelle')?.touched && editTypeContratForm.get('libelle')?.invalid" class="text-danger">
+                      <small *ngIf="editTypeContratForm.get('libelle')?.touched && editTypeContratForm.get('libelle')?.invalid" class="text-danger">
                         Le libellé du type de congé est requis.
                       </small>
                     </div>
@@ -228,35 +228,36 @@
         </div>
     </div>
 </div>
-<!-- /Edit Holiday Modal -->
+<!-- /Edit Contract Modal -->
 
-<!-- Delete Holiday Modal -->
+<!-- Delete Contract Modal -->
 <div class="modal custom-modal fade" id="delete_holiday" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer le type de prime</h3>
-                    <p>Êtes vous sûr de vouloir supprimer ce type de prime?</p>
+                    <h3>Supprimer le type de contrat</h3>
+                    <p>Êtes vous sûr de vouloir supprimer le type de congé?</p>
                 </div>
                 <div class="modal-btn delete-action">
-                  <div class="row">
-                    <div class="col-6">
+                    <div class="row">
+                      <div class="col-6">
 
-                      <form [formGroup]="deletePremiumForm" (ngSubmit)="deletePremium()" novalidate>
-                        <input class="form-control" type="hidden" formControlName="id">
-                        <button type="submit" class="btn btn-primary continue-btn">Supprimer</button>
-                      </form>
-                      
+                        <form [formGroup]="deleteTypeContratForm" (ngSubmit)="deleteTypeContrat()" novalidate>
+                          <input class="form-control" type="hidden" formControlName="id">
+                          <!-- <button type="submit" class="btn btn-primary continue-btn">Supprimer</button> -->
+                          <a href="javascript:void(0);" (click)="deleteTypeContrat()" class="btn btn-primary continue-btn">Supprimer</a>
+                        </form>
+                        
+                      </div>
+                      <div class="col-6">
+                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                          class="btn btn-primary cancel-btn">Annuler</a>
+                      </div>
                     </div>
-                    <div class="col-6">
-                      <a href="javascript:void(0);" data-bs-dismiss="modal"
-                        class="btn btn-primary cancel-btn">Annuler</a>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- /Delete Holiday Modal -->
+<!-- /Delete Contract Modal -->

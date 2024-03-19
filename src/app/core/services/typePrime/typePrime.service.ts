@@ -12,27 +12,27 @@ import {environment} from "../../../../environments/environment";
   providedIn: 'root',
 })
 
-export class PremiumService  {
+export class TypePrimeService  {
   allAppliedCandidates!: Array<object>;
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  savePremium(data: any): Observable<any> {
+  saveTypePrime(data: any): Observable<any> {
     return this.http.post(`${this.url}/type_prime`, data);
   }
 
-  getAllPremiums(): Observable<any> {
+  getAllTypePrimes(): Observable<any> {
     return this.http.get<any>(`${this.url}/type_prime`);
   }
 
-  editPremium(data: any): Observable<any> {
+  editTypePrime(data: any): Observable<any> {
     return this.http.put<any>(`${this.url}/type_prime/${data.id}`, data);
   }
 
-  deletePremium(data: any): Observable<any> {
+  deleteTypePrime(data: any): Observable<any> {
     return this.http.delete<any>(`${this.url}/type_prime/${data.id}`);
   }
 
 
-  listPremiums = [];
+  listTypePrimes = [];
 }

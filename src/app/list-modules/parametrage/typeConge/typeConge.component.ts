@@ -2,23 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService, apiResultFormat, getconstracts, routes, ContractService } from 'src/app/core/core.index';
+import { DataService, apiResultFormat, getTypeConge, routes, TypeCongeService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-constracts',
-  templateUrl: './contracts.component.html',
-  styleUrls: ['./contracts.component.scss']
+  selector: 'app-typeConge',
+  templateUrl: './typeConge.component.html',
+  styleUrls: ['./typeConge.component.scss']
 })
-export class ContractsComponent implements OnInit {
+export class TypeCongeComponent implements OnInit {
   title = 'pagination';
   public routes = routes;
-  public lstConstracts: Array<getconstracts> = [];
+  public lstTypeConges: Array<getTypeConge> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getconstracts>;
-  public addContractForm!: FormGroup ;
-  public editContractForm!: FormGroup;
-  public deleteContractForm!: FormGroup;
+  dataSource!: MatTableDataSource<getTypeConge>;
+  public addTypeCongeForm!: FormGroup ;
+  public editTypeCongeForm!: FormGroup;
+  public deleteTypeCongeForm!: FormGroup;
+
 
   // pagination variables
   public lastIndex = 0;
@@ -34,65 +35,66 @@ export class ContractsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: ContractService, private formBuilder: FormBuilder) {}
+  constructor(private data: TypeCongeService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getTableData();
-    this.addContractForm = this.formBuilder.group({
+    this.addTypeCongeForm = this.formBuilder.group({
       libelle: ['', Validators.required]
     });
-    this.editContractForm = this.formBuilder.group({
+    this.editTypeCongeForm = this.formBuilder.group({
       id: [0, Validators.required],
       libelle: ['', Validators.required]
     });
-    this.deleteContractForm = this.formBuilder.group({
+    this.deleteTypeCongeForm = this.formBuilder.group({
       id: [0, Validators.required],
     });
   }
 
   private getTableData(): void {
-    this.lstConstracts = [];
+    this.lstTypeConges = [];
     this.serialNumberArray = [];
 
-    this.data.getAllConstract().subscribe((res: any) => {
+    this.data.getAllTypeConges().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getconstracts, index: number) => {
+      res.data.data.map((res: getTypeConge, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstConstracts.push(res);
+          this.lstTypeConges.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getconstracts>(this.lstConstracts);
+      this.dataSource = new MatTableDataSource<getTypeConge>(this.lstTypeConges);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
-  }
 
-  saveContract() {
-    console.log(this.addContractForm.value, this.addContractForm.valid);
-    if (this.addContractForm.valid){
-      this.data.saveContract(this.addContractForm.value).subscribe(response => {
+ 
+  }
+  
+  saveTypeConge() {
+    // console.log(this.addTypeCongeForm.value, this.addTypeCongeForm.valid);
+    if (this.addTypeCongeForm.valid){
+      this.data.saveTypeConge(this.addTypeCongeForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
-      console.log(this.addContractForm.value);
     } else {
       console.log("Desolé le formulaire n'est pas bien renseigné");
     } 
   }
 
-  getEditContract(row: any) {
-    this.editContractForm.patchValue({
+  getEditTypeConge(row: any) {
+    this.editTypeCongeForm.patchValue({
       id: row.id,
       libelle: row.libelle
     })
   }
 
-  editContract() {
-    // console.log(this.editContractForm.value, this.editContractForm.valid);
-    if (this.editContractForm.valid){
-      this.data.editContract(this.editContractForm.value).subscribe(response => {
+  editTypeConge() {
+    // console.log(this.editTypeCongeForm.value, this.editTypeCongeForm.valid);
+    if (this.editTypeCongeForm.valid){
+      this.data.editTypeConge(this.editTypeCongeForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
@@ -101,16 +103,16 @@ export class ContractsComponent implements OnInit {
     }
   }
 
-  getDeleteContract(row: any) {
-    this.deleteContractForm.patchValue({
+  getDeleteTypeConge(row: any) {
+    this.deleteTypeCongeForm.patchValue({
       id: row.id
     })
   }
 
-  deleteContract() {
-    // console.log(this.deleteContractForm.value, this.deleteContractForm.valid);
-    if (this.deleteContractForm.valid){
-      this.data.deleteContract(this.deleteContractForm.value).subscribe(response => {
+  deleteTypeConge() {
+    // console.log(this.deleteTypeCongeForm.value, this.deleteTypeCongeForm.valid);
+    if (this.deleteTypeCongeForm.valid){
+      this.data.deleteTypeConge(this.deleteTypeCongeForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
@@ -123,15 +125,14 @@ export class ContractsComponent implements OnInit {
 
 
 
-
   public sortData(sort: Sort) {
-    const data = this.lstConstracts.slice();
+    const data = this.lstTypeConges.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstConstracts = data;
+      this.lstTypeConges = data;
     } else {
-      this.lstConstracts = data.sort((a: any, b: any) => {
+      this.lstTypeConges = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -141,7 +142,7 @@ export class ContractsComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstConstracts = this.dataSource.filteredData;
+    this.lstTypeConges = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

@@ -41,32 +41,32 @@ export class routes {
     return this.baseUrl + '/employees';
   }
 
-  public static get holiday_page(): string {
-    return this.baseUrl + '/employees/holidays';
+  public static get type_conge(): string {
+    return this.baseUrl + '/parametrage/type-conge';
   }
 
   public static get departement(): string {
-    return this.baseUrl + '/employees/departments';
+    return this.baseUrl + '/parametrage/departments';
   }
 
   public static get poste(): string {
-    return this.baseUrl + '/employees/postes';
+    return this.baseUrl + '/parametrage/postes';
   }
 
   public static get typeAbsence(): string {
-    return this.baseUrl + '/employees/typeAbsence';
+    return this.baseUrl + '/parametrage/type-absence';
   }
 
   public static get role(): string {
-    return this.baseUrl + '/employees/role';
+    return this.baseUrl + '/parametrage/role';
   }
 
-  public static get contract_page(): string {
-    return this.baseUrl + '/employees/contracts';
+  public static get type_contrat(): string {
+    return this.baseUrl + '/parametrage/type-contrat';
   }
 
-  public static get premium_page(): string {
-    return this.baseUrl + '/employees/premiums';
+  public static get type_prime(): string {
+    return this.baseUrl + '/parametrage/type-prime';
   }
 
 

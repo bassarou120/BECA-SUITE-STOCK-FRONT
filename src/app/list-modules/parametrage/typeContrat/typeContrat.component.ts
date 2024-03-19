@@ -2,24 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService, apiResultFormat, getholidays, routes, HolidayService } from 'src/app/core/core.index';
+import { DataService, apiResultFormat, getTypeContrat, routes, TypeContratService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-holidays',
-  templateUrl: './holidays.component.html',
-  styleUrls: ['./holidays.component.scss']
+  selector: 'app-typeContrat',
+  templateUrl: './typeContrat.component.html',
+  styleUrls: ['./typeContrat.component.scss']
 })
-export class HolidaysComponent implements OnInit {
+export class TypeContratComponent implements OnInit {
   title = 'pagination';
   public routes = routes;
-  public lstHolidays: Array<getholidays> = [];
+  public lstTypeContrats: Array<getTypeContrat> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getholidays>;
-  public addHolidayForm!: FormGroup ;
-  public editHolidayForm!: FormGroup;
-  public deleteHolidayForm!: FormGroup;
-
+  dataSource!: MatTableDataSource<getTypeContrat>;
+  public addTypeContratForm!: FormGroup ;
+  public editTypeContratForm!: FormGroup;
+  public deleteTypeContratForm!: FormGroup;
 
   // pagination variables
   public lastIndex = 0;
@@ -35,66 +34,65 @@ export class HolidaysComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: HolidayService, private formBuilder: FormBuilder) {}
+  constructor(private data: TypeContratService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getTableData();
-    this.addHolidayForm = this.formBuilder.group({
+    this.addTypeContratForm = this.formBuilder.group({
       libelle: ['', Validators.required]
     });
-    this.editHolidayForm = this.formBuilder.group({
+    this.editTypeContratForm = this.formBuilder.group({
       id: [0, Validators.required],
       libelle: ['', Validators.required]
     });
-    this.deleteHolidayForm = this.formBuilder.group({
+    this.deleteTypeContratForm = this.formBuilder.group({
       id: [0, Validators.required],
     });
   }
 
   private getTableData(): void {
-    this.lstHolidays = [];
+    this.lstTypeContrats = [];
     this.serialNumberArray = [];
 
-    this.data.getAllHolidays().subscribe((res: any) => {
+    this.data.getAllTypeContrat().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getholidays, index: number) => {
+      res.data.data.map((res: getTypeContrat, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstHolidays.push(res);
+          this.lstTypeContrats.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getholidays>(this.lstHolidays);
+      this.dataSource = new MatTableDataSource<getTypeContrat>(this.lstTypeContrats);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
-
- 
   }
-  
-  saveHoliday() {
-    // console.log(this.addHolidayForm.value, this.addHolidayForm.valid);
-    if (this.addHolidayForm.valid){
-      this.data.saveHoliday(this.addHolidayForm.value).subscribe(response => {
+
+  saveTypeContrat() {
+    // console.log(this.addTypeContratForm.value, this.addTypeContratForm.valid);
+    if (this.addTypeContratForm.valid){
+      this.data.saveTypeContrat(this.addTypeContratForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
+      console.log(this.addTypeContratForm.value);
     } else {
       console.log("Desolé le formulaire n'est pas bien renseigné");
     } 
   }
 
-  getEditHoliday(row: any) {
-    this.editHolidayForm.patchValue({
+  getEditTypeContrat(row: any) {
+    this.editTypeContratForm.patchValue({
       id: row.id,
       libelle: row.libelle
     })
   }
 
-  editHoliday() {
-    // console.log(this.editHolidayForm.value, this.editHolidayForm.valid);
-    if (this.editHolidayForm.valid){
-      this.data.editHoliday(this.editHolidayForm.value).subscribe(response => {
+  editTypeContrat() {
+    // console.log(this.editTypeContratForm.value, this.editTypeContratForm.valid);
+    if (this.editTypeContratForm.valid){
+      this.data.editTypeContrat(this.editTypeContratForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
@@ -103,16 +101,16 @@ export class HolidaysComponent implements OnInit {
     }
   }
 
-  getDeleteHoliday(row: any) {
-    this.deleteHolidayForm.patchValue({
+  getDeleteTypeContrat(row: any) {
+    this.deleteTypeContratForm.patchValue({
       id: row.id
     })
   }
 
-  deleteHoliday() {
-    // console.log(this.deleteHolidayForm.value, this.deleteHolidayForm.valid);
-    if (this.deleteHolidayForm.valid){
-      this.data.deleteHoliday(this.deleteHolidayForm.value).subscribe(response => {
+  deleteTypeContrat() {
+    // console.log(this.deleteTypeContratForm.value, this.deleteTypeContratForm.valid);
+    if (this.deleteTypeContratForm.valid){
+      this.data.deleteTypeContrat(this.deleteTypeContratForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
@@ -125,14 +123,15 @@ export class HolidaysComponent implements OnInit {
 
 
 
+
   public sortData(sort: Sort) {
-    const data = this.lstHolidays.slice();
+    const data = this.lstTypeContrats.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstHolidays = data;
+      this.lstTypeContrats = data;
     } else {
-      this.lstHolidays = data.sort((a: any, b: any) => {
+      this.lstTypeContrats = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -142,7 +141,7 @@ export class HolidaysComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstHolidays = this.dataSource.filteredData;
+    this.lstTypeContrats = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

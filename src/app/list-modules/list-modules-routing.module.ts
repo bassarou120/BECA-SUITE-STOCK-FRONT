@@ -26,6 +26,15 @@ const routes: Routes = [
           import('./employes/employees.module').then((m) => m.EmployeesModule),
       },
 
+      {
+        path: 'parametrage',
+        // canActivate: [AuthService],
+        loadChildren: () =>
+          import('./parametrage/parametrage.module').then(
+            (m) => m.ParametrageModule
+          ),
+      },
+
       /*
 
       {

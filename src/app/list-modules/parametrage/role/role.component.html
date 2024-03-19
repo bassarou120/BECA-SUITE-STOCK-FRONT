@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Roles</h3>
+                <h3 class="page-title">Rôles</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">roles</li>
+                    <li class="breadcrumb-item active">rôles</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
@@ -228,7 +228,7 @@
                         <div class="col-6">
                           <form [formGroup]="deleteRoleForm" (ngSubmit)="onClickSubmitDeleteRole()">
                             <input type="hidden" formControlName="id">
-                            <button class="btn btn-primary continue-btn" type="submit">Supprimer</button>
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteRole()">Supprimer</a>
                           </form>
                         </div>
                         <div class="col-6">

@@ -4,10 +4,10 @@ export * from './services/side-bar/side-bar.service';
 export * from './services/auth/auth.service';
 export * from './services/interface/models';
 
-export * from './services/holiday/holiday.service';
+export * from './services/typeConge/typeConge.service';
+export * from './services/typeContrat/typeContrat.service';
+export * from './services/typePrime/typePrime.service';
 export * from './services/department/department.service';
 export * from './services/poste/poste.service';
 export * from './services/typeAbsence/typeAbsence.service';
 export * from './services/role/role.service';
-export * from './services/contract/contract.service';
-export * from './services/premium/premium.service';

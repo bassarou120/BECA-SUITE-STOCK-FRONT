@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService, apiResultFormat, getpremiums, routes, PremiumService } from 'src/app/core/core.index';
+import { DataService, apiResultFormat, getTypePrime, routes, TypePrimeService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-premiums',
-  templateUrl: './premiums.component.html',
-  styleUrls: ['./premiums.component.scss']
+  selector: 'app-typePrime',
+  templateUrl: './typePrime.component.html',
+  styleUrls: ['./typePrime.component.scss']
 })
-export class PremiumsComponent implements OnInit {
+export class TypePrimeComponent implements OnInit {
   title = 'pagination';
   public routes = routes;
-  public lstPremiums: Array<getpremiums> = [];
+  public lstTypePrimes: Array<getTypePrime> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getpremiums>;
-  public addPremiumForm!: FormGroup ;
-  public editPremiumForm!: FormGroup;
-  public deletePremiumForm!: FormGroup;
+  dataSource!: MatTableDataSource<getTypePrime>;
+  public addTypePrimeForm!: FormGroup ;
+  public editTypePrimeForm!: FormGroup;
+  public deleteTypePrimeForm!: FormGroup;
 
   // pagination variables
   public lastIndex = 0;
@@ -34,45 +34,45 @@ export class PremiumsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: PremiumService, private formBuilder: FormBuilder) {}
+  constructor(private data: TypePrimeService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getTableData();
-    this.addPremiumForm = this.formBuilder.group({
+    this.addTypePrimeForm = this.formBuilder.group({
       libelle: ['', Validators.required]
     });
-    this.editPremiumForm = this.formBuilder.group({
+    this.editTypePrimeForm = this.formBuilder.group({
       id: [0, Validators.required],
       libelle: ['', Validators.required]
     });
-    this.deletePremiumForm = this.formBuilder.group({
+    this.deleteTypePrimeForm = this.formBuilder.group({
       id: [0, Validators.required],
     });
   }
 
   private getTableData(): void {
-    this.lstPremiums = [];
+    this.lstTypePrimes = [];
     this.serialNumberArray = [];
 
-    this.data.getAllPremiums().subscribe((res: any) => {
+    this.data.getAllTypePrimes().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getpremiums, index: number) => {
+      res.data.data.map((res: getTypePrime, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstPremiums.push(res);
+          this.lstTypePrimes.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getpremiums>(this.lstPremiums);
+      this.dataSource = new MatTableDataSource<getTypePrime>(this.lstTypePrimes);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
 
-  savePremium() {
-    // console.log(this.addPremiumForm.value, this.addPremiumForm.valid);
-    if (this.addPremiumForm.valid){
-      this.data.savePremium(this.addPremiumForm.value).subscribe(response => {
+  saveTypePrime() {
+    // console.log(this.addTypePrimeForm.value, this.addTypePrimeForm.valid);
+    if (this.addTypePrimeForm.valid){
+      this.data.saveTypePrime(this.addTypePrimeForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
@@ -81,17 +81,17 @@ export class PremiumsComponent implements OnInit {
     } 
   }
 
-  getEditPremium(row: any) {
-    this.editPremiumForm.patchValue({
+  getEditTypePrime(row: any) {
+    this.editTypePrimeForm.patchValue({
       id: row.id,
       libelle: row.libelle
     })
   }
 
-  editPremium() {
+  editTypePrime() {
     // console.log(this.editHolidayForm.value, this.editHolidayForm.valid);
-    if (this.editPremiumForm.valid){
-      this.data.editPremium(this.editPremiumForm.value).subscribe(response => {
+    if (this.editTypePrimeForm.valid){
+      this.data.editTypePrime(this.editTypePrimeForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
@@ -100,16 +100,16 @@ export class PremiumsComponent implements OnInit {
     }
   }
 
-  getDeletePremium(row: any) {
-    this.deletePremiumForm.patchValue({
+  getDeleteTypePrime(row: any) {
+    this.deleteTypePrimeForm.patchValue({
       id: row.id
     })
   }
 
-  deletePremium() {
+  deleteTypePrime() {
     // console.log(this.deleteHolidayForm.value, this.deleteHolidayForm.valid);
-    if (this.deletePremiumForm.valid){
-      this.data.deletePremium(this.deletePremiumForm.value).subscribe(response => {
+    if (this.deleteTypePrimeForm.valid){
+      this.data.deleteTypePrime(this.deleteTypePrimeForm.value).subscribe(response => {
         console.log(response);
         location.reload();
       });
@@ -124,13 +124,13 @@ export class PremiumsComponent implements OnInit {
 
 
   public sortData(sort: Sort) {
-    const data = this.lstPremiums.slice();
+    const data = this.lstTypePrimes.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstPremiums = data;
+      this.lstTypePrimes = data;
     } else {
-      this.lstPremiums = data.sort((a: any, b: any) => {
+      this.lstTypePrimes = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -140,7 +140,7 @@ export class PremiumsComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstPremiums = this.dataSource.filteredData;
+    this.lstTypePrimes = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

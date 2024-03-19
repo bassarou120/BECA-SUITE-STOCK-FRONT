@@ -139,18 +139,18 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Type de Congé',
-              route: routes.holiday_page,
-              base: 'holiday',
+              route: routes.type_conge,
+              base: 'type-contrat',
             },
             {
               menuValue: 'Type de Contrat',
-              route: routes.contract_page,
-              base: 'contract',
+              route: routes.type_contrat,
+              base: 'type-contrat',
             },
             {
               menuValue: 'Type de Prime',
-              route: routes.premium_page,
-              base: 'premium',
+              route: routes.type_prime,
+              base: 'type-prime',
             },
             {
               menuValue: 'Département',
@@ -165,7 +165,7 @@ export class DataService {
             {
               menuValue: 'Type d\'absence',
               route: routes.typeAbsence,
-              base: 'typeAbsence',
+              base: 'type-absence',
             },
             {
               menuValue: 'Rôle',

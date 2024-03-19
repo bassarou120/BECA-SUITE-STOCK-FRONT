@@ -12,24 +12,24 @@ import {environment} from "../../../../environments/environment";
   providedIn: 'root',
 })
 
-export class HolidayService  {
+export class TypeCongeService  {
   allAppliedCandidates!: Array<object>;
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  saveHoliday(data: any): Observable<any> {
+  saveTypeConge(data: any): Observable<any> {
     return this.http.post(`${this.url}/type_conge`, data);
   }
 
-  getAllHolidays(): Observable<any> {
+  getAllTypeConges(): Observable<any> {
     return this.http.get<any>(`${this.url}/type_conge`);
   }
 
-  editHoliday(data: any): Observable<any> {
+  editTypeConge(data: any): Observable<any> {
     return this.http.put<any>(`${this.url}/type_conge/${data.id}`, data);
   }
 
-  deleteHoliday(data: any): Observable<any> {
+  deleteTypeConge(data: any): Observable<any> {
     return this.http.delete<any>(`${this.url}/type_conge/${data.id}`);
   }
 
@@ -49,5 +49,5 @@ export class HolidayService  {
   }
 
 
-  listHolidays = [];
+  listTypeConges = [];
 }

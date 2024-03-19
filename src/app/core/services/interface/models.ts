@@ -665,19 +665,19 @@ export interface getLeave {
   reason: string;
   status: string;
 }
-export interface getholidays {
+export interface getTypeConge {
   id: number;
   libelle: string;
   // holidaydate: string;
   // day: string;
 }
-export interface getconstracts {
+export interface getTypeContrat {
   id: number;
   libelle: string;
   // holidaydate: string;
   // day: string;
 }
-export interface getpremiums {
+export interface getTypePrime {
   id: number;
   libelle: string;
   // holidaydate: string;
