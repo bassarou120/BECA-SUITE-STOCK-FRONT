@@ -70,9 +70,8 @@ export class DataService {
               base: 'employee-page',
               base2: 'employee-list',
             },
-            { menuValue: 'Les congés',
-              route: "#",
-              // route: routes.holidays,
+            { menuValue: 'Les Congés',
+              route: routes.conges,
               base: 'holidays' },
             {
               menuValue: 'Les Absences',

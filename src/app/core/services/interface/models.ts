@@ -715,6 +715,22 @@ export interface lstEmployee {
   img?: string;
 }
 
+export interface getConge {
+  id: number;
+  date_debut: Date;
+  date_fin: Date;
+  employe_id: number;
+  type_conges_id: number;
+  libelle: string;
+  employe: string;
+}
+
+export interface getMiniTemplateEmploye {
+  id: number;
+  nom: string;
+  prenom: string;
+}
+
 export interface getDepartment {
   id: number;
   nom_dep: string;

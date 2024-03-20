@@ -41,6 +41,12 @@ export class routes {
     return this.baseUrl + '/employees';
   }
 
+  public static get conges(): string {
+    return this.baseUrl + '/employees/conges';
+  }
+
+
+  
   public static get type_conge(): string {
     return this.baseUrl + '/parametrage/type-conge';
   }
