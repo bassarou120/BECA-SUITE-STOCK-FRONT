@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    alert(JSON.stringify(this.form.value));
+    // alert(JSON.stringify(this.form.value));
 
     this.authservice.login(this.form.value).subscribe(
       (data: any) => {
@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.storage.Login(this.form.value);
+    // this.storage.Login(this.form.value);
   }
 
   ngOnDestroy() {
