@@ -25,6 +25,8 @@ export class CongesComponent implements OnInit {
   public lstConge: Array<getConge> = [];
   public lstTypeConge: Array<getTypeConge> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
+  public editFormSelectedTypeCongeId: number = 0;
+  public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getConge>;
   // pagination variables
@@ -49,16 +51,22 @@ export class CongesComponent implements OnInit {
 
   ngOnInit(): void {
      this.getTableData();
+
      this.addCongeForm = this.formBuilder.group({
       type_conges_id: [0, [Validators.required]],
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
     }, { validator: this.datesValidator });
+
      this.editCongeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
-      nom_dep: ["", [Validators.required]],
-    });
+      type_conges_id: [0, [Validators.required]],
+      employe_id: [0, [Validators.required]],
+      date_debut: ["", [Validators.required]],
+      date_fin: ["", [Validators.required]],
+    }, { validator: this.datesValidator });
+    
      this.deleteCongeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
@@ -152,23 +160,40 @@ export class CongesComponent implements OnInit {
     }
   }
 
-  onClickSubmitEditDepartement(){
-    // console.log(this.editCongeForm.value)
-
-    //   if (this.editCongeForm.valid){
-    //     const id = this.editCongeForm.value.id;
-    //     this.data.editConge(this.editCongeForm.value).subscribe(
-    //       (data:any)=>{
-    //         location.reload();
-    //       }
-    //     )
-    //     console.log("success")
-    //   }else {
-
-    //     console.log("desole le formulaire n'est pas bien renseigné")
-    //   }
-
+  private convertToDate(date: string): Date {
+    const d = date.split('-');
+    return new Date(Number(d[0]), Number(d[1])-1, Number(d[2]));
   }
+
+  getEditForm(row: any){
+    this.editCongeForm.patchValue({
+      id: row.id,
+      type_conges_id: row.type_conges_id,
+      employe_id: row.employe_id,
+      date_debut: this.convertToDate(row.date_debut),
+      date_fin: this.convertToDate(row.date_fin),
+    })
+    this.editFormSelectedTypeCongeId = row.type_conges_id;
+    this.editFormSelectedEmployeId = row.employe_id;
+  }
+
+  onClickSubmitEditConge(){
+
+    this.editCongeForm.patchValue({ date_debut: this.formatDateToString(this.editCongeForm.value.date_debut) });
+    this.editCongeForm.patchValue({ date_fin: this.formatDateToString(this.editCongeForm.value.date_fin) });
+
+    if (this.editCongeForm.valid){
+      const id = this.editCongeForm.value.id;
+      this.data.editConge(this.editCongeForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+    } else {
+      console.log("desole le formulaire n'est pas bien renseigné")
+    }
+  }
+
   onClickSubmitDeleteDepartement(){
     // console.log(this.deleteCongeForm.value)
 
@@ -186,14 +211,6 @@ export class CongesComponent implements OnInit {
       // }
 
   }
-
-
-  getEditForm(row: any){
-    // this.editCongeForm.patchValue({
-    //  id:row.id,
-    //  nom_dep:row.nom_dep
-    // })
- }
 
   getDeleteForm(row: any){
     // this.deleteCongeForm.patchValue({
