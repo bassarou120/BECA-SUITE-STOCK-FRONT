@@ -41,6 +41,10 @@ export class routes {
     return this.baseUrl + '/employees';
   }
 
+  public static get employeeProfile(): string {
+    return this.baseUrl + '/employees/employee-profile';
+  }
+
   public static get type_conge(): string {
     return this.baseUrl + '/parametrage/type-conge';
   }
@@ -68,63 +72,6 @@ export class routes {
   public static get type_prime(): string {
     return this.baseUrl + '/parametrage/type-prime';
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   public static get apps(): string {
     return this.baseUrl + '/apps';
@@ -156,7 +103,6 @@ export class routes {
   public static get filemanager(): string {
     return this.baseUrl + '/apps/file-manager';
   }
-
 
   public static get holidays(): string {
     return this.baseUrl + '/employees/holidays';
@@ -405,9 +351,7 @@ export class routes {
   public static get profile(): string {
     return this.baseUrl + '/profile';
   }
-  public static get employeeProfile(): string {
-    return this.baseUrl + '/employees/employee-profile';
-  }
+
   public static get clientProfile(): string {
     return this.baseUrl + '/clients/client-profile';
   }

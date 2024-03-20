@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, map } from 'rxjs';
+
 import {
   SideBar,
   SideBarMenu,
@@ -7,10 +7,11 @@ import {
   routes,
 } from '../../core.index';
 
-
 import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
+// @ts-ignore
 @Injectable({
   providedIn: 'root',
 })
@@ -25,21 +26,21 @@ export class EmployeService {
     Authorization: `Bearer ${this.token}`,
     'Content-Type': 'application/json',
   });
-  constructor(private http: HttpClient ) {}
+  constructor(private http: HttpClient) {}
 
   saveEmploye(data: any): Observable<Object> {
-    return this.http.post('http://127.0.0.1:8001/api/employe', data);
+    return this.http.post(`${this.url}/employe`, data);
   }
 
-  getAllEmploye(): Observable<Object> {
-    // return this.http.get();
-    let a=this.http.get('http://127.0.0.1:80001/api/employe');
-    console.log(a)
-    return this.http.get('http://127.0.0.1:80001/api/employe');
-    // return this.http.get<any>(`${this.url}/departement`);
+  getAllEmploye(): Observable<any> {
+    return this.http.get<any>(`${this.url}/employe`);
   }
 
+  deleteEmploye(data: any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/employe/${data.id}`);
+  }
 
+  /*
   public getEmployees(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
       map((res: apiResultFormat) => {
@@ -266,4 +267,6 @@ export class EmployeService {
     //   img: "assets/img/profiles/avatar-08.jpg"
     // }
   ];
+
+  */
 }

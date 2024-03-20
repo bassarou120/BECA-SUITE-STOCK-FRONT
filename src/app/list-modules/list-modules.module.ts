@@ -11,8 +11,10 @@ import { HeaderTwoComponent } from './common/headers/header-two/header-two.compo
 import { HeaderThreeComponent } from './common/headers/header-three/header-three.component';
 import { RouterModule } from '@angular/router';
 import {ListModulesComponent} from "./list-modules.component";
+import {HttpClientModule} from "@angular/common/http";
 
 
+// @ts-ignore
 @NgModule({
   declarations: [
     ListModulesComponent,

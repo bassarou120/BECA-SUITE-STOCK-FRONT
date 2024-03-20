@@ -37,6 +37,7 @@ export class EmployeeProfileComponent implements OnInit {
     });
   }
 
+  /*
   selectedList1: data[] = [
     { value: 'Select PF contribution' },
     { value: 'Yes' },
@@ -138,4 +139,6 @@ export class EmployeeProfileComponent implements OnInit {
     { value: 'Single' },
     { value: 'Married' },
   ];
+
+  */
 }

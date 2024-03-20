@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { DataService, lstEmployee, routes } from 'src/app/core/core.index';
 import { EmployeService } from '../../../../core/services/employe/employe.service';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { RequestOptions } from '@angular/http';
 
 @Component({
   selector: 'app-employee-page-content',
@@ -18,6 +20,7 @@ export class EmployePageContentComponent implements OnInit {
 
   constructor(
     public router: Router,
+    private http: HttpClient,
     private dataservice: DataService,
     private employeservice: EmployeService
   ) {
@@ -30,13 +33,9 @@ export class EmployePageContentComponent implements OnInit {
   }
 
   getEnmpl() {
-    this.employeservice.getAllEmploye().subscribe(
-      (data: any) => {
-        console.log(data['data']['data']);
-
-        this.lstEmployee = data['data'];
-      },
-      (error) => {}
-    );
+    this.employeservice.getAllEmploye().subscribe((data: any) => {
+      console.log(data['data']['data']);
+      this.lstEmployee = data['data'];
+    });
   }
 }
