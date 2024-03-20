@@ -4,8 +4,9 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { routes } from 'src/app/core/core.index';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { AuthService, routes } from 'src/app/core/core.index';
 import { WebStorage } from 'src/app/core/services/storage/web.storage';
 
 interface returndata {
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public routes = routes;
   public CustomControler!: string | number | returndata;
   public subscription: Subscription;
+  public Loginvalue = new BehaviorSubject<string | number | returndata>(0);
   public Toggledata = true;
   form = new UntypedFormGroup({
     email: new UntypedFormControl('admin@dreamguys.in', [Validators.required]),
@@ -31,7 +33,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
-  constructor(private storage: WebStorage) {
+  constructor(
+    private router: Router,
+    private storage: WebStorage,
+    private authservice: AuthService
+  ) {
     this.subscription = this.storage.Loginvalue.subscribe((data) => {
       if (data !== 0) {
         this.CustomControler = data;
@@ -40,12 +46,45 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.storage.Checkuser();
-    localStorage.removeItem('LoginData');
+    // this.storage.Checkuser();
+    // localStorage.removeItem('LoginData');
   }
 
   submit() {
     alert(JSON.stringify(this.form.value));
+
+    this.authservice.login(this.form.value).subscribe(
+      (data: any) => {
+        // alert(JSON.stringify(data));
+
+        if (data.message == 'User login successfully.') {
+          console.log(data);
+
+          this.Loginvalue.next('Login success');
+
+          localStorage.setItem('LoginData', data.data.token);
+          localStorage.setItem('LoginToken', data.data.token);
+          localStorage.setItem('userData', data.data.user);
+          localStorage.setItem('logintime', Date());
+          setTimeout(() => {
+            // this.router.navigateByUrl('/dashboard/admin');
+            this.router.navigate(['/dashboard/admin']);
+          }, 100);
+          // this.router.navigate(['/dashboard/admin']);
+          this.Loginvalue.next(0);
+        } else {
+          alert(alert(JSON.stringify(data.message)));
+        }
+      },
+      (error: any) => {
+        if (error.error.message == 'Unauthorised.') {
+          // this.router.navigate(['/dashboard/admin']);
+          alert('E-mail ou mot de passe incorrect !  ');
+        }
+        // alert(JSON.stringify(error.error.message));
+      }
+    );
+
     this.storage.Login(this.form.value);
   }
 

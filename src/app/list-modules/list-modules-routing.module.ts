@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
+import { AuthService } from '../core/services/auth/auth.service';
 
 const routes: Routes = [
   {
@@ -10,25 +11,26 @@ const routes: Routes = [
   },
   {
     path: '',
+
     component: ListModulesComponent,
     children: [
       {
         path: 'dashboard',
-        // canActivate: [AuthService],
+        canActivate: [AuthService],
         loadChildren: () =>
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
 
       {
         path: 'employees',
-        // canActivate: [AuthService],
+        canActivate: [AuthService],
         loadChildren: () =>
           import('./employes/employees.module').then((m) => m.EmployeesModule),
       },
 
       {
         path: 'parametrage',
-        // canActivate: [AuthService],
+        canActivate: [AuthService],
         loadChildren: () =>
           import('./parametrage/parametrage.module').then(
             (m) => m.ParametrageModule

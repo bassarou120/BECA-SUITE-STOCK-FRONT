@@ -31,19 +31,19 @@ export class WebStorage {
    * @param uservalue from user form value
    */
   public Createaccount(uservalue: register): void {
-    const Rawdata: string | null = localStorage.getItem('Loginusers');
-    let Pdata: Array<register> = [];
-    Pdata = JSON.parse(Rawdata || '');
-    Pdata.find((f: register) => {
-      if (f.email === uservalue.email) {
-        this.Createaccountvalue.next('This email are already exist');
-      } else {
-        Pdata.push(uservalue);
-        const jsonData = JSON.stringify(Pdata);
-        localStorage.setItem('Loginusers', jsonData);
-        this.Login(uservalue);
-      }
-    });
+    // const Rawdata: string | null = localStorage.getItem('Loginusers');
+    // let Pdata: Array<register> = [];
+    // Pdata = JSON.parse(Rawdata || '');
+    // Pdata.find((f: register) => {
+    //   if (f.email === uservalue.email) {
+    //     this.Createaccountvalue.next('This email are already exist');
+    //   } else {
+    //     Pdata.push(uservalue);
+    //     const jsonData = JSON.stringify(Pdata);
+    //     localStorage.setItem('Loginusers', jsonData);
+    //     this.Login(uservalue);
+    //   }
+    // });
   }
 
   /**
@@ -59,7 +59,7 @@ export class WebStorage {
     localStorage.setItem('LoginData', uservalue?.token);
     localStorage.setItem('LoginToken', uservalue?.token);
     this.router.navigate(['/dashboard/admin']);
-    // this.Loginvalue.next(0);
+    this.Loginvalue.next(0);
 
     /*
     const data: string | null = localStorage.getItem('Loginusers');
@@ -114,17 +114,17 @@ export class WebStorage {
    * called from Login page init statement
    */
   public Checkuser(): void {
-    const users = localStorage.getItem('Loginusers');
-    if (users === null) {
-      const password = [
-        {
-          email: 'admin@dreamguys.in',
-          password: '123456',
-        },
-      ];
-      const jsonData = JSON.stringify(password);
-      localStorage.setItem('Loginusers', jsonData);
-    }
+    // const users = localStorage.getItem('Loginusers');
+    // if (users === null) {
+    //   const password = [
+    //     {
+    //       email: 'admin@dreamguys.in',
+    //       password: '123456',
+    //     },
+    //   ];
+    //   const jsonData = JSON.stringify(password);
+    //   localStorage.setItem('Loginusers', jsonData);
+    // }
   }
 
   /**
