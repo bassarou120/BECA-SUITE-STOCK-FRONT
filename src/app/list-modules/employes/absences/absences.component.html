@@ -5,15 +5,15 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Les Congés</h3>
+                <h3 class="page-title">Les Absences</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Les Congés</li>
+                    <li class="breadcrumb-item active">Les Absences</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
-                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_conge"><i
-                        class="fa-solid fa-plus"></i> Ajouter un congé</a>
+                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_absence"><i
+                        class="fa-solid fa-plus"></i> Ajouter une absence</a>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
-                            <th mat-sort-header="congeName">Libellé du Congé</th>
+                            <th mat-sort-header="congeName">Libellé de l'Absence</th>
                             <th mat-sort-header="employeeName">Nom de l'Employé en Congé</th>
                             <th mat-sort-header="congeStart">Début du Congé</th>
                             <th mat-sort-header="congeEnd">Fin du Congé</th>
@@ -53,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstConge">
+                        <tr *ngFor="let item of lstAbsence">
                             <td>{{item.id}}</td>
                             <td>{{item.libelle}}</td>
                             <td>{{item.employe}}</td>
@@ -65,7 +65,7 @@
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                                            data-bs-target="#edit_conge"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            data-bs-target="#edit_absence"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Modifier</a>
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
                                             data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
@@ -74,7 +74,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstConge.length === 0">
+                        <tr *ngIf="lstAbsence.length === 0">
                             <td colspan="10">
                                 <h5 style="text-align: center;">Aucun résultat</h5>
                             </td>
@@ -138,7 +138,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                            lstConge.length === 0
+                            lstAbsence.length === 0
                         }">
                                 <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
@@ -153,31 +153,31 @@
 <!-- /Page Content -->
 
 <!-- Add Congé Modal -->
-<div id="add_conge" class="modal custom-modal fade" role="dialog">
+<div id="add_absence" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter un Congé</h5>
+                <h5 class="modal-title">Ajouter une Absence</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addCongeForm" (ngSubmit)="onClickSubmitAddConge()" novalidate>
+                <form [formGroup]="addAbsenceForm" (ngSubmit)="onClickSubmitAddAbsence()" novalidate>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="type_conges_id">Type de Congé <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="type_absence_id">Type d'Absence' <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addCongeForm.get('type_conges_id')?.invalid && addCongeForm.get('type_conges_id')?.touched"
-                                    formControlName="type_conges_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of lstTypeConge" value={{item.id}}> {{ item.libelle }} </mat-option>
+                                    [class.invalid]="addAbsenceForm.get('type_absence_id')?.invalid && addAbsenceForm.get('type_absence_id')?.touched"
+                                    formControlName="type_absence_id" placeholder="Selectionner le type de congé">
+                                    <mat-option *ngFor="let item of lstTypeAbsence" value={{item.id}}> {{ item.libelle }} </mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="addCongeForm.get('type_conges_id')?.invalid && addCongeForm.get('type_conges_id')?.touched">
+                                    *ngIf="addAbsenceForm.get('type_absence_id')?.invalid && addAbsenceForm.get('type_absence_id')?.touched">
                                     <small
-                                        *ngIf="addCongeForm.get('type_conges_id')?.invalid && addCongeForm.get('type_conges_id')?.touched"
-                                        class="text-danger"> *Le type de congé est obligatoire</small>
+                                        *ngIf="addAbsenceForm.get('type_absence_id')?.invalid && addAbsenceForm.get('type_absence_id')?.touched"
+                                        class="text-danger"> *Le type d'absence est obligatoire</small>
                                 </div>
                             </div>
                         </div>
@@ -186,14 +186,14 @@
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addCongeForm.get('employe_id')?.invalid && addCongeForm.get('employe_id')?.touched"
+                                    [class.invalid]="addAbsenceForm.get('employe_id')?.invalid && addAbsenceForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner le type de congé">
                                     <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="addCongeForm.get('employe_id')?.invalid && addCongeForm.get('employe_id')?.touched">
+                                    *ngIf="addAbsenceForm.get('employe_id')?.invalid && addAbsenceForm.get('employe_id')?.touched">
                                     <small
-                                        *ngIf="addCongeForm.get('employe_id')?.invalid && addCongeForm.get('employe_id')?.touched"
+                                        *ngIf="addAbsenceForm.get('employe_id')?.invalid && addAbsenceForm.get('employe_id')?.touched"
                                         class="text-danger"> *L'employé est obligatoire</small>
                                 </div>
                             </div>
@@ -204,13 +204,13 @@
                                 <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                        [class.invalid]="addCongeForm.get('date_debut')?.invalid && addCongeForm.get('date_debut')?.touched"
+                                        [class.invalid]="addAbsenceForm.get('date_debut')?.invalid && addAbsenceForm.get('date_debut')?.touched"
                                         placeholder="Sélectionner la date de début" formControlName="date_debut">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div
-                                        *ngIf="addCongeForm.get('date_debut')?.invalid && addCongeForm.get('date_debut')?.touched">
+                                        *ngIf="addAbsenceForm.get('date_debut')?.invalid && addAbsenceForm.get('date_debut')?.touched">
                                         <small
-                                            *ngIf="addCongeForm.get('date_debut')?.invalid && addCongeForm.get('date_debut')?.touched"
+                                            *ngIf="addAbsenceForm.get('date_debut')?.invalid && addAbsenceForm.get('date_debut')?.touched"
                                             class="text-danger"> *La date de début est obligatoire</small>
                                     </div>
                                 </div>
@@ -222,20 +222,20 @@
                                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                    [class.invalid]="addCongeForm.get('date_fin')?.invalid && addCongeForm.get('date_fin')?.touched"
+                                    [class.invalid]="addAbsenceForm.get('date_fin')?.invalid && addAbsenceForm.get('date_fin')?.touched"
                                     placeholder="Sélectionner la date de fin" formControlName="date_fin">
                                     <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div
-                                        *ngIf="addCongeForm.get('date_fin')?.invalid && addCongeForm.get('date_fin')?.touched">
+                                        *ngIf="addAbsenceForm.get('date_fin')?.invalid && addAbsenceForm.get('date_fin')?.touched">
                                         <small
-                                            *ngIf="addCongeForm.get('date_fin')?.invalid && addCongeForm.get('date_fin')?.touched"
+                                            *ngIf="addAbsenceForm.get('date_fin')?.invalid && addAbsenceForm.get('date_fin')?.touched"
                                             class="text-danger"> *La data de fin est obligatoire </small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="addCongeForm.errors?.['datesInvalid']" class="text-danger">
+                    <div *ngIf="addAbsenceForm.errors?.['datesInvalid']" class="text-danger">
                         La date de fin doit être postérieure à la date de début.
                     </div>
 
@@ -250,33 +250,33 @@
 <!-- /Add Congé Modal -->
 
 <!-- Edit Congé Modal -->
-<div id="edit_conge" class="modal custom-modal fade" role="dialog">
+<div id="edit_absence" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le Congé</h5>
+                <h5 class="modal-title">Modifier l'Absence</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editCongeForm" (ngSubmit)="onClickSubmitEditConge()" novalidate>
+                <form [formGroup]="editAbsenceForm" (ngSubmit)="onClickSubmitEditAbsence()" novalidate>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <input type="hidden" formControlName="id">
-                                <label class="col-form-label" for="type_conges_id">Type de Congé <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="type_absence_id">Type d'Absence<span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="editCongeForm.get('type_conges_id')?.invalid && editCongeForm.get('type_conges_id')?.touched"
-                                    formControlName="type_conges_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of lstTypeConge" [value]="item.id"
-                                    [class.mat-selected] ="item.id === editFormSelectedTypeCongeId"> {{ item.libelle }} </mat-option>
+                                    [class.invalid]="editAbsenceForm.get('type_absence_id')?.invalid && editAbsenceForm.get('type_absence_id')?.touched"
+                                    formControlName="type_absence_id" placeholder="Selectionner le type de congé">
+                                    <mat-option *ngFor="let item of lstTypeAbsence" [value]="item.id"
+                                    [class.mat-selected] ="item.id === editFormSelectedTypeAbsenceId"> {{ item.libelle }} </mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="editCongeForm.get('type_conges_id')?.invalid && editCongeForm.get('type_conges_id')?.touched">
+                                    *ngIf="editAbsenceForm.get('type_absence_id')?.invalid && editAbsenceForm.get('type_absence_id')?.touched">
                                     <small
-                                        *ngIf="editCongeForm.get('type_conges_id')?.invalid && editCongeForm.get('type_conges_id')?.touched"
-                                        class="text-danger"> *Le type de congé est obligatoire</small>
+                                        *ngIf="editAbsenceForm.get('type_absence_id')?.invalid && editAbsenceForm.get('type_absence_id')?.touched"
+                                        class="text-danger"> *Le type d'absence est obligatoire</small>
                                 </div>
                             </div>
                         </div>
@@ -285,15 +285,15 @@
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="editCongeForm.get('employe_id')?.invalid && editCongeForm.get('employe_id')?.touched"
+                                    [class.invalid]="editAbsenceForm.get('employe_id')?.invalid && editAbsenceForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner le type de congé">
                                     <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
                                     [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="editCongeForm.get('employe_id')?.invalid && editCongeForm.get('employe_id')?.touched">
+                                    *ngIf="editAbsenceForm.get('employe_id')?.invalid && editAbsenceForm.get('employe_id')?.touched">
                                     <small
-                                        *ngIf="editCongeForm.get('employe_id')?.invalid && editCongeForm.get('employe_id')?.touched"
+                                        *ngIf="editAbsenceForm.get('employe_id')?.invalid && editAbsenceForm.get('employe_id')?.touched"
                                         class="text-danger"> *L'employé est obligatoire</small>
                                 </div>
                             </div>
@@ -304,13 +304,13 @@
                                 <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
-                                        [class.invalid]="editCongeForm.get('date_debut')?.invalid && editCongeForm.get('date_debut')?.touched"
+                                        [class.invalid]="editAbsenceForm.get('date_debut')?.invalid && editAbsenceForm.get('date_debut')?.touched"
                                         formControlName="date_debut">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div
-                                        *ngIf="editCongeForm.get('date_debut')?.invalid && editCongeForm.get('date_debut')?.touched">
+                                        *ngIf="editAbsenceForm.get('date_debut')?.invalid && editAbsenceForm.get('date_debut')?.touched">
                                         <small
-                                            *ngIf="editCongeForm.get('date_debut')?.invalid && editCongeForm.get('date_debut')?.touched"
+                                            *ngIf="editAbsenceForm.get('date_debut')?.invalid && editAbsenceForm.get('date_debut')?.touched"
                                             class="text-danger"> *La date de début est obligatoire</small>
                                     </div>
                                 </div>
@@ -322,20 +322,20 @@
                                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
-                                    [class.invalid]="editCongeForm.get('date_fin')?.invalid && editCongeForm.get('date_fin')?.touched"
+                                    [class.invalid]="editAbsenceForm.get('date_fin')?.invalid && editAbsenceForm.get('date_fin')?.touched"
                                     formControlName="date_fin">
                                     <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div
-                                        *ngIf="editCongeForm.get('date_fin')?.invalid && editCongeForm.get('date_fin')?.touched">
+                                        *ngIf="editAbsenceForm.get('date_fin')?.invalid && editAbsenceForm.get('date_fin')?.touched">
                                         <small
-                                            *ngIf="editCongeForm.get('date_fin')?.invalid && editCongeForm.get('date_fin')?.touched"
+                                            *ngIf="editAbsenceForm.get('date_fin')?.invalid && editAbsenceForm.get('date_fin')?.touched"
                                             class="text-danger"> *La data de fin est obligatoire </small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="editCongeForm.errors?.['datesInvalid']" class="text-danger">
+                    <div *ngIf="editAbsenceForm.errors?.['datesInvalid']" class="text-danger">
                         La date de fin doit être postérieure à la date de début.
                     </div>
 
@@ -361,7 +361,7 @@
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                          <form [formGroup]="deleteCongeForm" (ngSubmit)="onClickSubmitDeleteAbsence()">
+                          <form [formGroup]="deleteAbsenceForm" (ngSubmit)="onClickSubmitDeleteAbsence()">
                             <input type="hidden" formControlName="id">
                             <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteAbsence()">Supprimer</a>
                           </form>

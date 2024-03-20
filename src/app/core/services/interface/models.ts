@@ -725,6 +725,16 @@ export interface getConge {
   employe: string;
 }
 
+export interface getAbsence {
+  id: number;
+  date_debut: Date;
+  date_fin: Date;
+  employe_id: number;
+  type_absence_id: number;
+  libelle: string;
+  employe: string;
+}
+
 export interface getMiniTemplateEmploye {
   id: number;
   nom: string;

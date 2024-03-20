@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getConge, routes, CongeService, getTypeConge, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getAbsence, routes, AbsencesService, getTypeAbsence, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,11 +10,11 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
-  selector: 'app-conges',
-  templateUrl: './conges.component.html',
-  styleUrls: ['./conges.component.scss']
+  selector: 'app-absences',
+  templateUrl: './absences.component.html',
+  styleUrls: ['./absences.component.scss']
 })
-export class CongesComponent implements OnInit {
+export class AbsencesComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
@@ -22,13 +22,13 @@ export class CongesComponent implements OnInit {
   mon_dep: any;
 
 
-  public lstConge: Array<getConge> = [];
-  public lstTypeConge: Array<getTypeConge> = [];
+  public lstAbsence: Array<getAbsence> = [];
+  public lstTypeAbsence: Array<getTypeAbsence> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
-  public editFormSelectedTypeCongeId: number = 0;
+  public editFormSelectedTypeAbsenceId: number = 0;
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getConge>;
+  dataSource!: MatTableDataSource<getAbsence>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -43,31 +43,31 @@ export class CongesComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addCongeForm!: FormGroup ;
-  public editCongeForm!: FormGroup
-  public deleteCongeForm!: FormGroup
+  public addAbsenceForm!: FormGroup ;
+  public editAbsenceForm!: FormGroup
+  public deleteAbsenceForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router,private data: CongeService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router,private data: AbsencesService) {}
 
   ngOnInit(): void {
      this.getTableData();
 
-     this.addCongeForm = this.formBuilder.group({
-      type_conges_id: [0, [Validators.required]],
+     this.addAbsenceForm = this.formBuilder.group({
+      type_absence_id: [0, [Validators.required]],
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
     }, { validator: this.datesValidator });
 
-     this.editCongeForm = this.formBuilder.group({
+     this.editAbsenceForm = this.formBuilder.group({
       id: [0, [Validators.required]],
-      type_conges_id: [0, [Validators.required]],
+      type_absence_id: [0, [Validators.required]],
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
     }, { validator: this.datesValidator });
     
-     this.deleteCongeForm = this.formBuilder.group({
+     this.deleteAbsenceForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
   }
@@ -80,7 +80,7 @@ export class CongesComponent implements OnInit {
     }
     const startDate = startDateControl.value;
     const endDate = endDateControl.value;
-    if (startDate && endDate && startDate >= endDate) {
+    if (startDate && endDate && startDate > endDate) {
       return { datesInvalid: true };
     }
     return null;
@@ -89,32 +89,32 @@ export class CongesComponent implements OnInit {
 
   
   private getTableData(): void {
-    this.lstConge = [];
+    this.lstAbsence = [];
     this.serialNumberArray = [];
  
-    this.data.getAllConge().subscribe((res: any) => {
+    this.data.getAllAbsence().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getConge, index: number) => {
+      res.data.data.map((res: getAbsence, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.data.getTypeCongeWithID(res.type_conges_id).subscribe((ans: any) => {
+          this.data.getTypeAbsenceWithID(res.type_absence_id).subscribe((ans: any) => {
             res.libelle = ans.data.libelle;
           });
           this.data.getEmployeWithID(res.employe_id).subscribe((ans: any) => {
             res.employe = ans.data.nom + " " + ans.data.prenom;
           });
-          this.lstConge.push(res);
+          this.lstAbsence.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
 
-      this.data.getAllTypeConges().subscribe((res: any) => {
-        res.data.data.map((res: getTypeConge, index: number) => {
+      this.data.getAllTypeAbsences().subscribe((res: any) => {
+        res.data.data.map((res: getTypeAbsence, index: number) => {
           const serialNumber = index + 1;
           if (index >= this.skip && serialNumber <= this.limit) {
             res.id;// = serialNumber;
-            this.lstTypeConge.push(res);
+            this.lstTypeAbsence.push(res);
             this.serialNumberArray.push(serialNumber);
           }
         });
@@ -131,7 +131,7 @@ export class CongesComponent implements OnInit {
         });
       });
 
-      this.dataSource = new MatTableDataSource<getConge>(this.lstConge);
+      this.dataSource = new MatTableDataSource<getAbsence>(this.lstAbsence);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
@@ -144,14 +144,14 @@ export class CongesComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  onClickSubmitAddConge(){
+  onClickSubmitAddAbsence(){
 
-    if (this.addCongeForm.valid){
-      this.addCongeForm.patchValue({ date_debut: this.formatDateToString(this.addCongeForm.value.date_debut) });
-      this.addCongeForm.patchValue({ date_fin: this.formatDateToString(this.addCongeForm.value.date_fin) });
-      
-      this.data.saveConge(this.addCongeForm.value).subscribe(
-        (data:any)=>{
+    if (this.addAbsenceForm.valid){
+      this.addAbsenceForm.patchValue({ date_debut: this.formatDateToString(this.addAbsenceForm.value.date_debut) });
+      this.addAbsenceForm.patchValue({ date_fin: this.formatDateToString(this.addAbsenceForm.value.date_fin) });
+
+      this.data.saveAbsence(this.addAbsenceForm.value).subscribe(
+        (data: any) => {
           location.reload();
         }
       )
@@ -166,25 +166,25 @@ export class CongesComponent implements OnInit {
   }
 
   getEditForm(row: any){
-    this.editCongeForm.patchValue({
+    this.editAbsenceForm.patchValue({
       id: row.id,
-      type_conges_id: row.type_conges_id,
+      type_absence_id: row.type_absence_id,
       employe_id: row.employe_id,
       date_debut: this.convertToDate(row.date_debut),
       date_fin: this.convertToDate(row.date_fin),
     })
-    this.editFormSelectedTypeCongeId = row.type_conges_id;
+    this.editFormSelectedTypeAbsenceId = row.type_absence_id;
     this.editFormSelectedEmployeId = row.employe_id;
   }
 
-  onClickSubmitEditConge(){
+  onClickSubmitEditAbsence(){
 
-    this.editCongeForm.patchValue({ date_debut: this.formatDateToString(this.editCongeForm.value.date_debut) });
-    this.editCongeForm.patchValue({ date_fin: this.formatDateToString(this.editCongeForm.value.date_fin) });
+    this.editAbsenceForm.patchValue({ date_debut: this.formatDateToString(this.editAbsenceForm.value.date_debut) });
+    this.editAbsenceForm.patchValue({ date_fin: this.formatDateToString(this.editAbsenceForm.value.date_fin) });
 
-    if (this.editCongeForm.valid){
-      const id = this.editCongeForm.value.id;
-      this.data.editConge(this.editCongeForm.value).subscribe(
+    if (this.editAbsenceForm.valid){
+      const id = this.editAbsenceForm.value.id;
+      this.data.editAbsence(this.editAbsenceForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
@@ -195,21 +195,20 @@ export class CongesComponent implements OnInit {
   }
 
   getDeleteForm(row: any){
-    this.deleteCongeForm.patchValue({
+    this.deleteAbsenceForm.patchValue({
       id: row.id
     })
   }
 
   onClickSubmitDeleteAbsence(){
 
-    if (this.deleteCongeForm.valid){
-      const id = this.deleteCongeForm.value.id;
-      this.data.deleteConge(this.deleteCongeForm.value).subscribe(
+    if (this.deleteAbsenceForm.valid){
+      const id = this.deleteAbsenceForm.value.id;
+      this.data.deleteAbsence(this.deleteAbsenceForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
       )
-      console.log("success")
     } else {
       console.log("desole le formulaire n'est pas bien renseigné")
     }
@@ -223,13 +222,13 @@ export class CongesComponent implements OnInit {
 
 
   public sortData(sort: Sort) {
-    const data = this.lstConge.slice();
+    const data = this.lstAbsence.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstConge = data;
+      this.lstAbsence = data;
     } else {
-      this.lstConge = data.sort((a: any, b: any) => {
+      this.lstAbsence = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -244,7 +243,7 @@ export class CongesComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstConge = this.dataSource.filteredData;
+    this.lstAbsence = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

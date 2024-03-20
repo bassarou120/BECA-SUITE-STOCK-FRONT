@@ -75,9 +75,8 @@ export class DataService {
               base: 'holidays' },
             {
               menuValue: 'Les Absences',
-              route: "#",
-              // route: routes.leaveemployee,
-              base: 'leave-employee',
+              route: routes.absences,
+              base: 'absences',
             },
             {
               menuValue: 'test',

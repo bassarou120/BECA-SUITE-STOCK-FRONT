@@ -20,6 +20,7 @@ import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.componen
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { CongesComponent } from './conges/conges.component';
+import { AbsencesComponent } from './absences/absences.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CongesComponent } from './conges/conges.component';
     ShiftScheduleComponent,
     ShiftListComponent,
     ShiftListComponent,
-    CongesComponent
+    CongesComponent,
+    AbsencesComponent
   ],
   imports: [
     CommonModule,
