@@ -194,29 +194,29 @@ export class CongesComponent implements OnInit {
     }
   }
 
+  getDeleteForm(row: any){
+    this.deleteCongeForm.patchValue({
+      id: row.id
+    })
+  }
+
   onClickSubmitDeleteDepartement(){
-    // console.log(this.deleteCongeForm.value)
 
-    //   if (this.deleteCongeForm.valid){
-    //     const id = this.deleteCongeForm.value.id;
-    //     this.data.deleteConge(this.deleteCongeForm.value).subscribe(
-    //       (data:any)=>{
-    //         location.reload();
-    //       }
-    //     )
-    //     console.log("success")
-    //   }else {
-
-    //     alert("desole le formulaire n'est pas bien renseigné")
-      // }
+    if (this.deleteCongeForm.valid){
+      const id = this.deleteCongeForm.value.id;
+      this.data.deleteConge(this.deleteCongeForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    } else {
+      console.log("desole le formulaire n'est pas bien renseigné")
+    }
 
   }
 
-  getDeleteForm(row: any){
-    // this.deleteCongeForm.patchValue({
-    //  id:row.id,
-    // })
- }
+
 
 
 
