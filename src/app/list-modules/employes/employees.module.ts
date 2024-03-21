@@ -1,4 +1,5 @@
-
+import { NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { EmployeesRoutingModule } from './employees-routing.module';
 import { EmployeesComponent } from './employees.component';
@@ -20,6 +21,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import {NgModule} from "@angular/core";
 import {CommonModule, DatePipe} from "@angular/common";
+import { CongesComponent } from './conges/conges.component';
+import { AbsencesComponent } from './absences/absences.component';
 
 // @ts-ignore
 @NgModule({
@@ -29,7 +32,6 @@ import {CommonModule, DatePipe} from "@angular/common";
     EmployeListComponent,
     EmployePageContentComponent,
     EmployeModalComponent,
-
     LeaveAdminComponent,
     LeaveEmployeeComponent,
     LeaveSettingsComponent,
@@ -39,7 +41,10 @@ import {CommonModule, DatePipe} from "@angular/common";
     TimesheetComponent,
     OvertimeComponent,
     ShiftScheduleComponent,
-    ShiftListComponent
+    ShiftListComponent,
+    ShiftListComponent,
+    CongesComponent,
+    AbsencesComponent
   ],
   imports: [
     CommonModule,
