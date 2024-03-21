@@ -49,6 +49,10 @@ export class routes {
     return this.baseUrl + '/employees/absences';
   }
 
+  public static get plaintesGRH(): string {
+    return this.baseUrl + '/employees/plaintes';
+  }
+
 
   
   public static get type_conge(): string {

@@ -1,0 +1,104 @@
+.custom-table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  /* Première colonne */
+  .custom-table td:first-child,
+  .custom-table th:first-child {
+    width: 5%; // Largeur de 1.5%
+    max-width: 5%;
+    max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
+    white-space: normal; // Permet au texte de se développer en plusieurs lignes
+    word-wrap: break-word; // Permet au texte de se rompre automatiquement
+    overflow-x: hidden; // Masque le défilement horizontal
+    overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
+    scrollbar-width: thin;
+  }
+  
+  /* Deuxième colonne */
+  .custom-table td:nth-child(2),
+  .custom-table th:nth-child(2) {
+    width: 13%; // Largeur de 10.5%
+    max-width: 13%;
+    max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
+    white-space: normal; // Permet au texte de se développer en plusieurs lignes
+    word-wrap: break-word; // Permet au texte de se rompre automatiquement
+    overflow-x: hidden; // Masque le défilement horizontal
+    overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
+    scrollbar-width: thin;
+  }
+  
+  /* Troisième colonne */
+  .custom-table td:nth-child(3),
+  .custom-table th:nth-child(3) {
+    width: 13.25%; // Largeur de 10.5%
+    max-width: 13.25%;
+    max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
+    white-space: normal; // Permet au texte de se développer en plusieurs lignes
+    word-wrap: break-word; // Permet au texte de se rompre automatiquement
+    overflow-x: hidden; // Masque le défilement horizontal
+    overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
+    scrollbar-width: thin;
+  }
+  
+  /* Quatrième colonne */
+  .custom-table td:nth-child(4),
+  .custom-table th:nth-child(4) {
+    width: 25%; // Largeur de 21%
+    max-width: 25%;
+    max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
+    white-space: normal; // Permet au texte de se développer en plusieurs lignes
+    word-wrap: break-word; // Permet au texte de se rompre automatiquement
+    overflow-x: hidden; // Masque le défilement horizontal
+    overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
+    scrollbar-width: thin;
+  }
+  
+  /* Cinquième colonne */
+  .custom-table td:nth-child(5),
+  .custom-table th:nth-child(5) {
+    width: 11%; // Largeur de 10.5%
+    max-width: 11%;
+    max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
+    white-space: normal; // Permet au texte de se développer en plusieurs lignes
+    word-wrap: break-word; // Permet au texte de se rompre automatiquement
+    overflow-x: hidden; // Masque le défilement horizontal
+    overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
+    scrollbar-width: thin;
+  }
+  
+  /* Sixième colonne */
+  .custom-table td:nth-child(6),
+  .custom-table th:nth-child(6) {
+    width: 12%; // Largeur de 10.5%
+    max-width: 12%;
+    max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
+    white-space: normal; // Permet au texte de se développer en plusieurs lignes
+    word-wrap: break-word; // Permet au texte de se rompre automatiquement
+    overflow-x: hidden; // Masque le défilement horizontal
+    overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
+    scrollbar-width: thin;
+  }
+  
+  /* Septième colonne */
+  .custom-table td:nth-child(7),
+  .custom-table th:nth-child(7) {
+    width: 14%; // Largeur de 10.5%
+    max-width: 14%;
+    max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
+    white-space: normal; // Permet au texte de se développer en plusieurs lignes
+    word-wrap: break-word; // Permet au texte de se rompre automatiquement
+    overflow-x: hidden; // Masque le défilement horizontal
+    overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
+    scrollbar-width: thin;
+  }
+  
+  /* Huitième colonne */
+  .custom-table td:last-child,
+  .custom-table th:last-child {
+    white-space: nowrap; // Empêche le texte de se rompre
+    overflow-x: auto; // Ajoute une barre de défilement horizontal si nécessaire
+    scrollbar-width: thin;
+  }
+  

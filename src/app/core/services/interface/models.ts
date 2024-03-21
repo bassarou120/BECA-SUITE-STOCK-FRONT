@@ -735,6 +735,17 @@ export interface getAbsence {
   employe: string;
 }
 
+export interface getPlainte {
+  id: number;
+  titre: string;
+  description: string;
+  date_M: Date;
+  status: string;
+  autre_info: string;
+  employe_id: number;
+  employe: string;
+}
+
 export interface getMiniTemplateEmploye {
   id: number;
   nom: string;
