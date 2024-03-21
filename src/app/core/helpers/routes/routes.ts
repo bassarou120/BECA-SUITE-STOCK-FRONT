@@ -34,15 +34,15 @@ export class routes {
   }
 
   public static get employee_page(): string {
-    return this.baseUrl + '/employees/employee-page';
+    return this.baseUrl + '/employes/employe-page';
   }
 
   public static get employees(): string {
-    return this.baseUrl + '/employees';
+    return this.baseUrl + '/employes';
   }
 
-  public static get employeeProfile(): string {
-    return this.baseUrl + '/employees/employee-profile';
+  public static get employeProfile(): string {
+    return this.baseUrl + '/employes/employe-profile';
   }
 
   public static get type_conge(): string {

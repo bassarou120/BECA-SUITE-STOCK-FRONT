@@ -146,7 +146,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" style="display: none">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Mot de passe</label>
                 <input
@@ -176,7 +176,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" style="display: none">
               <div class="input-block mb-3">
                 <label class="col-form-label" for=""
                   >Confirmez mot de passe</label
@@ -321,9 +321,15 @@
                   placeholder="Select Department"
                 >
                   <mat-option value="1">Select Department</mat-option>
-                  <mat-option value="1">Web Development</mat-option>
+                  <mat-option
+                    *ngFor="let departement of listDepartement"
+                    value="{{ departement.id }}"
+                    >{{ departement.nom_dep }}</mat-option
+                  >
+
+                  <!-- <mat-option value="1">Web Development</mat-option>
                   <mat-option value="1">IT Management</mat-option>
-                  <mat-option value="1">Marketing</mat-option>
+                  <mat-option value="1">Marketing</mat-option> -->
                 </mat-select>
                 <div
                   *ngIf="
@@ -358,9 +364,14 @@
                   placeholder="Selectinnez le poste "
                 >
                   <mat-option value="1">Select poste</mat-option>
-                  <mat-option value="1">Web Designer</mat-option>
+                  <mat-option
+                    *ngFor="let poste of listPoste"
+                    value="{{ poste.id }}"
+                    >{{ poste.nom_poste }}</mat-option
+                  >
+                  <!-- <mat-option value="1">Web Designer</mat-option>
                   <mat-option value="1">Web Developer</mat-option>
-                  <mat-option value="1">Android Developer</mat-option>
+                  <mat-option value="1">Android Developer</mat-option> -->
                 </mat-select>
                 <div
                   *ngIf="
@@ -1098,9 +1109,11 @@
                   placeholder="Select poste_id"
                 >
                   <mat-option value="designation">Select poste_id</mat-option>
-                  <mat-option value="designer">Web Designer</mat-option>
-                  <mat-option value="developer">Web Developer</mat-option>
-                  <mat-option value="android">Android Developer</mat-option>
+                  <mat-option
+                    *ngFor="let poste of listPoste"
+                    value="{{ poste.id }}"
+                    >{{ poste.nom_poste }}</mat-option
+                  >
                 </mat-select>
                 <div
                   *ngIf="

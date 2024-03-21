@@ -19,6 +19,9 @@ export class EmployeModalComponent implements OnInit {
 
   curentId: any;
 
+  listDepartement: any;
+  listPoste: any;
+
   ngOnInit(): void {
     // "nom": "toto",
     //   "prenom": "dalout",
@@ -30,12 +33,13 @@ export class EmployeModalComponent implements OnInit {
     //   "user_id": 12,
     //   "departement_id": 1,
     // add employee form validation
+    this.getDepartementPost();
     this.addEmployeeForm = this.formBuilder.group({
       nom: ['', [Validators.required]],
       prenom: ['', [Validators.required]],
       username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      c_password: ['', [Validators.required]],
+      password: ['123456', [Validators.required]],
+      c_password: ['123456', [Validators.required]],
       departement_id: ['', [Validators.required]],
       poste_id: ['', [Validators.required]],
       email: ['', [Validators.required]],
@@ -50,9 +54,9 @@ export class EmployeModalComponent implements OnInit {
       FirstName: ['', [Validators.required]],
       LastName: ['', [Validators.required]],
       UserName: ['', [Validators.required]],
-      Password: ['', [Validators.required]],
+      Password: ['123456', [Validators.required]],
       ConfirmPassword: ['123456', [Validators.required]],
-      DepartmentName: ['123456', [Validators.required]],
+      DepartmentName: ['', [Validators.required]],
       Designation: ['', [Validators.required]],
       Email: ['', [Validators.required]],
       PhoneNumber: ['', [Validators.required]],
@@ -92,5 +96,17 @@ export class EmployeModalComponent implements OnInit {
       console.log(response);
       location.reload();
     });
+  }
+
+  getDepartementPost() {
+    this.employeservice.getDepartementPoste().subscribe(
+      (date: any) => {
+        console.log(date);
+
+        this.listDepartement = date.data.departement;
+        this.listPoste = date.data.poste;
+      },
+      (error: any) => {}
+    );
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { routes } from 'src/app/core/core.index';
+import { EmployeService } from 'src/app/core/services/employe/employe.service';
 interface data {
   value: string;
 }
@@ -29,12 +31,37 @@ export class EmployeeProfileComponent implements OnInit {
   public routes = routes;
   bsValue = new Date();
   public addEmployeeForm!: FormGroup;
-  constructor(private formBuilder: FormBuilder) {}
+
+  curentEmploye: any;
+  idEmploye: any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private employeservice: EmployeService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe((params) => {
+      const type = params['type'];
+      this.idEmploye = params['id'];
+    });
     this.addEmployeeForm = this.formBuilder.group({
       client: ['', [Validators.required]],
     });
+
+    // alert(this.idEmploye);
+    this.getCurentEmploy();
+  }
+
+  getCurentEmploy() {
+    this.employeservice.getEmploye(this.idEmploye).subscribe(
+      (data: any) => {
+        // alert(JSON.stringify(data));
+        this.curentEmploye = data.data;
+      },
+      (error: any) => {}
+    );
   }
 
   /*

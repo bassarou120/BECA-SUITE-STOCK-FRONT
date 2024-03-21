@@ -1,5 +1,3 @@
-
-
 import { EmployeListComponent } from './all-employe/employe-list/employe-list.component';
 import { EmployePageContentComponent } from './all-employe/employe-page-content/employe-page-content.component';
 import { EmployeeProfileComponent } from './all-employe/employee-profile/employee-profile.component';
@@ -14,32 +12,33 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
-import {RouterModule, Routes} from "@angular/router";
-import {NgModule} from "@angular/core";
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   {
     path: '',
-  component: EmployeesComponent,
-  children: [
-    { path: "employee-list", component: EmployeListComponent },
-    { path: "employee-page", component: EmployePageContentComponent },
-    { path: "employee-profile", component: EmployeeProfileComponent },
-    { path: "leave-admin", component: LeaveAdminComponent },
-    { path: "leave-employee", component: LeaveEmployeeComponent },
-    { path: "leave-settings", component: LeaveSettingsComponent },
-    { path: "attendance-admin", component: AttendanceAdminComponent },
-    { path: "attendance-employee", component: AttendanceEmployeeComponent },
-    { path: "designations", component: DesignationsComponent },
-    { path: "timesheet", component: TimesheetComponent },
-    { path: "overtime", component: OvertimeComponent },
-    { path: "shift-schedule", component: ShiftScheduleComponent },
-    { path: "shift-list", component: ShiftListComponent },
-  ],
- }];
+    component: EmployeesComponent,
+    children: [
+      { path: 'employe-list', component: EmployeListComponent },
+      { path: 'employe-page', component: EmployePageContentComponent },
+      { path: 'employe-profile/:id', component: EmployeeProfileComponent },
+      { path: 'leave-admin', component: LeaveAdminComponent },
+      { path: 'leave-employee', component: LeaveEmployeeComponent },
+      { path: 'leave-settings', component: LeaveSettingsComponent },
+      { path: 'attendance-admin', component: AttendanceAdminComponent },
+      { path: 'attendance-employee', component: AttendanceEmployeeComponent },
+      { path: 'designations', component: DesignationsComponent },
+      { path: 'timesheet', component: TimesheetComponent },
+      { path: 'overtime', component: OvertimeComponent },
+      { path: 'shift-schedule', component: ShiftScheduleComponent },
+      { path: 'shift-list', component: ShiftListComponent },
+    ],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class EmployeesRoutingModule { }
+export class EmployeesRoutingModule {}

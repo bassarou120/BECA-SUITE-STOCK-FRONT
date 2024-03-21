@@ -22,7 +22,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'employees',
+        path: 'employes',
         canActivate: [AuthService],
         loadChildren: () =>
           import('./employes/employees.module').then((m) => m.EmployeesModule),

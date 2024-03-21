@@ -36,8 +36,16 @@ export class EmployeService {
     return this.http.get<any>(`${this.url}/employe`);
   }
 
+  getEmploye(id: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/employe/${id}`);
+  }
+
   deleteEmploye(id: any): Observable<any> {
     return this.http.delete<any>(`${this.url}/employe/${id}`);
+  }
+
+  getDepartementPoste() {
+    return this.http.get<any>(`${this.url}/getDepartementPoste`);
   }
 
   /*

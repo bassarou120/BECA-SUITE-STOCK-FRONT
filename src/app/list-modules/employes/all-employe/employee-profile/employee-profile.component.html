@@ -7,7 +7,7 @@
         <h3 class="page-title">Profile de l'employé</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
-            <a [routerLink]="routes.adminDashboard">Dashboard</a>
+            <a [routerLink]="routes.adminDashboard">Tableau de bord </a>
           </li>
           <li class="breadcrumb-item active">Profile</li>
         </ul>
@@ -23,23 +23,31 @@
           <div class="profile-view">
             <div class="profile-img-wrap">
               <div class="profile-img">
-                <a><img alt="" src="assets/img/profiles/avatar-2.jpg" /></a>
+                <!-- assets/img/profiles/avatar-02.jpg -->
+                <a><img alt="" src="assets/img/profiles/avatar-02.jpg" /></a>
               </div>
             </div>
             <div class="profile-basic">
               <div class="row">
                 <div class="col-md-5">
                   <div class="profile-info-left">
-                    <h3 class="user-name m-t-0 mb-0">John Doe</h3>
-                    <h6 class="text-muted">UI/UX Design Team</h6>
-                    <small class="text-muted">Web Designer</small>
-                    <div class="staff-id">Employee ID : FT-0001</div>
+                    <h3 class="user-name m-t-0 mb-0">
+                      {{ curentEmploye.nom }} {{ curentEmploye.prenom }}
+                    </h3>
+                    <h6 class="text-muted">
+                      {{ curentEmploye.departement.nom_dep }}
+                    </h6>
+                    <small class="text-muted">
+                      {{ curentEmploye.poste.nom_poste }}</small
+                    >
+                    <div class="staff-id">Matricule: FT-0001</div>
                     <div class="small doj text-muted">
-                      Date of Join : 1st Jan 2013
+                      Date d’entrée dans l’entreprise :
+                      {{ curentEmploye.date_arrivee | date : "dd-MM-YYYY" }}
                     </div>
                     <div class="staff-msg">
                       <a class="btn btn-custom" [routerLink]="routes.chat"
-                        >Send Message</a
+                        >Enregister un mouvement</a
                       >
                     </div>
                   </div>
@@ -47,28 +55,37 @@
                 <div class="col-md-7">
                   <ul class="personal-info">
                     <li>
-                      <div class="title">Phone:</div>
-                      <div class="text"><a href="">9876543210</a></div>
-                    </li>
-                    <li>
-                      <div class="title">email:</div>
-                      <div class="text"><a href="">johndoe@example.com</a></div>
-                    </li>
-                    <li>
-                      <div class="title">Birthday:</div>
-                      <div class="text">24th July</div>
-                    </li>
-                    <li>
-                      <div class="title">Address:</div>
+                      <div class="title">Telephone:</div>
                       <div class="text">
-                        1861 Bayonne Ave, Manchester Township, NJ, 08759
+                        <a href="">{{ curentEmploye.telephone }}</a>
                       </div>
                     </li>
                     <li>
-                      <div class="title">Gender:</div>
-                      <div class="text">Male</div>
+                      <div class="title">email:</div>
+                      <div class="text">
+                        <a href="">{{ curentEmploye.email }}</a>
+                      </div>
                     </li>
                     <li>
+                      <div class="title">Date de naissance:</div>
+                      <div class="text">24th July</div>
+                    </li>
+                    <li>
+                      <div class="title">Lieu de naissance:</div>
+                      <div class="text">24th July</div>
+                    </li>
+                    <li>
+                      <div class="title">Addresse:</div>
+                      <div class="text">
+                        {{ curentEmploye.adresse }}
+                      </div>
+                    </li>
+                    <li>
+                      <div class="title">Sexe:</div>
+                      <div class="text">Male</div>
+                    </li>
+
+                    <!-- <li>
                       <div class="title">Reports to:</div>
                       <div class="text">
                         <div class="avatar-box">
@@ -79,11 +96,11 @@
                             />
                           </div>
                         </div>
-                        <a [routerLink]="routes.employeeProfile">
+                        <a [routerLink]="routes.employeProfile">
                           Jeffery Lalor
                         </a>
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -108,7 +125,7 @@
         <ul class="nav nav-tabs nav-tabs-bottom">
           <li class="nav-item">
             <a href="#emp_profile" data-bs-toggle="tab" class="nav-link active"
-              >Profile</a
+              >Information personelles</a
             >
           </li>
           <!--                    <li class="nav-item"><a href="#emp_projects" data-bs-toggle="tab" class="nav-link">Projects</a></li>-->
