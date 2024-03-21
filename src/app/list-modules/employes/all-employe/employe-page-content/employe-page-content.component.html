@@ -99,16 +99,17 @@
             ><i class="material-icons">more_vert</i></a
           >
           <div class="dropdown-menu dropdown-menu-right">
-            <a
+            <!-- <a
               class="dropdown-item"
               data-bs-toggle="modal"
               data-bs-target="#edit_employee"
               ><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a
-            >
+            > -->
             <a
               class="dropdown-item"
               data-bs-toggle="modal"
-              data-bs-target="#delete_employee"
+              data-bs-target="#delete_employe"
+              (click)="getIDForm(emp.id)"
               ><i class="fa-regular fa-trash-can m-r-5"></i> Supprimer</a
             >
           </div>
@@ -123,3 +124,44 @@
   </div>
 </div>
 <!-- /Page Content -->
+
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_employe" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Supprimer l'employe</h3>
+          <p>Êtes-vous sûr de vouloir supprimer ?</p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-6">
+              <form
+                [formGroup]="deleteEmployeForm"
+                (ngSubmit)="onClickSubmitDeleteEmplye()"
+              >
+                <input type="hidden" formControlName="id" />
+                <a
+                  href="javascript:void(0);"
+                  class="btn btn-primary continue-btn"
+                  type="submit"
+                  (click)="onClickSubmitDeleteEmplye()"
+                  >Supprimer</a
+                >
+              </form>
+            </div>
+            <div class="col-6">
+              <a
+                href="javascript:void(0);"
+                data-bs-dismiss="modal"
+                class="btn btn-primary cancel-btn"
+                >Annuler</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

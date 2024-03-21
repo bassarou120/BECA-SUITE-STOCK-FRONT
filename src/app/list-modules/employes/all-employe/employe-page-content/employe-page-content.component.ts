@@ -5,6 +5,7 @@ import { EmployeService } from '../../../../core/services/employe/employe.servic
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { RequestOptions } from '@angular/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-page-content',
@@ -18,7 +19,10 @@ export class EmployePageContentComponent implements OnInit {
   // public lstEmployee: Array<lstEmployee>;
   public lstEmployee: Array<any> = [];
 
+  public deleteEmployeForm!: FormGroup;
+
   constructor(
+    private formBuilder: FormBuilder,
     public router: Router,
     private http: HttpClient,
     private dataservice: DataService,
@@ -30,6 +34,9 @@ export class EmployePageContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEnmpl();
+    this.deleteEmployeForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
+    });
   }
 
   getEnmpl() {
@@ -37,5 +44,26 @@ export class EmployePageContentComponent implements OnInit {
       console.log(data['data']['data']);
       this.lstEmployee = data['data'];
     });
+  }
+
+  getIDForm(id: any) {
+    this.deleteEmployeForm.patchValue({
+      id: id,
+    });
+  }
+  onClickSubmitDeleteEmplye() {
+    console.log(this.deleteEmployeForm.value);
+
+    // alert(this.deleteEmployeForm.value.id);
+
+    if (this.deleteEmployeForm.valid) {
+      this.employeservice
+        .deleteEmploye(this.deleteEmployeForm.value.id)
+        .subscribe((data: any) => {
+          console.log(data['data']['data']);
+          // this.lstEmployee = data['data'];
+          location.reload();
+        });
+    }
   }
 }
