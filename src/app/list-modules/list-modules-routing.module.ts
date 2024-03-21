@@ -9,6 +9,12 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full',
   },
+
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./auth/login/login.module').then((m) => m.LoginModule),
+  },
   {
     path: '',
 
