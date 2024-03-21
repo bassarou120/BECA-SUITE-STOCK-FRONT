@@ -10,7 +10,7 @@ COPY . /usr/src/app
 RUN npm install --force
 #RUN npm install -g  @angular/cli
 
-RUN cp ./src/environment/environment.prod.ts   /usr/src/app/src/environment/environment.ts
+RUN cp ./src/environments/environment.prod.ts   /usr/src/app/src/environments/environment.ts
 
 #RUN ng build
 RUN npm run build
