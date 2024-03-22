@@ -79,6 +79,10 @@ export class routes {
     return this.baseUrl + '/parametrage/role';
   }
 
+  public static get categorie(): string {
+    return this.baseUrl + '/parametrage/categorie';
+  }
+
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';
   }

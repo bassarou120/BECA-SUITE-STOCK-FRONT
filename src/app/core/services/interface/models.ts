@@ -759,6 +759,11 @@ export interface getTypeAbsence {
   libelle: string;
 }
 
+export interface getCategorie {
+  id: number;
+  libelle: string;
+}
+
 export interface getRole {
   id: number;
   lib: string;

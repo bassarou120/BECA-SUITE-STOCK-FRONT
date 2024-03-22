@@ -169,6 +169,11 @@ export class DataService {
               route: routes.role,
               base: 'role',
             },
+            {
+              menuValue: 'Catégorie',
+              route: routes.categorie,
+              base: 'categorie',
+            },
 
           ],
         },
