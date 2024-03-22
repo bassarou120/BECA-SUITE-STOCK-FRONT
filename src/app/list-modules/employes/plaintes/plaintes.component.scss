@@ -45,8 +45,7 @@
   /* Quatrième colonne */
   .custom-table td:nth-child(4),
   .custom-table th:nth-child(4) {
-    width: 25%; // Largeur de 21%
-    max-width: 25%;
+    display: flex;
     max-height: 100px; // Hauteur maximale avant que la barre de défilement apparaisse
     white-space: normal; // Permet au texte de se développer en plusieurs lignes
     word-wrap: break-word; // Permet au texte de se rompre automatiquement
@@ -97,8 +96,14 @@
   /* Huitième colonne */
   .custom-table td:last-child,
   .custom-table th:last-child {
+    width: 7%; // Largeur de 7%
+    max-width: 7%;
     white-space: nowrap; // Empêche le texte de se rompre
-    overflow-x: auto; // Ajoute une barre de défilement horizontal si nécessaire
     scrollbar-width: thin;
   }
   
+
+
+.custom-textarea {
+    line-height: 1.4; // Réduit l'espacement entre les lignes
+}

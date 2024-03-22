@@ -54,7 +54,7 @@ export class routes {
   }
 
   public static get plaintesGRH(): string {
-    return this.baseUrl + '/employees/plaintes';
+    return this.baseUrl + '/employes/plaintes';
   }
 
 

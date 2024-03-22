@@ -51,11 +51,13 @@ export class PlaintesComponent implements OnInit {
      this.getTableData();
 
      this.addPlainteForm = this.formBuilder.group({
-      type_Plainte_id: [0, [Validators.required]],
+      date_M: [new Date(), [Validators.required]],
       employe_id: [0, [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
-    }, { validator: this.datesValidator });
+      titre: ["", [Validators.required]],
+      autre_info: ["Aucun", [Validators.required]],
+      description: ["", [Validators.required]],
+      status: ["Non Traité", [Validators.required]],
+    });
 
      this.editPlainteForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -63,27 +65,12 @@ export class PlaintesComponent implements OnInit {
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
-    }, { validator: this.datesValidator });
+    });
     
      this.deletePlainteForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
   }
-
-  private datesValidator(group: FormGroup) {
-    const startDateControl = group.get('date_debut');
-    const endDateControl = group.get('date_fin');
-    if (!startDateControl || !endDateControl) {
-      return null;
-    }
-    const startDate = startDateControl.value;
-    const endDate = endDateControl.value;
-    if (startDate && endDate && startDate > endDate) {
-      return { datesInvalid: true };
-    }
-    return null;
-  }
-
 
   
   private getTableData(): void {
@@ -130,18 +117,17 @@ export class PlaintesComponent implements OnInit {
 
   onClickSubmitAddPlainte(){
 
-    // if (this.addPlainteForm.valid){
-    //   this.addPlainteForm.patchValue({ date_debut: this.formatDateToString(this.addPlainteForm.value.date_debut) });
-    //   this.addPlainteForm.patchValue({ date_fin: this.formatDateToString(this.addPlainteForm.value.date_fin) });
+    if (this.addPlainteForm.valid){
+      this.addPlainteForm.patchValue({ date_M: this.formatDateToString(this.addPlainteForm.value.date_M) });
 
-    //   this.data.savePlainte(this.addPlainteForm.value).subscribe(
-    //     (data: any) => {
-    //       location.reload();
-    //     }
-    //   )
-    // }else {
-    //   console.log("Désolé le formulaire n'est pas bien renseigné")
-    // }
+      this.data.savePlainte(this.addPlainteForm.value).subscribe(
+        (data: any) => {
+          location.reload();
+        }
+      )
+    }else {
+      alert("Désolé le formulaire n'est pas bien renseigné")
+    }
   }
 
   private convertToDate(date: string): Date {

@@ -69,10 +69,10 @@
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                                            data-bs-target="#edit_absence"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            data-bs-target="#edit_plainte"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Modifier</a>
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                                            data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            data-bs-target="#delete_plainte"><i class="fa-regular fa-trash-can m-r-5"></i>
                                             Supprimer</a>
                                     </div>
                                 </div>
@@ -171,27 +171,10 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="type_absence_id">Type d'Absence' <span class="text-danger">*</span></label>
-                                <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addPlainteForm.get('type_absence_id')?.invalid && addPlainteForm.get('type_absence_id')?.touched"
-                                    formControlName="type_absence_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of [{id: 1, libelle: 1}]" value={{item.id}}> {{ item.libelle }} </mat-option>
-                                </mat-select>
-                                <div
-                                    *ngIf="addPlainteForm.get('type_absence_id')?.invalid && addPlainteForm.get('type_absence_id')?.touched">
-                                    <small
-                                        *ngIf="addPlainteForm.get('type_absence_id')?.invalid && addPlainteForm.get('type_absence_id')?.touched"
-                                        class="text-danger"> *Le type d'absence est obligatoire</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addPlainteForm.get('employe_id')?.invalid && addPlainteForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner le type de congé">
+                                    formControlName="employe_id" placeholder="Selectionner l'employé concerné">
                                     <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
@@ -205,17 +188,17 @@
 
                         <div class="col-sm-6">
                             <div class="input-block mb-3 date-input1">
-                                <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="date_M">Date de la plainte <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                        [class.invalid]="addPlainteForm.get('date_debut')?.invalid && addPlainteForm.get('date_debut')?.touched"
-                                        placeholder="Sélectionner la date de début" formControlName="date_debut">
+                                        [class.invalid]="addPlainteForm.get('date_M')?.invalid && addPlainteForm.get('date_M')?.touched"
+                                        placeholder="Sélectionner la date de début" formControlName="date_M">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div
-                                        *ngIf="addPlainteForm.get('date_debut')?.invalid && addPlainteForm.get('date_debut')?.touched">
+                                        *ngIf="addPlainteForm.get('date_M')?.invalid && addPlainteForm.get('date_M')?.touched">
                                         <small
-                                            *ngIf="addPlainteForm.get('date_debut')?.invalid && addPlainteForm.get('date_debut')?.touched"
-                                            class="text-danger"> *La date de début est obligatoire</small>
+                                            *ngIf="addPlainteForm.get('date_M')?.invalid && addPlainteForm.get('date_M')?.touched"
+                                            class="text-danger"> *La date de la plainte est obligatoire</small>
                                     </div>
                                 </div>
                             </div>
@@ -223,18 +206,30 @@
 
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
-                                <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                    [class.invalid]="addPlainteForm.get('date_fin')?.invalid && addPlainteForm.get('date_fin')?.touched"
-                                    placeholder="Sélectionner la date de fin" formControlName="date_fin">
-                                    <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div
-                                        *ngIf="addPlainteForm.get('date_fin')?.invalid && addPlainteForm.get('date_fin')?.touched">
-                                        <small
-                                            *ngIf="addPlainteForm.get('date_fin')?.invalid && addPlainteForm.get('date_fin')?.touched"
-                                            class="text-danger"> *La data de fin est obligatoire </small>
-                                    </div>
+                                <label class="col-form-label" for="titre">Titre de la plainte <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addPlainteForm.get('titre')?.invalid && addPlainteForm.get('titre')?.touched"
+                                    placeholder="Entrer un titre pour la plainte" formControlName="titre">
+                                <div
+                                    *ngIf="addPlainteForm.get('titre')?.invalid && addPlainteForm.get('titre')?.touched">
+                                    <small
+                                        *ngIf="addPlainteForm.get('titre')?.invalid && addPlainteForm.get('titre')?.touched"
+                                        class="text-danger"> *Le titre de la plainte est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="autre_info">Autres Infos <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addPlainteForm.get('autre_info')?.invalid && addPlainteForm.get('autre_info')?.touched"
+                                    placeholder="Informations supplémentaires" formControlName="autre_info">
+                                <div
+                                    *ngIf="addPlainteForm.get('autre_info')?.invalid && addPlainteForm.get('autre_info')?.touched">
+                                    <small
+                                        *ngIf="addPlainteForm.get('autre_info')?.invalid && addPlainteForm.get('autre_info')?.touched"
+                                        class="text-danger"> *Autre infos est obligatoire</small>
                                 </div>
                             </div>
                         </div>
@@ -242,6 +237,20 @@
                     <div *ngIf="addPlainteForm.errors?.['datesInvalid']" class="text-danger">
                         La date de fin doit être postérieure à la date de début.
                     </div>
+
+                    <div class="input-block mb-3">
+                        <label class="col-form-label" for="description">Description de la plainte <span class="text-danger">*</span></label>
+                        <textarea class="form-control custom-textarea" rows="3"
+                                  [class.invalid]="addPlainteForm.get('description')?.invalid && addPlainteForm.get('description')?.touched"
+                                  placeholder="Entrez les détails de votre plainte ici." formControlName="description"></textarea>
+                        <div *ngIf="addPlainteForm.get('description')?.invalid && addPlainteForm.get('description')?.touched">
+                            <small class="text-danger"> *La description de la plainte est obligatoire</small>
+                        </div>
+
+                        <input type="hidden" formControlName="status">
+
+                    </div>
+                    
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
@@ -254,7 +263,7 @@
 <!-- /Add Congé Modal -->
 
 <!-- Edit Congé Modal -->
-<div id="edit_absence" class="modal custom-modal fade" role="dialog">
+<div id="edit_plainte" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -353,7 +362,7 @@
 <!-- /Edit Congé Modal -->
 
 <!-- Delete Department Modal -->
-<div class="modal custom-modal fade" id="delete_department" role="dialog">
+<div class="modal custom-modal fade" id="delete_plainte" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
