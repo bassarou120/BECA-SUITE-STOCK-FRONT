@@ -36,6 +36,7 @@ const routes: Routes = [
       { path: 'overtime', component: OvertimeComponent },
       { path: 'shift-schedule', component: ShiftScheduleComponent },
       { path: 'shift-list', component: ShiftListComponent },
+
       { path: 'conges', component: CongesComponent },
       { path: 'absences', component: AbsencesComponent },
     ],
