@@ -21,6 +21,8 @@ export class EmployeModalComponent implements OnInit {
 
   listDepartement: any;
   listPoste: any;
+  listCategorie: any;
+  listClasse: any;
 
   ngOnInit(): void {
     // "nom": "toto",
@@ -33,6 +35,14 @@ export class EmployeModalComponent implements OnInit {
     //   "user_id": 12,
     //   "departement_id": 1,
     // add employee form validation
+
+    // 'matricule',
+    //   'rib',
+    //   'sexe',
+    //   'affiliation',
+    //   'titre',
+    //   'anciennete',
+
     this.getDepartementPost();
     this.addEmployeeForm = this.formBuilder.group({
       nom: ['', [Validators.required]],
@@ -45,6 +55,17 @@ export class EmployeModalComponent implements OnInit {
       email: ['', [Validators.required]],
       telephone: ['', [Validators.required]],
       date_arrivee: ['', [Validators.required]],
+
+      matricule: ['', []],
+      rib: ['', []],
+      sexe: ['', []],
+      affiliation: ['', []],
+      titre: ['', []],
+      anciennete: ['', []],
+      classe_id: ['', []],
+      categorie_id: ['', []],
+      date_naisance: ['', []],
+      lieu_naisance: ['', []],
 
       // EmployeeID: ["", [Validators.required]],
     });
@@ -68,10 +89,15 @@ export class EmployeModalComponent implements OnInit {
 
   onClickSubmitAddEmployee() {
     console.log(this.addEmployeeForm.value);
+    alert(JSON.stringify(this.addEmployeeForm.value));
+
     let date = new Date(this.addEmployeeForm.get('date_arrivee')?.value);
     // alert(date.toISOString().slice(0, 10).replace('T', ' '));
     let mdate = date.toISOString().slice(0, 10).replace('T', ' ');
     this.addEmployeeForm.get('date_arrivee')?.setValue(mdate);
+
+    let mdate1 = (new Date(this.addEmployeeForm.get('date_naisance')?.value)).toISOString().slice(0, 10).replace('T', ' ');
+    this.addEmployeeForm.get('date_naisance')?.setValue(mdate1);
 
     // alert(this.addEmployeeForm.get('date_arrivee')?.value);
     if (this.addEmployeeForm.valid) {
@@ -105,6 +131,8 @@ export class EmployeModalComponent implements OnInit {
 
         this.listDepartement = date.data.departement;
         this.listPoste = date.data.poste;
+        this.listCategorie = date.data.categorie;
+        this.listClasse = date.data.classe;
       },
       (error: any) => {}
     );

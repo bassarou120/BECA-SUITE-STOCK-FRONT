@@ -40,7 +40,7 @@
                     <small class="text-muted">
                       {{ curentEmploye.poste.nom_poste }}</small
                     >
-                    <div class="staff-id">Matricule: FT-0001</div>
+                    <div class="staff-id">Matricule: {{ curentEmploye.matricule}}</div>
                     <div class="small doj text-muted">
                       Date d’entrée dans l’entreprise :
                       {{ curentEmploye.date_arrivee | date : "dd-MM-YYYY" }}
@@ -68,11 +68,11 @@
                     </li>
                     <li>
                       <div class="title">Date de naissance:</div>
-                      <div class="text">24th July</div>
+                      <div class="text"> {{ curentEmploye.date_naissance | date : "dd-MM-YYYY" }}</div>
                     </li>
                     <li>
                       <div class="title">Lieu de naissance:</div>
-                      <div class="text">24th July</div>
+                      <div class="text"> {{ curentEmploye.lieu_naissance }}</div>
                     </li>
                     <li>
                       <div class="title">Addresse:</div>
@@ -196,6 +196,32 @@
         <div class="col-md-6 d-flex">
           <div class="card profile-box flex-fill">
             <div class="card-body">
+              <h3 class="card-title">Bank information</h3>
+              <ul class="personal-info">
+                <li>
+                  <div class="title">Bank name</div>
+                  <div class="text">ICICI Bank</div>
+                </li>
+                <li>
+                  <div class="title">Bank account No.</div>
+                  <div class="text">159843014641</div>
+                </li>
+                <li>
+                  <div class="title">IFSC Code</div>
+                  <div class="text">ICI24504</div>
+                </li>
+                <li>
+                  <div class="title">PAN No</div>
+                  <div class="text">TC000Y56</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+<!--
+        <div class="col-md-6 d-flex">
+          <div class="card profile-box flex-fill">
+            <div class="card-body">
               <h3 class="card-title">
                 Emergency Contact
                 <a
@@ -239,33 +265,10 @@
             </div>
           </div>
         </div>
+        -->
       </div>
       <div class="row">
-        <div class="col-md-6 d-flex">
-          <div class="card profile-box flex-fill">
-            <div class="card-body">
-              <h3 class="card-title">Bank information</h3>
-              <ul class="personal-info">
-                <li>
-                  <div class="title">Bank name</div>
-                  <div class="text">ICICI Bank</div>
-                </li>
-                <li>
-                  <div class="title">Bank account No.</div>
-                  <div class="text">159843014641</div>
-                </li>
-                <li>
-                  <div class="title">IFSC Code</div>
-                  <div class="text">ICI24504</div>
-                </li>
-                <li>
-                  <div class="title">PAN No</div>
-                  <div class="text">TC000Y56</div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+<!--
         <div class="col-md-6 d-flex">
           <div class="card profile-box flex-fill">
             <div class="card-body">
@@ -321,6 +324,7 @@
             </div>
           </div>
         </div>
+        -->
       </div>
       <div class="row">
         <div class="col-md-6 d-flex">
@@ -840,7 +844,7 @@
         <div class="card-body">
           <h3 class="card-title">Basic Salary Information</h3>
 
-          <!--   
+          <!--
           <form [formGroup]="addEmployeeForm">
             <div class="row">
               <div class="col-sm-4">
@@ -1426,7 +1430,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <!--   
+        <!--
         <form>
           <div class="row">
             <div class="col-md-12">
@@ -1613,7 +1617,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <!--   
+        <!--
         <form>
           <div class="row">
             <div class="col-md-6">

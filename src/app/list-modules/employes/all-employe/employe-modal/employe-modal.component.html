@@ -47,7 +47,7 @@
                     "
                     class="text-danger"
                   >
-                    *le nom est obligatoire</small
+                    *le nom est obligatoiree</small
                   >
                 </div>
               </div>
@@ -77,11 +77,138 @@
                     "
                     class="text-danger"
                   >
-                    *le prenom est obligatoir</small
+                    *le prenom est obligatoire</small
                   >
                 </div>
               </div>
             </div>
+
+            <div class="col-sm-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                >Titre <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addEmployeeForm.get('titre')?.invalid &&
+                    addEmployeeForm.get('titre')?.touched
+                  "
+                  formControlName="titre"
+                />
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('titre')?.invalid &&
+                    addEmployeeForm.get('titre')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('titre')?.invalid &&
+                      addEmployeeForm.get('titre')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    * </small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Matricule</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addEmployeeForm.get('matricule')?.invalid &&
+                    addEmployeeForm.get('matricule')?.touched
+                  "
+                  formControlName="matricule"
+                />
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('matricule')?.invalid &&
+                    addEmployeeForm.get('matricule')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('matricule')?.invalid &&
+                      addEmployeeForm.get('matricule')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    * </small
+                  >
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                >Affiliation <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addEmployeeForm.get('affiliation')?.invalid &&
+                    addEmployeeForm.get('affiliation')?.touched
+                  "
+                  formControlName="affiliation"
+                />
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('affiliation')?.invalid &&
+                    addEmployeeForm.get('affiliation')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('affiliation')?.invalid &&
+                      addEmployeeForm.get('affiliation')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    * </small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Anciennete</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addEmployeeForm.get('anciennete')?.invalid &&
+                    addEmployeeForm.get('anciennete')?.touched
+                  "
+                  formControlName="anciennete"
+                />
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('anciennete')?.invalid &&
+                    addEmployeeForm.get('anciennete')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('anciennete')?.invalid &&
+                      addEmployeeForm.get('anciennete')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    * </small>
+                </div>
+              </div>
+            </div>
+
             <div class="col-sm-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for=""
@@ -109,7 +236,7 @@
                     "
                     class="text-danger"
                   >
-                    *Username est obligatoir
+                    *Username est obligatoire
                   </small>
                 </div>
               </div>
@@ -141,7 +268,7 @@
                     "
                     class="text-danger"
                   >
-                    *email est obligatoir</small
+                    *email est obligatoire</small
                   >
                 </div>
               </div>
@@ -171,7 +298,7 @@
                     "
                     class="text-danger"
                   >
-                    *le mot de passe est obligatoir</small
+                    *le mot de passe est obligatoire</small
                   >
                 </div>
               </div>
@@ -208,20 +335,7 @@
                 </div>
               </div>
             </div>
-            <!--                        <div class="col-sm-6">-->
-            <!--                            <div class="input-block mb-3">-->
-            <!--                                <label class="col-form-label" for="">Id Employé <span class="text-danger">*</span></label>-->
-            <!--                                <input type="text" class="form-control"-->
-            <!--                                    [class.invalid]="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched"-->
-            <!--                                    formControlName="EmployeeID">-->
-            <!--                                <div-->
-            <!--                                    *ngIf="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched">-->
-            <!--                                    <small-->
-            <!--                                        *ngIf="addEmployeeForm.get('EmployeeID')?.invalid && addEmployeeForm.get('EmployeeID')?.touched"-->
-            <!--                                        class="text-danger"> *Employee ID is required</small>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
+
             <div class="col-sm-6">
               <div class="input-block mb-3 date-input1">
                 <label class="col-form-label" for=""
@@ -253,7 +367,7 @@
                       "
                       class="text-danger"
                     >
-                      *date_arrivee est obligatoir</small
+                      *date_arrivee est obligatoire</small
                     >
                   </div>
                 </div>
@@ -289,23 +403,75 @@
                 </div>
               </div>
             </div>
-            <!--                        <div class="col-sm-6">-->
-            <!--                            <div class="input-block mb-3">-->
-            <!--                                <label class="col-form-label" for="">Company</label>-->
-            <!--                                <mat-select  class="select mat-cust-select form-control"-->
-            <!--                                    [class.invalid]="addEmployeeForm.get('CompanyName')?.invalid && addEmployeeForm.get('CompanyName')?.touched"-->
-            <!--                                    formControlName="CompanyName">-->
-            <!--                                    <mat-option value="">Global Technologies</mat-option>-->
-            <!--                                    <mat-option value="1">Delta Infotech</mat-option>-->
-            <!--                                </mat-select>-->
-            <!--                                <div-->
-            <!--                                    *ngIf="addEmployeeForm.get('CompanyName')?.invalid && addEmployeeForm.get('CompanyName')?.touched">-->
-            <!--                                    <small-->
-            <!--                                        *ngIf="addEmployeeForm.get('CompanyName')?.invalid && addEmployeeForm.get('CompanyName')?.touched"-->
-            <!--                                        class="text-danger"> Company Name required</small>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
+
+            <div class="col-sm-6">
+              <div class="input-block mb-3 date-input1">
+                <label class="col-form-label" for=""
+                >Date de naisance <span class="text-danger">*</span></label
+                >
+                <div class="cal-icon">
+                  <input
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    type="text"
+                    container=".date-input1"
+                    [class.invalid]="
+                      addEmployeeForm.get('date_naisance')?.invalid &&
+                      addEmployeeForm.get('date_naisance')?.touched
+                    "
+                    formControlName="date_naisance"
+                  />
+                  <div
+                    *ngIf="
+                      addEmployeeForm.get('date_naisance')?.invalid &&
+                      addEmployeeForm.get('date_naisance')?.touched
+                    "
+                  >
+                    <small
+                      *ngIf="
+                        addEmployeeForm.get('date_naisance')?.invalid &&
+                        addEmployeeForm.get('date_naisance')?.touched
+                      "
+                      class="text-danger"
+                    >
+                      *date_arrivee est obligatoire</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Lieu de naissace </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addEmployeeForm.get('lieu_naisance')?.invalid &&
+                    addEmployeeForm.get('lieu_naisance')?.touched
+                  "
+                  formControlName="lieu_naisance"
+                />
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('lieu_naisance')?.invalid &&
+                    addEmployeeForm.get('lieu_naisance')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('lieu_naisance')?.invalid &&
+                      addEmployeeForm.get('lieu_naisance')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    *lieu_naisance
+                  </small>
+                </div>
+              </div>
+            </div>
+
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for=""
@@ -344,7 +510,7 @@
                     "
                     class="text-danger"
                   >
-                    *Department est obligatoir</small
+                    *Department est obligatoire</small
                   >
                 </div>
               </div>
@@ -386,7 +552,93 @@
                     "
                     class="text-danger"
                   >
-                    *poste est obligatoir</small
+                    *poste est obligatoire</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Catégorie<span class="text-danger">*</span></label
+                >
+                <mat-select
+                  class="select mat-cust-select form-control"
+                  [class.invalid]="
+                    addEmployeeForm.get('categorie_id')?.invalid &&
+                    addEmployeeForm.get('categorie_id')?.touched
+                  "
+                  formControlName="categorie_id"
+                  placeholder="Selectionner categorie"
+                >
+<!--                  <mat-option value="1">Select Department</mat-option>-->
+                  <mat-option
+                    *ngFor="let categorie of listCategorie"
+                    value="{{ categorie.id }}"
+                    >{{ categorie.libelle }}</mat-option
+                  >
+
+                  <!-- <mat-option value="1">Web Development</mat-option>
+                  <mat-option value="1">IT Management</mat-option>
+                  <mat-option value="1">Marketing</mat-option> -->
+                </mat-select>
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('categorie_id')?.invalid &&
+                    addEmployeeForm.get('categorie_id')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('categorie_id')?.invalid &&
+                      addEmployeeForm.get('categorie_id')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    *Categorie est obligatoire</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Classe <span class="text-danger">*</span></label
+                >
+                <mat-select
+                  class="select mat-cust-select form-control"
+                  [class.invalid]="
+                    addEmployeeForm.get('classe_id')?.invalid &&
+                    addEmployeeForm.get('classe_id')?.touched
+                  "
+                  formControlName="classe_id"
+                  placeholder="Selectinnez la classe "
+                >
+
+                  <mat-option
+                    *ngFor="let classe of listClasse"
+                    value="{{ classe.id }}"
+                    >{{ classe.nomClasse }}</mat-option
+                  >
+                  <!-- <mat-option value="1">Web Designer</mat-option>
+                  <mat-option value="1">Web Developer</mat-option>
+                  <mat-option value="1">Android Developer</mat-option> -->
+                </mat-select>
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('classe_id')?.invalid &&
+                    addEmployeeForm.get('classe_id')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('classe_id')?.invalid &&
+                      addEmployeeForm.get('classe_id')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    *classe est obligatoire</small
                   >
                 </div>
               </div>
@@ -735,6 +987,37 @@
 </div>
 <!-- /Add Employee Modal -->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Edit1 Employee Modal -->
 <div id="edit_employee" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -815,6 +1098,70 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-sm-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                >Titre <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addEmployeeForm.get('titre')?.invalid &&
+                    addEmployeeForm.get('titre')?.touched
+                  "
+                  formControlName="titre"
+                />
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('titre')?.invalid &&
+                    addEmployeeForm.get('titre')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('titre')?.invalid &&
+                      addEmployeeForm.get('titre')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    * </small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Matricule</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addEmployeeForm.get('matricule')?.invalid &&
+                    addEmployeeForm.get('matricule')?.touched
+                  "
+                  formControlName="matricule"
+                />
+                <div
+                  *ngIf="
+                    addEmployeeForm.get('matricule')?.invalid &&
+                    addEmployeeForm.get('matricule')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEmployeeForm.get('matricule')?.invalid &&
+                      addEmployeeForm.get('matricule')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    * </small
+                  >
+                </div>
+              </div>
+            </div>
+
             <div class="col-sm-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for=""
