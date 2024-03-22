@@ -161,7 +161,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter une Absence</h5>
+                <h5 class="modal-title">Ajouter une Plainte</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -234,9 +234,6 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="addPlainteForm.errors?.['datesInvalid']" class="text-danger">
-                        La date de fin doit être postérieure à la date de début.
-                    </div>
 
                     <div class="input-block mb-3">
                         <label class="col-form-label" for="description">Description de la plainte <span class="text-danger">*</span></label>
@@ -267,7 +264,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier l'Absence</h5>
+                <h5 class="modal-title">Modifier la Plainte</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -278,23 +275,6 @@
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <input type="hidden" formControlName="id">
-                                <label class="col-form-label" for="type_absence_id">Type d'Absence<span class="text-danger">*</span></label>
-                                <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="editPlainteForm.get('type_absence_id')?.invalid && editPlainteForm.get('type_absence_id')?.touched"
-                                    formControlName="type_absence_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of [{id: 1, libelle: 1}]" [value]="item.id"> {{ item.libelle }} </mat-option>
-                                </mat-select>
-                                <div
-                                    *ngIf="editPlainteForm.get('type_absence_id')?.invalid && editPlainteForm.get('type_absence_id')?.touched">
-                                    <small
-                                        *ngIf="editPlainteForm.get('type_absence_id')?.invalid && editPlainteForm.get('type_absence_id')?.touched"
-                                        class="text-danger"> *Le type d'absence est obligatoire</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editPlainteForm.get('employe_id')?.invalid && editPlainteForm.get('employe_id')?.touched"
@@ -304,26 +284,24 @@
                                 </mat-select>
                                 <div
                                     *ngIf="editPlainteForm.get('employe_id')?.invalid && editPlainteForm.get('employe_id')?.touched">
-                                    <small
-                                        *ngIf="editPlainteForm.get('employe_id')?.invalid && editPlainteForm.get('employe_id')?.touched"
-                                        class="text-danger"> *L'employé est obligatoire</small>
+                                    <small class="text-danger"> *L'employé est obligatoire</small>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="input-block mb-3 date-input2">
-                                <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="date_M">Date de la plainte <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
-                                        [class.invalid]="editPlainteForm.get('date_debut')?.invalid && editPlainteForm.get('date_debut')?.touched"
-                                        formControlName="date_debut">
+                                        [class.invalid]="editPlainteForm.get('date_M')?.invalid && editPlainteForm.get('date_M')?.touched"
+                                        placeholder="Sélectionner la date de début" formControlName="date_M">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div
-                                        *ngIf="editPlainteForm.get('date_debut')?.invalid && editPlainteForm.get('date_debut')?.touched">
+                                        *ngIf="editPlainteForm.get('date_M')?.invalid && editPlainteForm.get('date_M')?.touched">
                                         <small
-                                            *ngIf="editPlainteForm.get('date_debut')?.invalid && editPlainteForm.get('date_debut')?.touched"
-                                            class="text-danger"> *La date de début est obligatoire</small>
+                                            *ngIf="editPlainteForm.get('date_M')?.invalid && editPlainteForm.get('date_M')?.touched"
+                                            class="text-danger"> *La date de la plainte est obligatoire</small>
                                     </div>
                                 </div>
                             </div>
@@ -331,24 +309,57 @@
 
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
-                                <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
-                                    [class.invalid]="editPlainteForm.get('date_fin')?.invalid && editPlainteForm.get('date_fin')?.touched"
-                                    formControlName="date_fin">
-                                    <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div
-                                        *ngIf="editPlainteForm.get('date_fin')?.invalid && editPlainteForm.get('date_fin')?.touched">
-                                        <small
-                                            *ngIf="editPlainteForm.get('date_fin')?.invalid && editPlainteForm.get('date_fin')?.touched"
-                                            class="text-danger"> *La data de fin est obligatoire </small>
-                                    </div>
+                                <label class="col-form-label" for="titre">Titre de la plainte <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editPlainteForm.get('titre')?.invalid && editPlainteForm.get('titre')?.touched"
+                                    placeholder="Entrer un titre pour la plainte" formControlName="titre">
+                                <div
+                                    *ngIf="editPlainteForm.get('titre')?.invalid && editPlainteForm.get('titre')?.touched">
+                                    <small class="text-danger"> *Le titre de la plainte est obligatoire</small>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div *ngIf="editPlainteForm.errors?.['datesInvalid']" class="text-danger">
-                        La date de fin doit être postérieure à la date de début.
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="autre_info">Autres Infos <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editPlainteForm.get('autre_info')?.invalid && editPlainteForm.get('autre_info')?.touched"
+                                    placeholder="Informations supplémentaires" formControlName="autre_info">
+                                <div
+                                    *ngIf="editPlainteForm.get('autre_info')?.invalid && editPlainteForm.get('autre_info')?.touched">
+                                    <small class="text-danger"> *Autre infos est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-9">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="description">Description de la plainte <span class="text-danger">*</span></label>
+                                <textarea class="form-control custom-textarea" rows="3"
+                                        [class.invalid]="editPlainteForm.get('description')?.invalid && editPlainteForm.get('description')?.touched"
+                                        placeholder="Entrez les détails de votre plainte ici." formControlName="description"></textarea>
+                                <div *ngIf="editPlainteForm.get('description')?.invalid && editPlainteForm.get('description')?.touched">
+                                    <small class="text-danger"> *La description de la plainte est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="status">Statut de la demande <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editPlainteForm.get('status')?.invalid && editPlainteForm.get('status')?.touched"
+                                    formControlName="status" placeholder="Selectionner le statut de la demande">
+                                    <mat-option *ngFor="let item of lstStatus" [value]="item"
+                                    [class.mat-selected] ="item === editFormSelectedStatus">{{ item }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="editPlainteForm.get('status')?.invalid && editPlainteForm.get('status')?.touched">
+                                    <small class="text-danger"> *Le statut est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="submit-section">
@@ -367,8 +378,8 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer le congé</h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
+                    <h3>Supprimer la plainte</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer cette plainte?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">

@@ -24,6 +24,8 @@ export class PlaintesComponent implements OnInit {
 
   public lstPlainte: Array<getPlainte> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
+  public lstStatus: Array<string> = ["Non Traité", "En cours de Traitement", "Traité"];
+  public editFormSelectedStatus: string = "";
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getPlainte>;
@@ -61,10 +63,12 @@ export class PlaintesComponent implements OnInit {
 
      this.editPlainteForm = this.formBuilder.group({
       id: [0, [Validators.required]],
-      type_Plainte_id: [0, [Validators.required]],
+      date_M: [new Date(), [Validators.required]],
       employe_id: [0, [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
+      titre: ["", [Validators.required]],
+      autre_info: ["", [Validators.required]],
+      description: ["", [Validators.required]],
+      status: ["", [Validators.required]],
     });
     
      this.deletePlainteForm = this.formBuilder.group({
@@ -138,29 +142,31 @@ export class PlaintesComponent implements OnInit {
   getEditForm(row: any){
     this.editPlainteForm.patchValue({
       id: row.id,
-      type_Plainte_id: row.type_Plainte_id,
       employe_id: row.employe_id,
-      date_debut: this.convertToDate(row.date_debut),
-      date_fin: this.convertToDate(row.date_fin),
+      date_M: this.convertToDate(row.date_M),
+      titre: row.titre,
+      autre_info: row.autre_info,
+      description: row.description,
+      status: row.status,
     })
     this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedStatus = row.status;
   }
 
   onClickSubmitEditPlainte(){
 
-    // this.editPlainteForm.patchValue({ date_debut: this.formatDateToString(this.editPlainteForm.value.date_debut) });
-    // this.editPlainteForm.patchValue({ date_fin: this.formatDateToString(this.editPlainteForm.value.date_fin) });
+    this.editPlainteForm.patchValue({ date_M: this.formatDateToString(this.editPlainteForm.value.date_M) });
 
-    // if (this.editPlainteForm.valid){
-    //   const id = this.editPlainteForm.value.id;
-    //   this.data.editPlainte(this.editPlainteForm.value).subscribe(
-    //     (data:any)=>{
-    //       location.reload();
-    //     }
-    //   )
-    // } else {
-    //   console.log("desole le formulaire n'est pas bien renseigné")
-    // }
+    if (this.editPlainteForm.valid){
+      const id = this.editPlainteForm.value.id;
+      this.data.editPlainte(this.editPlainteForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+    } else {
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
   }
 
   getDeleteForm(row: any){
@@ -171,17 +177,16 @@ export class PlaintesComponent implements OnInit {
 
   onClickSubmitDeletePlainte(){
 
-    // if (this.deletePlainteForm.valid){
-    //   const id = this.deletePlainteForm.value.id;
-    //   this.data.deletePlainte(this.deletePlainteForm.value).subscribe(
-    //     (data:any)=>{
-    //       location.reload();
-    //     }
-    //   )
-    // } else {
-    //   console.log("desole le formulaire n'est pas bien renseigné")
-    // }
-
+    if (this.deletePlainteForm.valid){
+      const id = this.deletePlainteForm.value.id;
+      this.data.deletePlainte(this.deletePlainteForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+    } else {
+      console.log("desole le formulaire n'est pas bien renseigné")
+    }
   }
 
 
