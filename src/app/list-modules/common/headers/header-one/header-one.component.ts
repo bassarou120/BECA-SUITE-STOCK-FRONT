@@ -63,6 +63,7 @@ export class HeaderOneComponent {
 
   logout() {
     localStorage.removeItem('LoginData');
+    localStorage.removeItem('LoginToken');
     this.router.navigate(['/login']);
   }
   navigation() {

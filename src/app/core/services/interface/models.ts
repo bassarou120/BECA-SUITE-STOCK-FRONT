@@ -14,8 +14,8 @@ export interface SideBarMenu {
   base: string;
   materialicons: string;
   subMenus: SubMenu[];
-  dot?: boolean
-  changeLogVersion?: boolean
+  dot?: boolean;
+  changeLogVersion?: boolean;
 }
 
 export interface SubMenu {
@@ -29,7 +29,7 @@ export interface SubMenu {
   base6?: string;
   base7?: string;
   base8?: string;
-  currentActive?: boolean
+  currentActive?: boolean;
 }
 
 export interface SideBar {
@@ -102,7 +102,7 @@ export interface getTickets {
   lastReply: string;
   status: string;
   id: number;
-  action:string;
+  action: string;
 }
 export interface getTermination {
   id: number;
@@ -150,7 +150,7 @@ export interface getTaxes {
   taxName: string;
   taxPercentage: string;
   id: number;
-  status:string;
+  status: string;
 }
 export interface getProvidentFund {
   employeeName: string;
@@ -338,24 +338,17 @@ export interface getAttendancepReport {
 }
 export interface getAttendReport {
   id: number;
-  name:string;
-  subname:number;
-  img:string;
-  date:string;
-  workingdays:number;
-  workingemployee:number;
-  late:string;
-  work:string;
-  night:string;
-  time:string;
-  leave:string;
-
-
-
-
-
-
-
+  name: string;
+  subname: number;
+  img: string;
+  date: string;
+  workingdays: number;
+  workingemployee: number;
+  late: string;
+  work: string;
+  night: string;
+  time: string;
+  leave: string;
 }
 export interface getPromotion {
   id: number;
@@ -481,7 +474,7 @@ export interface getShortList {
   jobtitle: string;
   department: string;
   status: string;
-  img: string
+  img: string;
 }
 export interface getSchedule {
   id: number;
@@ -506,7 +499,7 @@ export interface getOffer {
   annualip: string;
   longtermip: string;
   status: string;
-  img:string;
+  img: string;
 }
 export interface getManageResume {
   id: number;
@@ -529,7 +522,7 @@ export interface getManageJobs {
   id: number;
   staff: string;
   time: string;
-  available: string
+  available: string;
 }
 export interface getVisited {
   id: number;
@@ -554,7 +547,6 @@ export interface getinterview {
   jobtitle: string;
   department: string;
   jobtype: string;
-
 }
 export interface getOfferedJobs {
   id: number;
@@ -568,7 +560,7 @@ export interface allAppliedCandidates {
   phone: string;
   applyDate: string;
   id: number;
-  status:string;
+  status: string;
 }
 export interface getInterview {
   id: number;
@@ -812,7 +804,7 @@ export interface getClient {
   status: string;
   status1: string;
   id: number;
-  img:string;
+  img: string;
 }
 export interface companiesList {
   id: number;

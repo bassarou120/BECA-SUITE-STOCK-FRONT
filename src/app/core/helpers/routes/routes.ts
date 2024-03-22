@@ -34,19 +34,23 @@ export class routes {
   }
 
   public static get employee_page(): string {
-    return this.baseUrl + '/employees/employee-page';
+    return this.baseUrl + '/employes/employe-page';
   }
 
   public static get employees(): string {
-    return this.baseUrl + '/employees';
+    return this.baseUrl + '/employes';
+  }
+
+  public static get employeProfile(): string {
+    return this.baseUrl + '/employes/employe-profile';
   }
 
   public static get conges(): string {
-    return this.baseUrl + '/employees/conges';
+    return this.baseUrl + '/employes/conges';
   }
 
   public static get absences(): string {
-    return this.baseUrl + '/employees/absences';
+    return this.baseUrl + '/employes/absences';
   }
 
   public static get plaintesGRH(): string {
@@ -54,7 +58,7 @@ export class routes {
   }
 
 
-  
+
   public static get type_conge(): string {
     return this.baseUrl + '/parametrage/type-conge';
   }
@@ -82,63 +86,6 @@ export class routes {
   public static get type_prime(): string {
     return this.baseUrl + '/parametrage/type-prime';
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   public static get apps(): string {
     return this.baseUrl + '/apps';
@@ -170,7 +117,6 @@ export class routes {
   public static get filemanager(): string {
     return this.baseUrl + '/apps/file-manager';
   }
-
 
   public static get holidays(): string {
     return this.baseUrl + '/employees/holidays';
@@ -419,9 +365,7 @@ export class routes {
   public static get profile(): string {
     return this.baseUrl + '/profile';
   }
-  public static get employeeProfile(): string {
-    return this.baseUrl + '/employees/employee-profile';
-  }
+
   public static get clientProfile(): string {
     return this.baseUrl + '/clients/client-profile';
   }

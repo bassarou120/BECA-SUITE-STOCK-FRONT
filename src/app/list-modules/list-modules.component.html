@@ -1,5 +1,4 @@
-<ng-container *ngIf="!isAuthenticated">
-
+<ng-container *ngIf="isAuthenticated">
   <div
     [ngClass]="{
       'main-width': layoutSidebarView === '2' && layoutWidth === '2'
@@ -12,7 +11,8 @@
         'mini-sidebar': miniSidebar === true,
         'slide-nav': mobileSidebar === true,
         orange: layoutColor === '1',
-        light:   layoutColor === '2' || page === 'job-list' || page === 'job-view',
+        light:
+          layoutColor === '2' || page === 'job-list' || page === 'job-view',
         dark: layoutColor === '3',
         blue: layoutColor === '4',
         maroon: layoutColor === '5',
@@ -50,15 +50,13 @@
           </div>
         </div>
       </div>
-
-
       <ng-container *ngIf="layoutPosition === '1'">
         <app-header-one
           [ngClass]="{ 'd-none': page === 'change-password' }"
         ></app-header-one>
 
         <app-side-menu-one
-          [hidden]="sidebarshow"
+          [hidden]="!sidebarshow"
           [ngClass]="{
             'd-none':
               page === 'job-list' ||
@@ -68,14 +66,10 @@
         ></app-side-menu-one>
       </ng-container>
 
-
-
       <ng-container *ngIf="layoutPosition === '2'">
         <app-header-two></app-header-two>
         <app-side-menu-two [hidden]="!sidebarshow"></app-side-menu-two>
       </ng-container>
-
-
 
       <ng-container *ngIf="layoutPosition === '3'">
         <app-header-three></app-header-three>

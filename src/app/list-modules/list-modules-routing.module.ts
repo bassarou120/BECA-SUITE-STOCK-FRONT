@@ -2,39 +2,41 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
 import { AuthService } from '../core/services/auth/auth.service';
+
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
   },
+
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./auth/login/login.module').then((m) => m.LoginModule),
+  },
   {
     path: '',
+
     component: ListModulesComponent,
     children: [
       {
-
         path: 'dashboard',
-        // canActivate: [AuthService],
+        canActivate: [AuthService],
         loadChildren: () =>
-          import('./dashboard/dashboard.module').
-          then(
-            (m) => m.DashboardModule
-          ),
+          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
 
       {
-        path: 'employees',
-        // canActivate: [AuthService],
+        path: 'employes',
+        canActivate: [AuthService],
         loadChildren: () =>
-          import('./employes/employees.module').then(
-            (m) => m.EmployeesModule
-          ),
+          import('./employes/employees.module').then((m) => m.EmployeesModule),
       },
 
       {
         path: 'parametrage',
-        // canActivate: [AuthService],
+        canActivate: [AuthService],
         loadChildren: () =>
           import('./parametrage/parametrage.module').then(
             (m) => m.ParametrageModule
@@ -136,8 +138,6 @@ const routes: Routes = [
       },
 
       */
-
-
     ],
   },
 
@@ -184,9 +184,7 @@ const routes: Routes = [
 
   */
 
-
   { path: '**', redirectTo: 'admin/404' },
-
 ];
 
 @NgModule({
