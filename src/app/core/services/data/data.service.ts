@@ -130,7 +130,7 @@ export class DataService {
           route: routes.payroll,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'money',
+          icon: 'tools',
           base: 'payroll',
           materialicons: 'request_quote',
           subMenus: [

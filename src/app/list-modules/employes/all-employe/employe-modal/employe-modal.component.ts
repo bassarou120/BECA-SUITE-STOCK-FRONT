@@ -89,7 +89,7 @@ export class EmployeModalComponent implements OnInit {
 
   onClickSubmitAddEmployee() {
     console.log(this.addEmployeeForm.value);
-    alert(JSON.stringify(this.addEmployeeForm.value));
+    // alert(JSON.stringify(this.addEmployeeForm.value));
 
     let date = new Date(this.addEmployeeForm.get('date_arrivee')?.value);
     // alert(date.toISOString().slice(0, 10).replace('T', ' '));
