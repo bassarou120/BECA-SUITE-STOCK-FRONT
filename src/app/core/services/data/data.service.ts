@@ -79,10 +79,9 @@ export class DataService {
               base: 'absences',
             },
             {
-              menuValue: 'test',
-              route: "#",
-              // route: routes.leaveemployee,
-              base: 'leave-employee',
+              menuValue: 'Les Plaintes (GRH)',
+              route: routes.plaintesGRH,
+              base: 'plaintes',
             },
 
           ],
@@ -169,6 +168,11 @@ export class DataService {
               menuValue: 'Rôle',
               route: routes.role,
               base: 'role',
+            },
+            {
+              menuValue: 'Catégorie',
+              route: routes.categorie,
+              base: 'categorie',
             },
 
           ],

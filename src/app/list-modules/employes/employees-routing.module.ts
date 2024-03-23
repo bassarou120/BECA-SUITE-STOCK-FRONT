@@ -17,6 +17,7 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
 
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
+import { PlaintesComponent } from './plaintes/plaintes.component';
 
 const routes: Routes = [
   {
@@ -36,9 +37,9 @@ const routes: Routes = [
       { path: 'overtime', component: OvertimeComponent },
       { path: 'shift-schedule', component: ShiftScheduleComponent },
       { path: 'shift-list', component: ShiftListComponent },
-
       { path: 'conges', component: CongesComponent },
       { path: 'absences', component: AbsencesComponent },
+      { path: "plaintes", component: PlaintesComponent },
     ],
   },
 ];

@@ -13,3 +13,5 @@ export * from './services/typeAbsence/typeAbsence.service';
 export * from './services/role/role.service';
 export * from './services/conges/conges.service';
 export * from './services/absences/absences.service';
+export * from './services/plaintes/plaintes.service';
+export * from './services/categorie/categorie.service';

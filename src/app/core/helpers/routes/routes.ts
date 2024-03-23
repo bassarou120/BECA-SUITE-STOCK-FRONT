@@ -53,6 +53,10 @@ export class routes {
     return this.baseUrl + '/employes/absences';
   }
 
+  public static get plaintesGRH(): string {
+    return this.baseUrl + '/employes/plaintes';
+  }
+
 
 
   public static get type_conge(): string {
@@ -73,6 +77,10 @@ export class routes {
 
   public static get role(): string {
     return this.baseUrl + '/parametrage/role';
+  }
+
+  public static get categorie(): string {
+    return this.baseUrl + '/parametrage/categorie';
   }
 
   public static get type_contrat(): string {

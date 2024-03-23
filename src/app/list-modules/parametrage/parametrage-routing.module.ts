@@ -8,6 +8,7 @@ import { PostesComponent } from './postes/postes.component';
 import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
 import { RoleComponent } from './role/role.component';
 import { ParametrageComponent } from './parametrage.component';
+import { CategorieComponent } from './categorie/categorie.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: "postes", component: PostesComponent },
     { path: "type-absence", component: TypeAbsenceComponent },
     { path: "role", component: RoleComponent },
+    { path: "categorie", component: CategorieComponent },
   ],
  }];
 

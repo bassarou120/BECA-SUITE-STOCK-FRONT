@@ -23,6 +23,7 @@ import { ShiftListComponent } from './shift-list/shift-list.component';
  
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
+import { PlaintesComponent } from './plaintes/plaintes.component';
 
 // @ts-ignore
 @NgModule({
@@ -42,9 +43,9 @@ import { AbsencesComponent } from './absences/absences.component';
     OvertimeComponent,
     ShiftScheduleComponent,
     ShiftListComponent,
-    ShiftListComponent,
     CongesComponent,
-    AbsencesComponent
+    AbsencesComponent,
+    PlaintesComponent,
   ],
   imports: [
     CommonModule,
