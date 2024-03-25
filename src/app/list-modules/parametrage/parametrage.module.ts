@@ -13,6 +13,7 @@ import { RoleComponent } from './role/role.component';
 import { ParametrageRoutingModule } from './parametrage-routing.module';
 import {ParametrageComponent} from "./parametrage.component";
 import { CategorieComponent } from './categorie/categorie.component';
+import { StatutComponent } from './statut/statut.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CategorieComponent } from './categorie/categorie.component';
     TypeAbsenceComponent,
     RoleComponent,
     CategorieComponent,
+    StatutComponent,
   ],
   imports: [
     CommonModule,

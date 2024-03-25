@@ -83,6 +83,11 @@ export class routes {
     return this.baseUrl + '/parametrage/categorie';
   }
 
+  public static get statut(): string {
+    return this.baseUrl + '/parametrage/statut';
+  }
+
+
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';
   }

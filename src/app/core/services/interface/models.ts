@@ -668,20 +668,18 @@ export interface getLeave {
 export interface getTypeConge {
   id: number;
   libelle: string;
-  // holidaydate: string;
-  // day: string;
+}
+export interface getStatut {
+  id: number;
+  libelle: string;
 }
 export interface getTypeContrat {
   id: number;
   libelle: string;
-  // holidaydate: string;
-  // day: string;
 }
 export interface getTypePrime {
   id: number;
   libelle: string;
-  // holidaydate: string;
-  // day: string;
 }
 export interface getDesignations {
   id: number;
