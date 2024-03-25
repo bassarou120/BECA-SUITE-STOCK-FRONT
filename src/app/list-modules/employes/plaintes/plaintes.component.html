@@ -244,7 +244,7 @@
                             <small class="text-danger"> *La description de la plainte est obligatoire</small>
                         </div>
 
-                        <input type="hidden" formControlName="status">
+                        <input type="hidden" formControlName="status_id">
 
                     </div>
                     
@@ -347,12 +347,12 @@
 
                         <div class="col-sm-3">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="status">Statut de la demande <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="status_id">Statut de la demande <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editPlainteForm.get('status')?.invalid && editPlainteForm.get('status')?.touched"
-                                    formControlName="status" placeholder="Selectionner le statut de la demande">
-                                    <mat-option *ngFor="let item of lstStatus" [value]="item"
-                                    [class.mat-selected] ="item === editFormSelectedStatus">{{ item }} </mat-option>
+                                    formControlName="status_id" placeholder="Selectionner le statut de la demande">
+                                    <mat-option *ngFor="let item of lstStatus" [value]="item.id"
+                                    [class.mat-selected] ="item.id === editFormSelectedStatusId">{{ item.libelle }} </mat-option>
                                 </mat-select>
                                 <div
                                     *ngIf="editPlainteForm.get('status')?.invalid && editPlainteForm.get('status')?.touched">

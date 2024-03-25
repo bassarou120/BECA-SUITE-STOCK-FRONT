@@ -730,10 +730,11 @@ export interface getPlainte {
   titre: string;
   description: string;
   date_M: Date;
-  status: string;
+  status_id: number;
   autre_info: string;
   employe_id: number;
   employe: string;
+  status: string
 }
 
 export interface getMiniTemplateEmploye {

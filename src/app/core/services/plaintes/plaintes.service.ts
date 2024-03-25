@@ -22,7 +22,11 @@ export class PlaintesService  {
 
   getAllEmployes(): Observable<any> {
    return this.http.get<any>(`${this.url}/employe`);
- }
+  }
+
+  getAllStatuts(): Observable<any> {
+    return this.http.get<any>(`${this.url}/status`);
+  }
 
 
   savePlainte(data:any ): Observable<any> {

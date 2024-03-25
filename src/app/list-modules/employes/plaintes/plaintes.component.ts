@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getPlainte, routes, PlaintesService, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getPlainte, getStatut, routes, PlaintesService, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,11 +21,12 @@ export class PlaintesComponent implements OnInit {
   public lstDpt: Array<any>=[];
   mon_dep: any;
 
+  public default_status_id: number = 1;
 
   public lstPlainte: Array<getPlainte> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
-  public lstStatus: Array<string> = ["Non Traité", "En cours de Traitement", "Traité"];
-  public editFormSelectedStatus: string = "";
+  public lstStatus: Array<getStatut> = [];
+  public editFormSelectedStatusId: number = 0;
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getPlainte>;
@@ -58,7 +59,7 @@ export class PlaintesComponent implements OnInit {
       titre: ["", [Validators.required]],
       autre_info: ["Aucun", [Validators.required]],
       description: ["", [Validators.required]],
-      status: ["Non Traité", [Validators.required]],
+      status_id: [this.default_status_id, [Validators.required]],
     });
 
      this.editPlainteForm = this.formBuilder.group({
@@ -68,7 +69,7 @@ export class PlaintesComponent implements OnInit {
       titre: ["", [Validators.required]],
       autre_info: ["", [Validators.required]],
       description: ["", [Validators.required]],
-      status: ["", [Validators.required]],
+      status_id: [0, [Validators.required]],
     });
     
      this.deletePlainteForm = this.formBuilder.group({
@@ -98,6 +99,17 @@ export class PlaintesComponent implements OnInit {
           if (index >= this.skip && serialNumber <= this.limit) {
             res.id;// = serialNumber;
             this.lstEmploye.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
+        });
+      });
+
+      this.data.getAllStatuts().subscribe((res: any) => {
+        res.data.data.map((res: getStatut, index: number) => {
+          const serialNumber = index + 1;
+          if (index >= this.skip && serialNumber <= this.limit) {
+            res.id;// = serialNumber;
+            this.lstStatus.push(res);
             this.serialNumberArray.push(serialNumber);
           }
         });
@@ -144,10 +156,10 @@ export class PlaintesComponent implements OnInit {
       titre: row.titre,
       autre_info: row.autre_info,
       description: row.description,
-      status: row.status,
+      status_id: row.status_id,
     })
     this.editFormSelectedEmployeId = row.employe_id;
-    this.editFormSelectedStatus = row.status;
+    this.editFormSelectedStatusId = row.status_id;
   }
 
   onClickSubmitEditPlainte(){
