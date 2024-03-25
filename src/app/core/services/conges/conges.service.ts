@@ -20,14 +20,6 @@ export class CongeService  {
     return this.http.get<any>(`${this.url}/conges`);
   }
 
-  getTypeCongeWithID(id: number): Observable<any> {
-    return this.http.get<any>(`${this.url}/type_conge/${id}`);
-  }
-
-  getEmployeWithID(id: number): Observable<any> {
-    return this.http.get<any>(`${this.url}/employe/${id}`);
-  }
-
   getAllTypeConges(): Observable<any> {
     return this.http.get<any>(`${this.url}/type_conge`);
   }

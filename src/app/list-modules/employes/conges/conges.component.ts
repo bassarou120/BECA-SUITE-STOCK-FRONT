@@ -94,16 +94,10 @@ export class CongesComponent implements OnInit {
  
     this.data.getAllConge().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getConge, index: number) => {
+      res.data.map((res: getConge, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.data.getTypeCongeWithID(res.type_conges_id).subscribe((ans: any) => {
-            res.libelle = ans.data.libelle;
-          });
-          this.data.getEmployeWithID(res.employe_id).subscribe((ans: any) => {
-            res.employe = ans.data.nom + " " + ans.data.prenom;
-          });
+          res.id;
           this.lstConge.push(res);
           this.serialNumberArray.push(serialNumber);
         }

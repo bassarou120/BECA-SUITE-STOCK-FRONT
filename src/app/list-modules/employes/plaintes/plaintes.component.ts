@@ -83,13 +83,10 @@ export class PlaintesComponent implements OnInit {
  
     this.data.getAllPlainte().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getPlainte, index: number) => {
+      res.data.map((res: getPlainte, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.data.getEmployeWithID(res.employe_id).subscribe((ans: any) => {
-            res.employe = ans.data.nom + " " + ans.data.prenom;
-          });
+          res.id;
           this.lstPlainte.push(res);
           this.serialNumberArray.push(serialNumber);
         }

@@ -19,15 +19,6 @@ export class AbsencesService  {
   getAllAbsence(): Observable<any> {
     return this.http.get<any>(`${this.url}/absences`);
   }
-
-  getTypeAbsenceWithID(id: number): Observable<any> {
-    return this.http.get<any>(`${this.url}/type_absence/${id}`);
-  }
-
-  getEmployeWithID(id: number): Observable<any> {
-    return this.http.get<any>(`${this.url}/employe/${id}`);
-  }
-
   getAllTypeAbsences(): Observable<any> {
     return this.http.get<any>(`${this.url}/type_absence`);
   }

@@ -20,10 +20,6 @@ export class PlaintesService  {
     return this.http.get<any>(`${this.url}/plaintes`);
   }
 
-  getEmployeWithID(id: number): Observable<any> {
-    return this.http.get<any>(`${this.url}/employe/${id}`);
-  }
-
   getAllEmployes(): Observable<any> {
    return this.http.get<any>(`${this.url}/employe`);
  }

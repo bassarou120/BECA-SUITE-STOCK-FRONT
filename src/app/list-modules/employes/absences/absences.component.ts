@@ -94,16 +94,10 @@ export class AbsencesComponent implements OnInit {
  
     this.data.getAllAbsence().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getAbsence, index: number) => {
+      res.data.map((res: getAbsence, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.data.getTypeAbsenceWithID(res.type_absence_id).subscribe((ans: any) => {
-            res.libelle = ans.data.libelle;
-          });
-          this.data.getEmployeWithID(res.employe_id).subscribe((ans: any) => {
-            res.employe = ans.data.nom + " " + ans.data.prenom;
-          });
+          res.id;
           this.lstAbsence.push(res);
           this.serialNumberArray.push(serialNumber);
         }
