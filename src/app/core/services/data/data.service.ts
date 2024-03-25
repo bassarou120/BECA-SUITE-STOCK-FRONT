@@ -70,11 +70,18 @@ export class DataService {
               base: 'employee-page',
               base2: 'employee-list',
             },
-            { menuValue: 'Les Congés',
-              route: routes.conges,
-              base: 'holidays' },
             {
-              menuValue: 'Les Absences',
+              menuValue: 'Mes Demandes',
+              route: routes.demandes,
+              base: 'demandes'
+            },
+            {
+              menuValue: 'Les Congés (GRH)',
+              route: routes.conges,
+              base: 'holidays'
+            },
+            {
+              menuValue: 'Les Absences (GRH)',
               route: routes.absences,
               base: 'absences',
             },

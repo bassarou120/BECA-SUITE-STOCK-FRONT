@@ -24,6 +24,7 @@ import { ShiftListComponent } from './shift-list/shift-list.component';
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
+import { DemandesComponent } from './demandes/demandes.component';
 
 // @ts-ignore
 @NgModule({
@@ -46,6 +47,7 @@ import { PlaintesComponent } from './plaintes/plaintes.component';
     CongesComponent,
     AbsencesComponent,
     PlaintesComponent,
+    DemandesComponent,
   ],
   imports: [
     CommonModule,

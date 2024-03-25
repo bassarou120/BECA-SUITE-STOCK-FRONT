@@ -49,6 +49,10 @@ export class routes {
     return this.baseUrl + '/employes/conges';
   }
 
+  public static get demandes(): string {
+    return this.baseUrl + '/employes/demandes';
+  }
+
   public static get absences(): string {
     return this.baseUrl + '/employes/absences';
   }

@@ -16,3 +16,4 @@ export * from './services/absences/absences.service';
 export * from './services/plaintes/plaintes.service';
 export * from './services/categorie/categorie.service';
 export * from './services/statut/statut.service';
+export * from './services/demandes/demandes.service';

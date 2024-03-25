@@ -18,6 +18,7 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
+import { DemandesComponent } from './demandes/demandes.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'conges', component: CongesComponent },
       { path: 'absences', component: AbsencesComponent },
       { path: "plaintes", component: PlaintesComponent },
+      { path: "demandes", component: DemandesComponent },
     ],
   },
 ];

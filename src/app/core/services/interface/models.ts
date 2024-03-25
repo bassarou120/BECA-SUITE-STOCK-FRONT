@@ -715,6 +715,18 @@ export interface getConge {
   employe: string;
 }
 
+export interface getDemande {
+  id: number;
+  status_id: string;
+  date_demande: Date;
+  objet: string;
+  contenue: string;
+  type_demande: string;
+  employe_id: number;
+  status: string;
+  employe: string;
+}
+
 export interface getAbsence {
   id: number;
   date_debut: Date;
