@@ -182,7 +182,7 @@
 
                     <div *ngIf="addTypeContratForm.get('libelle')?.touched && addTypeContratForm.get('libelle')?.invalid" class="text-danger">
                       <small *ngIf="addTypeContratForm.get('libelle')?.touched && addTypeContratForm.get('libelle')?.invalid" class="text-danger">
-                        Le libellé du type de congé est requis.
+                        Le libellé du type de contrat est requis.
                       </small>
                     </div>
                   </div>
@@ -209,14 +209,14 @@
             <div class="modal-body">
               <form [formGroup]="editTypeContratForm" (ngSubmit)="editTypeContrat()" novalidate>
                 <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Nouveau nom du type de congé <span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Nouveau nom du type de contrat <span class="text-danger">*</span></label>
                     <input class="form-control" type="text" formControlName="libelle"
                     [class.invalid]="editTypeContratForm.get('libelle')?.invalid && editTypeContratForm.get('libelle')?.touched">
                     <input class="form-control" type="hidden" formControlName="id">
 
                     <div *ngIf="editTypeContratForm.get('libelle')?.touched && editTypeContratForm.get('libelle')?.invalid" class="text-danger">
                       <small *ngIf="editTypeContratForm.get('libelle')?.touched && editTypeContratForm.get('libelle')?.invalid" class="text-danger">
-                        Le libellé du type de congé est requis.
+                        Le libellé du type de contrat est requis.
                       </small>
                     </div>
                 </div>
@@ -237,7 +237,7 @@
             <div class="modal-body">
                 <div class="form-header">
                     <h3>Supprimer le type de contrat</h3>
-                    <p>Êtes vous sûr de vouloir supprimer le type de congé?</p>
+                    <p>Êtes vous sûr de vouloir supprimer le type de contrat?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getDemande, routes, DemandeService, getTypeConge, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getDemande, routes, DemandeService, getTypeConge, getTypeAbsence, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,12 +21,17 @@ export class DemandesComponent implements OnInit {
   public lstDpt: Array<any>=[];
   mon_dep: any;
 
+
+  public default_status_id: number = 1;
+  public lstTypeDemande: Array<string> = ["congé", "absence", "plainte"];
+
   public loggedUserId: number = 0;
+  public loggedEmployeId: number = 0;
+  public selectedTypeDemande: string = "";
   public lstDemande: Array<getDemande> = [];
-  public lstTypeDemande: Array<getTypeConge> = [];
+  public lstTypeConge: Array<getTypeConge> = [];
+  public lstTypeAbsence: Array<getTypeAbsence> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
-  public editFormSelectedTypeDemandeId: number = 0;
-  public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getDemande>;
   // pagination variables
@@ -54,23 +59,52 @@ export class DemandesComponent implements OnInit {
      this.getTableData();
 
      this.addDemandeForm = this.formBuilder.group({
-      type_Demandes_id: [0, [Validators.required]],
+      date_demande: [new Date(), [Validators.required]],
+      objet: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
+      status_id: [this.default_status_id, [Validators.required]],
+      contenue: ["", [Validators.required]],
+      type_demande: ["", [Validators.required]],
+      date_debut: [new Date(), [Validators.required]],
+      date_fin: [this.tomorrowDate(), [Validators.required]],
+      type_conges_id: [0, [Validators.required]],
+      type_absence_id: [0, [Validators.required]],
+      titre: ["Aucun", [Validators.required]],
+      description: ["Aucun", [Validators.required]],
+      date_M: [new Date(), [Validators.required]],
+      autre_info: ["Aucun", [Validators.required]],
+      
     }, { validator: this.datesValidator });
 
      this.editDemandeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
-      type_Demandes_id: [0, [Validators.required]],
+      date_demande: [new Date(), [Validators.required]],
+      objet: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
+      status_id: [this.default_status_id, [Validators.required]],
+      contenue: ["", [Validators.required]],
+      type_demande: ["", [Validators.required]],
+      date_debut: [new Date(), [Validators.required]],
+      date_fin: [this.tomorrowDate(), [Validators.required]],
+      type_conges_id: [0, [Validators.required]],
+      type_absence_id: [0, [Validators.required]],
+      titre: ["Aucun", [Validators.required]],
+      description: ["Aucun", [Validators.required]],
+      date_M: [new Date(), [Validators.required]],
+      autre_info: ["Aucun", [Validators.required]],
+      
     }, { validator: this.datesValidator });
     
      this.deleteDemandeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
+      type_demande: ["", [Validators.required]],
     });
+  }
+
+  private tomorrowDate(): Date {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+    return currentDate;
   }
 
   private getLoggedUserId() {
@@ -97,6 +131,11 @@ export class DemandesComponent implements OnInit {
     return null;
   }
 
+  disableDatePicker(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
 
   
   private getTableData(): void {
@@ -105,7 +144,7 @@ export class DemandesComponent implements OnInit {
  
     this.data.getAllUserDemandes(this.loggedUserId).subscribe((res: any) => {
       this.totalData = res.data.total;
-console.log(res);
+
       res.data.map((res: getDemande, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
@@ -115,12 +154,29 @@ console.log(res);
         }
       });
 
+      this.data.getConnectedEmployeID(this.loggedUserId).subscribe((res: any) => {
+        this.addDemandeForm.patchValue({employe_id: res.data});
+        this.editDemandeForm.patchValue({employe_id: res.data});
+        this.loggedEmployeId = res.data;
+      });
+
       this.data.getAllTypeConges().subscribe((res: any) => {
         res.data.data.map((res: getTypeConge, index: number) => {
           const serialNumber = index + 1;
           if (index >= this.skip && serialNumber <= this.limit) {
             res.id;// = serialNumber;
-            this.lstTypeDemande.push(res);
+            this.lstTypeConge.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
+        });
+      });
+
+      this.data.getAllTypeAbsences().subscribe((res: any) => {
+        res.data.data.map((res: getTypeAbsence, index: number) => {
+          const serialNumber = index + 1;
+          if (index >= this.skip && serialNumber <= this.limit) {
+            res.id;// = serialNumber;
+            this.lstTypeAbsence.push(res);
             this.serialNumberArray.push(serialNumber);
           }
         });
@@ -152,18 +208,24 @@ console.log(res);
 
   onClickSubmitAddDemande(){
 
-    // if (this.addDemandeForm.valid){
-    //   this.addDemandeForm.patchValue({ date_debut: this.formatDateToString(this.addDemandeForm.value.date_debut) });
-    //   this.addDemandeForm.patchValue({ date_fin: this.formatDateToString(this.addDemandeForm.value.date_fin) });
+    if (this.addDemandeForm.valid){
+      this.addDemandeForm.patchValue({
+        date_demande: this.formatDateToString(this.addDemandeForm.value.date_demande),
+        date_M: this.formatDateToString(new Date()),
+        date_debut: this.formatDateToString(this.addDemandeForm.value.date_debut),
+        date_fin: this.formatDateToString(this.addDemandeForm.value.date_fin),
+        titre: this.addDemandeForm.value.objet,
+        description: this.addDemandeForm.value.contenue,
+      })
       
-    //   this.data.saveDemande(this.addDemandeForm.value).subscribe(
-    //     (data:any)=>{
-    //       location.reload();
-    //     }
-    //   )
-    // }else {
-    //   console.log("Désolé le formulaire n'est pas bien renseigné")
-    // }
+      this.data.saveDemande(this.addDemandeForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+    } else {
+      console.log("Désolé le formulaire n'est pas bien renseigné")
+    }
   }
 
   private convertToDate(date: string): Date {
@@ -174,51 +236,67 @@ console.log(res);
   getEditForm(row: any){
     this.editDemandeForm.patchValue({
       id: row.id,
-      type_Demandes_id: row.type_Demandes_id,
-      employe_id: row.employe_id,
-      date_debut: this.convertToDate(row.date_debut),
-      date_fin: this.convertToDate(row.date_fin),
-    })
-    this.editFormSelectedTypeDemandeId = row.type_Demandes_id;
-    this.editFormSelectedEmployeId = row.employe_id;
+      date_demande: this.convertToDate(row.date_demande),
+      objet: row.objet,
+      status_id: row.status_id,
+      contenue: row.contenue,
+      type_demande: row.type_demande,
+      titre: row.objet,
+      description: row.contenue,
+      date_M: this.convertToDate(row.date_demande),
+    });
+    this.selectedTypeDemande = row.type_demande;
+    if(row.type_demande === "congé"  ||  row.type_demande === "absence") {
+      this.editDemandeForm.patchValue({date_debut: ""});
+      this.editDemandeForm.patchValue({date_fin: ""});
+    } else if(row.type_demande === "plainte") {
+      this.editDemandeForm.patchValue({autre_info: ""});
+    }
   }
 
   onClickSubmitEditDemande(){
 
-    // this.editDemandeForm.patchValue({ date_debut: this.formatDateToString(this.editDemandeForm.value.date_debut) });
-    // this.editDemandeForm.patchValue({ date_fin: this.formatDateToString(this.editDemandeForm.value.date_fin) });
+    if (this.editDemandeForm.valid){
+      this.editDemandeForm.patchValue({
+        date_demande: this.formatDateToString(this.editDemandeForm.value.date_demande),
+        date_M: this.formatDateToString(this.editDemandeForm.value.date_M),
+        date_debut: this.formatDateToString(this.editDemandeForm.value.date_debut),
+        date_fin: this.formatDateToString(this.editDemandeForm.value.date_fin),
+        titre: this.editDemandeForm.value.objet,
+        description: this.editDemandeForm.value.contenue,
+      })
 
-    // if (this.editDemandeForm.valid){
-    //   const id = this.editDemandeForm.value.id;
-    //   this.data.editDemande(this.editDemandeForm.value).subscribe(
-    //     (data:any)=>{
-    //       location.reload();
-    //     }
-    //   )
-    // } else {
-    //   console.log("desole le formulaire n'est pas bien renseigné")
-    // }
+      const id = this.editDemandeForm.value.id;
+      this.data.editDemande(this.editDemandeForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+    } else {
+      console.log("desole le formulaire n'est pas bien renseigné");
+    }
   }
 
   getDeleteForm(row: any){
     this.deleteDemandeForm.patchValue({
-      id: row.id
+      id: row.id,
+      type_demande: row.type_demande,
     })
   }
 
   onClickSubmitDeleteAbsence(){
 
-    // if (this.deleteDemandeForm.valid){
-    //   const id = this.deleteDemandeForm.value.id;
-    //   this.data.deleteDemande(this.deleteDemandeForm.value).subscribe(
-    //     (data:any)=>{
-    //       location.reload();
-    //     }
-    //   )
-    //   console.log("success")
-    // } else {
-    //   console.log("desole le formulaire n'est pas bien renseigné")
-    // }
+    if (this.deleteDemandeForm.valid){
+console.log(this.deleteDemandeForm.value)
+      // this.data.deleteDemande(this.deleteDemandeForm.value).subscribe(
+      //   (data:any)=>{
+      //     location.reload();
+      //   }
+      // )
+      console.log("success")
+    } else {
+      console.log("desole le formulaire n'est pas bien renseigné")
+    }
 
   }
 

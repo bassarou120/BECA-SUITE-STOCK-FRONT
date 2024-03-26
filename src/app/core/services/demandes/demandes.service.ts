@@ -20,6 +20,14 @@ export class DemandeService  {
     return this.http.get<any>(`${this.url}/demande/${data}`);
   }
 
+  getConnectedEmployeID(data: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/getemployeid/${data}`);
+  }
+
+  getAllTypeAbsences(): Observable<any> {
+    return this.http.get<any>(`${this.url}/type_absence`);
+  }
+
   getAllTypeConges(): Observable<any> {
     return this.http.get<any>(`${this.url}/type_conge`);
   }

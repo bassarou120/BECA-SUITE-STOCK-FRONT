@@ -157,27 +157,27 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter un Congé</h5>
+                <h5 class="modal-title">Ajouter une Demande</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="addDemandeForm" (ngSubmit)="onClickSubmitAddDemande()" novalidate>
+
+                    <input type="hidden" formControlName="status_id">
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="type_Demandes_id">Type de Congé <span class="text-danger">*</span></label>
-                                <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addDemandeForm.get('type_Demandes_id')?.invalid && addDemandeForm.get('type_Demandes_id')?.touched"
-                                    formControlName="type_Demandes_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of lstTypeDemande" value={{item.id}}> {{ item.libelle }} </mat-option>
-                                </mat-select>
-                                <div
-                                    *ngIf="addDemandeForm.get('type_Demandes_id')?.invalid && addDemandeForm.get('type_Demandes_id')?.touched">
+                                <label class="col-form-label" for="objet">Objet<span class="text-danger">*</span></label>
+                                <input  class="form-control" type="text"
+                                    [class.invalid]="addDemandeForm.get('objet')?.invalid && addDemandeForm.get('objet')?.touched"
+                                    formControlName="objet" placeholder="Objet de la demande">
+                                <div>
                                     <small
-                                        *ngIf="addDemandeForm.get('type_Demandes_id')?.invalid && addDemandeForm.get('type_Demandes_id')?.touched"
-                                        class="text-danger"> *Le type de congé est obligatoire</small>
+                                        *ngIf="addDemandeForm.get('objet')?.invalid && addDemandeForm.get('objet')?.touched"
+                                        class="text-danger"> *L'Objet est obligatoire</small>
                                 </div>
                             </div>
                         </div>
@@ -187,11 +187,11 @@
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addDemandeForm.get('employe_id')?.invalid && addDemandeForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
+                                    formControlName="employe_id" placeholder="Selectionner l'employé">
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
+                                    [class.mat-selected] ="item.id === loggedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
-                                <div
-                                    *ngIf="addDemandeForm.get('employe_id')?.invalid && addDemandeForm.get('employe_id')?.touched">
+                                <div>
                                     <small
                                         *ngIf="addDemandeForm.get('employe_id')?.invalid && addDemandeForm.get('employe_id')?.touched"
                                         class="text-danger"> *L'employé est obligatoire</small>
@@ -200,15 +200,57 @@
                         </div>
 
                         <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_demande">Type de la demande <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addDemandeForm.get('type_demande')?.invalid && addDemandeForm.get('type_demande')?.touched"
+                                    formControlName="type_demande" placeholder="Selectionner le type de la demande">
+                                    <mat-option *ngFor="let item of lstTypeDemande" value={{item}}>{{ item }} </mat-option>
+                                </mat-select>
+                                <div>
+                                    <small
+                                        *ngIf="addDemandeForm.get('type_demande')?.invalid && addDemandeForm.get('type_demande')?.touched"
+                                        class="text-danger"> *Le type de la demande est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="date_demande">Date de la demande <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control" type="text"
+                                        [class.invalid]="addDemandeForm.get('date_demande')?.invalid && addDemandeForm.get('date_demande')?.touched"
+                                        placeholder="{{ addDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_demande" readonly>
+                                        <div> <small class="text-secondary"> {{ addDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}</small> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="contenue">Contenu de la demande <span class="text-danger">*</span></label>
+                                <textarea class="form-control custom-textarea" rows="4"
+                                          [class.invalid]="addDemandeForm.get('contenue')?.invalid && addDemandeForm.get('contenue')?.touched"
+                                          placeholder="Entrez le contenun de la demande." formControlName="contenue"></textarea>
+                                <div *ngIf="addDemandeForm.get('contenue')?.invalid && addDemandeForm.get('contenue')?.touched">
+                                    <small class="text-danger"> *Le contenue de la demande est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row" *ngIf="addDemandeForm.get('type_demande')!.value === 'congé' || addDemandeForm.get('type_demande')!.value === 'absence'">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3 date-input1">
                                 <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
                                         [class.invalid]="addDemandeForm.get('date_debut')?.invalid && addDemandeForm.get('date_debut')?.touched"
-                                        placeholder="Sélectionner la date de début" formControlName="date_debut">
+                                        formControlName="date_debut" placeholder="Sélectionner la date de début du congé">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div
-                                        *ngIf="addDemandeForm.get('date_debut')?.invalid && addDemandeForm.get('date_debut')?.touched">
+                                    <div>
                                         <small
                                             *ngIf="addDemandeForm.get('date_debut')?.invalid && addDemandeForm.get('date_debut')?.touched"
                                             class="text-danger"> *La date de début est obligatoire</small>
@@ -216,17 +258,16 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-sm-6">
+    
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
                                     [class.invalid]="addDemandeForm.get('date_fin')?.invalid && addDemandeForm.get('date_fin')?.touched"
-                                    placeholder="Sélectionner la date de fin" formControlName="date_fin">
+                                    formControlName="date_fin" placeholder="Sélectionner la date de fin du congé">
                                     <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div
-                                        *ngIf="addDemandeForm.get('date_fin')?.invalid && addDemandeForm.get('date_fin')?.touched">
+                                    <div>
                                         <small
                                             *ngIf="addDemandeForm.get('date_fin')?.invalid && addDemandeForm.get('date_fin')?.touched"
                                             class="text-danger"> *La data de fin est obligatoire </small>
@@ -234,10 +275,75 @@
                                 </div>
                             </div>
                         </div>
+    
+                        <div class="col-sm-4" *ngIf="addDemandeForm.get('type_demande')!.value === 'congé'">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_conges_id">Type de Congé <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addDemandeForm.get('type_conges_id')?.invalid && addDemandeForm.get('type_conges_id')?.touched"
+                                    formControlName="type_conges_id" placeholder="Selectionner le type de congé">
+                                    <mat-option *ngFor="let item of lstTypeConge" value={{item.id}}> {{ item.libelle }} </mat-option>
+                                </mat-select>
+                                <div>
+                                    <small
+                                        *ngIf="addDemandeForm.get('type_conges_id')?.invalid && addDemandeForm.get('type_conges_id')?.touched"
+                                        class="text-danger"> *Le type de congé est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4" *ngIf="addDemandeForm.get('type_demande')!.value === 'absence'">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_absence_id">Type d'absence<span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addDemandeForm.get('type_absence_id')?.invalid && addDemandeForm.get('type_absence_id')?.touched"
+                                    formControlName="type_absence_id" placeholder="Selectionner le type d'absence">
+                                    <mat-option *ngFor="let item of lstTypeAbsence" value={{item.id}}> {{ item.libelle }} </mat-option>
+                                </mat-select>
+                                <div>
+                                    <small
+                                        *ngIf="addDemandeForm.get('type_absence_id')?.invalid && addDemandeForm.get('type_absence_id')?.touched"
+                                        class="text-danger"> *Le type d'absence est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="addDemandeForm.errors?.['datesInvalid']" class="text-danger">
+                            La date de fin doit être postérieure à la date de début.
+                        </div>
                     </div>
-                    <div *ngIf="addDemandeForm.errors?.['datesInvalid']" class="text-danger">
-                        La date de fin doit être postérieure à la date de début.
+
+                    <div class="row" *ngIf="addDemandeForm.get('type_demande')!.value === 'plainte'">
+                        
+                        <input type="hidden" formControlName="titre">
+                        <input type="hidden" formControlName="description">
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="autre_info">Autres Infos<span class="text-danger">*</span></label>
+                                <input  class="form-control" type="text"
+                                    [class.invalid]="addDemandeForm.get('autre_info')?.invalid && addDemandeForm.get('autre_info')?.touched"
+                                    formControlName="autre_info" placeholder="Autres Informations">
+                                <div>
+                                    <small
+                                        *ngIf="addDemandeForm.get('autre_info')?.invalid && addDemandeForm.get('autre_info')?.touched"
+                                        class="text-danger"> *Autres infos est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="date_M">Date de la plainte <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control" type="text"
+                                        [class.invalid]="addDemandeForm.get('date_M')?.invalid && addDemandeForm.get('date_M')?.touched"
+                                        placeholder="{{ addDemandeForm.get('date_M')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_M" readonly>
+                                        <div> <small class="text-secondary"> {{ addDemandeForm.get('date_M')!.value | date: 'MM/dd/yyyy' }}</small> </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
@@ -254,29 +360,27 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le Congé</h5>
+                <h5 class="modal-title">Modifier la demande</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="editDemandeForm" (ngSubmit)="onClickSubmitEditDemande()" novalidate>
+
+                    <input type="hidden" formControlName="status_id">
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <input type="hidden" formControlName="id">
-                                <label class="col-form-label" for="type_Demandes_id">Type de Congé <span class="text-danger">*</span></label>
-                                <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="editDemandeForm.get('type_Demandes_id')?.invalid && editDemandeForm.get('type_Demandes_id')?.touched"
-                                    formControlName="type_Demandes_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of lstTypeDemande" [value]="item.id"
-                                    [class.mat-selected] ="item.id === editFormSelectedTypeDemandeId"> {{ item.libelle }} </mat-option>
-                                </mat-select>
-                                <div
-                                    *ngIf="editDemandeForm.get('type_Demandes_id')?.invalid && editDemandeForm.get('type_Demandes_id')?.touched">
+                                <label class="col-form-label" for="objet">Objet<span class="text-danger">*</span></label>
+                                <input  class="form-control" type="text"
+                                    [class.invalid]="editDemandeForm.get('objet')?.invalid && editDemandeForm.get('objet')?.touched"
+                                    formControlName="objet" placeholder="Objet de la demande">
+                                <div>
                                     <small
-                                        *ngIf="editDemandeForm.get('type_Demandes_id')?.invalid && editDemandeForm.get('type_Demandes_id')?.touched"
-                                        class="text-danger"> *Le type de congé est obligatoire</small>
+                                        *ngIf="editDemandeForm.get('objet')?.invalid && editDemandeForm.get('objet')?.touched"
+                                        class="text-danger"> *L'Objet est obligatoire</small>
                                 </div>
                             </div>
                         </div>
@@ -286,12 +390,11 @@
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editDemandeForm.get('employe_id')?.invalid && editDemandeForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
-                                    [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
+                                    formControlName="employe_id" placeholder="Selectionner l'employé">
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
+                                    [class.mat-selected] ="item.id === loggedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
-                                <div
-                                    *ngIf="editDemandeForm.get('employe_id')?.invalid && editDemandeForm.get('employe_id')?.touched">
+                                <div>
                                     <small
                                         *ngIf="editDemandeForm.get('employe_id')?.invalid && editDemandeForm.get('employe_id')?.touched"
                                         class="text-danger"> *L'employé est obligatoire</small>
@@ -300,15 +403,58 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <div class="input-block mb-3 date-input2">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_demande">Type de la demande <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control" [disabled]="true"
+                                    [class.invalid]="editDemandeForm.get('type_demande')?.invalid && editDemandeForm.get('type_demande')?.touched"
+                                    formControlName="type_demande" placeholder="Selectionner le type de la demande">
+                                    <mat-option *ngFor="let item of lstTypeDemande" [disabled]="true" [value]="item"
+                                    [class.mat-selected] ="item === selectedTypeDemande">{{ item }} </mat-option>
+                                </mat-select>
+                                <div>
+                                    <small
+                                        *ngIf="editDemandeForm.get('type_demande')?.invalid && editDemandeForm.get('type_demande')?.touched"
+                                        class="text-danger"> *Le type de la demande est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="date_demande">Date de la demande <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control" type="text"
+                                        [class.invalid]="editDemandeForm.get('date_demande')?.invalid && editDemandeForm.get('date_demande')?.touched"
+                                        placeholder="{{ editDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_demande" readonly>
+                                        <div> <small class="text-secondary"> {{ editDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}</small> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="contenue">Contenu de la demande <span class="text-danger">*</span></label>
+                                <textarea class="form-control custom-textarea" rows="4"
+                                          [class.invalid]="editDemandeForm.get('contenue')?.invalid && editDemandeForm.get('contenue')?.touched"
+                                          placeholder="Entrez le contenun de la demande." formControlName="contenue"></textarea>
+                                <div *ngIf="editDemandeForm.get('contenue')?.invalid && editDemandeForm.get('contenue')?.touched">
+                                    <small class="text-danger"> *Le contenue de la demande est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row" *ngIf="editDemandeForm.get('type_demande')!.value === 'congé' || editDemandeForm.get('type_demande')!.value === 'absence'">
+                        <div class="col-sm-4">
+                            <div class="input-block mb-3 date-input1">
                                 <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
                                         [class.invalid]="editDemandeForm.get('date_debut')?.invalid && editDemandeForm.get('date_debut')?.touched"
-                                        formControlName="date_debut">
+                                        formControlName="date_debut" placeholder="Sélectionner la date de début du congé">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div
-                                        *ngIf="editDemandeForm.get('date_debut')?.invalid && editDemandeForm.get('date_debut')?.touched">
+                                    <div>
                                         <small
                                             *ngIf="editDemandeForm.get('date_debut')?.invalid && editDemandeForm.get('date_debut')?.touched"
                                             class="text-danger"> *La date de début est obligatoire</small>
@@ -316,17 +462,16 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-sm-6">
+    
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
                                 <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
                                     [class.invalid]="editDemandeForm.get('date_fin')?.invalid && editDemandeForm.get('date_fin')?.touched"
-                                    formControlName="date_fin">
+                                    formControlName="date_fin" placeholder="Sélectionner la date de fin du congé">
                                     <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div
-                                        *ngIf="editDemandeForm.get('date_fin')?.invalid && editDemandeForm.get('date_fin')?.touched">
+                                    <div>
                                         <small
                                             *ngIf="editDemandeForm.get('date_fin')?.invalid && editDemandeForm.get('date_fin')?.touched"
                                             class="text-danger"> *La data de fin est obligatoire </small>
@@ -334,10 +479,75 @@
                                 </div>
                             </div>
                         </div>
+    
+                        <div class="col-sm-4" *ngIf="editDemandeForm.get('type_demande')!.value === 'congé'">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_conges_id">Type de Congé <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editDemandeForm.get('type_conges_id')?.invalid && editDemandeForm.get('type_conges_id')?.touched"
+                                    formControlName="type_conges_id" placeholder="Selectionner le type de congé">
+                                    <mat-option *ngFor="let item of lstTypeConge" value={{item.id}}> {{ item.libelle }} </mat-option>
+                                </mat-select>
+                                <div>
+                                    <small
+                                        *ngIf="editDemandeForm.get('type_conges_id')?.invalid && editDemandeForm.get('type_conges_id')?.touched"
+                                        class="text-danger"> *Le type de congé est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4" *ngIf="editDemandeForm.get('type_demande')!.value === 'absence'">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_absence_id">Type d'absence<span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editDemandeForm.get('type_absence_id')?.invalid && editDemandeForm.get('type_absence_id')?.touched"
+                                    formControlName="type_absence_id" placeholder="Selectionner le type d'absence">
+                                    <mat-option *ngFor="let item of lstTypeAbsence" value={{item.id}}> {{ item.libelle }} </mat-option>
+                                </mat-select>
+                                <div>
+                                    <small
+                                        *ngIf="editDemandeForm.get('type_absence_id')?.invalid && editDemandeForm.get('type_absence_id')?.touched"
+                                        class="text-danger"> *Le type d'absence est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="editDemandeForm.errors?.['datesInvalid']" class="text-danger">
+                            La date de fin doit être postérieure à la date de début.
+                        </div>
                     </div>
-                    <div *ngIf="editDemandeForm.errors?.['datesInvalid']" class="text-danger">
-                        La date de fin doit être postérieure à la date de début.
+
+                    <div class="row" *ngIf="editDemandeForm.get('type_demande')!.value === 'plainte'">
+                        
+                        <input type="hidden" formControlName="titre">
+                        <input type="hidden" formControlName="description">
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="autre_info">Autres Infos<span class="text-danger">*</span></label>
+                                <input  class="form-control" type="text"
+                                    [class.invalid]="editDemandeForm.get('autre_info')?.invalid && editDemandeForm.get('autre_info')?.touched"
+                                    formControlName="autre_info" placeholder="Autres Informations">
+                                <div>
+                                    <small
+                                        *ngIf="editDemandeForm.get('autre_info')?.invalid && editDemandeForm.get('autre_info')?.touched"
+                                        class="text-danger"> *Autres infos est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="date_M">Date de la plainte <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control" type="text"
+                                        [class.invalid]="editDemandeForm.get('date_M')?.invalid && editDemandeForm.get('date_M')?.touched"
+                                        placeholder="{{ editDemandeForm.get('date_M')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_M" readonly>
+                                        <div> <small class="text-secondary"> {{ editDemandeForm.get('date_M')!.value | date: 'MM/dd/yyyy' }}</small> </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
@@ -355,14 +565,15 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer le congé</h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
+                    <h3>Supprimer la demande</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer la demande?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
                           <form [formGroup]="deleteDemandeForm" (ngSubmit)="onClickSubmitDeleteAbsence()">
                             <input type="hidden" formControlName="id">
+                            <input type="hidden" formControlName="type_demande">
                             <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteAbsence()">Supprimer</a>
                           </form>
                         </div>
