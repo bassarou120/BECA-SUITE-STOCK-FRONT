@@ -46,9 +46,49 @@
                       {{ curentEmploye.date_arrivee | date : "dd-MM-YYYY" }}
                     </div>
                     <div class="staff-msg">
-                      <a class="btn btn-custom" [routerLink]="routes.chat"
-                        >Enregister un mouvement</a
-                      >
+<!--                      [routerLink]="routes.chat"-->
+                      <a class="btn btn-custom"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                        Enregister un mouvement</a>
+                      <div class="dropdown-menu dropdown-menu-left">
+                        <!-- <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#edit_employee"
+                          ><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a
+                        >
+                          (click)="getIDForm(emp.id)"
+                        -->
+                        <a class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#new_contract_modal">
+<!--                          <i class="fa-regular fa-trash-can m-r-5"></i>-->
+                          Nouveau contrat</a>
+
+<!--                        <a class="dropdown-item"-->
+<!--                           data-bs-toggle="modal"-->
+<!--                           data-bs-target="#delete_employe">-->
+<!--                          &lt;!&ndash;                          <i class="fa-regular fa-trash-can m-r-5"></i>&ndash;&gt;-->
+<!--                          Renouveler le contract</a>-->
+
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe"> Renouveler le contract</a>
+
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe">Affectation</a>
+
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe">Nomination</a>
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe">Avancement</a>
+
+
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1125,7 +1165,9 @@
               </button>
             </div>
           </form>
-        --></div>
+        -->
+
+        </div>
       </div>
     </div>
     <!-- /Bank Statutory Tab -->
@@ -1397,6 +1439,206 @@
   </div>
 </div>
 <!-- /Page Content -->
+
+
+
+
+<!-- Ajouter contract Modal -->
+<div id="new_contract_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> Nouveau Contract pour {{curentEmploye.nom}} {{curentEmploye.prenom}}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="editEmployeInfoPersoForm" (ngSubmit)="onClickSubmitInfoPersoEmployee()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Num Contract </label>
+                <input type="text"   formControlName="passport" [value]="1" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                >Type de contract<span class="text-danger">*</span></label>
+
+                <mat-select
+                  [(ngModel)]="selectedValue15"
+                  class="user-assets select form-control"
+                  placeholder="-"
+                  formControlName="matrimoniale"
+                >
+                  <mat-option
+                    *ngFor="let data of selectedList15"
+                    [value]="data.value"
+                  >
+                    {{ data.value }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for="">Date debut</label>
+                <div class="cal-icon">
+                  <input  formControlName="date_debut"
+                          class="form-control datetimepicker"
+                          type="text"
+                          bsDatepicker
+                          container=".date-input2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for="">Date fin</label>
+                <div class="cal-icon">
+                  <input  formControlName="date_fin"
+                          class="form-control datetimepicker"
+                          type="text"
+                          bsDatepicker
+                          container=".date-input2"
+                  />
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Base catégorielle /Rémunér. forfaitaire </label>
+                <input type="text"   formControlName="base_categorie" [value]="1" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Prime d'ancienneté</label>
+                <input type="text"   formControlName="base_categorie" [value]="1" class="form-control" />
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="submit-section">
+              <button class="btn btn-primary submit-btn">Enregister</button>
+            </div>
+
+          </div>
+        </form>
+        <!--
+        <form>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Passport No</label>
+                <input type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for=""
+                  >Passport Expiry Date</label
+                >
+                <div class="cal-icon">
+                  <input
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    container=".date-input2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Tel</label>
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Nationality <span class="text-danger">*</span></label
+                >
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Religion</label>
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Marital status <span class="text-danger">*</span></label
+                >
+                <mat-select
+                  [(ngModel)]="selectedValue15"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="user-assets select form-control"
+                  placeholder="-"
+                >
+                  <mat-option
+                    *ngFor="let data of selectedList15"
+                    [value]="data.value"
+                  >
+                    {{ data.value }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Employment of spouse</label
+                >
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">No. of children </label>
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button class="btn btn-primary submit-btn">Submit</button>
+          </div>
+        </form>
+
+    -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Personal Info Modal -->
+
+
+
 <!-- Profile Modal -->
 <div id="profile_info" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1637,7 +1879,7 @@
                                   [(ngModel)]="selectedValue15"
                   class="user-assets select form-control"
                   placeholder="-"
-
+                formControlName="matrimoniale"
                 >
                   <mat-option
                     *ngFor="let data of selectedList15"

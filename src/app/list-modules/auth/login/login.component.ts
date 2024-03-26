@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public Loginvalue = new BehaviorSubject<string | number | returndata>(0);
   public Toggledata = true;
   form = new UntypedFormGroup({
-    email: new UntypedFormControl('admin@dreamguys.in', [Validators.required]),
+    email: new UntypedFormControl('admin@admin.com', [Validators.required]),
     password: new UntypedFormControl('123456', [Validators.required]),
   });
 

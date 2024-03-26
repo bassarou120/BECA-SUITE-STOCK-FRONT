@@ -76,13 +76,14 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   onClickSubmitInfoPersoEmployee(){
-    alert(JSON.stringify(this.editEmployeInfoPersoForm.value))
+    // alert(JSON.stringify(this.editEmployeInfoPersoForm.value))
     console.log(this.editEmployeInfoPersoForm.value)
     this.employeservice.updateInfoPerso(this.editEmployeInfoPersoForm.value,this.curentEmploye.id)
       .subscribe(
         (data: any) => {
-          alert(JSON.stringify(data));
-          this.curentEmploye = data.data;
+          // alert(JSON.stringify(data));
+          // this.curentEmploye = data.data;
+          location.reload()
         },
         (error: any) => {}
       );
