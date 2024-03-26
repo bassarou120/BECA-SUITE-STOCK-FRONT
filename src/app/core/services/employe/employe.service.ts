@@ -32,6 +32,10 @@ export class EmployeService {
     return this.http.post(`${this.url}/employe`, data);
   }
 
+  updateInfoPerso(data: any,id:any): Observable<Object> {
+    return this.http.put(`${this.url}/employe/updateInfoPerso/${id}`, data);
+  }
+
   getAllEmploye(): Observable<any> {
     return this.http.get<any>(`${this.url}/employe`);
   }

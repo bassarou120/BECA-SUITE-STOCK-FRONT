@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class EmployeModalComponent implements OnInit {
   public addEmployeeForm!: FormGroup;
   public editEmployeeForm!: FormGroup;
+
+
   constructor(
     private formBuilder: FormBuilder,
     public router: Router,
