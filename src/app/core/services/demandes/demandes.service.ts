@@ -46,7 +46,7 @@ export class DemandeService  {
   }
 
   deleteDemande(data:any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/demandes/${data.id}`);
+    return this.http.delete<any>(`${this.url}/demandes/${data.id}/${data.type_demande}`);
   }
 
 }

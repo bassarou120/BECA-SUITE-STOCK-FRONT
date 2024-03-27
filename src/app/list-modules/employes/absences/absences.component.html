@@ -167,10 +167,10 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="type_absence_id">Type d'Absence' <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="type_absence_id">Type d'Absence <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addAbsenceForm.get('type_absence_id')?.invalid && addAbsenceForm.get('type_absence_id')?.touched"
-                                    formControlName="type_absence_id" placeholder="Selectionner le type de congé">
+                                    formControlName="type_absence_id" placeholder="Selectionner le type d'absence ">
                                     <mat-option *ngFor="let item of lstTypeAbsence" value={{item.id}}> {{ item.libelle }} </mat-option>
                                 </mat-select>
                                 <div
@@ -187,7 +187,7 @@
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addAbsenceForm.get('employe_id')?.invalid && addAbsenceForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner le type de congé">
+                                    formControlName="employe_id" placeholder="Selectionner l'employé">
                                     <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
@@ -268,7 +268,7 @@
                                 <label class="col-form-label" for="type_absence_id">Type d'Absence<span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editAbsenceForm.get('type_absence_id')?.invalid && editAbsenceForm.get('type_absence_id')?.touched"
-                                    formControlName="type_absence_id" placeholder="Selectionner le type de congé">
+                                    formControlName="type_absence_id" placeholder="Selectionner le type d'absence">
                                     <mat-option *ngFor="let item of lstTypeAbsence" [value]="item.id"
                                     [class.mat-selected] ="item.id === editFormSelectedTypeAbsenceId"> {{ item.libelle }} </mat-option>
                                 </mat-select>
@@ -286,7 +286,7 @@
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editAbsenceForm.get('employe_id')?.invalid && editAbsenceForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner le type de congé">
+                                    formControlName="employe_id" placeholder="Selectionner l'employé">
                                     <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
                                     [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>

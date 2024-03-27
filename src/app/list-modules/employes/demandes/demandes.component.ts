@@ -287,12 +287,12 @@ export class DemandesComponent implements OnInit {
   onClickSubmitDeleteAbsence(){
 
     if (this.deleteDemandeForm.valid){
-console.log(this.deleteDemandeForm.value)
-      // this.data.deleteDemande(this.deleteDemandeForm.value).subscribe(
-      //   (data:any)=>{
-      //     location.reload();
-      //   }
-      // )
+
+      this.data.deleteDemande(this.deleteDemandeForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
       console.log("success")
     } else {
       console.log("desole le formulaire n'est pas bien renseigné")
