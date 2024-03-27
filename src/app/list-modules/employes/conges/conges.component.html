@@ -47,6 +47,7 @@
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="congeName">Libellé du Congé</th>
                             <th mat-sort-header="employeeName">Nom de l'Employé en Congé</th>
+                            <th mat-sort-header="statutName">Statut</th>
                             <th mat-sort-header="congeStart">Début du Congé</th>
                             <th mat-sort-header="congeEnd">Fin du Congé</th>
                             <th class="text-end">Action</th>
@@ -56,7 +57,8 @@
                         <tr *ngFor="let item of lstConge">
                             <td>{{item.id}}</td>
                             <td>{{item.libelle}}</td>
-                              <td>{{item.employe}}</td>
+                            <td>{{item.employe}}</td>
+                            <td>{{item.status}}</td>
                             <td>{{item.date_debut}}</td>
                             <td>{{item.date_fin}}</td>
                             <td class="text-end">
@@ -187,7 +189,7 @@
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addCongeForm.get('employe_id')?.invalid && addCongeForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner le type de congé">
+                                    formControlName="employe_id" placeholder="Selectionner l'employe">
                                     <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
@@ -299,7 +301,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3 date-input2">
                                 <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -317,7 +319,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
                                 <div class="cal-icon">
@@ -331,6 +333,22 @@
                                             *ngIf="editCongeForm.get('date_fin')?.invalid && editCongeForm.get('date_fin')?.touched"
                                             class="text-danger"> *La data de fin est obligatoire </small>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="status_id">Statut<span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editCongeForm.get('status')?.invalid && editCongeForm.get('status')?.touched"
+                                    formControlName="status_id" placeholder="Selectionner le statut">
+                                    <mat-option *ngFor="let item of lstStatus" [value]="item.id"
+                                    [class.mat-selected] ="item.id === editFormSelectedStatutId">{{ item.libelle }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="editCongeForm.get('status')?.invalid && editCongeForm.get('status')?.touched">
+                                    <small class="text-danger"> *Le statut est obligatoire</small>
                                 </div>
                             </div>
                         </div>

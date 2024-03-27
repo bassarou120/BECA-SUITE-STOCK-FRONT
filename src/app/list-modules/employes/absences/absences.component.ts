@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getAbsence, routes, AbsencesService, getTypeAbsence, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getAbsence, getStatut, routes, AbsencesService, getTypeAbsence, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import {environment} from "../../../../environments/environment";
 
 
 
@@ -21,12 +22,15 @@ export class AbsencesComponent implements OnInit {
   public lstDpt: Array<any>=[];
   mon_dep: any;
 
+  public default_status_id: number = environment.default_statut_id_for_demands;
 
   public lstAbsence: Array<getAbsence> = [];
+  public lstStatus: Array<getStatut> = [];
   public lstTypeAbsence: Array<getTypeAbsence> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedTypeAbsenceId: number = 0;
   public editFormSelectedEmployeId: number = 0;
+  public editFormSelectedStatutId: number = 0;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getAbsence>;
   // pagination variables
@@ -57,6 +61,7 @@ export class AbsencesComponent implements OnInit {
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
+      status_id: [this.default_status_id, [Validators.required]],
     }, { validator: this.datesValidator });
 
      this.editAbsenceForm = this.formBuilder.group({
@@ -65,6 +70,7 @@ export class AbsencesComponent implements OnInit {
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
+      status_id: [this.default_status_id, [Validators.required]],
     }, { validator: this.datesValidator });
     
      this.deleteAbsenceForm = this.formBuilder.group({
@@ -125,6 +131,17 @@ export class AbsencesComponent implements OnInit {
         });
       });
 
+      this.data.getAllStatuts().subscribe((res: any) => {
+        res.data.data.map((res: getStatut, index: number) => {
+          const serialNumber = index + 1;
+          if (index >= this.skip && serialNumber <= this.limit) {
+            res.id;// = serialNumber;
+            this.lstStatus.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
+        });
+      });
+
       this.dataSource = new MatTableDataSource<getAbsence>(this.lstAbsence);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
@@ -148,7 +165,7 @@ export class AbsencesComponent implements OnInit {
         (data: any) => {
           location.reload();
         }
-      )
+      );
     }else {
       console.log("Désolé le formulaire n'est pas bien renseigné")
     }
@@ -166,8 +183,10 @@ export class AbsencesComponent implements OnInit {
       employe_id: row.employe_id,
       date_debut: this.convertToDate(row.date_debut),
       date_fin: this.convertToDate(row.date_fin),
+      status_id: row.status_id,
     })
     this.editFormSelectedTypeAbsenceId = row.type_absence_id;
+    this.editFormSelectedStatutId = row.status_id;
     this.editFormSelectedEmployeId = row.employe_id;
   }
 
@@ -178,11 +197,12 @@ export class AbsencesComponent implements OnInit {
 
     if (this.editAbsenceForm.valid){
       const id = this.editAbsenceForm.value.id;
+
       this.data.editAbsence(this.editAbsenceForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
-      )
+      );
     } else {
       console.log("desole le formulaire n'est pas bien renseigné")
     }

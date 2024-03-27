@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getConge, routes, CongeService, getTypeConge, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getConge, routes, CongeService, getStatut, getTypeConge, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
+import {environment} from "../../../../environments/environment";
 
 
 @Component({
@@ -21,12 +21,15 @@ export class CongesComponent implements OnInit {
   public lstDpt: Array<any>=[];
   mon_dep: any;
 
+  public default_status_id: number = environment.default_statut_id_for_demands;
 
   public lstConge: Array<getConge> = [];
+  public lstStatus: Array<getStatut> = [];
   public lstTypeConge: Array<getTypeConge> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedTypeCongeId: number = 0;
   public editFormSelectedEmployeId: number = 0;
+  public editFormSelectedStatutId: number = 0;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getConge>;
   // pagination variables
@@ -57,6 +60,7 @@ export class CongesComponent implements OnInit {
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
+      status_id: [this.default_status_id, [Validators.required]],
     }, { validator: this.datesValidator });
 
      this.editCongeForm = this.formBuilder.group({
@@ -65,6 +69,7 @@ export class CongesComponent implements OnInit {
       employe_id: [0, [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
+      status_id: [this.default_status_id, [Validators.required]],
     }, { validator: this.datesValidator });
     
      this.deleteCongeForm = this.formBuilder.group({
@@ -125,6 +130,17 @@ export class CongesComponent implements OnInit {
         });
       });
 
+      this.data.getAllStatuts().subscribe((res: any) => {
+        res.data.data.map((res: getStatut, index: number) => {
+          const serialNumber = index + 1;
+          if (index >= this.skip && serialNumber <= this.limit) {
+            res.id;// = serialNumber;
+            this.lstStatus.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
+        });
+      });
+
       this.dataSource = new MatTableDataSource<getConge>(this.lstConge);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
@@ -143,7 +159,7 @@ export class CongesComponent implements OnInit {
     if (this.addCongeForm.valid){
       this.addCongeForm.patchValue({ date_debut: this.formatDateToString(this.addCongeForm.value.date_debut) });
       this.addCongeForm.patchValue({ date_fin: this.formatDateToString(this.addCongeForm.value.date_fin) });
-      
+
       this.data.saveConge(this.addCongeForm.value).subscribe(
         (data:any)=>{
           location.reload();
@@ -166,9 +182,11 @@ export class CongesComponent implements OnInit {
       employe_id: row.employe_id,
       date_debut: this.convertToDate(row.date_debut),
       date_fin: this.convertToDate(row.date_fin),
+      status_id: row.status_id,
     })
     this.editFormSelectedTypeCongeId = row.type_conges_id;
     this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedStatutId = row.status_id;
   }
 
   onClickSubmitEditConge(){
@@ -178,11 +196,12 @@ export class CongesComponent implements OnInit {
 
     if (this.editCongeForm.valid){
       const id = this.editCongeForm.value.id;
+
       this.data.editConge(this.editCongeForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
-      )
+      );
     } else {
       console.log("desole le formulaire n'est pas bien renseigné")
     }

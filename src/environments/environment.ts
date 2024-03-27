@@ -11,4 +11,7 @@ export const environment = {
   // accet_url: "http://127.0.0.1:8000/storage",
 
   expirationTime: 0,
+
+
+  default_statut_id_for_demands: 1,
 };

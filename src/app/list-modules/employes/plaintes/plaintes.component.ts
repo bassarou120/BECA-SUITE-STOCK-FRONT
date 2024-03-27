@@ -6,6 +6,7 @@ import { DataService,apiResultFormat, getPlainte, getStatut, routes, PlaintesSer
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import {environment} from "../../../../environments/environment";
 
 
 
@@ -21,7 +22,7 @@ export class PlaintesComponent implements OnInit {
   public lstDpt: Array<any>=[];
   mon_dep: any;
 
-  public default_status_id: number = 1;
+  public default_status_id: number = environment.default_statut_id_for_demands;
 
   public lstPlainte: Array<getPlainte> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];

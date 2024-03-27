@@ -22,6 +22,9 @@ export class AbsencesService  {
   getAllTypeAbsences(): Observable<any> {
     return this.http.get<any>(`${this.url}/type_absence`);
   }
+  getAllStatuts(): Observable<any> {
+    return this.http.get<any>(`${this.url}/status`);
+  }
 
   getAllEmployes(): Observable<any> {
    return this.http.get<any>(`${this.url}/employe`);
