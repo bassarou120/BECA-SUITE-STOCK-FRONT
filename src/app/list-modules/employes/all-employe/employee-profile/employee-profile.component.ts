@@ -34,7 +34,7 @@ export class EmployeeProfileComponent implements OnInit {
 
   curentEmploye: any;
   idEmploye: any;
-
+  public editEmployeInfoPersoForm!: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
     private employeservice: EmployeService,
@@ -50,8 +50,44 @@ export class EmployeeProfileComponent implements OnInit {
       client: ['', [Validators.required]],
     });
 
+    this.editEmployeInfoPersoForm = this.formBuilder.group({
+      passport_exp: ['', [Validators.required]],
+      passport: ['', [Validators.required]],
+      matrimoniale: ['', [Validators.required]],
+      nbr_enfant: ['', [Validators.required]],
+      banque: ['', [Validators.required]],
+      rib: ['', [Validators.required]],
+    });
+
     // alert(this.idEmploye);
     this.getCurentEmploy();
+  }
+  getEditInfoPersoForm(){
+    this.editEmployeInfoPersoForm.patchValue(
+      {
+        passport_exp: this.curentEmploye.passport_exp ,
+        passport:   this.curentEmploye.passport ,
+        matrimoniale: this.curentEmploye.matrimoniale ,
+        nbr_enfant: this.curentEmploye.nbr_enfant ,
+        banque: this.curentEmploye.banque ,
+        rib: this.curentEmploye.rib ,
+      }
+    );
+  }
+
+  onClickSubmitInfoPersoEmployee(){
+    // alert(JSON.stringify(this.editEmployeInfoPersoForm.value))
+    console.log(this.editEmployeInfoPersoForm.value)
+    this.employeservice.updateInfoPerso(this.editEmployeInfoPersoForm.value,this.curentEmploye.id)
+      .subscribe(
+        (data: any) => {
+          // alert(JSON.stringify(data));
+          // this.curentEmploye = data.data;
+          location.reload()
+        },
+        (error: any) => {}
+      );
+
   }
 
   getCurentEmploy() {
@@ -168,4 +204,10 @@ export class EmployeeProfileComponent implements OnInit {
   ];
 
   */
+
+  selectedList15: data[] = [
+    { value: '-' },
+    { value: 'Celibataire' },
+    { value: 'Marié' },
+  ];
 }

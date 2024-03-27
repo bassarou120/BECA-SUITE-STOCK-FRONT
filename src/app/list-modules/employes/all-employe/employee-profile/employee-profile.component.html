@@ -46,9 +46,49 @@
                       {{ curentEmploye.date_arrivee | date : "dd-MM-YYYY" }}
                     </div>
                     <div class="staff-msg">
-                      <a class="btn btn-custom" [routerLink]="routes.chat"
-                        >Enregister un mouvement</a
-                      >
+<!--                      [routerLink]="routes.chat"-->
+                      <a class="btn btn-custom"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+                        Enregister un mouvement</a>
+                      <div class="dropdown-menu dropdown-menu-left">
+                        <!-- <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#edit_employee"
+                          ><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a
+                        >
+                          (click)="getIDForm(emp.id)"
+                        -->
+                        <a class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#new_contract_modal">
+<!--                          <i class="fa-regular fa-trash-can m-r-5"></i>-->
+                          Nouveau contrat</a>
+
+<!--                        <a class="dropdown-item"-->
+<!--                           data-bs-toggle="modal"-->
+<!--                           data-bs-target="#delete_employe">-->
+<!--                          &lt;!&ndash;                          <i class="fa-regular fa-trash-can m-r-5"></i>&ndash;&gt;-->
+<!--                          Renouveler le contract</a>-->
+
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe"> Renouveler le contract</a>
+
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe">Affectation</a>
+
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe">Nomination</a>
+                        <a class="dropdown-item"
+                           data-bs-toggle="modal"
+                           data-bs-target="#delete_employe">Avancement</a>
+
+
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -125,8 +165,7 @@
         <ul class="nav nav-tabs nav-tabs-bottom">
           <li class="nav-item">
             <a href="#emp_profile" data-bs-toggle="tab" class="nav-link active"
-              >Information personelles</a
-            >
+              >Information personelles</a>
           </li>
           <!--                    <li class="nav-item"><a href="#emp_projects" data-bs-toggle="tab" class="nav-link">Projects</a></li>-->
           <li class="nav-item">
@@ -152,43 +191,34 @@
           <div class="card profile-box flex-fill">
             <div class="card-body">
               <h3 class="card-title">
-                Personal Informations
+                 Informations Personnele
                 <a
                   class="edit-icon"
                   data-bs-toggle="modal"
-                  data-bs-target="#personal_info_modal"
+                  data-bs-target="#personal_info_modal" (click)="getEditInfoPersoForm()"
                   ><i class="fa-solid fa-pencil"></i
                 ></a>
               </h3>
               <ul class="personal-info">
                 <li>
-                  <div class="title">Passport No.</div>
-                  <div class="text">9876543210</div>
+                  <div class="title">No. Passport </div>
+                  <div class="text">{{ curentEmploye.passport }}</div>
                 </li>
                 <li>
-                  <div class="title">Passport Exp Date.</div>
-                  <div class="text">9876543210</div>
+                  <div class="title">Exp Date.</div>
+                  <div class="text">{{ curentEmploye.passport_exp }}</div>
                 </li>
                 <li>
-                  <div class="title">Tel</div>
-                  <div class="text"><a href="">9876543210</a></div>
+                  <div class="title">Téléphone</div>
+                  <div class="text"><a href="">{{ curentEmploye.telephone }}</a></div>
                 </li>
+
+
                 <li>
-                  <div class="title">Nationality</div>
-                  <div class="text">Indian</div>
+                  <div class="title">Situation matrimoniale</div>
+                  <div class="text">{{ curentEmploye.matrimoniale }}</div>
                 </li>
-                <li>
-                  <div class="title">Religion</div>
-                  <div class="text">Christian</div>
-                </li>
-                <li>
-                  <div class="title">Marital status</div>
-                  <div class="text">Married</div>
-                </li>
-                <li>
-                  <div class="title">Employment of spouse</div>
-                  <div class="text">No</div>
-                </li>
+
               </ul>
             </div>
           </div>
@@ -196,24 +226,17 @@
         <div class="col-md-6 d-flex">
           <div class="card profile-box flex-fill">
             <div class="card-body">
-              <h3 class="card-title">Bank information</h3>
+              <h3 class="card-title">information de Banque </h3>
               <ul class="personal-info">
                 <li>
-                  <div class="title">Bank name</div>
-                  <div class="text">ICICI Bank</div>
+                  <div class="title">Nom Banque:</div>
+                  <div class="text">{{ curentEmploye.banque }}</div>
                 </li>
                 <li>
-                  <div class="title">Bank account No.</div>
-                  <div class="text">159843014641</div>
+                  <div class="title">Banque RIB: </div>
+                  <div class="text">{{ curentEmploye.rib }}</div>
                 </li>
-                <li>
-                  <div class="title">IFSC Code</div>
-                  <div class="text">ICI24504</div>
-                </li>
-                <li>
-                  <div class="title">PAN No</div>
-                  <div class="text">TC000Y56</div>
-                </li>
+
               </ul>
             </div>
           </div>
@@ -1142,7 +1165,9 @@
               </button>
             </div>
           </form>
-        --></div>
+        -->
+
+        </div>
       </div>
     </div>
     <!-- /Bank Statutory Tab -->
@@ -1414,6 +1439,206 @@
   </div>
 </div>
 <!-- /Page Content -->
+
+
+
+
+<!-- Ajouter contract Modal -->
+<div id="new_contract_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> Nouveau Contract pour {{curentEmploye.nom}} {{curentEmploye.prenom}}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="editEmployeInfoPersoForm" (ngSubmit)="onClickSubmitInfoPersoEmployee()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Num Contract </label>
+                <input type="text"   formControlName="passport" [value]="1" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                >Type de contract<span class="text-danger">*</span></label>
+
+                <mat-select
+                  [(ngModel)]="selectedValue15"
+                  class="user-assets select form-control"
+                  placeholder="-"
+                  formControlName="matrimoniale"
+                >
+                  <mat-option
+                    *ngFor="let data of selectedList15"
+                    [value]="data.value"
+                  >
+                    {{ data.value }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for="">Date debut</label>
+                <div class="cal-icon">
+                  <input  formControlName="date_debut"
+                          class="form-control datetimepicker"
+                          type="text"
+                          bsDatepicker
+                          container=".date-input2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for="">Date fin</label>
+                <div class="cal-icon">
+                  <input  formControlName="date_fin"
+                          class="form-control datetimepicker"
+                          type="text"
+                          bsDatepicker
+                          container=".date-input2"
+                  />
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Base catégorielle /Rémunér. forfaitaire </label>
+                <input type="text"   formControlName="base_categorie" [value]="1" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Prime d'ancienneté</label>
+                <input type="text"   formControlName="base_categorie" [value]="1" class="form-control" />
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="submit-section">
+              <button class="btn btn-primary submit-btn">Enregister</button>
+            </div>
+
+          </div>
+        </form>
+        <!--
+        <form>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Passport No</label>
+                <input type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for=""
+                  >Passport Expiry Date</label
+                >
+                <div class="cal-icon">
+                  <input
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    container=".date-input2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Tel</label>
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Nationality <span class="text-danger">*</span></label
+                >
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Religion</label>
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Marital status <span class="text-danger">*</span></label
+                >
+                <mat-select
+                  [(ngModel)]="selectedValue15"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="user-assets select form-control"
+                  placeholder="-"
+                >
+                  <mat-option
+                    *ngFor="let data of selectedList15"
+                    [value]="data.value"
+                  >
+                    {{ data.value }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Employment of spouse</label
+                >
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">No. of children </label>
+                <input class="form-control" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button class="btn btn-primary submit-btn">Submit</button>
+          </div>
+        </form>
+
+    -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Personal Info Modal -->
+
+
+
 <!-- Profile Modal -->
 <div id="profile_info" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1606,7 +1831,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Personal Information</h5>
+        <h5 class="modal-title"> Informations Personnele</h5>
         <button
           type="button"
           class="btn-close"
@@ -1617,6 +1842,85 @@
         </button>
       </div>
       <div class="modal-body">
+
+        <form [formGroup]="editEmployeInfoPersoForm" (ngSubmit)="onClickSubmitInfoPersoEmployee()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Num Passport </label>
+                <input type="text"   formControlName="passport" [value]="1" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for=""
+                >date d'expiration du passeport</label
+                >
+                <div class="cal-icon">
+                  <input  formControlName="passport_exp"
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    container=".date-input2"
+                  />
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                >Situation matrimoniale<span class="text-danger">*</span></label
+                >
+
+                <!--                  [ngModelOptions]="{ standalone: true }"-->
+                <mat-select
+                                  [(ngModel)]="selectedValue15"
+                  class="user-assets select form-control"
+                  placeholder="-"
+                formControlName="matrimoniale"
+                >
+                  <mat-option
+                    *ngFor="let data of selectedList15"
+                    [value]="data.value"
+                  >
+                    {{ data.value }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Nombre d'enfants</label>
+                <input formControlName="nbr_enfant" class="form-control" value="888"  type="number" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for="">Banque </label>
+                <input type="text"   formControlName="banque" value="{{ curentEmploye.banque }}" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for=""
+                >RIB</label
+                >
+                <div class="cal-icon">
+                  <input type="number"   formControlName="rib" value="{{ curentEmploye.rib }}" class="form-control" />
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button class="btn btn-primary submit-btn">Enregister</button>
+            </div>
+
+          </div>
+        </form>
         <!--
         <form>
           <div class="row">
