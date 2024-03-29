@@ -62,7 +62,8 @@
                         -->
                         <a class="dropdown-item"
                           data-bs-toggle="modal"
-                          data-bs-target="#new_contract_modal">
+                          data-bs-target="#new_contract_modal"
+                        (click)="initAddContrat()">
 <!--                          <i class="fa-regular fa-trash-can m-r-5"></i>-->
                           Nouveau contrat</a>
 
@@ -865,7 +866,134 @@
     <div class="tab-pane fade" id="bank_statutory">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">Basic Salary Information</h3>
+          <hr>
+          <h3 class="card-title">Contract en cours</h3>
+          <hr>
+
+       <div class="profile-view">
+
+            <div class="profile-basic_bassarou">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="profile-info-left_bassarou">
+                    <h3 class="user-name m-t-0 mb-0">
+                     Ref: 00028
+                    </h3>
+                    <br>
+                    <ul class="personal-info">
+                      <li>
+                        <div class="title">Type contrat :</div>
+                        <div class="text">
+                         CDD
+                        </div>
+                      </li>
+
+                      <li>
+                        <div class="title">Durée : </div>
+                        <div class="text">
+                          2 ans
+                        </div>
+                      </li>
+
+                      <li>
+                        <div class="title">Date de Fin : </div>
+                        <div class="text">
+                           10/09/2024
+                        </div>
+                      </li>
+                    </ul>
+
+
+
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <ul class="personal-info">
+                    <li>
+                      <div class="title">Base catégorielle:</div>
+                      <div class="text">
+                         200000
+                      </div>
+                    </li>
+                    <li>
+                      <div class="title">Prime d'ancienneté:</div>
+                      <div class="text">
+                          5000
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+          <br>
+
+          <hr>
+          <h3 class="card-title">Historique des Contracts </h3>
+          <hr>
+
+          <div class="table-responsive table-newdatatable">
+            <table class="table table-new custom-table mb-0 datatable">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Ref.</th>
+                <th>Type de contrat</th>
+                <th> Date de debut</th>
+                <th> Date de fin</th>
+
+
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>1</td>
+                <td>000F423</td>
+                <td>
+                  CDD
+                </td>
+                <td>12/02/2023</td>
+                <td>12/12/2023</td>
+
+                <td>
+                  <div class="table-actions d-flex">
+                    <a
+                      class="delete-table me-2"
+                      [routerLink]="routes.userAssetsDetails"
+                    >
+                      <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>000F423</td>
+                <td>
+                  Prestation
+                </td>
+                <td>12/02/2022</td>
+                <td>12/01/2023</td>
+
+                <td>
+                  <div class="table-actions d-flex">
+                    <a
+                      class="delete-table me-2"
+                      [routerLink]="routes.userAssetsDetails"
+                    >
+                      <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
+                    </a>
+                  </div>
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
 
           <!--
           <form [formGroup]="addEmployeeForm">
@@ -1174,6 +1302,8 @@
 
     <!-- Assets -->
     <div class="tab-pane fade" id="emp_assets">
+
+<!--
       <div class="table-responsive table-newdatatable">
         <table class="table table-new custom-table mb-0 datatable">
           <thead>
@@ -1434,6 +1564,7 @@
           </tbody>
         </table>
       </div>
+      -->
     </div>
     <!-- /Assets -->
   </div>
@@ -1460,12 +1591,13 @@
       </div>
       <div class="modal-body">
 
-        <form [formGroup]="editEmployeInfoPersoForm" (ngSubmit)="onClickSubmitInfoPersoEmployee()">
+        <form [formGroup]="addEmployeContratForm" (ngSubmit)="onClickSubmitaddEmployeContrat()">
+
           <div class="row">
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="">Num Contract </label>
-                <input type="text"   formControlName="passport" [value]="1" class="form-control" />
+                <label class="col-form-label" for="">Num Contrat </label>
+                <input type="text"   formControlName="num_contrat"   class="form-control" />
               </div>
             </div>
 
@@ -1475,16 +1607,16 @@
                 >Type de contract<span class="text-danger">*</span></label>
 
                 <mat-select
-                  [(ngModel)]="selectedValue15"
+
                   class="user-assets select form-control"
                   placeholder="-"
-                  formControlName="matrimoniale"
+                  formControlName="type_contrat_id"
                 >
                   <mat-option
-                    *ngFor="let data of selectedList15"
-                    [value]="data.value"
+                    *ngFor="let data of listTypeContrat"
+                    [value]="data.id"
                   >
-                    {{ data.value }}
+                    {{ data.libelle }}
                   </mat-option>
                 </mat-select>
               </div>
@@ -1523,13 +1655,70 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Base catégorielle /Rémunér. forfaitaire </label>
-                <input type="text"   formControlName="base_categorie" [value]="1" class="form-control" />
+                <input type="text"   formControlName="base_categorielle"   class="form-control" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Prime d'ancienneté</label>
-                <input type="text"   formControlName="base_categorie" [value]="1" class="form-control" />
+                <input type="text"   formControlName="prime_anciennete"   class="form-control" />
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">
+                Les  Primes fixes   |  {{totalPrime}} FCFA
+                </h3>
+
+
+                <div class="row" [formGroup]="form">
+
+                  <div formArrayName="items">
+                  <div *ngFor="let item of items.controls; let i=index" [formGroupName]="i">
+
+                    <div class="row">
+                    <div class="col-md-4">
+                      <div class="input-block mb-3">
+                        <label class="col-form-label" for=""> Indemnité {{i+1}} </label>
+                        <input type="text" id="indemnite"  formControlName="indenmite"    class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="input-block mb-3">
+                        <label class="col-form-label" for="">Montant de l'indemnité {{i+1}}</label>
+                        <input type="number"  (change)="calucleTotalPrime()"   id="montant_indemnite" formControlName="montant_indenmite" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-md-1" style="  ">
+                      <br>  <br>
+                      <a href="javascript:void(0);" (click)="removePrime(i)" class="delete-icon"
+                      ><i class="fa-regular fa-trash-can"></i
+                      ></a>
+
+                    </div>
+                    </div>
+
+                  </div>
+
+                  </div>
+
+                </div>
+
+
+                <div class="add-more">
+                  <a href="javascript:void(0); " (click)="addPrime()"
+                  ><i class="fa-solid fa-plus-circle"></i> ajouter prime</a
+                  >
+                </div>
+
+
+<!--                {{ form.value.items | json}}-->
+<!--               {{totalPrime}}-->
+
+
+
+
               </div>
             </div>
 
@@ -1541,7 +1730,7 @@
 
 
             <div class="submit-section">
-              <button class="btn btn-primary submit-btn">Enregister</button>
+              <button class="btn btn-primary submit-btn" >Enregister</button>
             </div>
 
           </div>

@@ -44,12 +44,22 @@ export class EmployeService {
     return this.http.get<any>(`${this.url}/employe/${id}`);
   }
 
+
+  saveContatEmploye(data: any): Observable<Object> {
+    return this.http.post(`${this.url}/contrats`, data);
+  }
+
+
   deleteEmploye(id: any): Observable<any> {
     return this.http.delete<any>(`${this.url}/employe/${id}`);
   }
 
   getDepartementPoste() {
     return this.http.get<any>(`${this.url}/getDepartementPoste`);
+  }
+
+  getLastContrat() {
+    return this.http.get<any>(`${this.url}/getLastContrat`);
   }
 
   /*

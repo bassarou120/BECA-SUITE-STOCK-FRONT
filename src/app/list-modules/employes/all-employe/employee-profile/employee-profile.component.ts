@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { routes } from 'src/app/core/core.index';
+import {routes, TypeContratService} from 'src/app/core/core.index';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
 interface data {
   value: string;
@@ -12,7 +12,7 @@ interface data {
   templateUrl: './employee-profile.component.html',
   styleUrls: ['./employee-profile.component.scss'],
 })
-export class EmployeeProfileComponent implements OnInit {
+export class EmployeeProfileComponent implements OnInit  {
   public selectedValue1 = '';
   public selectedValue2 = '';
   public selectedValue3 = '';
@@ -32,16 +32,72 @@ export class EmployeeProfileComponent implements OnInit {
   bsValue = new Date();
   public addEmployeeForm!: FormGroup;
 
+
+  nbr_prime=2;
+
+  list_prime:any;
+
   curentEmploye: any;
   idEmploye: any;
+
+
+  listTypeContrat:any=[]
+  lastContrat:any
+
+
+
   public editEmployeInfoPersoForm!: FormGroup;
+  public addEmployeContratForm!: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
     private employeservice: EmployeService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private typeContratService:TypeContratService
   ) {}
 
+totalPrime=0
+  form=this.formBuilder.group({
+    items:this.formBuilder.array([])
+  });
+
+  get items(){
+return this.form.get('items') as FormArray
+  }
+  removePrime(i:number){
+    // alert(JSON.stringify(i))
+ this.items.removeAt(i)
+    // this.list_prime.splice(i.id-1 ,1);
+    this.  calucleTotalPrime()
+  }
+
+  initAddContrat(){
+    // alert("init create contrat")
+
+    this.typeContratService.getAllTypeContrat().subscribe(
+      (data:any)=>{
+        // alert(JSON.stringify(data.data.data))
+        this.listTypeContrat=data.data.data
+      },
+      (erro:any)=>{}
+    );
+
+    this.employeservice.getLastContrat().subscribe(
+      (data:any)=>{
+         // alert(JSON.stringify(data.data ))
+        // this.listTypeContrat=data.data.data
+        this.lastContrat=data.data
+
+        console.log(data.data)
+        this.addEmployeContratForm.get('num_contrat')?.setValue("C-000"+data.data.id)
+
+
+      },
+      (erro:any)=>{}
+    );
+  }
+
   ngOnInit() {
+    this.list_prime=[]
     this.activatedRoute.params.subscribe((params) => {
       const type = params['type'];
       this.idEmploye = params['id'];
@@ -59,6 +115,18 @@ export class EmployeeProfileComponent implements OnInit {
       rib: ['', [Validators.required]],
     });
 
+    this.addEmployeContratForm=this.formBuilder.group({
+      num_contrat: [this.lastContrat, [Validators.required]],
+      type_contrat_id: ['', [Validators.required]],
+      employe_id: [this.idEmploye, []],
+      base_categorielle: ['', [Validators.required]],
+      prime_anciennete: ['', [Validators.required]],
+      date_debut: ['', [Validators.required]],
+      date_fin: ['', [Validators.required]],
+      // duree: [this.idEmploye, [Validators.required]],
+      // num_contrat: ['', [Validators.required]],
+    });
+
     // alert(this.idEmploye);
     this.getCurentEmploy();
   }
@@ -74,7 +142,6 @@ export class EmployeeProfileComponent implements OnInit {
       }
     );
   }
-
   onClickSubmitInfoPersoEmployee(){
     // alert(JSON.stringify(this.editEmployeInfoPersoForm.value))
     console.log(this.editEmployeInfoPersoForm.value)
@@ -89,7 +156,6 @@ export class EmployeeProfileComponent implements OnInit {
       );
 
   }
-
   getCurentEmploy() {
     this.employeservice.getEmploye(this.idEmploye).subscribe(
       (data: any) => {
@@ -98,6 +164,112 @@ export class EmployeeProfileComponent implements OnInit {
       },
       (error: any) => {}
     );
+  }
+
+  onClickSubmitaddEmployeContrat(){
+
+
+    if (this.addEmployeContratForm.valid){
+
+      this.addEmployeContratForm.get('date_debut')?.setValue( (new Date(this.addEmployeContratForm.get('date_debut')?.value)).toISOString().slice(0, 10).replace('T', ' '))
+      this.addEmployeContratForm.get('date_fin')?.setValue( (new Date(this.addEmployeContratForm.get('date_fin')?.value)).toISOString().slice(0, 10).replace('T', ' '))
+
+      var obj =this.addEmployeContratForm.value;
+      Object.assign(obj, {
+        prime: this.form.value.items,
+        duree:this.calculeNomberDay( (new Date(this.addEmployeContratForm.get('date_debut')?.value)),(new Date(this.addEmployeContratForm.get('date_fin')?.value)))
+      });
+
+      alert(JSON.stringify( obj));
+
+      this.employeservice.saveContatEmploye(obj).subscribe(
+        (data:any)=>{
+
+          alert(JSON.stringify(data.data))
+
+        },
+        (error:any)=>{}
+      );
+
+
+    }
+
+    // this.addEmployeContratForm.get('date_debut')?.setValue( (new Date(this.addEmployeContratForm.get('date_debut')?.value)).toISOString().slice(0, 10).replace('T', ' '))
+    // this.addEmployeContratForm.get('date_fin')?.setValue( (new Date(this.addEmployeContratForm.get('date_fin')?.value)).toISOString().slice(0, 10).replace('T', ' '))
+    //
+    // var obj =this.addEmployeContratForm.value;
+    // Object.assign(obj, {
+    //   prime: this.form.value.items,
+    //   duree:this.calculeNomberDay( (new Date(this.addEmployeContratForm.get('date_debut')?.value)),(new Date(this.addEmployeContratForm.get('date_fin')?.value)))
+    // });
+
+    // alert(JSON.stringify( this.addEmployeContratForm.value));
+    // alert(JSON.stringify( this.form.value.items));
+    //  alert(JSON.stringify( obj));
+
+
+
+
+  }
+
+  addPrime(){
+    this.items.push(this.formBuilder.group({
+      indenmite:[''],
+      montant_indenmite:[''],
+    }))
+  this.  calucleTotalPrime()
+
+    console.log(  this.items.length)
+
+
+    // alert(JSON.stringify(this.list_prime));
+    // this.list_prime.push({'id':this.list_prime.length+1,'indenmite':'', 'montant':'0'},)
+
+
+  }
+
+  calculeNomberDay(date1:any,date2:any){
+    // let date1 = new Date("01/16/2024");
+    // let date2 = new Date("01/26/2024");
+
+    // Calculating the time difference
+    // of two dates
+    let Difference_In_Time = date2.getTime() - date1.getTime();
+
+    // Calculating the no. of days between
+    // two dates
+    let Difference_In_Days =
+      Math.round
+      (Difference_In_Time / (1000 * 3600 * 24));
+
+    // To display the final no. of days (result)
+    console.log
+    ("Total number of days between dates:\n" +
+      date1.toDateString() + " and " +
+      date2.toDateString() +
+      " is: " + Difference_In_Days + " days");
+
+    return Difference_In_Days;
+
+  }
+  calucleTotalPrime(){
+
+    var traveler:any =  this.form.value.items;
+
+    function montant_indenmite(item:any){
+      return item.montant_indenmite;
+    }
+
+    function sum(prev:any, next:any){
+      return prev + next;
+    }
+
+    this.totalPrime=  traveler.map(montant_indenmite).reduce(sum);
+
+    // alert(this.totalPrime)
+
+ // this.totalPrime=
+   // this.form.value.items.reduce((n, {montant_indenmite}) => n + montant_indenmite, 0)
   }
 
   /*
@@ -210,4 +382,6 @@ export class EmployeeProfileComponent implements OnInit {
     { value: 'Celibataire' },
     { value: 'Marié' },
   ];
+
+
 }

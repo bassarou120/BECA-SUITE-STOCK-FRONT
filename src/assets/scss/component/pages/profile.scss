@@ -57,6 +57,46 @@
             }
         }
     }
+
+    .profile-basic_bassarou {
+    margin-left: 14px;
+    padding-right: 50px;
+    @include respond-below(custom575) {
+      margin-left: 0;
+      padding-right: 0;
+    }
+    .profile-info-left_bassarou {
+      border-right: 2px dashed $__goose-gray;
+      @include respond-below(custom575) {
+        text-align: $__center;
+        @include margin-padding(null,15px 0);
+      }
+      @include respond-below(custom768) {
+        border-right: $__none;
+        border-bottom: 2px dashed $__goose-gray;
+        @include margin-padding(0 0 20px, 0 0 20px);
+      }
+      .user-name {
+        color: $__gray;
+      }
+      .staff-id {
+        font-size: $__font__size__14;
+        font-weight: $__medium;
+        margin-top: 5px;
+      }
+      .staff-msg {
+        margin-top: 30px;
+        .btn-custom {
+          background: $__primarycolor;
+          background: linear-gradient(to right, $__primarycolor 0%, $__light__chilli__pepper 100%);
+          color: $__white;
+          &:hover {
+            border-color: $__primarycolor;
+          }
+        }
+      }
+    }
+  }
     .pro-edit {
         @include position($__absolute,0,0,null,null);
     }
