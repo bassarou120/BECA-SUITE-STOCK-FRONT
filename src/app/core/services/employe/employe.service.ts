@@ -61,6 +61,9 @@ export class EmployeService {
   getLastContrat() {
     return this.http.get<any>(`${this.url}/getLastContrat`);
   }
+  getLastContratByEmployeId(id: any) {
+    return this.http.get<any>(`${this.url}/getLastContratByEmployeId/${id}`);
+  }
 
   /*
   public getEmployees(): Observable<apiResultFormat> {
