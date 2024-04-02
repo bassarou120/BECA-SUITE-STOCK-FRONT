@@ -91,6 +91,10 @@ export class routes {
     return this.baseUrl + '/parametrage/statut';
   }
 
+  public static get heures_supplementaires(): string {
+    return this.baseUrl + '/employes/heures-supplementaires';
+  }
+
 
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';

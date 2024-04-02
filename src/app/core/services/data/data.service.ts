@@ -90,6 +90,11 @@ export class DataService {
               route: routes.plaintesGRH,
               base: 'plaintes',
             },
+            {
+              menuValue: 'Heure supplémentaire',
+              route: routes.heures_supplementaires,
+              base: 'heures-supllémetaires',
+            },
 
           ],
         },
