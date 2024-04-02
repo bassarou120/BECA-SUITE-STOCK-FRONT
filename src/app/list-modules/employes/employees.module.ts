@@ -19,12 +19,13 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ShiftListComponent } from './shift-list/shift-list.component';
- 
- 
+
+
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
 import { DemandesComponent } from './demandes/demandes.component';
+import { FormationsComponent } from './formations/formations.component';
 
 // @ts-ignore
 @NgModule({
@@ -48,6 +49,7 @@ import { DemandesComponent } from './demandes/demandes.component';
     AbsencesComponent,
     PlaintesComponent,
     DemandesComponent,
+    FormationsComponent,
   ],
   imports: [
     CommonModule,

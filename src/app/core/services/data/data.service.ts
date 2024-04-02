@@ -90,6 +90,11 @@ export class DataService {
               route: routes.plaintesGRH,
               base: 'plaintes',
             },
+            {
+              menuValue: 'Les Formations (GRH)',
+              route: routes.formationsGRH,
+              base: 'formations',
+            },
 
           ],
         },

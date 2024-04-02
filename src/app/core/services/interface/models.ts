@@ -669,6 +669,7 @@ export interface getTypeConge {
   id: number;
   libelle: string;
 }
+
 export interface getStatut {
   id: number;
   libelle: string;
@@ -726,6 +727,17 @@ export interface getDemande {
   type_demande: string;
   employe_id: number;
   status: string;
+  employe: string;
+}
+
+export interface getFormation {
+  id: number;
+  employe_id: number;
+  intitule: string;
+  domaine: string;
+  date_debut: Date;
+  date_fin: Date;
+  diplome: string;
   employe: string;
 }
 

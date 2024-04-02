@@ -61,6 +61,10 @@ export class routes {
     return this.baseUrl + '/employes/plaintes';
   }
 
+  public static get formationsGRH(): string {
+    return this.baseUrl + '/employes/formations';
+  }
+
 
 
   public static get type_conge(): string {
