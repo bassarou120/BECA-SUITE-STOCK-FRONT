@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Les Plaintes</h3>
+                <h3 class="page-title">Mes Plaintes</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Les Plaintes</li>
+                    <li class="breadcrumb-item active">Mes Plaintes</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
@@ -157,7 +157,7 @@
 <!-- /Page Content -->
 
 <!-- Add Congé Modal -->
-  <div id="add_absence" class="modal custom-modal fade" role="dialog">
+<div id="add_absence" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -175,7 +175,8 @@
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addPlainteForm.get('employe_id')?.invalid && addPlainteForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner l'employé concerné">
-                                    <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
+                                    [class.mat-selected] ="item.id === loggedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
                                     *ngIf="addPlainteForm.get('employe_id')?.invalid && addPlainteForm.get('employe_id')?.touched">
@@ -279,7 +280,7 @@
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editPlainteForm.get('employe_id')?.invalid && editPlainteForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner le type de congé">
-                                    <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
                                     [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
@@ -333,7 +334,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="description">Description de la plainte <span class="text-danger">*</span></label>
                                 <textarea class="form-control custom-textarea" rows="4"
@@ -345,9 +346,9 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-3">
+                       <!-- <div class="col-sm-3">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="status">Statut de la demande <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="status">Statut de la plainte <span class="text-danger">*</span></label>
                                 <input  class="form-control" type="text"
                                     [class.invalid]="editPlainteForm.get('status')?.invalid && editPlainteForm.get('status')?.touched"
                                     formControlName="status" placeholder="Statut de la plainte">
@@ -356,7 +357,7 @@
                                     <small class="text-danger"> *Le statut est obligatoire</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="submit-section">

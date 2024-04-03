@@ -1,3 +1,4 @@
+import { environment } from '../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
@@ -22,8 +23,8 @@ export class DemandesComponent implements OnInit {
   mon_dep: any;
 
 
-  public default_status_id: number = 1;
-  public lstTypeDemande: Array<string> = ["congé", "absence", "plainte"];
+  public default_status: string = environment.default_statut_for_demands;
+  public lstTypeDemande: Array<string> = ["congé", "absence"];
 
   public loggedUserId: number = 0;
   public loggedEmployeId: number = 0;
@@ -62,18 +63,18 @@ export class DemandesComponent implements OnInit {
       date_demande: [new Date(), [Validators.required]],
       objet: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
-      status_id: [this.default_status_id, [Validators.required]],
+      status: [this.default_status, [Validators.required]],
       contenue: ["", [Validators.required]],
       type_demande: ["", [Validators.required]],
       date_debut: [new Date(), [Validators.required]],
       date_fin: [this.tomorrowDate(), [Validators.required]],
-      type_conges_id: [0, [Validators.required]],
-      type_absence_id: [0, [Validators.required]],
+      type_conges_id: ["", [Validators.required]],
+      type_absence_id: ["", [Validators.required]],
       titre: ["Aucun", [Validators.required]],
       description: ["Aucun", [Validators.required]],
       date_M: [new Date(), [Validators.required]],
       autre_info: ["Aucun", [Validators.required]],
-      
+
     }, { validator: this.datesValidator });
 
      this.editDemandeForm = this.formBuilder.group({
@@ -81,7 +82,7 @@ export class DemandesComponent implements OnInit {
       date_demande: [new Date(), [Validators.required]],
       objet: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
-      status_id: [this.default_status_id, [Validators.required]],
+      status: [this.default_status, [Validators.required]],
       contenue: ["", [Validators.required]],
       type_demande: ["", [Validators.required]],
       date_debut: [new Date(), [Validators.required]],
@@ -92,9 +93,9 @@ export class DemandesComponent implements OnInit {
       description: ["Aucun", [Validators.required]],
       date_M: [new Date(), [Validators.required]],
       autre_info: ["Aucun", [Validators.required]],
-      
+
     }, { validator: this.datesValidator });
-    
+
      this.deleteDemandeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       type_demande: ["", [Validators.required]],
@@ -137,11 +138,11 @@ export class DemandesComponent implements OnInit {
   }
 
 
-  
+
   private getTableData(): void {
     this.lstDemande = [];
     this.serialNumberArray = [];
- 
+
     this.data.getAllUserDemandes(this.loggedUserId).subscribe((res: any) => {
       this.totalData = res.data.total;
 
@@ -198,7 +199,7 @@ export class DemandesComponent implements OnInit {
     });
   }
 
-  
+
   private formatDateToString(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -207,6 +208,12 @@ export class DemandesComponent implements OnInit {
   }
 
   onClickSubmitAddDemande(){
+
+    if(this.addDemandeForm.value.type_absence_id) {
+      this.addDemandeForm.patchValue({type_conges_id: "0"});
+    } else if(this.addDemandeForm.value.type_conges_id) {
+      this.addDemandeForm.patchValue({type_absence_id: "0"});
+    }
 
     if (this.addDemandeForm.valid){
       this.addDemandeForm.patchValue({
@@ -217,14 +224,14 @@ export class DemandesComponent implements OnInit {
         titre: this.addDemandeForm.value.objet,
         description: this.addDemandeForm.value.contenue,
       })
-      
+
       this.data.saveDemande(this.addDemandeForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
       )
     } else {
-      console.log("Désolé le formulaire n'est pas bien renseigné")
+      console.log("Désolé le formulaire n'est pas bien renseigné");
     }
   }
 
@@ -238,7 +245,7 @@ export class DemandesComponent implements OnInit {
       id: row.id,
       date_demande: this.convertToDate(row.date_demande),
       objet: row.objet,
-      status_id: row.status_id,
+      status: row.status,
       contenue: row.contenue,
       type_demande: row.type_demande,
       titre: row.objet,

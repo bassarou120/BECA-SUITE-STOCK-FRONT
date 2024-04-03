@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getAbsence, routes, AbsencesService, getTypeAbsence, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getPlainte, routes, PlaintesService, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,11 +11,11 @@ import {environment} from "../../../../environments/environment";
 
 
 @Component({
-  selector: 'app-absences',
-  templateUrl: './absences.component.html',
-  styleUrls: ['./absences.component.scss']
+  selector: 'app-mes-plaintes',
+  templateUrl: './mes-plaintes.component.html',
+  styleUrls: ['./mes-plaintes.component.scss']
 })
-export class AbsencesComponent implements OnInit {
+export class MesPlaintesComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
@@ -24,13 +24,13 @@ export class AbsencesComponent implements OnInit {
 
   public default_status: string = environment.default_statut_for_demands;
 
-  public lstAbsence: Array<getAbsence> = [];
-  public lstTypeAbsence: Array<getTypeAbsence> = [];
+  public loggedUserId: number = 0;
+  public loggedEmployeId: number = 0;
+  public lstPlainte: Array<getPlainte> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
-  public editFormSelectedTypeAbsenceId: number = 0;
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getAbsence>;
+  dataSource!: MatTableDataSource<getPlainte>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -45,77 +45,70 @@ export class AbsencesComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addAbsenceForm!: FormGroup ;
-  public editAbsenceForm!: FormGroup
-  public deleteAbsenceForm!: FormGroup
+  public addPlainteForm!: FormGroup ;
+  public editPlainteForm!: FormGroup
+  public deletePlainteForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router,private data: AbsencesService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router,private data: PlaintesService) {}
 
   ngOnInit(): void {
+    this.getLoggedUserId();
      this.getTableData();
 
-     this.addAbsenceForm = this.formBuilder.group({
-      type_absence_id: [0, [Validators.required]],
+     this.addPlainteForm = this.formBuilder.group({
+      date_M: [new Date(), [Validators.required]],
       employe_id: [0, [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
+      titre: ["", [Validators.required]],
+      autre_info: ["Aucun", [Validators.required]],
+      description: ["", [Validators.required]],
       status: [this.default_status, [Validators.required]],
-    }, { validator: this.datesValidator });
+    });
 
-     this.editAbsenceForm = this.formBuilder.group({
+     this.editPlainteForm = this.formBuilder.group({
       id: [0, [Validators.required]],
-      type_absence_id: [0, [Validators.required]],
+      date_M: [new Date(), [Validators.required]],
       employe_id: [0, [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
+      titre: ["", [Validators.required]],
+      autre_info: ["", [Validators.required]],
+      description: ["", [Validators.required]],
       status: [this.default_status, [Validators.required]],
-    }, { validator: this.datesValidator });
+    });
 
-     this.deleteAbsenceForm = this.formBuilder.group({
+     this.deletePlainteForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
   }
 
-  private datesValidator(group: FormGroup) {
-    const startDateControl = group.get('date_debut');
-    const endDateControl = group.get('date_fin');
-    if (!startDateControl || !endDateControl) {
-      return null;
+  private getLoggedUserId() {
+    const userDataString = localStorage.getItem('userDataString');
+    if(userDataString) {
+      const userData = JSON.parse(userDataString)
+      this.loggedUserId = userData['id'];
+    } else {
+      console.log("erreur")
     }
-    const startDate = startDateControl.value;
-    const endDate = endDateControl.value;
-    if (startDate && endDate && startDate > endDate) {
-      return { datesInvalid: true };
-    }
-    return null;
   }
 
 
-
   private getTableData(): void {
-    this.lstAbsence = [];
+    this.lstPlainte = [];
     this.serialNumberArray = [];
 
-    this.data.getAllAbsence().subscribe((res: any) => {
+    this.data.getAllUserPlainte(this.loggedUserId).subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.map((res: getAbsence, index: number) => {
+      res.data.map((res: getPlainte, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;
-          this.lstAbsence.push(res);
+          this.lstPlainte.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
 
-      this.data.getAllTypeAbsences().subscribe((res: any) => {
-        res.data.data.map((res: getTypeAbsence, index: number) => {
-          const serialNumber = index + 1;
-          if (index >= this.skip && serialNumber <= this.limit) {
-            res.id;// = serialNumber;
-            this.lstTypeAbsence.push(res);
-            this.serialNumberArray.push(serialNumber);
-          }
-        });
+      this.data.getConnectedEmployeID(this.loggedUserId).subscribe((res: any) => {
+        this.addPlainteForm.patchValue({employe_id: res.data});
+        this.editPlainteForm.patchValue({employe_id: res.data});
+        this.loggedEmployeId = res.data;
       });
 
       this.data.getAllEmployes().subscribe((res: any) => {
@@ -129,7 +122,7 @@ export class AbsencesComponent implements OnInit {
         });
       });
 
-      this.dataSource = new MatTableDataSource<getAbsence>(this.lstAbsence);
+      this.dataSource = new MatTableDataSource<getPlainte>(this.lstPlainte);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
@@ -142,19 +135,18 @@ export class AbsencesComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  onClickSubmitAddAbsence(){
+  onClickSubmitAddPlainte(){
 
-    if (this.addAbsenceForm.valid){
-      this.addAbsenceForm.patchValue({ date_debut: this.formatDateToString(this.addAbsenceForm.value.date_debut) });
-      this.addAbsenceForm.patchValue({ date_fin: this.formatDateToString(this.addAbsenceForm.value.date_fin) });
+    if (this.addPlainteForm.valid){
+      this.addPlainteForm.patchValue({ date_M: this.formatDateToString(this.addPlainteForm.value.date_M) });
 
-      this.data.saveAbsence(this.addAbsenceForm.value).subscribe(
+      this.data.savePlainte(this.addPlainteForm.value).subscribe(
         (data: any) => {
           location.reload();
         }
-      );
+      )
     }else {
-      console.log("Désolé le formulaire n'est pas bien renseigné")
+      alert("Désolé le formulaire n'est pas bien renseigné")
     }
   }
 
@@ -164,47 +156,45 @@ export class AbsencesComponent implements OnInit {
   }
 
   getEditForm(row: any){
-    this.editAbsenceForm.patchValue({
+    this.editPlainteForm.patchValue({
       id: row.id,
-      type_absence_id: row.type_absence_id,
       employe_id: row.employe_id,
-      date_debut: this.convertToDate(row.date_debut),
-      date_fin: this.convertToDate(row.date_fin),
+      date_M: this.convertToDate(row.date_M),
+      titre: row.titre,
+      autre_info: row.autre_info,
+      description: row.description,
       status: row.status,
     })
-    this.editFormSelectedTypeAbsenceId = row.type_absence_id;
     this.editFormSelectedEmployeId = row.employe_id;
   }
 
-  onClickSubmitEditAbsence(){
+  onClickSubmitEditPlainte(){
 
-    this.editAbsenceForm.patchValue({ date_debut: this.formatDateToString(this.editAbsenceForm.value.date_debut) });
-    this.editAbsenceForm.patchValue({ date_fin: this.formatDateToString(this.editAbsenceForm.value.date_fin) });
+    this.editPlainteForm.patchValue({ date_M: this.formatDateToString(this.editPlainteForm.value.date_M) });
 
-    if (this.editAbsenceForm.valid){
-      const id = this.editAbsenceForm.value.id;
-
-      this.data.editAbsence(this.editAbsenceForm.value).subscribe(
+    if (this.editPlainteForm.valid){
+      const id = this.editPlainteForm.value.id;
+      this.data.editPlainte(this.editPlainteForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
-      );
+      )
     } else {
-      console.log("desole le formulaire n'est pas bien renseigné")
+      alert("desole le formulaire n'est pas bien renseigné")
     }
   }
 
   getDeleteForm(row: any){
-    this.deleteAbsenceForm.patchValue({
+    this.deletePlainteForm.patchValue({
       id: row.id
     })
   }
 
-  onClickSubmitDeleteAbsence(){
+  onClickSubmitDeletePlainte(){
 
-    if (this.deleteAbsenceForm.valid){
-      const id = this.deleteAbsenceForm.value.id;
-      this.data.deleteAbsence(this.deleteAbsenceForm.value).subscribe(
+    if (this.deletePlainteForm.valid){
+      const id = this.deletePlainteForm.value.id;
+      this.data.deletePlainte(this.deletePlainteForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
@@ -212,7 +202,6 @@ export class AbsencesComponent implements OnInit {
     } else {
       console.log("desole le formulaire n'est pas bien renseigné")
     }
-
   }
 
 
@@ -222,13 +211,13 @@ export class AbsencesComponent implements OnInit {
 
 
   public sortData(sort: Sort) {
-    const data = this.lstAbsence.slice();
+    const data = this.lstPlainte.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstAbsence = data;
+      this.lstPlainte = data;
     } else {
-      this.lstAbsence = data.sort((a: any, b: any) => {
+      this.lstPlainte = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -243,7 +232,7 @@ export class AbsencesComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstAbsence = this.dataSource.filteredData;
+    this.lstPlainte = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

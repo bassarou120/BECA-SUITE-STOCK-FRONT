@@ -669,6 +669,7 @@ export interface getTypeConge {
   id: number;
   libelle: string;
 }
+
 export interface getStatut {
   id: number;
   libelle: string;
@@ -714,7 +715,6 @@ export interface getConge {
   libelle: string;
   employe: string;
   status: string;
-  status_id: string;
 }
 
 export interface getDemande {
@@ -729,12 +729,22 @@ export interface getDemande {
   employe: string;
 }
 
+export interface getFormation {
+  id: number;
+  employe_id: number;
+  intitule: string;
+  domaine: string;
+  date_debut: Date;
+  date_fin: Date;
+  diplome: string;
+  employe: string;
+}
+
 export interface getAbsence {
   id: number;
   date_debut: Date;
   date_fin: Date;
   employe_id: number;
-  status_id: number;
   type_absence_id: number;
   libelle: string;
   employe: string;
@@ -764,6 +774,15 @@ export interface getDepartment {
   nom_dep: string;
 }
 
+export interface getHeureSupplementaire {
+  id: number;
+  dateH: Date;
+  nombreHeure: number;
+  autreInfo: string;
+  employe_id: number;
+  employe: string;
+}
+
 export interface getPost {
   id: number;
   nom_poste: string;
@@ -772,6 +791,12 @@ export interface getPost {
 export interface getTypeAbsence {
   id: number;
   libelle: string;
+  detConge: boolean;
+}
+
+export interface getDeductibleFromConge {
+  val: number;
+  lib: string;
 }
 
 export interface getCategorie {

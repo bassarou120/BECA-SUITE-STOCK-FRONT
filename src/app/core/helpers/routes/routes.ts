@@ -53,12 +53,20 @@ export class routes {
     return this.baseUrl + '/employes/demandes';
   }
 
+  public static get plaintes(): string {
+    return this.baseUrl + '/employes/mes-plaintes';
+  }
+
   public static get absences(): string {
     return this.baseUrl + '/employes/absences';
   }
 
   public static get plaintesGRH(): string {
     return this.baseUrl + '/employes/plaintes';
+  }
+
+  public static get formationsGRH(): string {
+    return this.baseUrl + '/employes/formations';
   }
 
 
@@ -89,6 +97,10 @@ export class routes {
 
   public static get statut(): string {
     return this.baseUrl + '/parametrage/statut';
+  }
+
+  public static get heures_supplementaires(): string {
+    return this.baseUrl + '/employes/heures-supplementaires';
   }
 
 

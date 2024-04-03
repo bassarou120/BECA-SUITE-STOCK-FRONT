@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { DataService,apiResultFormat, routes, typeAbsenceService, getTypeAbsence } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, routes, typeAbsenceService, getTypeAbsence, getDeductibleFromConge } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,8 +20,9 @@ export class TypeAbsenceComponent implements OnInit {
 
   public lstTabs: Array<any>=[];
 
-
   public lstTypeAbsence: Array<getTypeAbsence> = [];
+  public selectedDeductible = 0;
+  public lstDeductible: Array<getDeductibleFromConge> = [{val: 0, lib: "Non Déductible"}, {val: 1, lib: "Déductible"}];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getTypeAbsence>;
   // pagination variables
@@ -48,10 +49,12 @@ export class TypeAbsenceComponent implements OnInit {
      this.getTableData();
     this.addTypeAbsenceForm = this.formBuilder.group({
       libelle: ["", [Validators.required]],
+      detConge: [0, [Validators.required]],
    });
    this.editTypeAbsenceForm = this.formBuilder.group({
     id: [0, [Validators.required]],
     libelle: ["", [Validators.required]],
+    detConge: [0, [Validators.required]],
   });
    this.deleteTypeAbsenceForm = this.formBuilder.group({
     id: [0, [Validators.required]],
@@ -115,8 +118,10 @@ export class TypeAbsenceComponent implements OnInit {
   getEditForm(row: any){
     this.editTypeAbsenceForm.patchValue({
      id:row.id,
-     libelle:row.libelle
-    })
+     libelle:row.libelle,
+     detConge: row.detConge,
+    });
+    this.selectedDeductible = row.detConge;
   }
 
   getDeleteForm(row: any){
