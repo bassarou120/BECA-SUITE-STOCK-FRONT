@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getPlainte, getStatut, routes, PlaintesService, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getPlainte, routes, PlaintesService, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,12 +22,10 @@ export class PlaintesComponent implements OnInit {
   public lstDpt: Array<any>=[];
   mon_dep: any;
 
-  public default_status_id: number = environment.default_statut_id_for_demands;
+  public default_status: string = environment.default_statut_for_demands;
 
   public lstPlainte: Array<getPlainte> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
-  public lstStatus: Array<getStatut> = [];
-  public editFormSelectedStatusId: number = 0;
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getPlainte>;
@@ -60,7 +58,7 @@ export class PlaintesComponent implements OnInit {
       titre: ["", [Validators.required]],
       autre_info: ["Aucun", [Validators.required]],
       description: ["", [Validators.required]],
-      status_id: [this.default_status_id, [Validators.required]],
+      status: [this.default_status, [Validators.required]],
     });
 
      this.editPlainteForm = this.formBuilder.group({
@@ -70,19 +68,19 @@ export class PlaintesComponent implements OnInit {
       titre: ["", [Validators.required]],
       autre_info: ["", [Validators.required]],
       description: ["", [Validators.required]],
-      status_id: [0, [Validators.required]],
+      status: [this.default_status, [Validators.required]],
     });
-    
+
      this.deletePlainteForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
   }
 
-  
+
   private getTableData(): void {
     this.lstPlainte = [];
     this.serialNumberArray = [];
- 
+
     this.data.getAllPlainte().subscribe((res: any) => {
       this.totalData = res.data.total;
       res.data.map((res: getPlainte, index: number) => {
@@ -105,23 +103,12 @@ export class PlaintesComponent implements OnInit {
         });
       });
 
-      this.data.getAllStatuts().subscribe((res: any) => {
-        res.data.data.map((res: getStatut, index: number) => {
-          const serialNumber = index + 1;
-          if (index >= this.skip && serialNumber <= this.limit) {
-            res.id;// = serialNumber;
-            this.lstStatus.push(res);
-            this.serialNumberArray.push(serialNumber);
-          }
-        });
-      });
-
       this.dataSource = new MatTableDataSource<getPlainte>(this.lstPlainte);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
 
-  
+
   private formatDateToString(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -157,10 +144,9 @@ export class PlaintesComponent implements OnInit {
       titre: row.titre,
       autre_info: row.autre_info,
       description: row.description,
-      status_id: row.status_id,
+      status: row.status,
     })
     this.editFormSelectedEmployeId = row.employe_id;
-    this.editFormSelectedStatusId = row.status_id;
   }
 
   onClickSubmitEditPlainte(){

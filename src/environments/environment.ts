@@ -12,6 +12,5 @@ export const environment = {
 
   expirationTime: 0,
 
-  default_statut_id_for_demands: 1,
   default_statut_for_demands: "Non Traité",
 };

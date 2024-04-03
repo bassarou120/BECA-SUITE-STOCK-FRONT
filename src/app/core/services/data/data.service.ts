@@ -197,11 +197,11 @@ export class DataService {
               base: 'categorie',
             },
 
-            {
-              menuValue: 'Statut',
-              route: routes.statut,
-              base: 'statut',
-            },
+            // {
+            //   menuValue: 'Statut',
+            //   route: routes.statut,
+            //   base: 'statut',
+            // },
 
           ],
         },

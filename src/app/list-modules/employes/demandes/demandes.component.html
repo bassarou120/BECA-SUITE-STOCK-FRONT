@@ -57,7 +57,7 @@
                             <td>{{item.id}}</td>
                             <td>{{item.objet}}</td>
                             <td>{{item.contenue}}</td>
-                            <td>{{item.status}}</td>
+                            <td>{{ item.status ? item.status : "-" }}</td>
                             <td>{{item.date_demande}}</td>
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
