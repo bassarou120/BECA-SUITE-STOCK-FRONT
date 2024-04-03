@@ -76,6 +76,11 @@ export class DataService {
               base: 'demandes'
             },
             {
+              menuValue: 'Mes Plaintes',
+              route: routes.plaintes,
+              base: 'mes-plaintes'
+            },
+            {
               menuValue: 'Les Congés (GRH)',
               route: routes.conges,
               base: 'holidays'

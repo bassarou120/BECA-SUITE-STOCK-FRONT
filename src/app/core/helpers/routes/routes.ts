@@ -53,6 +53,10 @@ export class routes {
     return this.baseUrl + '/employes/demandes';
   }
 
+  public static get plaintes(): string {
+    return this.baseUrl + '/employes/mes-plaintes';
+  }
+
   public static get absences(): string {
     return this.baseUrl + '/employes/absences';
   }

@@ -258,7 +258,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
@@ -275,7 +275,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="col-sm-4" *ngIf="addDemandeForm.get('type_demande')!.value === 'congé'">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="type_conges_id">Type de Congé <span class="text-danger">*</span></label>
@@ -312,38 +312,6 @@
                             La date de fin doit être postérieure à la date de début.
                         </div>
                     </div>
-
-                    <div class="row" *ngIf="addDemandeForm.get('type_demande')!.value === 'plainte'">
-                        
-                        <input type="hidden" formControlName="titre">
-                        <input type="hidden" formControlName="description">
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="autre_info">Autres Infos<span class="text-danger">*</span></label>
-                                <input  class="form-control" type="text"
-                                    [class.invalid]="addDemandeForm.get('autre_info')?.invalid && addDemandeForm.get('autre_info')?.touched"
-                                    formControlName="autre_info" placeholder="Autres Informations">
-                                <div>
-                                    <small
-                                        *ngIf="addDemandeForm.get('autre_info')?.invalid && addDemandeForm.get('autre_info')?.touched"
-                                        class="text-danger"> *Autres infos est obligatoire</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="date_M">Date de la plainte <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input class="form-control" type="text"
-                                        [class.invalid]="addDemandeForm.get('date_M')?.invalid && addDemandeForm.get('date_M')?.touched"
-                                        placeholder="{{ addDemandeForm.get('date_M')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_M" readonly>
-                                        <div> <small class="text-secondary"> {{ addDemandeForm.get('date_M')!.value | date: 'MM/dd/yyyy' }}</small> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
@@ -462,7 +430,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
@@ -479,7 +447,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="col-sm-4" *ngIf="editDemandeForm.get('type_demande')!.value === 'congé'">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="type_conges_id">Type de Congé <span class="text-danger">*</span></label>
@@ -518,7 +486,7 @@
                     </div>
 
                     <div class="row" *ngIf="editDemandeForm.get('type_demande')!.value === 'plainte'">
-                        
+
                         <input type="hidden" formControlName="titre">
                         <input type="hidden" formControlName="description">
                         <div class="col-sm-6">
