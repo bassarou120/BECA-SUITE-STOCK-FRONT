@@ -20,6 +20,14 @@ export class PlaintesService  {
     return this.http.get<any>(`${this.url}/plaintes`);
   }
 
+  getAllUserPlainte(data: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/plainte/${data}`);
+  }
+
+  getConnectedEmployeID(data: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/getemployeid/${data}`);
+  }
+
   getAllEmployes(): Observable<any> {
    return this.http.get<any>(`${this.url}/employe`);
   }

@@ -76,6 +76,11 @@ export class DataService {
               base: 'demandes'
             },
             {
+              menuValue: 'Mes Plaintes',
+              route: routes.plaintes,
+              base: 'mes-plaintes'
+            },
+            {
               menuValue: 'Les Congés (GRH)',
               route: routes.conges,
               base: 'holidays'
@@ -94,6 +99,11 @@ export class DataService {
               menuValue: 'Les Formations (GRH)',
               route: routes.formationsGRH,
               base: 'formations',
+            },
+            {
+              menuValue: 'Heure supplémentaire',
+              route: routes.heures_supplementaires,
+              base: 'heures-supllémetaires',
             },
 
           ],

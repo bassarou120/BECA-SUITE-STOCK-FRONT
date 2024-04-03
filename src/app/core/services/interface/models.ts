@@ -776,6 +776,15 @@ export interface getDepartment {
   nom_dep: string;
 }
 
+export interface getHeureSupplementaire {
+  id: number;
+  dateH: Date;
+  nombreHeure: number;
+  autreInfo: string;
+  employe_id: number;
+  employe: string;
+}
+
 export interface getPost {
   id: number;
   nom_poste: string;

@@ -1,3 +1,5 @@
+import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
+import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
@@ -50,6 +52,8 @@ import { FormationsComponent } from './formations/formations.component';
     PlaintesComponent,
     DemandesComponent,
     FormationsComponent,
+    HeuresSupplementairesComponent,
+    MesPlaintesComponent,
   ],
   imports: [
     CommonModule,

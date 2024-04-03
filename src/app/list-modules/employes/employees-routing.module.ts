@@ -1,3 +1,5 @@
+import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
+import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeListComponent } from './all-employe/employe-list/employe-list.component';
@@ -44,6 +46,8 @@ const routes: Routes = [
       { path: "plaintes", component: PlaintesComponent },
       { path: "demandes", component: DemandesComponent },
       { path: "formations", component: FormationsComponent },
+      { path: "heures-supplementaires", component: HeuresSupplementairesComponent },
+      { path: "mes-plaintes", component: MesPlaintesComponent },
     ],
   },
 ];

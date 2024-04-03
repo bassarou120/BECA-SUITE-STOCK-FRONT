@@ -23,7 +23,7 @@ export class DemandesComponent implements OnInit {
 
 
   public default_status_id: number = 1;
-  public lstTypeDemande: Array<string> = ["congé", "absence", "plainte"];
+  public lstTypeDemande: Array<string> = ["congé", "absence"];
 
   public loggedUserId: number = 0;
   public loggedEmployeId: number = 0;
@@ -73,7 +73,7 @@ export class DemandesComponent implements OnInit {
       description: ["Aucun", [Validators.required]],
       date_M: [new Date(), [Validators.required]],
       autre_info: ["Aucun", [Validators.required]],
-      
+
     }, { validator: this.datesValidator });
 
      this.editDemandeForm = this.formBuilder.group({
@@ -92,9 +92,9 @@ export class DemandesComponent implements OnInit {
       description: ["Aucun", [Validators.required]],
       date_M: [new Date(), [Validators.required]],
       autre_info: ["Aucun", [Validators.required]],
-      
+
     }, { validator: this.datesValidator });
-    
+
      this.deleteDemandeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       type_demande: ["", [Validators.required]],
@@ -137,11 +137,11 @@ export class DemandesComponent implements OnInit {
   }
 
 
-  
+
   private getTableData(): void {
     this.lstDemande = [];
     this.serialNumberArray = [];
- 
+
     this.data.getAllUserDemandes(this.loggedUserId).subscribe((res: any) => {
       this.totalData = res.data.total;
 
@@ -198,7 +198,7 @@ export class DemandesComponent implements OnInit {
     });
   }
 
-  
+
   private formatDateToString(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -217,7 +217,7 @@ export class DemandesComponent implements OnInit {
         titre: this.addDemandeForm.value.objet,
         description: this.addDemandeForm.value.contenue,
       })
-      
+
       this.data.saveDemande(this.addDemandeForm.value).subscribe(
         (data:any)=>{
           location.reload();

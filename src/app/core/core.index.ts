@@ -19,3 +19,4 @@ export * from './services/statut/statut.service';
 export * from './services/demandes/demandes.service';
 export * from './services/employee-dashboard/employee-dashboard.service';
 export * from './services/formations/formations.service';
+export * from './services/heure_supplementaires/heure_supplementaires.service';
