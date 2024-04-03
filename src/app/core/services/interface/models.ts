@@ -715,7 +715,6 @@ export interface getConge {
   libelle: string;
   employe: string;
   status: string;
-  status_id: string;
 }
 
 export interface getDemande {
@@ -746,7 +745,6 @@ export interface getAbsence {
   date_debut: Date;
   date_fin: Date;
   employe_id: number;
-  status_id: number;
   type_absence_id: number;
   libelle: string;
   employe: string;
