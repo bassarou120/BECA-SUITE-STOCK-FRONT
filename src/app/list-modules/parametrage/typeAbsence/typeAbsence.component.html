@@ -46,6 +46,7 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="departmentName">Nom du Type d'Absence</th>
+                            <th mat-sort-header="deductibleConge">Déductible des congés</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
@@ -53,6 +54,7 @@
                         <tr *ngFor="let item of lstTypeAbsence">
                             <td>{{item.id}}</td>
                             <td>{{item.libelle}}</td>
+                            <td>{{ item.detConge ? "Oui" : "Non" }}</td>
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -159,7 +161,7 @@
               <form [formGroup]="addTypeAbsenceForm" (ngSubmit)="onClickSubmitAddTypeAbsence()" novalidate>
                 <div class="input-block mb-3">
                   <label class="col-form-label" for="">Nom du Type d'absence <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
+                  <input class="form-control" type="text" placeholder="Nom du type d'absence"
                       [class.invalid]="addTypeAbsenceForm.get('libelle')?.invalid && addTypeAbsenceForm.get('libelle')?.touched"
                       formControlName="libelle">
                   <div
@@ -169,6 +171,23 @@
                           class="text-danger"> *le nom du Type d'absence est obligatoire</small>
                   </div>
               </div>
+
+              <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Déductible des congés <span class="text-danger">*</span></label>
+                  <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addTypeAbsenceForm.get('employe_id')?.invalid && addTypeAbsenceForm.get('employe_id')?.touched"
+                                    formControlName="detConge" placeholder="Selectionner Déductible des congés">
+                                    <mat-option *ngFor="let item of lstDeductible" [value]="item.val"
+                                    [class.mat-selected] ="item.val === 0"> {{ item.lib }} </mat-option>
+                        </mat-select>
+                  <div
+                      *ngIf="addTypeAbsenceForm.get('detConge')?.invalid && addTypeAbsenceForm.get('detConge')?.touched">
+                      <small
+                          *ngIf="addTypeAbsenceForm.get('detConge')?.invalid && addTypeAbsenceForm.get('detConge')?.touched"
+                          class="text-danger"> *Déductible des congés est obligatoire</small>
+                  </div>
+              </div>
+
                   <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                   </div>
@@ -194,7 +213,7 @@
                 <div class="input-block mb-3">
                   <input type="hidden" formControlName="id">
                   <label class="col-form-label" for="">Nom du Type d'absence <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
+                  <input class="form-control" type="text" placeholder="Nom du type d'absence"
                       [class.invalid]="editTypeAbsenceForm.get('libelle')?.invalid && editTypeAbsenceForm.get('libelle')?.touched"
                       formControlName="libelle">
                   <div
@@ -204,6 +223,23 @@
                           class="text-danger"> *le nom du Type d'absence est obligatoire</small>
                   </div>
               </div>
+
+              <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Déductible des congés <span class="text-danger">*</span></label>
+                  <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editTypeAbsenceForm.get('employe_id')?.invalid && editTypeAbsenceForm.get('employe_id')?.touched"
+                                    formControlName="detConge" placeholder="Selectionner Déductible des congés">
+                                    <mat-option *ngFor="let item of lstDeductible" [value]="item.val"
+                                    [class.mat-selected] ="item.val === selectedDeductible"> {{ item.lib }} </mat-option>
+                        </mat-select>
+                  <div
+                      *ngIf="editTypeAbsenceForm.get('detConge')?.invalid && editTypeAbsenceForm.get('detConge')?.touched">
+                      <small
+                          *ngIf="editTypeAbsenceForm.get('detConge')?.invalid && editTypeAbsenceForm.get('detConge')?.touched"
+                          class="text-danger"> *Déductible des congés est obligatoire</small>
+                  </div>
+              </div>
+
                   <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                   </div>

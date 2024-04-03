@@ -791,6 +791,12 @@ export interface getPost {
 export interface getTypeAbsence {
   id: number;
   libelle: string;
+  detConge: boolean;
+}
+
+export interface getDeductibleFromConge {
+  val: number;
+  lib: string;
 }
 
 export interface getCategorie {
