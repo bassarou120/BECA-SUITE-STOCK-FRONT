@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import {
   ChartComponent,
@@ -14,10 +14,10 @@ import {
   ApexLegend,
   ApexTooltip,
   ApexFill,
-  ApexResponsive
-
-} from "ng-apexcharts";
-import { routes } from "src/app/core/helpers/routes/routes";
+  ApexResponsive,
+} from 'ng-apexcharts';
+import { routes } from 'src/app/core/helpers/routes/routes';
+import { TableauBordService } from 'src/app/core/services/tableauBord/tableaubord.service';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
@@ -34,134 +34,137 @@ export type ChartOptions = {
   responsive: ApexResponsive[];
   fill: ApexFill;
   labels: string[];
-
 };
 
 @Component({
-  selector: "app-admin-dashboard",
-  templateUrl: "./admin-dashboard.component.html",
-  styleUrls: ["./admin-dashboard.component.scss"],
+  selector: 'app-admin-dashboard',
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: ['./admin-dashboard.component.scss'],
 })
-export class AdminDashboardComponent {
-  @ViewChild("chart") chart: ChartComponent | any;
+export class AdminDashboardComponent implements OnInit {
+  @ViewChild('chart') chart: ChartComponent | any;
   public chartOptions2: Partial<ChartOptions> | any;
   public chartOptions1: Partial<ChartOptions> | any;
   public layoutWidth = '1';
   public routes = routes;
-  constructor() {
+
+  dataTableauBord: any = [];
+  constructor(private tableauBordService: TableauBordService) {
     this.chartOptions2 = {
       series: [
         {
-          name: "Total Income",
-          data: [120, 90, 60, 90, 60, 90,120],
+          name: 'Total Income',
+          data: [120, 90, 60, 90, 60, 90, 120],
           color: '#ff9b44',
         },
         {
-          name: "Total Outcome",
-          data: [85, 75, 57, 85, 61, 75,85],
+          name: 'Total Outcome',
+          data: [85, 75, 57, 85, 61, 75, 85],
           color: '#fc6075',
         },
-        
       ],
       chart: {
-        type: "bar",
-        height: 350
+        type: 'bar',
+        height: 350,
       },
       grid: {
         xaxis: {
-            lines: {
-                show: false
-            }
-        },   
+          lines: {
+            show: false,
+          },
+        },
         yaxis: {
-            lines: {
-                show: true
-            }
-        }
+          lines: {
+            show: true,
+          },
+        },
       },
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: "70%",
-        }
+          columnWidth: '70%',
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
         show: true,
         width: 2,
-        colors: ["transparent"]
+        colors: ['transparent'],
       },
       xaxis: {
-        categories: [
-          "2006",
-          "2008",
-          "2010",
-          "2012",
-          "2013",
-          "2014"
-        ]
+        categories: ['2006', '2008', '2010', '2012', '2013', '2014'],
       },
       yaxis: {
         title: {
-          text: "$ (thousands)"
-        }
+          text: '$ (thousands)',
+        },
       },
       fill: {
-        opacity: 1
+        opacity: 1,
       },
     };
     this.chartOptions1 = {
       series: [
         {
-          name: "series1",
+          name: 'series1',
           data: [50, 75, 50, 75, 50, 75, 100],
           color: '#ff9b44',
-
         },
         {
-          name: "series2",
+          name: 'series2',
           data: [95, 70, 40, 65, 40, 45, 41],
           color: '#fc6075',
-        }
+        },
       ],
       chart: {
         height: 350,
-        type: "line"
+        type: 'line',
       },
       grid: {
         xaxis: {
-            lines: {
-                show: false
-            }
-        },   
+          lines: {
+            show: false,
+          },
+        },
         yaxis: {
-            lines: {
-                show: true
-            }
-        }
+          lines: {
+            show: true,
+          },
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
-        curve: "smooth"
+        curve: 'smooth',
       },
       xaxis: {
-        type: "datetime",
+        type: 'datetime',
         categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z"
-        ]
-        
+          '2018-09-19T00:00:00.000Z',
+          '2018-09-19T01:30:00.000Z',
+          '2018-09-19T02:30:00.000Z',
+          '2018-09-19T03:30:00.000Z',
+          '2018-09-19T04:30:00.000Z',
+          '2018-09-19T05:30:00.000Z',
+          '2018-09-19T06:30:00.000Z',
+        ],
       },
     };
-   }
+  }
+  ngOnInit(): void {
+    this.getTableauBord();
+  }
 
+  getTableauBord() {
+    this.tableauBordService.getDataTableauBord().subscribe(
+      (data: any) => {
+        // alert(JSON.stringify(data.data));
+        this.dataTableauBord = data.data;
+      },
+      (error: any) => {}
+    );
+  }
 }
