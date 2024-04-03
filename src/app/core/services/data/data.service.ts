@@ -37,7 +37,7 @@ export class DataService {
               base: 'admin',
             },
             {
-              menuValue: 'Employee Dashboard',
+              menuValue: 'Employé Dashboard',
               route: routes.employee,
               base: 'employee',
             },
