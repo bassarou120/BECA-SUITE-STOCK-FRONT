@@ -146,6 +146,7 @@ export class FormationsComponent implements OnInit {
       diplome: row.diplome,
       employe: row.employe,
     });
+    
     this.editFormSelectedEmployeId = row.employe_id;
  }
 

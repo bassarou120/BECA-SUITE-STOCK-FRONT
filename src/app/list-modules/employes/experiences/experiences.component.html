@@ -154,30 +154,30 @@
 </div>
 <!-- /Page Content -->
 <!-- Add Department Modal -->
-<!-- <div id="add_department" class="modal custom-modal fade" role="dialog">
+<div id="add_department" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Ajouter une Formation</h5>
+        <h5 class="modal-title">Ajouter une Expérience</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="addFormationForm" (ngSubmit)="onClickSubmitAddFormation()" novalidate>
+        <form [formGroup]="addExperienceForm" (ngSubmit)="onClickSubmitAddExperience()" novalidate>
           <div class="row">
             <div class="col-sm-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                 <mat-select class="select mat-cust-select form-control"
-                  [class.invalid]="addFormationForm.get('employe_id')?.invalid && addFormationForm.get('employe_id')?.touched"
+                  [class.invalid]="addExperienceForm.get('employe_id')?.invalid && addExperienceForm.get('employe_id')?.touched"
                   formControlName="employe_id" placeholder="Selectionner l'employé concerné">
                   <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }}
                   </mat-option>
                 </mat-select>
-                <div *ngIf="addFormationForm.get('employe_id')?.invalid && addFormationForm.get('employe_id')?.touched">
+                <div *ngIf="addExperienceForm.get('employe_id')?.invalid && addExperienceForm.get('employe_id')?.touched">
                   <small
-                    *ngIf="addFormationForm.get('employe_id')?.invalid && addFormationForm.get('employe_id')?.touched"
+                    *ngIf="addExperienceForm.get('employe_id')?.invalid && addExperienceForm.get('employe_id')?.touched"
                     class="text-danger"> *L'employé est obligatoire</small>
                 </div>
               </div>
@@ -189,13 +189,13 @@
                 <div class="cal-icon">
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
                     container=".date-input1"
-                    [class.invalid]="addFormationForm.get('date_debut')?.invalid && addFormationForm.get('date_debut')?.touched"
+                    [class.invalid]="addExperienceForm.get('date_debut')?.invalid && addExperienceForm.get('date_debut')?.touched"
                     placeholder="Sélectionner la date de début" formControlName="date_debut">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                   <div
-                    *ngIf="addFormationForm.get('date_debut')?.invalid && addFormationForm.get('date_debut')?.touched">
+                    *ngIf="addExperienceForm.get('date_debut')?.invalid && addExperienceForm.get('date_debut')?.touched">
                     <small
-                      *ngIf="addFormationForm.get('date_debut')?.invalid && addFormationForm.get('date_debut')?.touched"
+                      *ngIf="addExperienceForm.get('date_debut')?.invalid && addExperienceForm.get('date_debut')?.touched"
                       class="text-danger"> *La date est obligatoire</small>
                   </div>
                 </div>
@@ -204,13 +204,13 @@
 
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="intitule">Intitulé <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="nomStructure">Nom de la structure <span class="text-danger">*</span></label>
                 <input class="form-control" type="text"
-                  [class.invalid]="addFormationForm.get('intitule')?.invalid && addFormationForm.get('intitule')?.touched"
-                  placeholder="Entrer L\'intitulé de la Formation " formControlName="intitule">
-                <div *ngIf="addFormationForm.get('intitule')?.invalid && addFormationForm.get('intitule')?.touched">
-                  <small *ngIf="addFormationForm.get('intitule')?.invalid && addFormationForm.get('intitule')?.touched"
-                    class="text-danger"> *L'intitulé est obligatoire</small>
+                  [class.invalid]="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched"
+                  placeholder="Entrer le nom de la Structure " formControlName="nomStructure">
+                <div *ngIf="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched">
+                  <small *ngIf="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched"
+                    class="text-danger"> *Le nom de la Structure est obligatoire</small>
                 </div>
               </div>
             </div>
@@ -221,13 +221,13 @@
                 <div class="cal-icon">
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
                     container=".date-input1"
-                    [class.invalid]="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched"
+                    [class.invalid]="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched"
                     placeholder="Sélectionner la date de début" formControlName="date_fin">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                   <div
-                    *ngIf="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched">
+                    *ngIf="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched">
                     <small
-                      *ngIf="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched"
+                      *ngIf="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched"
                       class="text-danger"> *La date est obligatoire</small>
                   </div>
                 </div>
@@ -237,25 +237,16 @@
 
           <div class="input-block mb-6">
             <div class="input-block mb-3">
-              <label class="col-form-label" for="domaine">Domaine <span class="text-danger">*</span></label>
+              <label class="col-form-label" for="posteOcupe">Poste Occupé <span class="text-danger">*</span></label>
               <input class="form-control" type="text"
-                [class.invalid]="addFormationForm.get('domaine')?.invalid && addFormationForm.get('domaine')?.touched"
-                placeholder="Domaine" formControlName="domaine">
-              <div *ngIf="addFormationForm.get('domaine')?.invalid && addFormationForm.get('domaine')?.touched">
-                <small *ngIf="addFormationForm.get('domaine')?.invalid && addFormationForm.get('domaine')?.touched"
+                [class.invalid]="addExperienceForm.get('posteOcupe')?.invalid && addExperienceForm.get('posteOcupe')?.touched"
+                placeholder="Poste Occupé" formControlName="posteOcupe">
+              <div *ngIf="addExperienceForm.get('posteOcupe')?.invalid && addExperienceForm.get('posteOcupe')?.touched">
+                <small *ngIf="addExperienceForm.get('posteOcupe')?.invalid && addExperienceForm.get('posteOcupe')?.touched"
                   class="text-danger"> *Le domaine est obligatoire</small>
               </div>
             </div>
-            <div class="input-block mb-3">
-              <label class="col-form-label" for="diplome">Diplôme <span class="text-danger">*</span></label>
-              <input class="form-control" type="text"
-                [class.invalid]="addFormationForm.get('diplome')?.invalid && addFormationForm.get('diplome')?.touched"
-                placeholder="diplome" formControlName="diplome">
-              <div *ngIf="addFormationForm.get('diplome')?.invalid && addFormationForm.get('diplome')?.touched">
-                <small *ngIf="addFormationForm.get('diplome')?.invalid && addFormationForm.get('diplome')?.touched"
-                  class="text-danger"> *Le diplome est obligatoire</small>
-              </div>
-            </div>
+
 
           </div>
 
@@ -267,52 +258,54 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 <!-- /Add Department Modal -->
 
 <!-- Edit Department Modal -->
-<!-- <div id="edit_department" class="modal custom-modal fade" role="dialog">
+<div id="edit_department" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modifier la Formation</h5>
+        <h5 class="modal-title">Modifier  l'Expérience</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="editFormationForm" (ngSubmit)="onClickSubmitEditFormation()" novalidate>
+        <form [formGroup]="editExperienceForm" (ngSubmit)="onClickSubmitEditExperience()" novalidate>
           <div class="row">
             <div class="col-sm-6">
               <div class="input-block mb-3">
                 <input type="hidden" formControlName="id">
                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
-                <mat-select  class="select mat-cust-select form-control"
-                    [class.invalid]="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched"
-                    formControlName="employe_id" placeholder="Selectionner le type de congé">
-                    <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
-                    [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
+                <mat-select class="select mat-cust-select form-control"
+                  [class.invalid]="editExperienceForm.get('employe_id')?.invalid && editExperienceForm.get('employe_id')?.touched"
+                  formControlName="employe_id" placeholder="Selectionner le type de congé">
+                  <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
+                    [class.mat-selected]="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }}
+                  </mat-option>
                 </mat-select>
                 <div
-                    *ngIf="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched">
-                    <small class="text-danger"> *L'employé est obligatoire</small>
+                  *ngIf="editExperienceForm.get('employe_id')?.invalid && editExperienceForm.get('employe_id')?.touched">
+                  <small class="text-danger"> *L'employé est obligatoire</small>
                 </div>
-            </div>
+              </div>
             </div>
 
+
             <div class="col-sm-6">
-              <div class="input-block mb-3 date-input1">
+              <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="date_debut">Date Début <span class="text-danger">*</span></label>
                 <div class="cal-icon">
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
-                    container=".date-input1"
-                    [class.invalid]="editFormationForm.get('date_debut')?.invalid && editFormationForm.get('date_debut')?.touched"
+                    container=".date-input2"
+                    [class.invalid]="editExperienceForm.get('date_debut')?.invalid && editExperienceForm.get('date_debut')?.touched"
                     placeholder="Sélectionner la date de début" formControlName="date_debut">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                   <div
-                    *ngIf="editFormationForm.get('date_debut')?.invalid && editFormationForm.get('date_debut')?.touched">
+                    *ngIf="editExperienceForm.get('date_debut')?.invalid && editExperienceForm.get('date_debut')?.touched">
                     <small
-                      *ngIf="editFormationForm.get('date_debut')?.invalid && editFormationForm.get('date_debut')?.touched"
+                      *ngIf="editExperienceForm.get('date_debut')?.invalid && editExperienceForm.get('date_debut')?.touched"
                       class="text-danger"> *La date est obligatoire</small>
                   </div>
                 </div>
@@ -321,30 +314,30 @@
 
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="intitule">Intitulé <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="nomStructure">Nom de la structure <span class="text-danger">*</span></label>
                 <input class="form-control" type="text"
-                  [class.invalid]="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched"
-                  placeholder="Entrer L\'intitulé de la Formation " formControlName="intitule">
-                <div *ngIf="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched">
-                  <small *ngIf="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched"
-                    class="text-danger"> *L'intitulé est obligatoire</small>
+                  [class.invalid]="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched"
+                  placeholder="Entrer le nom de la Structure " formControlName="nomStructure">
+                <div *ngIf="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched">
+                  <small *ngIf="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched"
+                    class="text-danger"> *Le nom de la Structure est obligatoire</small>
                 </div>
               </div>
             </div>
 
             <div class="col-sm-6">
-              <div class="input-block mb-3 date-input1">
+              <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="date_fin">Date Fin <span class="text-danger">*</span></label>
                 <div class="cal-icon">
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
-                    container=".date-input1"
-                    [class.invalid]="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched"
+                    container=".date-input2"
+                    [class.invalid]="editExperienceForm.get('date_fin')?.invalid && editExperienceForm.get('date_fin')?.touched"
                     placeholder="Sélectionner la date de début" formControlName="date_fin">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                   <div
-                    *ngIf="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched">
+                    *ngIf="editExperienceForm.get('date_fin')?.invalid && editExperienceForm.get('date_fin')?.touched">
                     <small
-                      *ngIf="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched"
+                      *ngIf="editExperienceForm.get('date_fin')?.invalid && editExperienceForm.get('date_fin')?.touched"
                       class="text-danger"> *La date est obligatoire</small>
                   </div>
                 </div>
@@ -354,25 +347,16 @@
 
           <div class="input-block mb-6">
             <div class="input-block mb-3">
-              <label class="col-form-label" for="domaine">Domaine <span class="text-danger">*</span></label>
+              <label class="col-form-label" for="posteOcupe">Poste Occupé <span class="text-danger">*</span></label>
               <input class="form-control" type="text"
-                [class.invalid]="editFormationForm.get('domaine')?.invalid && editFormationForm.get('domaine')?.touched"
-                placeholder="Domaine" formControlName="domaine">
-              <div *ngIf="editFormationForm.get('domaine')?.invalid && editFormationForm.get('domaine')?.touched">
-                <small *ngIf="editFormationForm.get('domaine')?.invalid && editFormationForm.get('domaine')?.touched"
+                [class.invalid]="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched"
+                placeholder="Poste Occupé" formControlName="posteOcupe">
+              <div *ngIf="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched">
+                <small *ngIf="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched"
                   class="text-danger"> *Le domaine est obligatoire</small>
               </div>
             </div>
-            <div class="input-block mb-3">
-              <label class="col-form-label" for="diplome">Diplôme <span class="text-danger">*</span></label>
-              <input class="form-control" type="text"
-                [class.invalid]="editFormationForm.get('diplome')?.invalid && editFormationForm.get('diplome')?.touched"
-                placeholder="diplome" formControlName="diplome">
-              <div *ngIf="editFormationForm.get('diplome')?.invalid && editFormationForm.get('diplome')?.touched">
-                <small *ngIf="editFormationForm.get('diplome')?.invalid && editFormationForm.get('diplome')?.touched"
-                  class="text-danger"> *Le diplome est obligatoire</small>
-              </div>
-            </div>
+
 
           </div>
 
@@ -384,24 +368,24 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 <!-- /Edit Department Modal -->
 
 <!-- Delete Department Modal -->
-<!-- <div class="modal custom-modal fade" id="delete_department" role="dialog">
+<div class="modal custom-modal fade" id="delete_department" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer la </h3>
+                    <h3>Supprimer l' Expérience </h3>
                     <p>Êtes-vous sûr de vouloir supprimer ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                          <form [formGroup]="deleteFormationForm" (ngSubmit)="onClickSubmitDeleteFormation()">
+                          <form [formGroup]="deleteExperienceForm" (ngSubmit)="onClickSubmitDeleteExperience()">
                             <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteFormation()">Supprimer</a>
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteExperience()">Supprimer</a>
                           </form>
                         </div>
                         <div class="col-6">
@@ -413,5 +397,5 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
 <!-- /Delete Department Modal -->

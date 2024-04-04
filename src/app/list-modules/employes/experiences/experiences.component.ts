@@ -140,9 +140,11 @@ export class ExperiencesComponent implements OnInit {
       nomStructure: row.nomStructure,
       date_debut: this.convertToDate(row.date_debut),
       date_fin: this.convertToDate(row.date_fin),
+      employe: row.employe,
       posteOcupe: row.posteOcupe,
     });
     this.editFormSelectedEmployeId = row.employe_id;
+    console.log(row);
  }
 
 

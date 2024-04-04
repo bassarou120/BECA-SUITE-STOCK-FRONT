@@ -226,8 +226,7 @@
                     [class.invalid]="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched"
                     placeholder="Sélectionner la date de début" formControlName="date_fin">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                  <div
-                    *ngIf="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched">
+                  <div *ngIf="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched">
                     <small
                       *ngIf="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched"
                       class="text-danger"> *La date est obligatoire</small>
@@ -289,25 +288,26 @@
               <div class="input-block mb-3">
                 <input type="hidden" formControlName="id">
                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
-                <mat-select  class="select mat-cust-select form-control"
-                    [class.invalid]="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched"
-                    formControlName="employe_id" placeholder="Selectionner le type de congé">
-                    <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
-                    [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
+                <mat-select class="select mat-cust-select form-control"
+                  [class.invalid]="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched"
+                  formControlName="employe_id" placeholder="Selectionner le type de congé">
+                  <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
+                    [class.mat-selected]="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }}
+                  </mat-option>
                 </mat-select>
                 <div
-                    *ngIf="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched">
-                    <small class="text-danger"> *L'employé est obligatoire</small>
+                  *ngIf="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched">
+                  <small class="text-danger"> *L'employé est obligatoire</small>
                 </div>
-            </div>
+              </div>
             </div>
 
             <div class="col-sm-6">
-              <div class="input-block mb-3 date-input1">
+              <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="date_debut">Date Début <span class="text-danger">*</span></label>
                 <div class="cal-icon">
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
-                    container=".date-input1"
+                    container=".date-input2"
                     [class.invalid]="editFormationForm.get('date_debut')?.invalid && editFormationForm.get('date_debut')?.touched"
                     placeholder="Sélectionner la date de début" formControlName="date_debut">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
@@ -328,23 +328,23 @@
                   [class.invalid]="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched"
                   placeholder="Entrer L\'intitulé de la Formation " formControlName="intitule">
                 <div *ngIf="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched">
-                  <small *ngIf="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched"
+                  <small
+                    *ngIf="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched"
                     class="text-danger"> *L'intitulé est obligatoire</small>
                 </div>
               </div>
             </div>
 
             <div class="col-sm-6">
-              <div class="input-block mb-3 date-input1">
+              <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="date_fin">Date Fin <span class="text-danger">*</span></label>
                 <div class="cal-icon">
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
-                    container=".date-input1"
+                    container=".date-input2"
                     [class.invalid]="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched"
                     placeholder="Sélectionner la date de début" formControlName="date_fin">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                  <div
-                    *ngIf="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched">
+                  <div *ngIf="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched">
                     <small
                       *ngIf="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched"
                       class="text-danger"> *La date est obligatoire</small>
@@ -391,29 +391,29 @@
 
 <!-- Delete Department Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Supprimer la </h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                          <form [formGroup]="deleteFormationForm" (ngSubmit)="onClickSubmitDeleteFormation()">
-                            <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteFormation()">Supprimer</a>
-                          </form>
-                        </div>
-                        <div class="col-6">
-                            <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Annuler</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Supprimer la </h3>
+          <p>Êtes-vous sûr de vouloir supprimer ?</p>
         </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-6">
+              <form [formGroup]="deleteFormationForm" (ngSubmit)="onClickSubmitDeleteFormation()">
+                <input type="hidden" formControlName="id">
+                <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit"
+                  (click)="onClickSubmitDeleteFormation()">Supprimer</a>
+              </form>
+            </div>
+            <div class="col-6">
+              <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Annuler</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Delete Department Modal -->
