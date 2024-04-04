@@ -740,6 +740,15 @@ export interface getFormation {
   diplome: string;
   employe: string;
 }
+export interface getExperience {
+  id: number;
+  employe_id: number;
+  nomStructure:string,
+  date_debut: Date;
+  date_fin: Date;
+  posteOcupe:string,
+  employe: string;
+}
 
 export interface getAbsence {
   id: number;

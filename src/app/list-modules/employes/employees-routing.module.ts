@@ -22,6 +22,7 @@ import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
+import { ExperiencesComponent } from './experiences/experiences.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,8 @@ const routes: Routes = [
       { path: "formations", component: FormationsComponent },
       { path: "heures-supplementaires", component: HeuresSupplementairesComponent },
       { path: "mes-plaintes", component: MesPlaintesComponent },
+      { path: "experiences", component: ExperiencesComponent },
+
     ],
   },
 ];

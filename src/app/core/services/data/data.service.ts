@@ -101,6 +101,11 @@ export class DataService {
               base: 'formations',
             },
             {
+              menuValue: 'Les Expériences',
+              route: routes.experiences,
+              base: 'experiences',
+            },
+            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',

@@ -68,6 +68,9 @@ export class routes {
   public static get formationsGRH(): string {
     return this.baseUrl + '/employes/formations';
   }
+  public static get experiences(): string {
+    return this.baseUrl + '/employes/experiences';
+  }
 
 
 

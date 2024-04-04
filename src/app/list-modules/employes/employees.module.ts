@@ -28,6 +28,7 @@ import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
+import { ExperiencesComponent } from './experiences/experiences.component';
 
 // @ts-ignore
 @NgModule({
@@ -54,6 +55,8 @@ import { FormationsComponent } from './formations/formations.component';
     FormationsComponent,
     HeuresSupplementairesComponent,
     MesPlaintesComponent,
+    ExperiencesComponent,
+
   ],
   imports: [
     CommonModule,

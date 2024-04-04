@@ -72,17 +72,17 @@ export class PlaintesComponent implements OnInit {
       description: ["", [Validators.required]],
       status_id: [0, [Validators.required]],
     });
-    
+
      this.deletePlainteForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
   }
 
-  
+
   private getTableData(): void {
     this.lstPlainte = [];
     this.serialNumberArray = [];
- 
+
     this.data.getAllPlainte().subscribe((res: any) => {
       this.totalData = res.data.total;
       res.data.map((res: getPlainte, index: number) => {
@@ -121,7 +121,7 @@ export class PlaintesComponent implements OnInit {
     });
   }
 
-  
+
   private formatDateToString(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
