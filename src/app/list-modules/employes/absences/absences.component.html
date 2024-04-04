@@ -58,7 +58,7 @@
                             <td>{{item.id}}</td>
                             <td>{{item.libelle}}</td>
                             <td>{{item.employe}}</td>
-                            <td>{{item.status}}</td>
+                            <td>{{ item.status ? item.status : "-" }}</td>
                             <td>{{item.date_debut}}</td>
                             <td>{{item.date_fin}}</td>
                             <td class="text-end">
@@ -339,13 +339,10 @@
 
                         <div class="col-sm-4">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="status_id">Statut<span class="text-danger">*</span></label>
-                                <mat-select  class="select mat-cust-select form-control"
+                                <label class="col-form-label" for="status">Statut<span class="text-danger">*</span></label>
+                                <input  class="form-control" type="text"
                                     [class.invalid]="editAbsenceForm.get('status')?.invalid && editAbsenceForm.get('status')?.touched"
-                                    formControlName="status_id" placeholder="Selectionner le statut">
-                                    <mat-option *ngFor="let item of lstStatus" [value]="item.id"
-                                    [class.mat-selected] ="item.id === editFormSelectedStatutId">{{ item.libelle }} </mat-option>
-                                </mat-select>
+                                    formControlName="status" placeholder="Statut de l'absence">
                                 <div
                                     *ngIf="editAbsenceForm.get('status')?.invalid && editAbsenceForm.get('status')?.touched">
                                     <small class="text-danger"> *Le statut est obligatoire</small>

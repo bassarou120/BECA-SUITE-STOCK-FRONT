@@ -37,7 +37,7 @@ export class DataService {
               base: 'admin',
             },
             {
-              menuValue: 'Employee Dashboard',
+              menuValue: 'Employé Dashboard',
               route: routes.employee,
               base: 'employee',
             },
@@ -202,11 +202,11 @@ export class DataService {
               base: 'categorie',
             },
 
-            {
-              menuValue: 'Statut',
-              route: routes.statut,
-              base: 'statut',
-            },
+            // {
+            //   menuValue: 'Statut',
+            //   route: routes.statut,
+            //   base: 'statut',
+            // },
 
           ],
         },

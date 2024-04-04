@@ -20,11 +20,23 @@
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
       <div class="card dash-widget">
         <div class="card-body">
+          <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
+          <div class="dash-widget-info">
+            <h3>{{ dataTableauBord?.total_employe }}</h3>
+            <span>Employés</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+      <div class="card dash-widget">
+        <div class="card-body">
           <span class="dash-widget-icon"
             ><i class="fa-solid fa-cubes"></i
           ></span>
           <div class="dash-widget-info">
-            <h3>112</h3>
+            <h3>{{ dataTableauBord?.total_absence }}</h3>
             <span>Total Absents</span>
           </div>
         </div>
@@ -37,8 +49,8 @@
             ><i class="fa-solid fa-dollar-sign"></i
           ></span>
           <div class="dash-widget-info">
-            <h3>44</h3>
-            <span>Demande</span>
+            <h3>{{ dataTableauBord?.total_demande }}</h3>
+            <span>Total Demandes</span>
           </div>
         </div>
       </div>
@@ -50,19 +62,8 @@
             ><i class="fa-regular fa-gem"></i
           ></span>
           <div class="dash-widget-info">
-            <h3>37</h3>
-            <span>?????</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-      <div class="card dash-widget">
-        <div class="card-body">
-          <span class="dash-widget-icon"><i class="fa-solid fa-user"></i></span>
-          <div class="dash-widget-info">
-            <h3>218</h3>
-            <span>Employés</span>
+            <h3>{{ dataTableauBord?.total_painte }}</h3>
+            <span>Plaintes</span>
           </div>
         </div>
       </div>
@@ -116,7 +117,7 @@
         </div>
     </div>
   -->
-
+  <!--   
   <div class="row">
     <div class="col-md-12">
       <div class="card-group m-b-30">
@@ -228,6 +229,8 @@
       </div>
     </div>
   </div>
+
+-->
 
   <!-- Statistics Widget -->
 
@@ -500,20 +503,36 @@
     <div class="col-md-6 d-flex">
       <div class="card card-table flex-fill">
         <div class="card-header">
-          <h3 class="card-title mb-0">Employe</h3>
+          <h3 class="card-title mb-0">Les Employés</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table custom-table mb-0">
               <thead>
                 <tr>
+                  <th>Matricule</th>
                   <th>Nom et prenom</th>
-                  <th>email</th>
-                  <th>Status</th>
-                  <th class="text-end">Action</th>
+
+                  <th>Titre</th>
+                  <th>Email</th>
+                  <th class="text-end">Date d'entrée</th>
                 </tr>
               </thead>
               <tbody>
+                <tr
+                  *ngFor="
+                    let emp of dataTableauBord.top10_employe?.data;
+                    let i = index
+                  "
+                >
+                  <td>{{ emp.matricule }}</td>
+                  <td>{{ emp.nom }} {{ emp.prenom }}</td>
+                  <td>{{ emp.titre }}</td>
+                  <td>{{ emp.email }}</td>
+                  <td>{{ emp.date_arrivee | date : "dd/MM/YYYY" }}</td>
+                </tr>
+
+                <!--   
                 <tr>
                   <td>
                     <h2 class="table-avatar">
@@ -630,205 +649,45 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>
-                    <h2 class="table-avatar">
-                      <a [routerLink]="routes.employeProfile" class="avatar"
-                        ><img alt="" src="assets/img/profiles/avatar-7.jpg"
-                      /></a>
-                      <a [routerLink]="routes.employeProfile"
-                        >Ruby Bartlett <span>CEO</span></a
-                      >
-                    </h2>
-                  </td>
-                  <td>rubybartlett@example.com</td>
-                  <td>
-                    <div class="dropdown action-label">
-                      <a
-                        class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                        Inactive
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item"
-                          ><i
-                            class="fa-regular fa-circle-dot text-success me-1"
-                          ></i>
-                          Active</a
-                        >
-                        <a class="dropdown-item"
-                          ><i
-                            class="fa-regular fa-circle-dot text-danger me-1"
-                          ></i>
-                          Inactive</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-end">
-                    <div class="dropdown dropdown-action">
-                      <a
-                        class="action-icon dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        ><i class="material-icons">more_vert</i></a
-                      >
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
-                        >
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-regular fa-trash-can m-r-5"></i>
-                          Delete</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h2 class="table-avatar">
-                      <a [routerLink]="routes.employeProfile" class="avatar"
-                        ><img alt="" src="assets/img/profiles/avatar-6.jpg"
-                      /></a>
-                      <a [routerLink]="routes.employeProfile">
-                        Misty Tison <span>CEO</span></a
-                      >
-                    </h2>
-                  </td>
-                  <td>mistytison@example.com</td>
-                  <td>
-                    <div class="dropdown action-label">
-                      <a
-                        class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="fa-regular fa-circle-dot text-success"></i>
-                        Active
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item"
-                          ><i
-                            class="fa-regular fa-circle-dot text-success me-1"
-                          ></i>
-                          Active</a
-                        >
-                        <a class="dropdown-item"
-                          ><i
-                            class="fa-regular fa-circle-dot text-danger me-1"
-                          ></i>
-                          Inactive</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-end">
-                    <div class="dropdown dropdown-action">
-                      <a
-                        class="action-icon dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        ><i class="material-icons">more_vert</i></a
-                      >
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
-                        >
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-regular fa-trash-can m-r-5"></i>
-                          Delete</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h2 class="table-avatar">
-                      <a [routerLink]="routes.employeProfile" class="avatar"
-                        ><img alt="" src="assets/img/profiles/avatar-14.jpg"
-                      /></a>
-                      <a [routerLink]="routes.employeProfile">
-                        Daniel Deacon <span>CEO</span></a
-                      >
-                    </h2>
-                  </td>
-                  <td>danieldeacon@example.com</td>
-                  <td>
-                    <div class="dropdown action-label">
-                      <a
-                        class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="fa-regular fa-circle-dot text-danger"></i>
-                        Inactive
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item"
-                          ><i
-                            class="fa-regular fa-circle-dot text-success me-1"
-                          ></i>
-                          Active</a
-                        >
-                        <a class="dropdown-item"
-                          ><i
-                            class="fa-regular fa-circle-dot text-danger me-1"
-                          ></i>
-                          Inactive</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-end">
-                    <div class="dropdown dropdown-action">
-                      <a
-                        class="action-icon dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        ><i class="material-icons">more_vert</i></a
-                      >
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
-                        >
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-regular fa-trash-can m-r-5"></i>
-                          Delete</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+              --></tbody>
             </table>
           </div>
         </div>
         <div class="card-footer">
-          <a [routerLink]="routes.clientPage">View all clients</a>
+          <a [routerLink]="routes.employee_page">voir Tous les employés</a>
         </div>
       </div>
     </div>
     <div class="col-md-6 d-flex">
       <div class="card card-table flex-fill">
         <div class="card-header">
-          <h3 class="card-title mb-0">Recent Projects</h3>
+          <h3 class="card-title mb-0">Les Congés</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table custom-table mb-0">
               <thead>
                 <tr>
-                  <th>Project Name</th>
-                  <th>Progress</th>
-                  <th class="text-end">Action</th>
+                  <th>Employés</th>
+                  <th>Date debut</th>
+                  <th>Date fin</th>
+                  <th>Date demande</th>
                 </tr>
               </thead>
               <tbody>
+                <tr
+                  *ngFor="
+                    let emp of dataTableauBord.top10_conges;
+                    let i = index
+                  "
+                >
+                  <td>{{ emp.emplye.nom }} {{ emp.emplye.prenom }}</td>
+                  <td>{{ emp.conge.date_debut | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.conge.date_fin | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.conge.created_at | date : "dd/MM/YYYY" }}</td>
+                </tr>
+
+                <!--   
                 <tr>
                   <td>
                     <h2>
@@ -918,97 +777,7 @@
                       </div>
                     </div>
                   </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h2>
-                      <a [routerLink]="'/projects/project-page'"
-                        >Video Calling App</a
-                      >
-                    </h2>
-                    <small class="block text-ellipsis">
-                      <span class="me-1">3</span>
-                      <span class="text-muted">open tasks, </span>
-                      <span class="me-1">3</span>
-                      <span class="text-muted">tasks completed</span>
-                    </small>
-                  </td>
-                  <td>
-                    <div class="progress progress-xs progress-striped">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        data-bs-toggle="tooltip"
-                        title="49%"
-                        style="width: 49%"
-                      ></div>
-                    </div>
-                  </td>
-                  <td class="text-end">
-                    <div class="dropdown dropdown-action">
-                      <a
-                        class="action-icon dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        ><i class="material-icons">more_vert</i></a
-                      >
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
-                        >
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-regular fa-trash-can m-r-5"></i>
-                          Delete</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h2>
-                      <a [routerLink]="'/projects/project-page'"
-                        >Hospital Administration</a
-                      >
-                    </h2>
-                    <small class="block text-ellipsis">
-                      <span class="me-1">12</span>
-                      <span class="text-muted">open tasks, </span>
-                      <span class="me-1">4</span>
-                      <span class="text-muted">tasks completed</span>
-                    </small>
-                  </td>
-                  <td>
-                    <div class="progress progress-xs progress-striped">
-                      <div
-                        class="progress-bar"
-                        role="progressbar"
-                        data-bs-toggle="tooltip"
-                        title="88%"
-                        style="width: 88%"
-                      ></div>
-                    </div>
-                  </td>
-                  <td class="text-end">
-                    <div class="dropdown dropdown-action">
-                      <a
-                        class="action-icon dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        ><i class="material-icons">more_vert</i></a
-                      >
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
-                        >
-                        <a class="dropdown-item" href="javascript:void(0)"
-                          ><i class="fa-regular fa-trash-can m-r-5"></i>
-                          Delete</a
-                        >
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+                
                 <tr>
                   <td>
                     <h2>
@@ -1054,12 +823,91 @@
                     </div>
                   </td>
                 </tr>
+              --></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a [routerLink]="'/employes/conges'">Voir tous les congés</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 d-flex">
+      <div class="card card-table flex-fill">
+        <div class="card-header">
+          <h3 class="card-title mb-0">Les Plaintes</h3>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table custom-table mb-0">
+              <thead>
+                <tr>
+                  <th>Employé</th>
+
+                  <th>Titre de la plainte</th>
+                  <th>Status</th>
+                  <th class="text-end">Date d'entrée</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let emp of dataTableauBord.top10_plaintes.data;
+                    let i = index
+                  "
+                >
+                  <td>{{ emp.matricule }}</td>
+                  <td>{{ emp.nom }} {{ emp.prenom }}</td>
+                  <td>{{ emp.titre }}</td>
+                  <td>{{ emp.email }}</td>
+                  <td>{{ emp.date_arrivee | date : "dd/MM/YYYY" }}</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
         <div class="card-footer">
-          <a [routerLink]="'/projects/project-page'">View all projects</a>
+          <a [routerLink]="routes.employee_page">voir Tous les plaintes</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex">
+      <div class="card card-table flex-fill">
+        <div class="card-header">
+          <h3 class="card-title mb-0">Les Absences</h3>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table custom-table mb-0">
+              <thead>
+                <tr>
+                  <th>Employés</th>
+                  <th>Date debut</th>
+                  <th>Date fin</th>
+                  <th>Date demande</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let emp of dataTableauBord.top10_absence;
+                    let i = index
+                  "
+                >
+                  <td>{{ emp.emplye.nom }} {{ emp.emplye.prenom }}</td>
+                  <td>{{ emp.conge.date_debut | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.conge.date_fin | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.conge.created_at | date : "dd/MM/YYYY" }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a [routerLink]="'/employes/conges'">Voir tous les Absences</a>
         </div>
       </div>
     </div>

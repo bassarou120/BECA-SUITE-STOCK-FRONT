@@ -45,12 +45,12 @@
                     <thead>
                         <tr>
                             <th > &nbsp; #</th>
-                            <th mat-sort-header="congeEnd"> &nbsp; Employé</th>
+                            <th mat-sort-header="employeName"> &nbsp; Employé</th>
                             <th mat-sort-header="congeName"> &nbsp; Titre</th>
                             <th mat-sort-header="employeeName"> &nbsp; Description</th>
                             <th mat-sort-header="congeStart"> &nbsp; Fait le</th>
                             <th mat-sort-header="congeEnd"> &nbsp; Statut</th>
-                            <th mat-sort-header="congeEnd"> &nbsp; Autres Infos</th>
+                            <th mat-sort-header="autresInfos"> &nbsp; Autres Infos</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
@@ -61,7 +61,7 @@
                             <td>{{item.titre}}</td>
                             <td>{{item.description}}</td>
                             <td>{{item.date_M}}</td>
-                            <td>{{item.status}}</td>
+                            <td>{{ item.status ? item.status : "-" }}</td>
                             <td>{{item.autre_info}}</td>
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
@@ -245,7 +245,7 @@
                             <small class="text-danger"> *La description de la plainte est obligatoire</small>
                         </div>
 
-                        <input type="hidden" formControlName="status_id">
+                        <input type="hidden" formControlName="status">
 
                     </div>
 
@@ -348,13 +348,10 @@
 
                        <!-- <div class="col-sm-3">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="status_id">Statut de la demande <span class="text-danger">*</span></label>
-                                <mat-select  class="select mat-cust-select form-control"
+                                <label class="col-form-label" for="status">Statut de la plainte <span class="text-danger">*</span></label>
+                                <input  class="form-control" type="text"
                                     [class.invalid]="editPlainteForm.get('status')?.invalid && editPlainteForm.get('status')?.touched"
-                                    formControlName="status_id" placeholder="Selectionner le statut de la demande">
-                                    <mat-option *ngFor="let item of lstStatus" [value]="item.id"
-                                    [class.mat-selected] ="item.id === editFormSelectedStatusId">{{ item.libelle }} </mat-option>
-                                </mat-select>
+                                    formControlName="status" placeholder="Statut de la plainte">
                                 <div
                                     *ngIf="editPlainteForm.get('status')?.invalid && editPlainteForm.get('status')?.touched">
                                     <small class="text-danger"> *Le statut est obligatoire</small>

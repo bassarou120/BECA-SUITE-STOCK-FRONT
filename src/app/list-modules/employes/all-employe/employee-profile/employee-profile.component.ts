@@ -72,7 +72,7 @@ export class EmployeeProfileComponent implements OnInit {
     });
 
     this.editEmployeInfoPersoForm = this.formBuilder.group({
-      passport_exp: ['', [Validators.required]],
+      passport_exp: [new Date(), [Validators.required]],
       passport: ['', [Validators.required]],
       matrimoniale: ['', [Validators.required]],
       nbr_enfant: ['', [Validators.required]],
@@ -159,22 +159,23 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   getEditInfoPersoForm() {
+    // alert(JSON.stringify(this.curentEmploye.employe));
     this.editEmployeInfoPersoForm.patchValue({
-      passport_exp: this.curentEmploye.passport_exp,
-      passport: this.curentEmploye.passport,
-      matrimoniale: this.curentEmploye.matrimoniale,
-      nbr_enfant: this.curentEmploye.nbr_enfant,
-      banque: this.curentEmploye.banque,
-      rib: this.curentEmploye.rib,
+      passport_exp: this.curentEmploye.employe.passport_exp,
+      passport: this.curentEmploye.employe.passport,
+      matrimoniale: this.curentEmploye.employe.matrimoniale,
+      nbr_enfant: this.curentEmploye.employe.nbr_enfant,
+      banque: this.curentEmploye.employe.banque,
+      rib: this.curentEmploye.employe.rib,
     });
   }
   onClickSubmitInfoPersoEmployee() {
-    // alert(JSON.stringify(this.editEmployeInfoPersoForm.value))
-    console.log(this.editEmployeInfoPersoForm.value);
+    // alert(JSON.stringify(this.editEmployeInfoPersoForm.value));
+    // console.log(this.editEmployeInfoPersoForm.value);
     this.employeservice
       .updateInfoPerso(
         this.editEmployeInfoPersoForm.value,
-        this.curentEmploye.id
+        this.curentEmploye.employe.id
       )
       .subscribe(
         (data: any) => {

@@ -4,12 +4,12 @@
   <div class="page-header">
     <div class="row">
       <div class="col-sm-12">
-        <h3 class="page-title">Profile de l'employé</h3>
+        <h3 class="page-title">La fiche Employé</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
             <a [routerLink]="routes.adminDashboard">Tableau de bord </a>
           </li>
-          <li class="breadcrumb-item active">Profile</li>
+          <li class="breadcrumb-item active">La fiche Employé</li>
         </ul>
       </div>
     </div>
@@ -89,7 +89,7 @@
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                         >
-                          Renouveler le contract</a
+                          Renouveler le contrat</a
                         >
 
                         <a
@@ -223,7 +223,7 @@
           <div class="card profile-box flex-fill">
             <div class="card-body">
               <h3 class="card-title">
-                Informations Personnele
+                Informations Personnelles
                 <a
                   class="edit-icon"
                   data-bs-toggle="modal"
@@ -234,7 +234,7 @@
               </h3>
               <ul class="personal-info">
                 <li>
-                  <div class="title">No. Passport</div>
+                  <div class="title">No. CIN/Passport</div>
                   <div class="text">{{ curentEmploye.employe.passport }}</div>
                 </li>
                 <li>
@@ -263,7 +263,7 @@
         <div class="col-md-6 d-flex">
           <div class="card profile-box flex-fill">
             <div class="card-body">
-              <h3 class="card-title">information de Banque</h3>
+              <h3 class="card-title">Informations Bancaires</h3>
               <ul class="personal-info">
                 <li>
                   <div class="title">Nom Banque:</div>
@@ -272,6 +272,13 @@
                 <li>
                   <div class="title">Banque RIB:</div>
                   <div class="text">{{ curentEmploye.employe.rib }}</div>
+                </li>
+
+                <li>
+                  <div class="title">Affiliation (CNSS-FNRB)</div>
+                  <div class="text">
+                    {{ curentEmploye.employe.affiliation }}
+                  </div>
                 </li>
               </ul>
             </div>
@@ -390,7 +397,7 @@
           <div class="card profile-box flex-fill">
             <div class="card-body">
               <h3 class="card-title">
-                Education ou Formation
+                Educations ou Formations
                 <a
                   class="edit-icon"
                   data-bs-toggle="modal"
@@ -437,7 +444,7 @@
           <div class="card profile-box flex-fill">
             <div class="card-body">
               <h3 class="card-title">
-                Experiences
+                Expériences
                 <a
                   class="edit-icon"
                   data-bs-toggle="modal"
@@ -456,9 +463,7 @@
                         <a href="#/" class="name"
                           >Web Designer at Zen Corporation</a
                         >
-                        <span class="time"
-                          >Jan 2013 - Present (5 years 2 months)</span
-                        >
+                        <span class="time">Janvier 2019 - Décembre 2020</span>
                       </div>
                     </div>
                   </li>
@@ -902,7 +907,7 @@
       <div class="card">
         <div class="card-body">
           <hr />
-          <h3 class="card-title">Contract en cours</h3>
+          <h3 class="card-title">Contrat en cours</h3>
           <hr />
 
           <div class="profile-view">
@@ -911,7 +916,7 @@
                 <div class="col-md-5">
                   <div class="profile-info-left_bassarou">
                     <h3 class="user-name m-t-0 mb-0">
-                      Ref: {{ curentEmploye.last_contat?.num_contrat }}
+                      Reféférence: {{ curentEmploye.last_contat?.num_contrat }}
                     </h3>
                     <br />
                     <ul class="personal-info">
@@ -1011,7 +1016,7 @@
           <br />
 
           <hr />
-          <h3 class="card-title">Historique des Contracts</h3>
+          <h3 class="card-title">Historique des Contrats</h3>
           <hr />
 
           <div class="table-responsive table-newdatatable">
@@ -1390,7 +1395,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          Nouveau Contract pour {{ curentEmploye.nom }}
+          Nouveau Contrat pour {{ curentEmploye.nom }}
           {{ curentEmploye.prenom }}
         </h5>
         <button
@@ -1422,7 +1427,7 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for=""
-                  >Type de contract<span class="text-danger">*</span></label
+                  >Type de contrat<span class="text-danger">*</span></label
                 >
 
                 <mat-select
