@@ -670,6 +670,12 @@ export interface getTypeConge {
   libelle: string;
 }
 
+export interface getInfoDeBase {
+  id: number;
+  cle: string;
+  valeur: number;
+}
+
 export interface getStatut {
   id: number;
   libelle: string;

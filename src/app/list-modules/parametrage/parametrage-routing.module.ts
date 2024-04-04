@@ -1,3 +1,4 @@
+import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TypeCongeComponent } from './typeConge/typeConge.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
     { path: "role", component: RoleComponent },
     { path: "categorie", component: CategorieComponent },
     { path: "statut", component: StatutComponent },
+    { path: "infos-de-base", component: InfosDeBaseComponent },
   ],
  }];
 

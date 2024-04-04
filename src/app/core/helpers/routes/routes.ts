@@ -95,6 +95,10 @@ export class routes {
     return this.baseUrl + '/parametrage/categorie';
   }
 
+  public static get infos_de_base(): string {
+    return this.baseUrl + '/parametrage/infos-de-base';
+  }
+
   public static get statut(): string {
     return this.baseUrl + '/parametrage/statut';
   }
