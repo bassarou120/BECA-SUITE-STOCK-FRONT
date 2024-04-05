@@ -47,7 +47,7 @@
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="employeeName">Nom de l'employé</th>
                             <th mat-sort-header="typeDepart">Type Départ </th>
-                            <th mat-sort-header="motif">Motif</th>
+                            <th mat-sort-header="motif">Observation</th>
                             <th mat-sort-header="dateDepart">Date départ</th>
                             <th class="text-end">Action</th>
                         </tr>
@@ -164,7 +164,7 @@
             <div class="modal-body">
             <form [formGroup]="addDepartEmployeForm" (ngSubmit)="onClickSubmitAddDepartEmploye()" novalidate>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -181,7 +181,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -198,19 +198,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="motif">Motif<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text"
-                                        [class.invalid]="addDepartEmployeForm.get('motif')?.invalid && addDepartEmployeForm.get('motif')?.touched"
-                                        placeholder="Motif du départ" formControlName="motif">
-                                    <div> <small *ngIf="addDepartEmployeForm.get('motif')?.invalid && addDepartEmployeForm.get('motif')?.touched"
-                                            class="text-danger"> *Motif est obligatoire</small>
-                                    </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3 date-input1">
                                 <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -223,6 +211,18 @@
                                             class="text-danger"> *La date de départ est obligatoire </small>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="motif">Observation<span class="text-danger">*</span></label>
+                                      <textarea class="form-control custom-textarea" rows="2"
+                                        [class.invalid]="addDepartEmployeForm.get('motif')?.invalid && addDepartEmployeForm.get('motif')?.touched"
+                                        placeholder="Entrez vos observations de votre plainte ici." formControlName="motif"></textarea>
+                                    <div> <small *ngIf="addDepartEmployeForm.get('motif')?.invalid && addDepartEmployeForm.get('motif')?.touched"
+                                            class="text-danger"> *Observation est obligatoire</small>
+                                    </div>
                             </div>
                         </div>
 
@@ -270,7 +270,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -288,19 +288,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="motif">Motif<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text"
-                                        [class.invalid]="editDepartEmployeForm.get('motif')?.invalid && editDepartEmployeForm.get('motif')?.touched"
-                                        placeholder="Motif du départ" formControlName="motif">
-                                    <div> <small *ngIf="editDepartEmployeForm.get('motif')?.invalid && editDepartEmployeForm.get('motif')?.touched"
-                                            class="text-danger"> *Motif est obligatoire</small>
-                                    </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3 date-input2">
                                 <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -313,6 +301,18 @@
                                             class="text-danger"> *La date de départ est obligatoire </small>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="motif">Observation<span class="text-danger">*</span></label>
+                                      <textarea class="form-control custom-textarea" rows="2"
+                                        [class.invalid]="editDepartEmployeForm.get('motif')?.invalid && editDepartEmployeForm.get('motif')?.touched"
+                                        placeholder="Entrez vos observations de votre plainte ici." formControlName="motif"></textarea>
+                                    <div> <small *ngIf="editDepartEmployeForm.get('motif')?.invalid && editDepartEmployeForm.get('motif')?.touched"
+                                            class="text-danger"> *Observation est obligatoire</small>
+                                    </div>
                             </div>
                         </div>
 

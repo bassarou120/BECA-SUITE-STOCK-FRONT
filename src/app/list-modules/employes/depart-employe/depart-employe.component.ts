@@ -54,14 +54,14 @@ export class DepartEmployeComponent implements OnInit {
      this.addDepartEmployeForm = this.formBuilder.group({
       typeDepart_id: ["", [Validators.required]],
       employe_id: ["", [Validators.required]],
-      motif: ["", [Validators.required]],
+      motif: ["Néant", [Validators.required]],
       datedepart: ["", [Validators.required]],
     });
      this.editDepartEmployeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       typeDepart_id: ["", [Validators.required]],
       employe_id: ["", [Validators.required]],
-      motif: ["", [Validators.required]],
+      motif: ["Néant", [Validators.required]],
       datedepart: ["", [Validators.required]],
     });
      this.deleteDepartEmployeForm = this.formBuilder.group({
