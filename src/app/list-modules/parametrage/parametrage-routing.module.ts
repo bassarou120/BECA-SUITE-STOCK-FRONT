@@ -1,3 +1,4 @@
+import { TypeDepartComponent } from './type-depart/type-depart.component';
 import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -27,6 +28,7 @@ const routes: Routes = [
     { path: "categorie", component: CategorieComponent },
     { path: "statut", component: StatutComponent },
     { path: "infos-de-base", component: InfosDeBaseComponent },
+    { path: "type-depart", component: TypeDepartComponent },
   ],
  }];
 

@@ -810,6 +810,11 @@ export interface getCategorie {
   libelle: string;
 }
 
+export interface getTypeDepart {
+  id: number;
+  lib: string;
+}
+
 export interface getRole {
   id: number;
   lib: string;

@@ -1,3 +1,4 @@
+import { TypeDepartComponent } from './type-depart/type-depart.component';
 import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -29,6 +30,7 @@ import { StatutComponent } from './statut/statut.component';
     CategorieComponent,
     StatutComponent,
     InfosDeBaseComponent,
+    TypeDepartComponent,
   ],
   imports: [
     CommonModule,

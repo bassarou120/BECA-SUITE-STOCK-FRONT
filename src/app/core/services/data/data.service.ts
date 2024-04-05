@@ -201,6 +201,11 @@ export class DataService {
               route: routes.infos_de_base,
               base: 'infos-de-base',
             },
+            {
+              menuValue: 'Type Départ',
+              route: routes.type_depart,
+              base: 'type-depart',
+            },
 
             // {
             //   menuValue: 'Statut',
