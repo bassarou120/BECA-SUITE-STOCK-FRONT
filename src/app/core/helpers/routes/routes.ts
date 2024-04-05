@@ -111,6 +111,10 @@ export class routes {
     return this.baseUrl + '/employes/heures-supplementaires';
   }
 
+  public static get depart_employe(): string {
+    return this.baseUrl + '/employes/depart-employe';
+  }
+
 
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';

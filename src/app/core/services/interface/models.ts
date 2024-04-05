@@ -789,6 +789,16 @@ export interface getHeureSupplementaire {
   employe: string;
 }
 
+export interface getDepartEmploye {
+  id: number;
+  datedepart: Date;
+  motif: string;
+  employe_id: number;
+  employe: string;
+  typeDepart_id: number;
+  typeDepart: string;
+}
+
 export interface getPost {
   id: number;
   nom_poste: string;

@@ -1,3 +1,4 @@
+import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
 import { NgModule } from '@angular/core';
@@ -48,6 +49,7 @@ const routes: Routes = [
       { path: "formations", component: FormationsComponent },
       { path: "heures-supplementaires", component: HeuresSupplementairesComponent },
       { path: "mes-plaintes", component: MesPlaintesComponent },
+      { path: "depart-employe", component: DepartEmployeComponent },
     ],
   },
 ];

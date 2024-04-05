@@ -105,6 +105,11 @@ export class DataService {
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
             },
+            {
+              menuValue: 'Départ Employé',
+              route: routes.depart_employe,
+              base: 'depart-employe',
+            },
 
           ],
         },
