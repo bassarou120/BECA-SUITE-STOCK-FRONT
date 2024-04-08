@@ -728,6 +728,7 @@ export interface getConge {
   libelle: string;
   employe: string;
   status: string;
+  congeJoui: boolean;
 }
 
 export interface getDemande {
@@ -818,6 +819,11 @@ export interface getTypeAbsence {
 }
 
 export interface getDeductibleFromConge {
+  val: number;
+  lib: string;
+}
+
+export interface getIfCongeJoui {
   val: number;
   lib: string;
 }

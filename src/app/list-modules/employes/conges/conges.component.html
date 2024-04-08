@@ -46,8 +46,9 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="congeName">Libellé du Congé</th>
-                            <th mat-sort-header="employeeName">Nom de l'Employé en Congé</th>
+                            <th mat-sort-header="employeeName">Nom de l'Employé</th>
                             <th mat-sort-header="statutName">Statut</th>
+                            <th mat-sort-header="congeJoui">Congé joui</th>
                             <th mat-sort-header="congeStart">Début du Congé</th>
                             <th mat-sort-header="congeEnd">Fin du Congé</th>
                             <th class="text-end">Action</th>
@@ -59,6 +60,7 @@
                             <td>{{item.libelle}}</td>
                             <td>{{item.employe}}</td>
                             <td>{{ item.status ? item.status : "-" }}</td>
+                            <td>{{ item.congeJoui ? "Oui" : "Non" }}</td>
                             <td>{{item.date_debut}}</td>
                             <td>{{item.date_fin}}</td>
                             <td class="text-end">
@@ -399,6 +401,22 @@
                             <small class="text-danger"> *Le statut est obligatoire</small>
                         </div>
                     </div>
+
+                    <div class="input-block mb-3">
+                      <label class="col-form-label" for="">Congé déjà joui par l'employé <span class="text-danger">*</span></label>
+                      <mat-select  class="select mat-cust-select form-control"
+                                        [class.invalid]="editCongeForm.get('congeJoui')?.invalid && editCongeForm.get('congeJoui')?.touched"
+                                        formControlName="congeJoui" placeholder="Selectionner Déductible des congés">
+                                        <mat-option *ngFor="let item of lstValsCongeJoui" [value]="item.val"
+                                        [class.mat-selected] ="item.val === selectedCongeJoui"> {{ item.lib }} </mat-option>
+                            </mat-select>
+                      <div
+                          *ngIf="editCongeForm.get('congeJoui')?.invalid && editCongeForm.get('congeJoui')?.touched">
+                          <small
+                              *ngIf="editCongeForm.get('congeJoui')?.invalid && editCongeForm.get('congeJoui')?.touched"
+                              class="text-danger"> *Déductible des congés est obligatoire</small>
+                      </div>
+                  </div>
                   </div>
 
                     <div class="submit-section">
