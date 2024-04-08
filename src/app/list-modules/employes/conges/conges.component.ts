@@ -23,11 +23,15 @@ export class CongesComponent implements OnInit {
 
   public default_status: string = environment.default_statut_for_demands;
 
+  public lstStatus: Array<string> = ["Non Traité", "Rejeté", "Approuvé"];
+  public onModifId: number = 0;
+
   public lstConge: Array<getConge> = [];
   public lstTypeConge: Array<getTypeConge> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedTypeCongeId: number = 0;
   public editFormSelectedEmployeId: number = 0;
+  public editFormSelectedStatus: string = "";
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getConge>;
   // pagination variables
@@ -173,6 +177,8 @@ export class CongesComponent implements OnInit {
     })
     this.editFormSelectedTypeCongeId = row.type_conges_id;
     this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedStatus = row.status;
+    this.onModifId = row.id;
   }
 
   onClickSubmitEditConge(){
