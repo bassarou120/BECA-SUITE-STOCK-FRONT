@@ -23,3 +23,4 @@ export * from './services/heure_supplementaires/heure_supplementaires.service';
 export * from './services/infos-de-base/infos-de-base.service';
 export * from './services/type-depart/type-depart.service';
 export * from './services/depart-employe/depart-employe.service';
+export * from './services/classes/classes.service';

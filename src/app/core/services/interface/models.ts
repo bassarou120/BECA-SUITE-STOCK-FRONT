@@ -670,6 +670,13 @@ export interface getTypeConge {
   libelle: string;
 }
 
+export interface getClasse {
+  id: number;
+  lib: string;
+  borneInf: number;
+  borneSup: number;
+}
+
 export interface getInfoDeBase {
   id: number;
   cle: string;

@@ -1,0 +1,323 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Classes</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de Bord</a></li>
+                    <li class="breadcrumb-item active">Classes</li>
+                </ul>
+            </div>
+            <div class="col-auto float-end ms-auto">
+                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_class"><i class="fa-solid fa-plus"></i>
+                    Ajouter une classe</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table  matSort
+                (matSortChange)="sortData($event)" class="table table-striped custom-table mb-0">
+                    <thead>
+                        <tr>
+                            <th mat-sort-header="id">#</th>
+                            <th mat-sort-header="title">Libellé de la classe</th>
+                            <th class="borneInf">Borne Inférieure</th>
+                            <th class="borneSup">Borne Supérieure</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="holiday-completed" *ngFor="let row of lstClasses">
+                            <td>{{row.id}}</td>
+                            <td>{{row.lib}}</td>
+                            <td>{{row.borneInf}}</td>
+                            <td>{{row.borneSup}}</td>
+                            <td class="text-end">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" (click)="getEditClasse(row)" data-bs-toggle="modal"
+                                            data-bs-target="#edit_class"><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a>
+                                        <a class="dropdown-item" (click)="getDeleteClasse(row)" data-bs-toggle="modal"
+                                            data-bs-target="#delete_holiday"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            Supprimer</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="lstClasses.length === 0">
+                          <td colspan="10">
+                              <h5 style="text-align: center;">Aucun Résultat</h5>
+                          </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table_footer">
+                <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info">
+                    Affichage de {{ serialNumberArray[0] }} à
+                    {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                    {{ totalData }} entrées
+                  </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7">
+                  <div class="pagination_section">
+                    <ul class="pagination">
+                      <li
+                        class="page-item"
+                        [ngClass]="{
+                          disabled: currentPage === 1
+                        }"
+                      >
+                        <a
+                          (click)="getMoreData('previous')"
+                          class="page-link"
+                          href="javascript:void(0);"
+                          tabindex="-1"
+                          >Précédent</a
+                        >
+                      </li>
+
+                      <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                        <li
+                          class="page-item"
+                          [class.active]="item === currentPage"
+                          [ngClass]="
+                            (pageNumberArray[currentPage - 2] > item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6) ||
+                            (pageNumberArray[currentPage] < item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6 &&
+                              pageNumberArray.length !== item)
+                              ? 'hide-page-no'
+                              : 'show-page-no'
+                          "
+                        >
+                          <a
+                            (click)="moveToPage(item)"
+                            class="page-link"
+                            href="javascript:void(0);"
+                          >
+                            {{ item }}
+                          </a>
+                        </li>
+                        <li
+                          class="page-item"
+                          *ngIf="
+                            i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                          "
+                          [hidden]="currentPage === 1"
+                          (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0"
+                        >
+                          <a class="page-link" href="javascript:void(0);"> ... </a>
+                        </li>
+                        <li
+                          *ngIf="
+                            i === pageNumberArray.length - 2 &&
+                            pageNumberArray.length > 6
+                          "
+                          [hidden]="
+                            currentPage >=
+                              pageNumberArray[pageNumberArray.length - 2] ||
+                            totalData < serialNumberArray[serialNumberArray.length - 1]
+                          "
+                          class="page-item"
+                          (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0"
+                        >
+                          <a class="page-link" href="javascript:void(0);"> ... </a>
+                        </li>
+                      </ng-container>
+
+                      <li
+                        class="page-item"
+                        [ngClass]="{
+                          disabled:
+                            currentPage ===
+                              pageNumberArray[pageNumberArray.length - 1] ||
+                              lstClasses.length === 0
+                        }"
+                      >
+                        <a
+                          (click)="getMoreData('next')"
+                          class="page-link"
+                          href="javascript:void(0);"
+                          >Suivant
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+<!-- Add Holiday Modal -->
+<div class="modal custom-modal fade" id="add_class" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter une classe</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addClasseForm" (ngSubmit)="saveClasse()" novalidate>
+                    <div class="input-block mb-3">
+                      <label class="col-form-label" for="lib">Libellé de la classe<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" formControlName="lib" placeholder="Nom de la classe"
+                      [class.invalid]="addClasseForm.get('lib')?.invalid && addClasseForm.get('lib')?.touched">
+
+                      <div *ngIf="addClasseForm.get('lib')?.touched && addClasseForm.get('lib')?.invalid" class="text-danger">
+                        <small *ngIf="addClasseForm.get('lib')?.touched && addClasseForm.get('lib')?.invalid" class="text-danger">
+                          Le libellé de la classe est requise.
+                        </small>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="borneInf">Borne inférieure <span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="number"
+                                    [class.invalid]="addClasseForm.get('borneInf')?.invalid && addClasseForm.get('borneInf')?.touched"
+                                    placeholder="Ancienneté minimum requise." formControlName="borneInf">
+                                    <div> <small  *ngIf="addClasseForm.get('borneInf')?.invalid && addClasseForm.get('borneInf')?.touched"
+                                            class="text-danger"> *La valeur entrée est invalide </small>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="borneSup">Borne supérieure<span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="number"
+                                    [class.invalid]="addClasseForm.get('borneSup')?.invalid && addClasseForm.get('borneSup')?.touched"
+                                    placeholder="Ancienneté maximum" formControlName="borneSup">
+                                    <div> <small  *ngIf="addClasseForm.get('borneSup')?.invalid && addClasseForm.get('borneSup')?.touched"
+                                            class="text-danger"> *La valeur entrée est invalide </small>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="addClasseForm.errors?.['bornesInvalid']" class="text-danger">
+                        *La borne inférieure doit être plus petite que la borne supérieure.
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Holiday Modal -->
+
+<!-- Edit Holiday Modal -->
+<div class="modal custom-modal fade" id="edit_class" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Modifier la classe</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form [formGroup]="editClasseForm" (ngSubmit)="editClasse()" novalidate>
+                    <div class="input-block mb-3">
+                    <input type="hidden" formControlName="id">
+                    <label class="col-form-label" for="lib">Libellé de la classe<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" formControlName="lib" placeholder="Nom de la classe"
+                      [class.invalid]="editClasseForm.get('lib')?.invalid && editClasseForm.get('lib')?.touched">
+
+                      <div *ngIf="editClasseForm.get('lib')?.touched && editClasseForm.get('lib')?.invalid" class="text-danger">
+                        <small *ngIf="editClasseForm.get('lib')?.touched && editClasseForm.get('lib')?.invalid" class="text-danger">
+                          Le libellé de la classe est requise.
+                        </small>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="borneInf">Borne inférieure <span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="number"
+                                    [class.invalid]="editClasseForm.get('borneInf')?.invalid && editClasseForm.get('borneInf')?.touched"
+                                    placeholder="Ancienneté minimum requise." formControlName="borneInf">
+                                    <div> <small  *ngIf="editClasseForm.get('borneInf')?.invalid && editClasseForm.get('borneInf')?.touched"
+                                            class="text-danger"> *La valeur entrée est invalide </small>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="borneSup">Borne supérieure<span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="number"
+                                    [class.invalid]="editClasseForm.get('borneSup')?.invalid && editClasseForm.get('borneSup')?.touched"
+                                    placeholder="Ancienneté maximum" formControlName="borneSup">
+                                    <div> <small  *ngIf="editClasseForm.get('borneSup')?.invalid && editClasseForm.get('borneSup')?.touched"
+                                            class="text-danger"> *La valeur entrée est invalide </small>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="editClasseForm.errors?.['bornesInvalid']" class="text-danger">
+                        *La borne inférieure doit être plus petite que la borne supérieure.
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
+                    </div>
+                </form>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- /Edit Holiday Modal -->
+
+<!-- Delete Holiday Modal -->
+<div class="modal custom-modal fade" id="delete_holiday" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Supprimer la classe</h3>
+                    <p>Êtes vous sûr de vouloir supprimer la classe</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+
+                          <form [formGroup]="deleteClasseForm" (ngSubmit)="deleteClasse()" novalidate>
+                            <input class="form-control" type="hidden" formControlName="id">
+                            <!-- <button type="submit" class="btn btn-primary continue-btn">Supprimer</button> -->
+                            <a href="javascript:void(0);" (click)="deleteClasse()" class="btn btn-primary continue-btn">Supprimer</a>
+                          </form>
+
+                        </div>
+                        <div class="col-6">
+                          <a href="javascript:void(0);" data-bs-dismiss="modal"
+                            class="btn btn-primary cancel-btn">Annuler</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Holiday Modal -->

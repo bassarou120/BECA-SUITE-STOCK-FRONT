@@ -99,6 +99,10 @@ export class routes {
     return this.baseUrl + '/parametrage/type-depart';
   }
 
+  public static get classes(): string {
+    return this.baseUrl + '/parametrage/classes';
+  }
+
   public static get infos_de_base(): string {
     return this.baseUrl + '/parametrage/infos-de-base';
   }
