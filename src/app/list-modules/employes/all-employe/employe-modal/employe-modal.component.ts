@@ -12,7 +12,6 @@ export class EmployeModalComponent implements OnInit {
   public addEmployeeForm!: FormGroup;
   public editEmployeeForm!: FormGroup;
 
-
   constructor(
     private formBuilder: FormBuilder,
     public router: Router,
@@ -25,6 +24,7 @@ export class EmployeModalComponent implements OnInit {
   listPoste: any;
   listCategorie: any;
   listClasse: any;
+  listGrade: any;
 
   ngOnInit(): void {
     // "nom": "toto",
@@ -45,7 +45,7 @@ export class EmployeModalComponent implements OnInit {
     //   'titre',
     //   'anciennete',
 
-    this.getDepartementPost();
+    this.getDataForListe();
     this.addEmployeeForm = this.formBuilder.group({
       nom: ['', [Validators.required]],
       prenom: ['', [Validators.required]],
@@ -64,10 +64,11 @@ export class EmployeModalComponent implements OnInit {
       affiliation: ['', []],
       titre: ['', []],
       anciennete: ['', []],
-      classe_id: ['', []],
-      categorie_id: ['', []],
+      grade_id: ['', []],
+
       date_naisance: ['', []],
       lieu_naisance: ['', []],
+      address: ['', []],
 
       // EmployeeID: ["", [Validators.required]],
     });
@@ -90,23 +91,29 @@ export class EmployeModalComponent implements OnInit {
   }
 
   onClickSubmitAddEmployee() {
-    console.log(this.addEmployeeForm.value);
+    // console.log(this.addEmployeeForm.value);
     // alert(JSON.stringify(this.addEmployeeForm.value));
+    $('#spinner').removeClass('d-none');
+    // $('#spinner').addClass('d-none');
 
     let date = new Date(this.addEmployeeForm.get('date_arrivee')?.value);
     // alert(date.toISOString().slice(0, 10).replace('T', ' '));
     let mdate = date.toISOString().slice(0, 10).replace('T', ' ');
     this.addEmployeeForm.get('date_arrivee')?.setValue(mdate);
 
-    let mdate1 = (new Date(this.addEmployeeForm.get('date_naisance')?.value)).toISOString().slice(0, 10).replace('T', ' ');
+    let mdate1 = new Date(this.addEmployeeForm.get('date_naisance')?.value)
+      .toISOString()
+      .slice(0, 10)
+      .replace('T', ' ');
     this.addEmployeeForm.get('date_naisance')?.setValue(mdate1);
 
     // alert(this.addEmployeeForm.get('date_arrivee')?.value);
     if (this.addEmployeeForm.valid) {
       this.employeservice.saveEmploye(this.addEmployeeForm.value).subscribe(
         (data: any) => {
-          location.reload();
-          this.router.navigate(['/employees/employee-page']);
+          $('#spinner').addClass('d-none');
+          // location.reload();
+          // this.router.navigate(['/employees/employee-page']);
         },
         (error: any) => {
           alert(JSON.stringify(error.error));
@@ -126,17 +133,32 @@ export class EmployeModalComponent implements OnInit {
     });
   }
 
-  getDepartementPost() {
+  getDataForListe() {
     this.employeservice.getDepartementPoste().subscribe(
       (date: any) => {
         console.log(date);
 
         this.listDepartement = date.data.departement;
         this.listPoste = date.data.poste;
-        this.listCategorie = date.data.categorie;
-        this.listClasse = date.data.classe;
+        this.listGrade = date.data.grade;
+        // this.listCategorie = date.data.categorie;
+        // this.listClasse = date.data.classe;
       },
       (error: any) => {}
+    );
+
+    this.employeservice.getLastContrat().subscribe(
+      (data: any) => {
+        // alert(JSON.stringify(data.data));
+        // this.listTypeContrat=data.data.data
+        // this.lastContrat = data.data;
+
+        // console.log(data.data);
+        this.addEmployeeForm
+          .get('matricule')
+          ?.setValue('E-000' + (data.data == 0 ? '1' : data.data.id));
+      },
+      (erro: any) => {}
     );
   }
 }

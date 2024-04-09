@@ -1,19 +1,24 @@
 <!-- Page Content -->
 <div class="content container-fluid">
-
   <!-- Page Header -->
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
         <h3 class="page-title">Formations</h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+          <li class="breadcrumb-item">
+            <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+          </li>
           <li class="breadcrumb-item active">Formations</li>
         </ul>
       </div>
       <div class="col-auto float-end ms-auto">
-        <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i class="fa-solid fa-plus"></i>
-          Ajouter une formation</a>
+        <a
+          class="btn add-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#add_department"
+          ><i class="fa-solid fa-plus"></i> Ajouter une formation</a
+        >
       </div>
     </div>
   </div>
@@ -26,7 +31,11 @@
             <div class="dataTables_length">
               <label class="col-form-label" for="">
                 Afficher
-                <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()" class="form-control form-control-sm">
+                <select
+                  [(ngModel)]="pageSize"
+                  (ngModelChange)="changePageSize()"
+                  class="form-control form-control-sm"
+                >
                   <option value="10">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>
@@ -39,10 +48,14 @@
         </div>
       </div>
       <div>
-        <table matSort (matSortChange)="sortData($event)" class="table table-striped custom-table datatable mb-0">
+        <table
+          matSort
+          (matSortChange)="sortData($event)"
+          class="table table-striped custom-table datatable mb-0"
+        >
           <thead>
             <tr>
-              <th style="width: 30px;">#</th>
+              <th style="width: 30px">#</th>
               <th mat-sort-header="employeName">Nom de l'employé</th>
               <th mat-sort-header="formationName">Intitulé</th>
               <th mat-sort-header="domaineName">Domaine</th>
@@ -54,31 +67,44 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of lstFormations">
-              <td>{{item.id}}</td>
-              <td>{{item.employe}}</td>
-              <td>{{item.intitule}}</td>
-              <td>{{item.domaine}}</td>
-              <td>{{item.date_debut}}</td>
-              <td>{{item.date_fin}}</td>
-              <td>{{item.diplome}}</td>
+              <td>{{ item.id }}</td>
+              <td>{{ item.employe }}</td>
+              <td>{{ item.intitule }}</td>
+              <td>{{ item.domaine }}</td>
+              <td>{{ item.date_debut }}</td>
+              <td>{{ item.date_fin }}</td>
+              <td>{{ item.diplome }}</td>
               <td class="text-end">
                 <div class="dropdown dropdown-action">
-                  <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i
-                      class="material-icons">more_vert</i></a>
+                  <a
+                    class="action-icon dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    ><i class="material-icons">more_vert</i></a
+                  >
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                      data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
-                      Modifier</a>
-                    <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                      data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
-                      Supprimer</a>
+                    <a
+                      class="dropdown-item"
+                      data-bs-toggle="modal"
+                      (click)="getEditForm(item)"
+                      data-bs-target="#edit_department"
+                      ><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      data-bs-toggle="modal"
+                      (click)="getDeleteForm(item)"
+                      data-bs-target="#delete_department"
+                      ><i class="fa-regular fa-trash-can m-r-5"></i>
+                      Supprimer</a
+                    >
                   </div>
                 </div>
               </td>
             </tr>
             <tr *ngIf="lstFormations.length === 0">
               <td colspan="10">
-                <h5 style="text-align: center;">Aucun résultat</h5>
+                <h5 style="text-align: center">Aucun résultat</h5>
               </td>
             </tr>
           </tbody>
@@ -96,55 +122,90 @@
         <div class="col-sm-12 col-md-7">
           <div class="pagination_section">
             <ul class="pagination">
-              <li class="page-item" [ngClass]="{
-                          disabled: currentPage === 1
-                        }">
-                <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
-                  tabindex="-1">Précédent</a>
+              <li
+                class="page-item"
+                [ngClass]="{
+                  disabled: currentPage === 1
+                }"
+              >
+                <a
+                  (click)="getMoreData('previous')"
+                  class="page-link"
+                  href="javascript:void(0);"
+                  tabindex="-1"
+                  >Précédent</a
+                >
               </li>
 
               <ng-container *ngFor="let item of pageNumberArray; let i = index">
-                <li class="page-item" [class.active]="item === currentPage" [ngClass]="
-                            (pageNumberArray[currentPage - 2] > item &&
-                              item !== 1 &&
-                              pageNumberArray.length > 6) ||
-                            (pageNumberArray[currentPage] < item &&
-                              item !== 1 &&
-                              pageNumberArray.length > 6 &&
-                              pageNumberArray.length !== item)
-                              ? 'hide-page-no'
-                              : 'show-page-no'
-                          ">
-                  <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                <li
+                  class="page-item"
+                  [class.active]="item === currentPage"
+                  [ngClass]="
+                    (pageNumberArray[currentPage - 2] > item &&
+                      item !== 1 &&
+                      pageNumberArray.length > 6) ||
+                    (pageNumberArray[currentPage] < item &&
+                      item !== 1 &&
+                      pageNumberArray.length > 6 &&
+                      pageNumberArray.length !== item)
+                      ? 'hide-page-no'
+                      : 'show-page-no'
+                  "
+                >
+                  <a
+                    (click)="moveToPage(item)"
+                    class="page-link"
+                    href="javascript:void(0);"
+                  >
                     {{ item }}
                   </a>
                 </li>
-                <li class="page-item" *ngIf="
-                            i === 0 && pageNumberArray.length > 6 && currentPage > 2
-                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)"
-                  (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                <li
+                  class="page-item"
+                  *ngIf="
+                    i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                  "
+                  [hidden]="currentPage === 1"
+                  (click)="moveToPage(currentPage - 2)"
+                  (keydown.enter)="moveToPage(currentPage - 2)"
+                  tabindex="0"
+                >
                   <a class="page-link" href="javascript:void(0);"> ... </a>
                 </li>
-                <li *ngIf="
-                            i === pageNumberArray.length - 2 &&
-                            pageNumberArray.length > 6
-                          " [hidden]="
-                            currentPage >=
-                              pageNumberArray[pageNumberArray.length - 2] ||
-                            totalData < serialNumberArray[serialNumberArray.length - 1]
-                          " class="page-item" (click)="moveToPage(currentPage + 2)"
-                  (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                <li
+                  *ngIf="
+                    i === pageNumberArray.length - 2 &&
+                    pageNumberArray.length > 6
+                  "
+                  [hidden]="
+                    currentPage >=
+                      pageNumberArray[pageNumberArray.length - 2] ||
+                    totalData < serialNumberArray[serialNumberArray.length - 1]
+                  "
+                  class="page-item"
+                  (click)="moveToPage(currentPage + 2)"
+                  (keydown.enter)="moveToPage(currentPage + 2)"
+                  tabindex="0"
+                >
                   <a class="page-link" href="javascript:void(0);"> ... </a>
                 </li>
               </ng-container>
 
-              <li class="page-item" [ngClass]="{
-                          disabled:
-                            currentPage ===
-                              pageNumberArray[pageNumberArray.length - 1] ||
-                            lstFormations.length === 0
-                        }">
-                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
+              <li
+                class="page-item"
+                [ngClass]="{
+                  disabled:
+                    currentPage ===
+                      pageNumberArray[pageNumberArray.length - 1] ||
+                    lstFormations.length === 0
+                }"
+              >
+                <a
+                  (click)="getMoreData('next')"
+                  class="page-link"
+                  href="javascript:void(0);"
+                  >Suivant
                 </a>
               </li>
             </ul>
@@ -161,44 +222,96 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Ajouter une Formation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="addFormationForm" (ngSubmit)="onClickSubmitAddFormation()" novalidate>
+        <form
+          [formGroup]="addFormationForm"
+          (ngSubmit)="onClickSubmitAddFormation()"
+          novalidate
+        >
           <div class="row">
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
-                <mat-select class="select mat-cust-select form-control"
-                  [class.invalid]="addFormationForm.get('employe_id')?.invalid && addFormationForm.get('employe_id')?.touched"
-                  formControlName="employe_id" placeholder="Selectionner l'employé concerné">
-                  <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }}
+                <label class="col-form-label" for="employe_id"
+                  >Employé <span class="text-danger">*</span></label
+                >
+                <mat-select
+                  class="select mat-cust-select form-control"
+                  [class.invalid]="
+                    addFormationForm.get('employe_id')?.invalid &&
+                    addFormationForm.get('employe_id')?.touched
+                  "
+                  formControlName="employe_id"
+                  placeholder="Selectionner l'employé concerné"
+                >
+                  <mat-option
+                    *ngFor="let item of lstEmploye"
+                    value="{{ item.id }}"
+                    >{{ item.nom }} {{ item.prenom }}
                   </mat-option>
                 </mat-select>
-                <div *ngIf="addFormationForm.get('employe_id')?.invalid && addFormationForm.get('employe_id')?.touched">
+                <div
+                  *ngIf="
+                    addFormationForm.get('employe_id')?.invalid &&
+                    addFormationForm.get('employe_id')?.touched
+                  "
+                >
                   <small
-                    *ngIf="addFormationForm.get('employe_id')?.invalid && addFormationForm.get('employe_id')?.touched"
-                    class="text-danger"> *L'employé est obligatoire</small>
+                    *ngIf="
+                      addFormationForm.get('employe_id')?.invalid &&
+                      addFormationForm.get('employe_id')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    *L'employé est obligatoire</small
+                  >
                 </div>
               </div>
             </div>
 
             <div class="col-sm-6">
               <div class="input-block mb-3 date-input1">
-                <label class="col-form-label" for="date_debut">Date Début <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="date_debut"
+                  >Date Début <span class="text-danger">*</span></label
+                >
                 <div class="cal-icon">
-                  <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                  <input
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    type="text"
                     container=".date-input1"
-                    [class.invalid]="addFormationForm.get('date_debut')?.invalid && addFormationForm.get('date_debut')?.touched"
-                    placeholder="Sélectionner la date de début" formControlName="date_debut">
-                  <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                    [class.invalid]="
+                      addFormationForm.get('date_debut')?.invalid &&
+                      addFormationForm.get('date_debut')?.touched
+                    "
+                    placeholder="Sélectionner la date de début"
+                    formControlName="date_debut"
+                  />
+                  <div><small class="text-secondary"> MM/JJ/AAAA </small></div>
                   <div
-                    *ngIf="addFormationForm.get('date_debut')?.invalid && addFormationForm.get('date_debut')?.touched">
+                    *ngIf="
+                      addFormationForm.get('date_debut')?.invalid &&
+                      addFormationForm.get('date_debut')?.touched
+                    "
+                  >
                     <small
-                      *ngIf="addFormationForm.get('date_debut')?.invalid && addFormationForm.get('date_debut')?.touched"
-                      class="text-danger"> *La date est obligatoire</small>
+                      *ngIf="
+                        addFormationForm.get('date_debut')?.invalid &&
+                        addFormationForm.get('date_debut')?.touched
+                      "
+                      class="text-danger"
+                    >
+                      *La date est obligatoire</small
+                    >
                   </div>
                 </div>
               </div>
@@ -206,31 +319,73 @@
 
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="intitule">Intitulé <span class="text-danger">*</span></label>
-                <input class="form-control" type="text"
-                  [class.invalid]="addFormationForm.get('intitule')?.invalid && addFormationForm.get('intitule')?.touched"
-                  placeholder="Entrer L\'intitulé de la Formation " formControlName="intitule">
-                <div *ngIf="addFormationForm.get('intitule')?.invalid && addFormationForm.get('intitule')?.touched">
-                  <small *ngIf="addFormationForm.get('intitule')?.invalid && addFormationForm.get('intitule')?.touched"
-                    class="text-danger"> *L'intitulé est obligatoire</small>
+                <label class="col-form-label" for="intitule"
+                  >Intitulé <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    addFormationForm.get('intitule')?.invalid &&
+                    addFormationForm.get('intitule')?.touched
+                  "
+                  placeholder="Entrer l'intitulé de la Formation "
+                  formControlName="intitule"
+                />
+                <div
+                  *ngIf="
+                    addFormationForm.get('intitule')?.invalid &&
+                    addFormationForm.get('intitule')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addFormationForm.get('intitule')?.invalid &&
+                      addFormationForm.get('intitule')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    *L'intitulé est obligatoire</small
+                  >
                 </div>
               </div>
             </div>
 
             <div class="col-sm-6">
               <div class="input-block mb-3 date-input1">
-                <label class="col-form-label" for="date_fin">Date Fin <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="date_fin"
+                  >Date Fin <span class="text-danger">*</span></label
+                >
                 <div class="cal-icon">
-                  <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                  <input
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    type="text"
                     container=".date-input1"
-                    [class.invalid]="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched"
-                    placeholder="Sélectionner la date de début" formControlName="date_fin">
-                  <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                    [class.invalid]="
+                      addFormationForm.get('date_fin')?.invalid &&
+                      addFormationForm.get('date_fin')?.touched
+                    "
+                    placeholder="Sélectionner la date de début"
+                    formControlName="date_fin"
+                  />
+                  <div><small class="text-secondary"> MM/JJ/AAAA </small></div>
                   <div
-                    *ngIf="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched">
+                    *ngIf="
+                      addFormationForm.get('date_fin')?.invalid &&
+                      addFormationForm.get('date_fin')?.touched
+                    "
+                  >
                     <small
-                      *ngIf="addFormationForm.get('date_fin')?.invalid && addFormationForm.get('date_fin')?.touched"
-                      class="text-danger"> *La date est obligatoire</small>
+                      *ngIf="
+                        addFormationForm.get('date_fin')?.invalid &&
+                        addFormationForm.get('date_fin')?.touched
+                      "
+                      class="text-danger"
+                    >
+                      *La date est obligatoire</small
+                    >
                   </div>
                 </div>
               </div>
@@ -239,31 +394,73 @@
 
           <div class="input-block mb-6">
             <div class="input-block mb-3">
-              <label class="col-form-label" for="domaine">Domaine <span class="text-danger">*</span></label>
-              <input class="form-control" type="text"
-                [class.invalid]="addFormationForm.get('domaine')?.invalid && addFormationForm.get('domaine')?.touched"
-                placeholder="Domaine" formControlName="domaine">
-              <div *ngIf="addFormationForm.get('domaine')?.invalid && addFormationForm.get('domaine')?.touched">
-                <small *ngIf="addFormationForm.get('domaine')?.invalid && addFormationForm.get('domaine')?.touched"
-                  class="text-danger"> *Le domaine est obligatoire</small>
+              <label class="col-form-label" for="domaine"
+                >Domaine <span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  addFormationForm.get('domaine')?.invalid &&
+                  addFormationForm.get('domaine')?.touched
+                "
+                placeholder="Domaine"
+                formControlName="domaine"
+              />
+              <div
+                *ngIf="
+                  addFormationForm.get('domaine')?.invalid &&
+                  addFormationForm.get('domaine')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addFormationForm.get('domaine')?.invalid &&
+                    addFormationForm.get('domaine')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *Le domaine est obligatoire</small
+                >
               </div>
             </div>
             <div class="input-block mb-3">
-              <label class="col-form-label" for="diplome">Diplôme <span class="text-danger">*</span></label>
-              <input class="form-control" type="text"
-                [class.invalid]="addFormationForm.get('diplome')?.invalid && addFormationForm.get('diplome')?.touched"
-                placeholder="diplome" formControlName="diplome">
-              <div *ngIf="addFormationForm.get('diplome')?.invalid && addFormationForm.get('diplome')?.touched">
-                <small *ngIf="addFormationForm.get('diplome')?.invalid && addFormationForm.get('diplome')?.touched"
-                  class="text-danger"> *Le diplome est obligatoire</small>
+              <label class="col-form-label" for="diplome"
+                >Diplôme <span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  addFormationForm.get('diplome')?.invalid &&
+                  addFormationForm.get('diplome')?.touched
+                "
+                placeholder="diplome"
+                formControlName="diplome"
+              />
+              <div
+                *ngIf="
+                  addFormationForm.get('diplome')?.invalid &&
+                  addFormationForm.get('diplome')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addFormationForm.get('diplome')?.invalid &&
+                    addFormationForm.get('diplome')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *Le diplome est obligatoire</small
+                >
               </div>
             </div>
-
           </div>
 
-
           <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+            <button class="btn btn-primary submit-btn" type="submit">
+              Enregistrer
+            </button>
           </div>
         </form>
       </div>
@@ -278,44 +475,90 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Modifier la Formation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="editFormationForm" (ngSubmit)="onClickSubmitEditFormation()" novalidate>
+        <form
+          [formGroup]="editFormationForm"
+          (ngSubmit)="onClickSubmitEditFormation()"
+          novalidate
+        >
           <div class="row">
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <input type="hidden" formControlName="id">
-                <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
-                <mat-select  class="select mat-cust-select form-control"
-                    [class.invalid]="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched"
-                    formControlName="employe_id" placeholder="Selectionner le type de congé">
-                    <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
-                    [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
+                <input type="hidden" formControlName="id" />
+                <label class="col-form-label" for="employe_id"
+                  >Employé <span class="text-danger">*</span></label
+                >
+                <mat-select
+                  class="select mat-cust-select form-control"
+                  [class.invalid]="
+                    editFormationForm.get('employe_id')?.invalid &&
+                    editFormationForm.get('employe_id')?.touched
+                  "
+                  formControlName="employe_id"
+                  placeholder="Selectionner le type de congé"
+                >
+                  <mat-option
+                    *ngFor="let item of lstEmploye"
+                    [value]="item.id"
+                    [class.mat-selected]="item.id === editFormSelectedEmployeId"
+                    >{{ item.nom }} {{ item.prenom }}
+                  </mat-option>
                 </mat-select>
                 <div
-                    *ngIf="editFormationForm.get('employe_id')?.invalid && editFormationForm.get('employe_id')?.touched">
-                    <small class="text-danger"> *L'employé est obligatoire</small>
+                  *ngIf="
+                    editFormationForm.get('employe_id')?.invalid &&
+                    editFormationForm.get('employe_id')?.touched
+                  "
+                >
+                  <small class="text-danger"> *L'employé est obligatoire</small>
                 </div>
-            </div>
+              </div>
             </div>
 
             <div class="col-sm-6">
               <div class="input-block mb-3 date-input1">
-                <label class="col-form-label" for="date_debut">Date Début <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="date_debut"
+                  >Date Début <span class="text-danger">*</span></label
+                >
                 <div class="cal-icon">
-                  <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                  <input
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    type="text"
                     container=".date-input1"
-                    [class.invalid]="editFormationForm.get('date_debut')?.invalid && editFormationForm.get('date_debut')?.touched"
-                    placeholder="Sélectionner la date de début" formControlName="date_debut">
-                  <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                    [class.invalid]="
+                      editFormationForm.get('date_debut')?.invalid &&
+                      editFormationForm.get('date_debut')?.touched
+                    "
+                    placeholder="Sélectionner la date de début"
+                    formControlName="date_debut"
+                  />
+                  <div><small class="text-secondary"> MM/JJ/AAAA </small></div>
                   <div
-                    *ngIf="editFormationForm.get('date_debut')?.invalid && editFormationForm.get('date_debut')?.touched">
+                    *ngIf="
+                      editFormationForm.get('date_debut')?.invalid &&
+                      editFormationForm.get('date_debut')?.touched
+                    "
+                  >
                     <small
-                      *ngIf="editFormationForm.get('date_debut')?.invalid && editFormationForm.get('date_debut')?.touched"
-                      class="text-danger"> *La date est obligatoire</small>
+                      *ngIf="
+                        editFormationForm.get('date_debut')?.invalid &&
+                        editFormationForm.get('date_debut')?.touched
+                      "
+                      class="text-danger"
+                    >
+                      *La date est obligatoire</small
+                    >
                   </div>
                 </div>
               </div>
@@ -323,31 +566,73 @@
 
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="intitule">Intitulé <span class="text-danger">*</span></label>
-                <input class="form-control" type="text"
-                  [class.invalid]="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched"
-                  placeholder="Entrer L\'intitulé de la Formation " formControlName="intitule">
-                <div *ngIf="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched">
-                  <small *ngIf="editFormationForm.get('intitule')?.invalid && editFormationForm.get('intitule')?.touched"
-                    class="text-danger"> *L'intitulé est obligatoire</small>
+                <label class="col-form-label" for="intitule"
+                  >Intitulé <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    editFormationForm.get('intitule')?.invalid &&
+                    editFormationForm.get('intitule')?.touched
+                  "
+                  placeholder="Entrer L\'intitulé de la Formation "
+                  formControlName="intitule"
+                />
+                <div
+                  *ngIf="
+                    editFormationForm.get('intitule')?.invalid &&
+                    editFormationForm.get('intitule')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      editFormationForm.get('intitule')?.invalid &&
+                      editFormationForm.get('intitule')?.touched
+                    "
+                    class="text-danger"
+                  >
+                    *L'intitulé est obligatoire</small
+                  >
                 </div>
               </div>
             </div>
 
             <div class="col-sm-6">
               <div class="input-block mb-3 date-input1">
-                <label class="col-form-label" for="date_fin">Date Fin <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="date_fin"
+                  >Date Fin <span class="text-danger">*</span></label
+                >
                 <div class="cal-icon">
-                  <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                  <input
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    type="text"
                     container=".date-input1"
-                    [class.invalid]="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched"
-                    placeholder="Sélectionner la date de début" formControlName="date_fin">
-                  <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                    [class.invalid]="
+                      editFormationForm.get('date_fin')?.invalid &&
+                      editFormationForm.get('date_fin')?.touched
+                    "
+                    placeholder="Sélectionner la date de début"
+                    formControlName="date_fin"
+                  />
+                  <div><small class="text-secondary"> MM/JJ/AAAA </small></div>
                   <div
-                    *ngIf="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched">
+                    *ngIf="
+                      editFormationForm.get('date_fin')?.invalid &&
+                      editFormationForm.get('date_fin')?.touched
+                    "
+                  >
                     <small
-                      *ngIf="editFormationForm.get('date_fin')?.invalid && editFormationForm.get('date_fin')?.touched"
-                      class="text-danger"> *La date est obligatoire</small>
+                      *ngIf="
+                        editFormationForm.get('date_fin')?.invalid &&
+                        editFormationForm.get('date_fin')?.touched
+                      "
+                      class="text-danger"
+                    >
+                      *La date est obligatoire</small
+                    >
                   </div>
                 </div>
               </div>
@@ -356,31 +641,73 @@
 
           <div class="input-block mb-6">
             <div class="input-block mb-3">
-              <label class="col-form-label" for="domaine">Domaine <span class="text-danger">*</span></label>
-              <input class="form-control" type="text"
-                [class.invalid]="editFormationForm.get('domaine')?.invalid && editFormationForm.get('domaine')?.touched"
-                placeholder="Domaine" formControlName="domaine">
-              <div *ngIf="editFormationForm.get('domaine')?.invalid && editFormationForm.get('domaine')?.touched">
-                <small *ngIf="editFormationForm.get('domaine')?.invalid && editFormationForm.get('domaine')?.touched"
-                  class="text-danger"> *Le domaine est obligatoire</small>
+              <label class="col-form-label" for="domaine"
+                >Domaine <span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  editFormationForm.get('domaine')?.invalid &&
+                  editFormationForm.get('domaine')?.touched
+                "
+                placeholder="Domaine"
+                formControlName="domaine"
+              />
+              <div
+                *ngIf="
+                  editFormationForm.get('domaine')?.invalid &&
+                  editFormationForm.get('domaine')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editFormationForm.get('domaine')?.invalid &&
+                    editFormationForm.get('domaine')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *Le domaine est obligatoire</small
+                >
               </div>
             </div>
             <div class="input-block mb-3">
-              <label class="col-form-label" for="diplome">Diplôme <span class="text-danger">*</span></label>
-              <input class="form-control" type="text"
-                [class.invalid]="editFormationForm.get('diplome')?.invalid && editFormationForm.get('diplome')?.touched"
-                placeholder="diplome" formControlName="diplome">
-              <div *ngIf="editFormationForm.get('diplome')?.invalid && editFormationForm.get('diplome')?.touched">
-                <small *ngIf="editFormationForm.get('diplome')?.invalid && editFormationForm.get('diplome')?.touched"
-                  class="text-danger"> *Le diplome est obligatoire</small>
+              <label class="col-form-label" for="diplome"
+                >Diplôme <span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  editFormationForm.get('diplome')?.invalid &&
+                  editFormationForm.get('diplome')?.touched
+                "
+                placeholder="diplome"
+                formControlName="diplome"
+              />
+              <div
+                *ngIf="
+                  editFormationForm.get('diplome')?.invalid &&
+                  editFormationForm.get('diplome')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editFormationForm.get('diplome')?.invalid &&
+                    editFormationForm.get('diplome')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *Le diplome est obligatoire</small
+                >
               </div>
             </div>
-
           </div>
 
-
           <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+            <button class="btn btn-primary submit-btn" type="submit">
+              Enregistrer
+            </button>
           </div>
         </form>
       </div>
@@ -391,29 +718,42 @@
 
 <!-- Delete Department Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Supprimer la </h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                          <form [formGroup]="deleteFormationForm" (ngSubmit)="onClickSubmitDeleteFormation()">
-                            <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteFormation()">Supprimer</a>
-                          </form>
-                        </div>
-                        <div class="col-6">
-                            <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Annuler</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Supprimer la</h3>
+          <p>Êtes-vous sûr de vouloir supprimer ?</p>
         </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-6">
+              <form
+                [formGroup]="deleteFormationForm"
+                (ngSubmit)="onClickSubmitDeleteFormation()"
+              >
+                <input type="hidden" formControlName="id" />
+                <a
+                  href="javascript:void(0);"
+                  class="btn btn-primary continue-btn"
+                  type="submit"
+                  (click)="onClickSubmitDeleteFormation()"
+                  >Supprimer</a
+                >
+              </form>
+            </div>
+            <div class="col-6">
+              <a
+                href="javascript:void(0);"
+                data-bs-dismiss="modal"
+                class="btn btn-primary cancel-btn"
+                >Annuler</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Delete Department Modal -->
