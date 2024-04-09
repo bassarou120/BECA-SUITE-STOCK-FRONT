@@ -48,15 +48,16 @@ export class PointCongeComponent implements OnInit {
 
   ngOnInit(): void {
      this.getTableData();
-  }
+    }
 
 
-  private getTableData(): void {
-    this.lstPointConge = [];
-    this.serialNumberArray = [];
+    private getTableData(): void {
+      this.lstPointConge = [];
+      this.serialNumberArray = [];
 
-    this.data.getAllPointsConges().subscribe((res: any) => {
-      this.totalData = res.data.total;
+      this.data.getAllPointsConges().subscribe((res: any) => {
+        this.totalData = res.data.total;
+        this.totalConges = res.TOTAL_CONGE;
 
       if (res && res.data) {
         this.lstPointConge = res.data.map((item: any) => ({
