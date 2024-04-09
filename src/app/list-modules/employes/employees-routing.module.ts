@@ -1,3 +1,4 @@
+import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
@@ -50,6 +51,7 @@ const routes: Routes = [
       { path: "heures-supplementaires", component: HeuresSupplementairesComponent },
       { path: "mes-plaintes", component: MesPlaintesComponent },
       { path: "depart-employe", component: DepartEmployeComponent },
+      { path: "point-conge", component: PointCongeComponent },
     ],
   },
 ];

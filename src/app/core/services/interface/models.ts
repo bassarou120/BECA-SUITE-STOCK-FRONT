@@ -743,6 +743,15 @@ export interface getDemande {
   employe: string;
 }
 
+export interface getPointConge {
+  id_employe: number;
+  employe: string;
+  conges_joui: getConge[];
+  total_conges_joui: number;
+  absences_deductibles: getAbsence[];
+  total_absences_deductibles: number;
+}
+
 export interface getFormation {
   id: number;
   employe_id: number;

@@ -1,3 +1,4 @@
+import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
@@ -56,6 +57,7 @@ import { FormationsComponent } from './formations/formations.component';
     HeuresSupplementairesComponent,
     MesPlaintesComponent,
     DepartEmployeComponent,
+    PointCongeComponent,
   ],
   imports: [
     CommonModule,

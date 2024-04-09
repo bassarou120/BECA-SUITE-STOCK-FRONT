@@ -119,6 +119,10 @@ export class routes {
     return this.baseUrl + '/employes/depart-employe';
   }
 
+  public static get point_conge(): string {
+    return this.baseUrl + '/employes/point-conge';
+  }
+
 
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';

@@ -110,6 +110,11 @@ export class DataService {
               route: routes.depart_employe,
               base: 'depart-employe',
             },
+            {
+              menuValue: 'Point des Congés',
+              route: routes.point_conge,
+              base: 'point-conge',
+            },
 
           ],
         },
