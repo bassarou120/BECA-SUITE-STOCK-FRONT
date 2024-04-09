@@ -222,7 +222,7 @@
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
                     container=".date-input1"
                     [class.invalid]="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched"
-                    placeholder="Sélectionner la date de début" formControlName="date_fin">
+                    placeholder="Sélectionner la date de fin" formControlName="date_fin">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                   <div
                     *ngIf="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched">
@@ -332,7 +332,7 @@
                   <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
                     container=".date-input2"
                     [class.invalid]="editExperienceForm.get('date_fin')?.invalid && editExperienceForm.get('date_fin')?.touched"
-                    placeholder="Sélectionner la date de début" formControlName="date_fin">
+                    placeholder="Sélectionner la date de fin" formControlName="date_fin">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                   <div
                     *ngIf="editExperienceForm.get('date_fin')?.invalid && editExperienceForm.get('date_fin')?.touched">
