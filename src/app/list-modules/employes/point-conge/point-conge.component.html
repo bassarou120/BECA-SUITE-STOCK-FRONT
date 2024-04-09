@@ -153,13 +153,14 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Détails des congés de {{ shownPointConge.employe }}</h5>
+                <h5 class="modal-title">Détails des congés est absences déductible de {{ shownPointConge.employe }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
+                    <h4>CONGÉS</h4>
                     <div class="col-sm-12">
                         <div class="mb-3">
                         <div>
@@ -178,12 +179,7 @@
                                       <td>{{item.date_debut}}</td>
                                       <td>{{item.date_fin}}</td>
                                   </tr>
-                                  <tr *ngFor="let item of shownPointConge.absences_deductibles">
-                                      <td>{{item.libelle}}</td>
-                                      <td>{{item.date_debut}}</td>
-                                      <td>{{item.date_fin}}</td>
-                                  </tr>
-                                  <tr *ngIf="shownPointConge.conges_joui.length === 0   &&   shownPointConge.absences_deductibles.length === 0">
+                                  <tr *ngIf="shownPointConge.conges_joui.length === 0">
                                       <td colspan="10">
                                           <h5 style="text-align: center;">Aucun résultat</h5>
                                       </td>
@@ -191,6 +187,35 @@
                               </tbody>
                           </table>
                         </div>
+                    </div>
+                    <br/>
+                    <h4>ABSENCES DÉDUCTIBLES</h4>
+                    <div class="mb-3">
+                    <div>
+                          <table matSort (matSortChange)="sortData($event)"
+                              class="table table-striped custom-table datatable mb-0">
+                              <thead>
+                                  <tr>
+                                      <th mat-sort-header="congeName">Libellé de l'Absence</th>
+                                      <th mat-sort-header="congeStart">Début de l'Absence</th>
+                                      <th mat-sort-header="congeEnd">Fin de l'Absence</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let item of shownPointConge.absences_deductibles">
+                                      <td>{{item.libelle}}</td>
+                                      <td>{{item.date_debut}}</td>
+                                      <td>{{item.date_fin}}</td>
+                                  </tr>
+                                  <tr *ngIf="shownPointConge.absences_deductibles.length === 0">
+                                      <td colspan="10">
+                                          <h5 style="text-align: center;">Aucun résultat</h5>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
