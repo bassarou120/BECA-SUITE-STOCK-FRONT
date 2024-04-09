@@ -98,12 +98,32 @@ export class routes {
     return this.baseUrl + '/parametrage/categorie';
   }
 
+  public static get type_depart(): string {
+    return this.baseUrl + '/parametrage/type-depart';
+  }
+
+  public static get classes(): string {
+    return this.baseUrl + '/parametrage/classes';
+  }
+
+  public static get infos_de_base(): string {
+    return this.baseUrl + '/parametrage/infos-de-base';
+  }
+
   public static get statut(): string {
     return this.baseUrl + '/parametrage/statut';
   }
 
   public static get heures_supplementaires(): string {
     return this.baseUrl + '/employes/heures-supplementaires';
+  }
+
+  public static get depart_employe(): string {
+    return this.baseUrl + '/employes/depart-employe';
+  }
+
+  public static get point_conge(): string {
+    return this.baseUrl + '/employes/point-conge';
   }
 
 

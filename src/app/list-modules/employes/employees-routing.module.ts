@@ -1,3 +1,5 @@
+import { PointCongeComponent } from './point-conge/point-conge.component';
+import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
 import { NgModule } from '@angular/core';
@@ -50,7 +52,8 @@ const routes: Routes = [
       { path: "heures-supplementaires", component: HeuresSupplementairesComponent },
       { path: "mes-plaintes", component: MesPlaintesComponent },
       { path: "experiences", component: ExperiencesComponent },
-
+      { path: "depart-employe", component: DepartEmployeComponent },
+      { path: "point-conge", component: PointCongeComponent },
     ],
   },
 ];

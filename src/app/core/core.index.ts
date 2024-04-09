@@ -21,3 +21,8 @@ export * from './services/employee-dashboard/employee-dashboard.service';
 export * from './services/formations/formations.service';
 export * from './services/heure_supplementaires/heure_supplementaires.service';
 export * from './services/experiences/experiences.service';
+export * from './services/infos-de-base/infos-de-base.service';
+export * from './services/type-depart/type-depart.service';
+export * from './services/depart-employe/depart-employe.service';
+export * from './services/classes/classes.service';
+export * from './services/point-conge/point-conge.service';

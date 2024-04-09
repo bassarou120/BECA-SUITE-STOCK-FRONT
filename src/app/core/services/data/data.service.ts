@@ -110,6 +110,16 @@ export class DataService {
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
             },
+            {
+              menuValue: 'Départ Employé',
+              route: routes.depart_employe,
+              base: 'depart-employe',
+            },
+            {
+              menuValue: 'Point des Congés',
+              route: routes.point_conge,
+              base: 'point-conge',
+            },
 
           ],
         },
@@ -200,6 +210,21 @@ export class DataService {
               menuValue: 'Catégorie',
               route: routes.categorie,
               base: 'categorie',
+            },
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
+            },
+            {
+              menuValue: 'Type Départ',
+              route: routes.type_depart,
+              base: 'type-depart',
+            },
+            {
+              menuValue: 'Classes',
+              route: routes.classes,
+              base: 'classes',
             },
 
             // {
