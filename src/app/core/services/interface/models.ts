@@ -743,6 +743,21 @@ export interface getDemande {
   employe: string;
 }
 
+export interface getGrade {
+  id: number;
+  lib: string;
+  libelle: string;
+  categorie_id: number;
+  classe_id: number;
+  base_categorielle: number;
+  prime_enciennete: number;
+  taux_retenu_impo: number;
+  taux_retenu_cnss: number;
+  valeur_retenu_impo: number;
+  valeur_retenu_cnss: number;
+  ClasseLib: string;
+}
+
 export interface getPointConge {
   id_employe: number;
   employe: string;

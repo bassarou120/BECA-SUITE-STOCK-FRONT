@@ -226,6 +226,11 @@ export class DataService {
               route: routes.classes,
               base: 'classes',
             },
+            {
+              menuValue: 'Grades',
+              route: routes.grades,
+              base: 'grades',
+            },
 
             // {
             //   menuValue: 'Statut',

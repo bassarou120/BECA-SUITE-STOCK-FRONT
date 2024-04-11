@@ -17,6 +17,7 @@ import { ParametrageRoutingModule } from './parametrage-routing.module';
 import {ParametrageComponent} from "./parametrage.component";
 import { CategorieComponent } from './categorie/categorie.component';
 import { StatutComponent } from './statut/statut.component';
+import { GradesComponent } from './grades/grades.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { StatutComponent } from './statut/statut.component';
     InfosDeBaseComponent,
     TypeDepartComponent,
     ClasseComponent,
+    GradesComponent,
   ],
   imports: [
     CommonModule,

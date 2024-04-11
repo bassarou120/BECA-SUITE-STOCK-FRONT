@@ -2,7 +2,7 @@
     width: 100%;
     table-layout: fixed;
   }
-  
+
   /* Première colonne */
   .custom-table td:first-child,
   .custom-table th:first-child {
@@ -15,7 +15,7 @@
     overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
     scrollbar-width: thin;
   }
-  
+
   /* Deuxième colonne */
   .custom-table td:nth-child(2),
   .custom-table th:nth-child(2) {
@@ -28,7 +28,7 @@
     overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
     scrollbar-width: thin;
   }
-  
+
   /* Troisième colonne */
   .custom-table td:nth-child(3),
   .custom-table th:nth-child(3) {
@@ -41,7 +41,7 @@
     overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
     scrollbar-width: thin;
   }
-  
+
   /* Quatrième colonne */
   .custom-table td:nth-child(4),
   .custom-table th:nth-child(4) {
@@ -53,7 +53,7 @@
     overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
     scrollbar-width: thin;
   }
-  
+
   /* Cinquième colonne */
   .custom-table td:nth-child(5),
   .custom-table th:nth-child(5) {
@@ -66,7 +66,7 @@
     overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
     scrollbar-width: thin;
   }
-  
+
   /* Sixième colonne */
   .custom-table td:nth-child(6),
   .custom-table th:nth-child(6) {
@@ -79,7 +79,7 @@
     overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
     scrollbar-width: thin;
   }
-  
+
   /* Septième colonne */
   .custom-table td:nth-child(7),
   .custom-table th:nth-child(7) {
@@ -92,7 +92,7 @@
     overflow-y: auto; // Ajoute une barre de défilement vertical si nécessaire
     scrollbar-width: thin;
   }
-  
+
   /* Huitième colonne */
   .custom-table td:last-child,
   .custom-table th:last-child {
@@ -101,9 +101,25 @@
     white-space: nowrap; // Empêche le texte de se rompre
     scrollbar-width: thin;
   }
-  
+
 
 
 .custom-textarea {
     line-height: 1.4; // Réduit l'espacement entre les lignes
+}
+
+/* Impression */
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .content.container-fluid, .content.container-fluid * {
+    visibility: visible;
+  }
+  .content.container-fluid {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
