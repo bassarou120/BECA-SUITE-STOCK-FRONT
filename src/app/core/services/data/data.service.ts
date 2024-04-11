@@ -43,6 +43,8 @@ export class DataService {
             },
           ],
         },
+
+
       ],
     },
     {
@@ -99,12 +101,29 @@ export class DataService {
               base: 'formations',
             },
             {
+              menuValue: 'Les Expériences',
+              route: routes.experiences,
+              base: 'experiences',
+            },
+            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
             },
+            {
+              menuValue: 'Départ Employé',
+              route: routes.depart_employe,
+              base: 'depart-employe',
+            },
+            {
+              menuValue: 'Point des Congés',
+              route: routes.point_conge,
+              base: 'point-conge',
+            },
+
           ],
         },
+
       ],
     },
     {
@@ -113,6 +132,7 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
+
         {
           menuValue: 'Fiche de paie',
           route: routes.payroll,
@@ -127,8 +147,11 @@ export class DataService {
               route: routes.fichePaie,
               base: 'employee-salary',
             },
+
           ],
         },
+
+
       ],
     },
 
@@ -138,6 +161,7 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
+
         {
           menuValue: 'GENERALE',
           route: routes.payroll,
@@ -187,16 +211,36 @@ export class DataService {
               route: routes.categorie,
               base: 'categorie',
             },
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
+            },
+            {
+              menuValue: 'Type Départ',
+              route: routes.type_depart,
+              base: 'type-depart',
+            },
+            {
+              menuValue: 'Classes',
+              route: routes.classes,
+              base: 'classes',
+            },
 
             // {
             //   menuValue: 'Statut',
             //   route: routes.statut,
             //   base: 'statut',
             // },
+
           ],
         },
+
+
       ],
     },
+
+
   ];
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<
     Array<SideBar>

@@ -68,6 +68,9 @@ export class routes {
   public static get formationsGRH(): string {
     return this.baseUrl + '/employes/formations';
   }
+  public static get experiences(): string {
+    return this.baseUrl + '/employes/experiences';
+  }
 
   public static get fichePaie(): string {
     return this.baseUrl + '/fichepaie';
@@ -97,6 +100,18 @@ export class routes {
     return this.baseUrl + '/parametrage/categorie';
   }
 
+  public static get type_depart(): string {
+    return this.baseUrl + '/parametrage/type-depart';
+  }
+
+  public static get classes(): string {
+    return this.baseUrl + '/parametrage/classes';
+  }
+
+  public static get infos_de_base(): string {
+    return this.baseUrl + '/parametrage/infos-de-base';
+  }
+
   public static get statut(): string {
     return this.baseUrl + '/parametrage/statut';
   }
@@ -104,6 +119,15 @@ export class routes {
   public static get heures_supplementaires(): string {
     return this.baseUrl + '/employes/heures-supplementaires';
   }
+
+  public static get depart_employe(): string {
+    return this.baseUrl + '/employes/depart-employe';
+  }
+
+  public static get point_conge(): string {
+    return this.baseUrl + '/employes/point-conge';
+  }
+
 
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';

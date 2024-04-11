@@ -670,6 +670,19 @@ export interface getTypeConge {
   libelle: string;
 }
 
+export interface getClasse {
+  id: number;
+  lib: string;
+  borneInf: number;
+  borneSup: number;
+}
+
+export interface getInfoDeBase {
+  id: number;
+  cle: string;
+  valeur: number;
+}
+
 export interface getStatut {
   id: number;
   libelle: string;
@@ -715,6 +728,7 @@ export interface getConge {
   libelle: string;
   employe: string;
   status: string;
+  congeJoui: boolean;
 }
 
 export interface getDemande {
@@ -729,6 +743,15 @@ export interface getDemande {
   employe: string;
 }
 
+export interface getPointConge {
+  id_employe: number;
+  employe: string;
+  conges_joui: getConge[];
+  total_conges_joui: number;
+  absences_deductibles: getAbsence[];
+  total_absences_deductibles: number;
+}
+
 export interface getFormation {
   id: number;
   employe_id: number;
@@ -737,6 +760,15 @@ export interface getFormation {
   date_debut: Date;
   date_fin: Date;
   diplome: string;
+  employe: string;
+}
+export interface getExperience {
+  id: number;
+  employe_id: number;
+  nomStructure:string,
+  date_debut: Date;
+  date_fin: Date;
+  posteOcupe:string,
   employe: string;
 }
 
@@ -783,6 +815,16 @@ export interface getHeureSupplementaire {
   employe: string;
 }
 
+export interface getDepartEmploye {
+  id: number;
+  datedepart: Date;
+  motif: string;
+  employe_id: number;
+  employe: string;
+  typeDepart_id: number;
+  typeDepart: string;
+}
+
 export interface getPost {
   id: number;
   nom_poste: string;
@@ -799,9 +841,19 @@ export interface getDeductibleFromConge {
   lib: string;
 }
 
+export interface getIfCongeJoui {
+  val: number;
+  lib: string;
+}
+
 export interface getCategorie {
   id: number;
   libelle: string;
+}
+
+export interface getTypeDepart {
+  id: number;
+  lib: string;
 }
 
 export interface getRole {

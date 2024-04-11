@@ -1,3 +1,5 @@
+import { PointCongeComponent } from './point-conge/point-conge.component';
+import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
 import { NgModule } from '@angular/core';
@@ -22,6 +24,7 @@ import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
+import { ExperiencesComponent } from './experiences/experiences.component';
 
 const routes: Routes = [
   {
@@ -48,6 +51,9 @@ const routes: Routes = [
       { path: "formations", component: FormationsComponent },
       { path: "heures-supplementaires", component: HeuresSupplementairesComponent },
       { path: "mes-plaintes", component: MesPlaintesComponent },
+      { path: "experiences", component: ExperiencesComponent },
+      { path: "depart-employe", component: DepartEmployeComponent },
+      { path: "point-conge", component: PointCongeComponent },
     ],
   },
 ];

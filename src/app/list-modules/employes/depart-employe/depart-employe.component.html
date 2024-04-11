@@ -5,15 +5,15 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Heures Supplémentaires</h3>
+                <h3 class="page-title">Départ Employé</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Heures Supplémentaires</li>
+                    <li class="breadcrumb-item active">Départ Employé</li>
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
-                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter des Heures Supplémentaires</a>
+                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_depart_employe"><i
+                        class="fa-solid fa-plus"></i> Ajouter un départ pour un employé</a>
             </div>
         </div>
     </div>
@@ -46,35 +46,35 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="employeeName">Nom de l'employé</th>
-                            <th mat-sort-header="dateHeureSup">Date </th>
-                            <th mat-sort-header="heuresSup">Nombre d'heures</th>
-                            <th mat-sort-header="autreInfo">Autre Infos</th>
+                            <th mat-sort-header="typeDepart">Type Départ </th>
+                            <th mat-sort-header="motif">Observation</th>
+                            <th mat-sort-header="dateDepart">Date départ</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstHeureSupplementaire">
+                        <tr *ngFor="let item of lstDepartEmploye">
                             <td>{{ item.id }}</td>
                             <td>{{ item.employe }}</td>
-                            <td>{{ item.dateH }}</td>
-                            <td>{{ item.nombreHeure }}</td>
-                            <td>{{ item.autreInfo }}</td>
+                            <td>{{ item.typeDepart }}</td>
+                            <td>{{ item.motif }}</td>
+                            <td>{{ item.datedepart }}</td>
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                                            data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            data-bs-target="#edit_depart_employe"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Modifier</a>
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                                            data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            data-bs-target="#delete_depart_employe"><i class="fa-regular fa-trash-can m-r-5"></i>
                                             Supprimer</a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstHeureSupplementaire.length === 0">
+                        <tr *ngIf="lstDepartEmploye.length === 0">
                             <td colspan="10">
                                 <h5 style="text-align: center;">Aucun résultat</h5>
                             </td>
@@ -138,7 +138,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                            lstHeureSupplementaire.length === 0
+                            lstDepartEmploye.length === 0
                         }">
                                 <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
@@ -152,74 +152,80 @@
 </div>
 <!-- /Page Content -->
 <!-- Add Department Modal -->
-<div id="add_department" class="modal custom-modal fade" role="dialog">
+<div id="add_depart_employe" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter des Heures Supplémentaires</h5>
+                <h5 class="modal-title">Ajouter un départ</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form [formGroup]="addHeureSupplementaireForm" (ngSubmit)="onClickSubmitAddHeureSupplementaire()" novalidate>
+            <form [formGroup]="addDepartEmployeForm" (ngSubmit)="onClickSubmitAddDepartEmploye()" novalidate>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched"
+                                    [class.invalid]="addDepartEmployeForm.get('employe_id')?.invalid && addDepartEmployeForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner l'employé">
                                     <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched">
+                                    *ngIf="addDepartEmployeForm.get('employe_id')?.invalid && addDepartEmployeForm.get('employe_id')?.touched">
                                     <small
-                                        *ngIf="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched"
+                                        *ngIf="addDepartEmployeForm.get('employe_id')?.invalid && addDepartEmployeForm.get('employe_id')?.touched"
                                         class="text-danger"> *L'employé est obligatoire</small>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched"
+                                    formControlName="typeDepart_id" placeholder="Selectionner le type de départ">
+                                    <mat-option *ngFor="let item of lstTypeDepart" value={{item.id}}>{{ item.lib }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched">
+                                    <small
+                                        *ngIf="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched"
+                                        class="text-danger"> *Le type de départ est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
                             <div class="input-block mb-3 date-input1">
-                                <label class="col-form-label" for="dateH">Date <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                        [class.invalid]="addHeureSupplementaireForm.get('dateH')?.invalid && addHeureSupplementaireForm.get('dateH')?.touched"
-                                        placeholder="Sélectionner la date des heures supplémentaires" formControlName="dateH">
+                                        [class.invalid]="addDepartEmployeForm.get('datedepart')?.invalid && addDepartEmployeForm.get('datedepart')?.touched"
+                                        placeholder="Sélectionner la date de départ de l'employé" formControlName="datedepart">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div> <small
-                                            *ngIf="addHeureSupplementaireForm.get('dateH')?.invalid && addHeureSupplementaireForm.get('dateH')?.touched"
-                                            class="text-danger"> *La date des heurs supplémentaires est obligatoire </small>
+                                            *ngIf="addDepartEmployeForm.get('datedepart')?.invalid && addDepartEmployeForm.get('datedepart')?.touched"
+                                            class="text-danger"> *La date de départ est obligatoire </small>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="autreInfo">Autres Informations<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text"
-                                        [class.invalid]="addHeureSupplementaireForm.get('autreInfo')?.invalid && addHeureSupplementaireForm.get('autreInfo')?.touched"
-                                        placeholder="Informations supplémentaires" formControlName="autreInfo">
-                                    <div> <small *ngIf="addHeureSupplementaireForm.get('autreInfo')?.invalid && addHeureSupplementaireForm.get('autreInfo')?.touched"
-                                            class="text-danger"> *Autres informations est obligatoire</small>
+                                <label class="col-form-label" for="motif">Observation<span class="text-danger">*</span></label>
+                                      <textarea class="form-control custom-textarea" rows="2"
+                                        [class.invalid]="addDepartEmployeForm.get('motif')?.invalid && addDepartEmployeForm.get('motif')?.touched"
+                                        placeholder="Entrez vos observations de votre plainte ici." formControlName="motif"></textarea>
+                                    <div> <small *ngIf="addDepartEmployeForm.get('motif')?.invalid && addDepartEmployeForm.get('motif')?.touched"
+                                            class="text-danger"> *Observation est obligatoire</small>
                                     </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="nombreHeure">Nombre d'heures <span class="text-danger">*</span> </label>
-                                    <input class="form-control" type="number"
-                                    [class.invalid]="addHeureSupplementaireForm.get('nombreHeure')?.invalid && addHeureSupplementaireForm.get('nombreHeure')?.touched"
-                                    placeholder="Entrer le nombre d'heures effectué" formControlName="nombreHeure">
-                                    <div> <small  *ngIf="addHeureSupplementaireForm.get('nombreHeure')?.invalid && addHeureSupplementaireForm.get('nombreHeure')?.touched"
-                                            class="text-danger"> *La valeur entrée est invalide </small>
-                                    </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="submit-section">
@@ -233,76 +239,83 @@
 <!-- /Add Department Modal -->
 
 <!-- Edit Department Modal -->
-<div id="edit_department" class="modal custom-modal fade" role="dialog">
+<div id="edit_depart_employe" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier des Heures Supplémentaires</h5>
+                <h5 class="modal-title">Modifier le départ</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form [formGroup]="editHeureSupplementaireForm" (ngSubmit)="onClickSubmitEditHeureSupplementaire()" novalidate>
+            <form [formGroup]="editDepartEmployeForm" (ngSubmit)="onClickSubmitEditDepartEmploye()" novalidate>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <input type="hidden" formControlName="id">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched"
+                                    [class.invalid]="editDepartEmployeForm.get('employe_id')?.invalid && editDepartEmployeForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner l'employé">
                                     <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
                                     [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
-                                    *ngIf="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched">
+                                    *ngIf="editDepartEmployeForm.get('employe_id')?.invalid && editDepartEmployeForm.get('employe_id')?.touched">
                                     <small
-                                        *ngIf="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched"
+                                        *ngIf="editDepartEmployeForm.get('employe_id')?.invalid && editDepartEmployeForm.get('employe_id')?.touched"
                                         class="text-danger"> *L'employé est obligatoire</small>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editDepartEmployeForm.get('typeDepart_id')?.invalid && editDepartEmployeForm.get('typeDepart_id')?.touched"
+                                    formControlName="typeDepart_id" placeholder="Selectionner le type de départ">
+                                    <mat-option *ngFor="let item of lstTypeDepart" [value]="item.id"
+                                    [class.mat-selected] ="item.id === editFormSelectedTypeDepartId">{{ item.lib }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="editDepartEmployeForm.get('typeDepart_id')?.invalid && editDepartEmployeForm.get('typeDepart_id')?.touched">
+                                    <small
+                                        *ngIf="editDepartEmployeForm.get('typeDepart_id')?.invalid && editDepartEmployeForm.get('typeDepart_id')?.touched"
+                                        class="text-danger"> *Le type de départ est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
                             <div class="input-block mb-3 date-input2">
-                                <label class="col-form-label" for="dateH">Date <span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
-                                        [class.invalid]="editHeureSupplementaireForm.get('dateH')?.invalid && editHeureSupplementaireForm.get('dateH')?.touched"
-                                        placeholder="Sélectionner la date des heures supplémentaires" formControlName="dateH">
+                                        [class.invalid]="editDepartEmployeForm.get('datedepart')?.invalid && editDepartEmployeForm.get('datedepart')?.touched"
+                                        placeholder="Sélectionner la date de départ de l'employé" formControlName="datedepart">
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div> <small
-                                            *ngIf="editHeureSupplementaireForm.get('dateH')?.invalid && editHeureSupplementaireForm.get('dateH')?.touched"
-                                            class="text-danger"> *La date des heurs supplémentaires est obligatoire </small>
+                                            *ngIf="editDepartEmployeForm.get('datedepart')?.invalid && editDepartEmployeForm.get('datedepart')?.touched"
+                                            class="text-danger"> *La date de départ est obligatoire </small>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="input-block mb-3">
-                                <label class="col-form-label" for="autreInfo">Autres Informations<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text"
-                                        [class.invalid]="editHeureSupplementaireForm.get('autreInfo')?.invalid && editHeureSupplementaireForm.get('autreInfo')?.touched"
-                                        placeholder="Informations supplémentaires" formControlName="autreInfo">
-                                    <div> <small *ngIf="editHeureSupplementaireForm.get('autreInfo')?.invalid && editHeureSupplementaireForm.get('autreInfo')?.touched"
-                                            class="text-danger"> *Autres informations est obligatoire</small>
+                                <label class="col-form-label" for="motif">Observation<span class="text-danger">*</span></label>
+                                      <textarea class="form-control custom-textarea" rows="2"
+                                        [class.invalid]="editDepartEmployeForm.get('motif')?.invalid && editDepartEmployeForm.get('motif')?.touched"
+                                        placeholder="Entrez vos observations de votre plainte ici." formControlName="motif"></textarea>
+                                    <div> <small *ngIf="editDepartEmployeForm.get('motif')?.invalid && editDepartEmployeForm.get('motif')?.touched"
+                                            class="text-danger"> *Observation est obligatoire</small>
                                     </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="nombreHeure">Nombre d'heures <span class="text-danger">*</span> </label>
-                                    <input class="form-control" type="number"
-                                    [class.invalid]="editHeureSupplementaireForm.get('nombreHeure')?.invalid && editHeureSupplementaireForm.get('nombreHeure')?.touched"
-                                    placeholder="Entrer le nombre d'heures effectué" formControlName="nombreHeure">
-                                    <div> <small  *ngIf="editHeureSupplementaireForm.get('nombreHeure')?.invalid && editHeureSupplementaireForm.get('nombreHeure')?.touched"
-                                            class="text-danger"> *La valeur entrée est invalide </small>
-                                    </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="submit-section">
@@ -315,20 +328,20 @@
 </div>
 <!-- /Edit Department Modal -->
 <!-- Delete Department Modal -->
-<div class="modal custom-modal fade" id="delete_department" role="dialog">
+<div class="modal custom-modal fade" id="delete_depart_employe" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer les heures supplémentaires</h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
+                    <h3>Supprimer le départ</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer ce départ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                          <form [formGroup]="deleteHeureSupplementaireForm" (ngSubmit)="onClickSubmitDeleteHeureSupplementaire()">
+                          <form [formGroup]="deleteDepartEmployeForm" (ngSubmit)="onClickSubmitDeleteDepartEmploye()">
                             <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteHeureSupplementaire()">Supprimer</a>
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteDepartEmploye()">Supprimer</a>
                           </form>
                         </div>
                         <div class="col-6">

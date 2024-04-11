@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getConge, routes, CongeService, getTypeConge, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getConge, routes, CongeService, getTypeConge, getIfCongeJoui, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,11 +23,17 @@ export class CongesComponent implements OnInit {
 
   public default_status: string = environment.default_statut_for_demands;
 
+  public lstStatus: Array<string> = ["Non Traité", "Rejeté", "Approuvé"];
+  public lstValsCongeJoui: Array<getIfCongeJoui> = [{val: 0, lib: "Non"}, {val: 1, lib: "Oui"}];
+  public selectedCongeJoui = 0;
+  public onModifId: number = 0;
+
   public lstConge: Array<getConge> = [];
   public lstTypeConge: Array<getTypeConge> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedTypeCongeId: number = 0;
   public editFormSelectedEmployeId: number = 0;
+  public editFormSelectedStatus: string = "";
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getConge>;
   // pagination variables
@@ -68,6 +74,7 @@ export class CongesComponent implements OnInit {
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
       status: [this.default_status, [Validators.required]],
+      congeJoui: [0, [Validators.required]],
     }, { validator: this.datesValidator });
 
      this.deleteCongeForm = this.formBuilder.group({
@@ -170,9 +177,13 @@ export class CongesComponent implements OnInit {
       date_debut: this.convertToDate(row.date_debut),
       date_fin: this.convertToDate(row.date_fin),
       status: row.status,
-    })
+      congeJoui: row.congeJoui,
+    });
     this.editFormSelectedTypeCongeId = row.type_conges_id;
     this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedStatus = row.status;
+    this.onModifId = row.id;
+    this.selectedCongeJoui = row.congeJoui;
   }
 
   onClickSubmitEditConge(){

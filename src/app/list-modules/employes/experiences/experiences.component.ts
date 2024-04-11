@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getFormation, routes, FormationsService,getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, getExperience, routes, ExperiencesService,getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,19 +10,19 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
-  selector: 'app-formations',
-  templateUrl: './formations.component.html',
-  styleUrls: ['./formations.component.scss']
+  selector: 'app-experiences',
+  templateUrl: './experiences.component.html',
+  styleUrls: ['./experiences.component.scss']
 })
-export class FormationsComponent implements OnInit {
+export class ExperiencesComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstFormations: Array<getFormation> = [];
+  public lstExperiences: Array<getExperience> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getFormation>;
+  dataSource!: MatTableDataSource<getExperience>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -37,32 +37,30 @@ export class FormationsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addFormationForm!: FormGroup ;
-  public editFormationForm!: FormGroup
-  public deleteFormationForm!: FormGroup
+  public addExperienceForm!: FormGroup ;
+  public editExperienceForm!: FormGroup
+  public deleteExperienceForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router,private data: FormationsService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router,private data: ExperiencesService) {}
 
   ngOnInit(): void {
      this.getTableData();
-     this.addFormationForm = this.formBuilder.group({
+     this.addExperienceForm = this.formBuilder.group({
       employe_id: [0, [Validators.required]],
-      intitule: ["", [Validators.required]],
-      domaine: ["", [Validators.required]],
+      nomStructure: ["", [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
-      diplome: ["", [Validators.required]],
+      posteOcupe: ["", [Validators.required]],
     });
-     this.editFormationForm = this.formBuilder.group({
+     this.editExperienceForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       employe_id: [0, [Validators.required]],
-      intitule: ["", [Validators.required]],
-      domaine: ["", [Validators.required]],
+      nomStructure: ["", [Validators.required]],
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
-      diplome: ["", [Validators.required]],
+      posteOcupe: ["", [Validators.required]],
     });
-     this.deleteFormationForm = this.formBuilder.group({
+     this.deleteExperienceForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
   }
@@ -75,13 +73,13 @@ export class FormationsComponent implements OnInit {
   }
 
 
-  onClickSubmitAddFormation(){
+  onClickSubmitAddExperience(){
 
-      console.log(this.addFormationForm.value)
+      console.log(this.addExperienceForm.value)
 
-      if (this.addFormationForm.valid){
-        this.addFormationForm.patchValue({ date_debut: this.formatDateToString(this.addFormationForm.value.date_debut), date_fin: this.formatDateToString(this.addFormationForm.value.date_fin) });
-        this.data.saveFormation(this.addFormationForm.value).subscribe(
+      if (this.addExperienceForm.valid){
+        this.addExperienceForm.patchValue({ date_debut: this.formatDateToString(this.addExperienceForm.value.date_debut), date_fin: this.formatDateToString(this.addExperienceForm.value.date_fin) });
+        this.data.saveExperience(this.addExperienceForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
@@ -94,14 +92,14 @@ export class FormationsComponent implements OnInit {
 
   }
 
-  onClickSubmitEditFormation(){
-    console.log(this.editFormationForm.value)
+  onClickSubmitEditExperience(){
+    console.log(this.editExperienceForm.value)
 
-    this.editFormationForm.patchValue({ date_debut: this.formatDateToString(this.editFormationForm.value.date_debut), date_fin: this.formatDateToString(this.editFormationForm.value.date_fin)});
+    this.editExperienceForm.patchValue({ date_debut: this.formatDateToString(this.editExperienceForm.value.date_debut), date_fin: this.formatDateToString(this.editExperienceForm.value.date_fin)});
 
-      if (this.editFormationForm.valid){
-        const id = this.editFormationForm.value.id;
-        this.data.editFormation(this.editFormationForm.value).subscribe(
+      if (this.editExperienceForm.valid){
+        const id = this.editExperienceForm.value.id;
+        this.data.editExperience(this.editExperienceForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
@@ -113,11 +111,11 @@ export class FormationsComponent implements OnInit {
       }
 
   }
-  onClickSubmitDeleteFormation(){
+  onClickSubmitDeleteExperience(){
 
-      if (this.deleteFormationForm.valid){
-        const id = this.deleteFormationForm.value.id;
-        this.data.deleteFormation(this.deleteFormationForm.value).subscribe(
+      if (this.deleteExperienceForm.valid){
+        const id = this.deleteExperienceForm.value.id;
+        this.data.deleteExperience(this.deleteExperienceForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
@@ -136,22 +134,22 @@ export class FormationsComponent implements OnInit {
 
 
   getEditForm(row: any){
-    this.editFormationForm.patchValue({
+    this.editExperienceForm.patchValue({
       id: row.id,
       employe_id: row.employe_id,
-      intitule: row.intitule,
-      domaine: row.domaine,
+      nomStructure: row.nomStructure,
       date_debut: this.convertToDate(row.date_debut),
       date_fin: this.convertToDate(row.date_fin),
-      diplome: row.diplome,
       employe: row.employe,
+      posteOcupe: row.posteOcupe,
     });
-    
     this.editFormSelectedEmployeId = row.employe_id;
+    console.log(row);
  }
 
+
   getDeleteForm(row: any){
-    this.deleteFormationForm.patchValue({
+    this.deleteExperienceForm.patchValue({
      id:row.id,
     })
  }
@@ -160,16 +158,16 @@ export class FormationsComponent implements OnInit {
 
 
   private getTableData(): void {
-    this.lstFormations = [];
+    this.lstExperiences = [];
     this.serialNumberArray = [];
 
-    this.data.getAllFormation().subscribe((res: any) => {
+    this.data.getAllExperience().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.map((res: getFormation, index: number) => {
+      res.data.map((res: getExperience, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstFormations.push(res);
+          this.lstExperiences.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
@@ -185,7 +183,7 @@ export class FormationsComponent implements OnInit {
         });
       });
 
-      this.dataSource = new MatTableDataSource<getFormation>(this.lstFormations);
+      this.dataSource = new MatTableDataSource<getExperience>(this.lstExperiences);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -193,13 +191,13 @@ export class FormationsComponent implements OnInit {
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstFormations.slice();
+    const data = this.lstExperiences.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstFormations = data;
+      this.lstExperiences = data;
     } else {
-      this.lstFormations = data.sort((a: any, b: any) => {
+      this.lstExperiences = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -214,7 +212,7 @@ export class FormationsComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstFormations = this.dataSource.filteredData;
+    this.lstExperiences = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

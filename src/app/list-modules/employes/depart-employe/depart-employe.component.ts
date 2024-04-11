@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { NgForm } from '@angular/forms';
+
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getFormation, routes, FormationsService,getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { getDepartEmploye, getTypeDepart, routes, DepartEmployeService, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,19 +10,25 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
-  selector: 'app-formations',
-  templateUrl: './formations.component.html',
-  styleUrls: ['./formations.component.scss']
+  selector: 'app-depart-employe',
+  templateUrl: './depart-employe.component.html',
+  styleUrls: ['./depart-employe.component.scss']
 })
-export class FormationsComponent implements OnInit {
+export class DepartEmployeComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstFormations: Array<getFormation> = [];
+  public lstDpt: Array<any>=[];
+  mon_dep: any;
+
+
+  public lstDepartEmploye: Array<getDepartEmploye> = [];
+  public lstTypeDepart: Array<getTypeDepart> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
-  public editFormSelectedEmployeId: number = 0;
+  public editFormSelectedEmployeId: Number = 0;
+  public editFormSelectedTypeDepartId: Number = 0;
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getFormation>;
+  dataSource!: MatTableDataSource<getDepartEmploye>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -37,35 +43,32 @@ export class FormationsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addFormationForm!: FormGroup ;
-  public editFormationForm!: FormGroup
-  public deleteFormationForm!: FormGroup
+  public addDepartEmployeForm!: FormGroup ;
+  public editDepartEmployeForm!: FormGroup
+  public deleteDepartEmployeForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router,private data: FormationsService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router,private data: DepartEmployeService) {}
 
   ngOnInit(): void {
      this.getTableData();
-     this.addFormationForm = this.formBuilder.group({
-      employe_id: [0, [Validators.required]],
-      intitule: ["", [Validators.required]],
-      domaine: ["", [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
-      diplome: ["", [Validators.required]],
+     this.addDepartEmployeForm = this.formBuilder.group({
+      typeDepart_id: ["", [Validators.required]],
+      employe_id: ["", [Validators.required]],
+      motif: ["Néant", [Validators.required]],
+      datedepart: ["", [Validators.required]],
     });
-     this.editFormationForm = this.formBuilder.group({
+     this.editDepartEmployeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
-      employe_id: [0, [Validators.required]],
-      intitule: ["", [Validators.required]],
-      domaine: ["", [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
-      diplome: ["", [Validators.required]],
+      typeDepart_id: ["", [Validators.required]],
+      employe_id: ["", [Validators.required]],
+      motif: ["Néant", [Validators.required]],
+      datedepart: ["", [Validators.required]],
     });
-     this.deleteFormationForm = this.formBuilder.group({
+     this.deleteDepartEmployeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
   }
+
 
   private formatDateToString(date: Date): string {
     const year = date.getFullYear();
@@ -74,34 +77,47 @@ export class FormationsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  onClickSubmitAddDepartEmploye(){
 
-  onClickSubmitAddFormation(){
+    if (this.addDepartEmployeForm.valid){
+        this.addDepartEmployeForm.patchValue({ datedepart: this.formatDateToString(this.addDepartEmployeForm.value.datedepart) });
 
-      console.log(this.addFormationForm.value)
-
-      if (this.addFormationForm.valid){
-        this.addFormationForm.patchValue({ date_debut: this.formatDateToString(this.addFormationForm.value.date_debut), date_fin: this.formatDateToString(this.addFormationForm.value.date_fin) });
-        this.data.saveFormation(this.addFormationForm.value).subscribe(
+        console.log(this.addDepartEmployeForm.value);
+        this.data.saveDepartEmploye(this.addDepartEmployeForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
-        )
-      }else {
+        );
+      } else {
 
-        alert("desole le formulaire n'est pas bien renseigné")
+        console.log("desole le formulaire n'est pas bien renseigné");
       }
-
 
   }
 
-  onClickSubmitEditFormation(){
-    console.log(this.editFormationForm.value)
+  private convertToDate(date: string): Date {
+    const d = date.split('-');
+    return new Date(Number(d[0]), Number(d[1])-1, Number(d[2]));
+  }
 
-    this.editFormationForm.patchValue({ date_debut: this.formatDateToString(this.editFormationForm.value.date_debut), date_fin: this.formatDateToString(this.editFormationForm.value.date_fin)});
+  getEditForm(row: any){
+    this.editDepartEmployeForm.patchValue({
+      id: row.id,
+      employe_id: row.employe_id,
+      typeDepart_id: row.typeDepart_id,
+      motif: row.motif,
+      datedepart: this.convertToDate(row.datedepart),
+    })
+    this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedTypeDepartId = row.typeDepart_id;
+  }
 
-      if (this.editFormationForm.valid){
-        const id = this.editFormationForm.value.id;
-        this.data.editFormation(this.editFormationForm.value).subscribe(
+  onClickSubmitEditDepartEmploye(){
+
+    if (this.editDepartEmployeForm.valid){
+      this.editDepartEmployeForm.patchValue({ datedepart: this.formatDateToString(this.editDepartEmployeForm.value.datedepart) });
+
+        this.data.editDepartEmploye(this.editDepartEmployeForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
@@ -113,15 +129,16 @@ export class FormationsComponent implements OnInit {
       }
 
   }
-  onClickSubmitDeleteFormation(){
+  onClickSubmitDeleteDepartEmploye(){
 
-      if (this.deleteFormationForm.valid){
-        const id = this.deleteFormationForm.value.id;
-        this.data.deleteFormation(this.deleteFormationForm.value).subscribe(
+      if (this.deleteDepartEmployeForm.valid){
+
+        this.data.deleteDepartEmploye(this.deleteDepartEmployeForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
         )
+        console.log("success")
       }else {
 
         alert("desole le formulaire n'est pas bien renseigné")
@@ -129,29 +146,8 @@ export class FormationsComponent implements OnInit {
 
   }
 
-  private convertToDate(date: string): Date {
-    const d = date.split('-');
-    return new Date(Number(d[0]), Number(d[1])-1, Number(d[2]));
-  }
-
-
-  getEditForm(row: any){
-    this.editFormationForm.patchValue({
-      id: row.id,
-      employe_id: row.employe_id,
-      intitule: row.intitule,
-      domaine: row.domaine,
-      date_debut: this.convertToDate(row.date_debut),
-      date_fin: this.convertToDate(row.date_fin),
-      diplome: row.diplome,
-      employe: row.employe,
-    });
-    
-    this.editFormSelectedEmployeId = row.employe_id;
- }
-
   getDeleteForm(row: any){
-    this.deleteFormationForm.patchValue({
+    this.deleteDepartEmployeForm.patchValue({
      id:row.id,
     })
  }
@@ -160,46 +156,54 @@ export class FormationsComponent implements OnInit {
 
 
   private getTableData(): void {
-    this.lstFormations = [];
+    this.lstDepartEmploye = [];
     this.serialNumberArray = [];
 
-    this.data.getAllFormation().subscribe((res: any) => {
+    this.data.getAllDepartEmploye().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.map((res: getFormation, index: number) => {
+      res.data.map((res: getDepartEmploye, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstFormations.push(res);
+          this.lstDepartEmploye.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-
-      this.data.getAllEmployes().subscribe((res: any) => {
-        res.data.map((res: getMiniTemplateEmploye, index: number) => {
-          const serialNumber = index + 1;
-          if (index >= this.skip && serialNumber <= this.limit) {
-            res.id;// = serialNumber;
-            this.lstEmploye.push(res);
-            this.serialNumberArray.push(serialNumber);
-          }
-        });
-      });
-
-      this.dataSource = new MatTableDataSource<getFormation>(this.lstFormations);
+      this.dataSource = new MatTableDataSource<getDepartEmploye>(this.lstDepartEmploye);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
+    this.data.getAllEmployes().subscribe((res: any) => {
+      res.data.map((res: getMiniTemplateEmploye, index: number) => {
+        const serialNumber = index + 1;
+        if (index >= this.skip && serialNumber <= this.limit) {
+          res.id;// = serialNumber;
+          this.lstEmploye.push(res);
+          this.serialNumberArray.push(serialNumber);
+        }
+      });
+    });
 
+    this.data.getAllTypeDepart().subscribe((res: any) => {
+      res.data.data.map((res: getTypeDepart, index: number) => {
+        const serialNumber = index + 1;
+        if (index >= this.skip && serialNumber <= this.limit) {
+          res.id;// = serialNumber;
+          this.lstTypeDepart.push(res);
+          this.serialNumberArray.push(serialNumber);
+        }
+      });
+    });
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstFormations.slice();
+    const data = this.lstDepartEmploye.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstFormations = data;
+      this.lstDepartEmploye = data;
     } else {
-      this.lstFormations = data.sort((a: any, b: any) => {
+      this.lstDepartEmploye = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -214,7 +218,7 @@ export class FormationsComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstFormations = this.dataSource.filteredData;
+    this.lstDepartEmploye = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

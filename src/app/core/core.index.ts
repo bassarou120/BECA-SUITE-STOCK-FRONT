@@ -1,4 +1,4 @@
-export * from './services/data/data.service';
+  export * from './services/data/data.service';
 export * from './helpers/routes/routes';
 export * from './services/side-bar/side-bar.service';
 export * from './services/auth/auth.service';
@@ -20,3 +20,9 @@ export * from './services/demandes/demandes.service';
 export * from './services/employee-dashboard/employee-dashboard.service';
 export * from './services/formations/formations.service';
 export * from './services/heure_supplementaires/heure_supplementaires.service';
+export * from './services/experiences/experiences.service';
+export * from './services/infos-de-base/infos-de-base.service';
+export * from './services/type-depart/type-depart.service';
+export * from './services/depart-employe/depart-employe.service';
+export * from './services/classes/classes.service';
+export * from './services/point-conge/point-conge.service';
