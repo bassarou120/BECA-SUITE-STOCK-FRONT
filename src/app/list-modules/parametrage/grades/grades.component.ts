@@ -54,10 +54,10 @@ export class GradesComponent implements OnInit {
       classe_id: [0, [Validators.required]],
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
-      taux_retenu_impo: [""],
-      taux_retenu_cnss: [""],
-      valeur_retenu_impo: [""],
-      valeur_retenu_cnss: [""],
+      taux_retenu_impo: ["", [Validators.required]],
+      taux_retenu_cnss: ["", [Validators.required]],
+      valeur_retenu_impo: ["", [Validators.required]],
+      valeur_retenu_cnss: ["", [Validators.required]],
     });
      this.editGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -81,6 +81,10 @@ export class GradesComponent implements OnInit {
       console.log(this.addGradeForm.value)
 
       if (this.addGradeForm.valid){
+        // const taux_retenu_impo = this.addGradeForm.get('taux_retenu_impo').value;
+        // const valeur_retenu_impo = this.addGradeForm.get('valeur_retenu_impo').value;
+        // const taux_retenu_cnss = this.addGradeForm.get('taux_retenu_cnss').value;
+        // const valeur_retenu_cnss = this.addGradeForm.get('valeur_retenu_cnss').value;
         this.data.saveGrade(this.addGradeForm.value).subscribe(
           (data:any)=>{
             location.reload();
@@ -283,3 +287,5 @@ export interface pageSelection {
   skip: number;
   limit: number;
 }
+
+
