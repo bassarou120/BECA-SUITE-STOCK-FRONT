@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit  } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { getPointConge, routes, PointCongeService } from 'src/app/core/core.index';
@@ -7,13 +7,13 @@ import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 
-
+declare var $: any;
 @Component({
   selector: 'app-point-conge',
   templateUrl: './point-conge.component.html',
   styleUrls: ['./point-conge.component.scss']
 })
-export class PointCongeComponent implements OnInit {
+export class PointCongeComponent implements OnInit, AfterViewInit {
   public routes = routes;
   selected = 'option1';
 
@@ -43,6 +43,7 @@ export class PointCongeComponent implements OnInit {
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
   //** / pagination variables
+
 
   constructor(public router: Router,private data: PointCongeService) {}
 
@@ -176,7 +177,18 @@ export class PointCongeComponent implements OnInit {
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
+
+  ngAfterViewInit(): void {
+    $(document).ready(function () {
+      $('#example').DataTable({
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+      });
+    });
+  }
+
 }
+
+
 export interface pageSelection {
   skip: number;
   limit: number;
