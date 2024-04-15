@@ -413,6 +413,19 @@
             </div>
           </div>
 
+          <div class="input-block mb-3">
+              <label class="col-form-label" for="etat">État du congé<span class="text-danger">*</span></label>
+              <mat-select class="select mat-cust-select form-control"
+                [class.invalid]="editCongeForm.get('etat')?.invalid && editCongeForm.get('etat')?.touched"
+                formControlName="etat" placeholder="Selectionner le statut du congé">
+                <mat-option *ngFor="let item of lstEtat" [value]="item"
+                  [class.mat-selected]="item === editFormSelectedEtat">{{ item }} </mat-option>
+              </mat-select>
+              <div *ngIf="editCongeForm.get('etat')?.invalid && editCongeForm.get('etat')?.touched">
+                <small class="text-danger"> *L'état du congé est obligatoire</small>
+              </div>
+            </div>
+
           <div class="submit-section">
             <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
           </div>

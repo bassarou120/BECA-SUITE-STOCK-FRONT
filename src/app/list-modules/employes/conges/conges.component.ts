@@ -24,6 +24,7 @@ export class CongesComponent implements OnInit {
   public default_status: string = environment.default_statut_for_demands;
 
   public lstStatus: Array<string> = ["Non Traité", "Rejeté", "Approuvé"];
+  public lstEtat: Array<string> = ["À venir", "En cours", "Terminé"];
   public lstValsCongeJoui: Array<getIfCongeJoui> = [{val: 0, lib: "Non"}, {val: 1, lib: "Oui"}];
   public selectedCongeJoui = 0;
   public onModifId: number = 0;
@@ -34,6 +35,7 @@ export class CongesComponent implements OnInit {
   public editFormSelectedTypeCongeId: number = 0;
   public editFormSelectedEmployeId: number = 0;
   public editFormSelectedStatus: string = "";
+  public editFormSelectedEtat: string = "";
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getConge>;
   // pagination variables
@@ -74,6 +76,7 @@ export class CongesComponent implements OnInit {
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
       status: [this.default_status, [Validators.required]],
+      etat: ["À venir", [Validators.required]],
       congeJoui: [0, [Validators.required]],
     }, { validator: this.datesValidator });
 
@@ -182,6 +185,7 @@ export class CongesComponent implements OnInit {
     this.editFormSelectedTypeCongeId = row.type_conges_id;
     this.editFormSelectedEmployeId = row.employe_id;
     this.editFormSelectedStatus = row.status;
+    this.editFormSelectedEtat = row.etat;
     this.onModifId = row.id;
     this.selectedCongeJoui = row.congeJoui;
   }
