@@ -154,7 +154,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Détails des congés est absences déductible de {{ shownPointConge.employe }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="exclusion-1">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -218,9 +218,18 @@
                                   </tr>
                               </tbody>
                           </table>
+                          <br/>
                         </div>
                     </div>
                     </div>
+
+                    <div class="col-6" id="exclusion-2">
+                    <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+                    </div>
+                    <div class="col-6" id="exclusion-3">
+                    <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter XLSX</a>
+                    </div>
+
                 </div>
             </div>
         </div>

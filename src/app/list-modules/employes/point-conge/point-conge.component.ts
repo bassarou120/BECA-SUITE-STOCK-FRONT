@@ -1,10 +1,11 @@
 import { Component, OnInit,AfterViewInit  } from '@angular/core';
-
 import { Router } from '@angular/router';
 import { getPointConge, routes, PointCongeService } from 'src/app/core/core.index';
-
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 declare var $: any;
@@ -106,6 +107,40 @@ export class PointCongeComponent implements OnInit, AfterViewInit {
     this.shownPointConge = row;
   }
 
+
+  exportToPDF() {
+    const content: HTMLElement | null = document.getElementById('show_details');
+    const pdfname = this.shownPointConge.employe + ".pdf"
+
+    if (content) {
+      const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+      html2canvas(content, {
+        ignoreElements: (element: Element) => {
+          const idsToExclude: string[] = ['exclusion-1', 'exclusion-2', 'exclusion-3'];
+          return idsToExclude.includes(element.id);
+        },
+        scale: 1.75
+      }).then(canvas => {
+        const imageData = canvas.toDataURL('image/jpeg');
+        const imageWidth = 210;
+        const imageHeight = canvas.height * imageWidth / canvas.width;
+
+        const scaleFactor = 1.75;
+        const scaledWidth = imageWidth * scaleFactor;
+        const scaledHeight = imageHeight * scaleFactor;
+
+        pdf.addImage(imageData, 'JPEG', -75, 0, scaledWidth, scaledHeight);
+        pdf.save(pdfname);
+      });
+    } else {
+      console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
+    }
+  }
+
+
+  exportToXLSX() {
+alert("xlsx");
+  }
 
 
 
