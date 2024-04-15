@@ -56,7 +56,7 @@
                             <td>{{item.id_employe}}</td>
                             <td>{{item.employe}}</td>
                             <td>{{item.total_jours_conges_joui + item.total_jours_absences_deductibles}}</td>
-                            <td>{{totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles}}</td>
+                            <td>{{((totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles) <= 0 ) ? 0 : totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles}}</td>
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"

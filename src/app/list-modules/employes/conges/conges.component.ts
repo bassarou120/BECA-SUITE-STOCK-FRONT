@@ -158,7 +158,7 @@ export class CongesComponent implements OnInit {
         (data:any)=>{
           location.reload();
         }
-      )
+      );
     }else {
       console.log("Désolé le formulaire n'est pas bien renseigné")
     }
