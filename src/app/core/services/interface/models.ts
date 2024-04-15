@@ -730,6 +730,7 @@ export interface getConge {
   status: string;
   congeJoui: boolean;
   etat:  string;
+  jours: number;
 }
 
 export interface getDemande {
@@ -764,8 +765,10 @@ export interface getPointConge {
   employe: string;
   conges_joui: getConge[];
   total_conges_joui: number;
+  total_jours_conges_joui: number;
   absences_deductibles: getAbsence[];
   total_absences_deductibles: number;
+  total_jours_absences_deductibles: number;
 }
 
 export interface getFormation {
@@ -797,6 +800,7 @@ export interface getAbsence {
   libelle: string;
   employe: string;
   status: string;
+  jours: number;
 }
 
 export interface getPlainte {

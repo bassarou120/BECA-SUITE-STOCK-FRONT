@@ -17,14 +17,16 @@ export class PointCongeComponent implements OnInit, AfterViewInit {
   public routes = routes;
   selected = 'option1';
 
-  public totalConges: number = 20;
+  public totalJoursConges: number = 0;
   public shownPointConge: getPointConge = {
     "id_employe": 0,
     "employe": "",
     "conges_joui": [],
     "total_conges_joui": 0,
+    "total_jours_conges_joui": 0,
     "absences_deductibles": [],
-    "total_absences_deductibles": 0
+    "total_absences_deductibles": 0,
+    "total_jours_absences_deductibles": 0,
   };
   public selectedTypeDemande: string = "";
   public lstPointConge: Array<getPointConge> = [];
@@ -58,7 +60,7 @@ export class PointCongeComponent implements OnInit, AfterViewInit {
 
       this.data.getAllPointsConges().subscribe((res: any) => {
         this.totalData = res.data.total;
-        this.totalConges = res.TOTAL_CONGE;
+        this.totalJoursConges = res.TOTAL_JOURS_CONGE;
 
       if (res && res.data) {
         this.lstPointConge = res.data.map((item: any) => ({
@@ -73,9 +75,12 @@ export class PointCongeComponent implements OnInit, AfterViewInit {
             libelle: conge.libelle,
             employe: conge.employe,
             status: conge.status,
-            congeJoui: conge.congeJoui
+            congeJoui: conge.congeJoui,
+            etat: conge.etat,
+            jours: conge.jours,
           })),
           total_conges_joui: item.total_conges_joui,
+          total_jours_conges_joui: item.total_jours_conges_joui,
           absences_deductibles: item.absences_deductibles.map((absence: any) => ({
             id: absence.id,
             date_debut: absence.date_debut,
@@ -84,9 +89,11 @@ export class PointCongeComponent implements OnInit, AfterViewInit {
             type_absence_id: absence.type_absence_id,
             libelle: absence.libelle,
             employe: absence.employe,
-            status: absence.status
+            status: absence.status,
+            jours: absence.jours,
           })),
-          total_absences_deductibles: item.total_absences_deductibles
+          total_absences_deductibles: item.total_absences_deductibles,
+          total_jours_absences_deductibles: item.total_jours_absences_joui,
         }));
       }
 

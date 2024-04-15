@@ -46,8 +46,8 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="employeId">Nom de l'Employé</th>
-                            <th mat-sort-header="congesJoui">Congés Joui</th>
-                            <th mat-sort-header="CongesRestant">Congés Restants</th>
+                            <th mat-sort-header="congesJoui">Jours de congés jouis</th>
+                            <th mat-sort-header="CongesRestant">Jours de congés restants</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
@@ -55,8 +55,8 @@
                         <tr *ngFor="let item of lstPointConge">
                             <td>{{item.id_employe}}</td>
                             <td>{{item.employe}}</td>
-                            <td>{{item.total_conges_joui + item.total_absences_deductibles}}</td>
-                            <td>{{totalConges - item.total_conges_joui - item.total_absences_deductibles}}</td>
+                            <td>{{item.total_jours_conges_joui + item.total_jours_absences_deductibles}}</td>
+                            <td>{{totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles}}</td>
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -171,41 +171,45 @@
                                       <th mat-sort-header="congeName">Libellé du Congé</th>
                                       <th mat-sort-header="congeStart">Début du Congé</th>
                                       <th mat-sort-header="congeEnd">Fin du Congé</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr *ngFor="let item of shownPointConge.conges_joui">
+                                      <th mat-sort-header="duree">Durée (Jours)</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr *ngFor="let item of shownPointConge.conges_joui">
                                       <td>{{item.libelle}}</td>
                                       <td>{{item.date_debut}}</td>
                                       <td>{{item.date_fin}}</td>
-                                  </tr>
-                                  <tr *ngIf="shownPointConge.conges_joui.length === 0">
+                                      <td>{{item.jours}}</td>
+                                      </tr>
+                                      <tr *ngIf="shownPointConge.conges_joui.length === 0">
                                       <td colspan="10">
-                                          <h5 style="text-align: center;">Aucun résultat</h5>
+                                      <h5 style="text-align: center;">Aucun résultat</h5>
                                       </td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                        </div>
-                    </div>
-                    <br/>
-                    <h4>ABSENCES DÉDUCTIBLES</h4>
-                    <div class="mb-3">
-                    <div>
-                          <table matSort (matSortChange)="sortData($event)"
-                              class="table table-striped custom-table datatable mb-0">
-                              <thead>
-                                  <tr>
+                                      </tr>
+                                      </tbody>
+                                      </table>
+                                      </div>
+                                      </div>
+                                      <br/>
+                                      <h4>ABSENCES DÉDUCTIBLES</h4>
+                                      <div class="mb-3">
+                                      <div>
+                                      <table matSort (matSortChange)="sortData($event)"
+                                      class="table table-striped custom-table datatable mb-0">
+                                      <thead>
+                                      <tr>
                                       <th mat-sort-header="congeName">Libellé de l'Absence</th>
                                       <th mat-sort-header="congeStart">Début de l'Absence</th>
                                       <th mat-sort-header="congeEnd">Fin de l'Absence</th>
-                                  </tr>
+                                      <th mat-sort-header="duree">Durée (Jours)</th>
+                                      </tr>
                               </thead>
                               <tbody>
                                   <tr *ngFor="let item of shownPointConge.absences_deductibles">
                                       <td>{{item.libelle}}</td>
                                       <td>{{item.date_debut}}</td>
                                       <td>{{item.date_fin}}</td>
+                                      <td>{{item.jours}}</td>
                                   </tr>
                                   <tr *ngIf="shownPointConge.absences_deductibles.length === 0">
                                       <td colspan="10">
