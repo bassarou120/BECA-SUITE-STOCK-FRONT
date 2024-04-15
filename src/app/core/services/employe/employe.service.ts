@@ -32,7 +32,7 @@ export class EmployeService {
     return this.http.post(`${this.url}/employe`, data);
   }
 
-  updateInfoPerso(data: any,id:any): Observable<Object> {
+  updateInfoPerso(data: any, id: any): Observable<Object> {
     return this.http.put(`${this.url}/employe/updateInfoPerso/${id}`, data);
   }
 
@@ -44,11 +44,9 @@ export class EmployeService {
     return this.http.get<any>(`${this.url}/employe/${id}`);
   }
 
-
   saveContatEmploye(data: any): Observable<Object> {
     return this.http.post(`${this.url}/contrats`, data);
   }
-
 
   deleteEmploye(id: any): Observable<any> {
     return this.http.delete<any>(`${this.url}/employe/${id}`);
@@ -61,8 +59,16 @@ export class EmployeService {
   getLastContrat() {
     return this.http.get<any>(`${this.url}/getLastContrat`);
   }
+
+  getLastEmploye() {
+    return this.http.get<any>(`${this.url}/getLastContrat`);
+  }
   getLastContratByEmployeId(id: any) {
     return this.http.get<any>(`${this.url}/getLastContratByEmployeId/${id}`);
+  }
+
+  getGradeById(id: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/les_grades/${id}`);
   }
 
   /*

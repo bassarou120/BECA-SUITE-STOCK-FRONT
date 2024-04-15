@@ -121,6 +121,8 @@ export class EmployeeProfileComponent implements OnInit {
     this.titreAction = action;
   }
 
+  showAddContratForm = true;
+
   initAddContrat() {
     // alert("init create contrat")
     this.typeContratService.getAllTypeContrat().subscribe(
@@ -145,17 +147,44 @@ export class EmployeeProfileComponent implements OnInit {
       (erro: any) => {}
     );
 
-    // this.employeservice.getLastContratByEmployeId(this.idEmploye).subscribe(
-    //   (data: any) => {
-    //     alert(JSON.stringify(data.data));
-    //     // this.listTypeContrat=data.data.data
-    //     // this.lastContrat=data.data
-    //     //
-    //     // console.log(data.data)
-    //     // this.addEmployeContratForm.get('num_contrat')?.setValue("C-000"+data.data.id)
-    //   },
-    //   (erro: any) => {}
-    // );
+    // alert(JSON.stringify(this.curentEmploye.employe.grade_id));
+    this.employeservice
+      .getGradeById(this.curentEmploye.employe.grade_id)
+      .subscribe(
+        (data: any) => {
+          // alert(JSON.stringify(data.data));
+          // this.listTypeContrat=data.data.data
+          // this.lastContrat = data.data;
+
+          console.log(data.data);
+          this.addEmployeContratForm
+            .get('base_categorielle')
+            ?.setValue(data.data.base_categorielle);
+
+          this.addEmployeContratForm
+            .get('prime_anciennete')
+            ?.setValue(data.data.prime_enciennete);
+        },
+        (erro: any) => {
+          alert(JSON.stringify(erro));
+        }
+      );
+    // alert(JSON.stringify(this.idEmploye));
+
+    this.employeservice.getLastContratByEmployeId(this.idEmploye).subscribe(
+      (data: any) => {
+        // alert(JSON.stringify(data.data.last_contrat));
+        // alert(JSON.stringify(data.data.last_contrat[0].etat));
+        // alert(JSON.stringify(data.data.last_contrat[0].status));
+        // last_contrat;
+        // this.listTypeContrat=data.data.data
+        // this.lastContrat=data.data
+        //
+        // console.log(data.data)
+        // this.addEmployeContratForm.get('num_contrat')?.setValue("C-000"+data.data.id)
+      },
+      (erro: any) => {}
+    );
   }
 
   getEditInfoPersoForm() {

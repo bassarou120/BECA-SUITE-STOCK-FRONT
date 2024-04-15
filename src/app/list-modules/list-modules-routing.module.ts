@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
 import { AuthService } from '../core/services/auth/auth.service';
+import { fichepaieComponent } from './fichepaie/fichepaie.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,8 @@ const routes: Routes = [
             (m) => m.ParametrageModule
           ),
       },
+
+      { path: 'fichepaie', component: fichepaieComponent },
 
       /*
 

@@ -7,14 +7,13 @@ import {
   routes,
 } from '../../core.index';
 import { HttpClient } from '@angular/common/http';
-import {environment} from "../../../../environments/environment";
+import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-
-export class TypeContratService  {
+export class TypeContratService {
   allAppliedCandidates!: Array<object>;
-  url: string = environment.backend ;
+  url: string = environment.backend;
   constructor(private http: HttpClient) {}
 
   saveTypeContrat(data: any): Observable<any> {
@@ -32,8 +31,6 @@ export class TypeContratService  {
   deleteTypeContrat(data: any): Observable<any> {
     return this.http.delete<any>(`${this.url}/type_contrat/${data.id}`);
   }
-
-
 
   listConstracts = [];
 }

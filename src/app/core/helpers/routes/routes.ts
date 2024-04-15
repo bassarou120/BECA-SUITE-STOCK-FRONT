@@ -72,7 +72,9 @@ export class routes {
     return this.baseUrl + '/employes/experiences';
   }
 
-
+  public static get fichePaie(): string {
+    return this.baseUrl + '/fichepaie';
+  }
 
   public static get type_conge(): string {
     return this.baseUrl + '/parametrage/type-conge';
@@ -266,9 +268,7 @@ export class routes {
   public static get payroll(): string {
     return this.baseUrl + '/payroll';
   }
-  public static get employeesalary(): string {
-    return this.baseUrl + '/payroll/employee-salary';
-  }
+
   public static get payrollitems(): string {
     return this.baseUrl + '/payroll/payroll-items';
   }

@@ -65,7 +65,7 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Tous les employés',
-               route: routes.employee_page,
+              route: routes.employee_page,
 
               base: 'employee-page',
               base2: 'employee-list',
@@ -73,17 +73,17 @@ export class DataService {
             {
               menuValue: 'Mes Demandes',
               route: routes.demandes,
-              base: 'demandes'
+              base: 'demandes',
             },
             {
               menuValue: 'Mes Plaintes',
               route: routes.plaintes,
-              base: 'mes-plaintes'
+              base: 'mes-plaintes',
             },
             {
               menuValue: 'Les Congés (GRH)',
               route: routes.conges,
-              base: 'holidays'
+              base: 'holidays',
             },
             {
               menuValue: 'Les Absences (GRH)',
@@ -143,8 +143,8 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Salaires',
-              route: routes.employeesalary,
+              menuValue: 'Gestion de paie',
+              route: routes.fichePaie,
               base: 'employee-salary',
             },
 
@@ -197,7 +197,7 @@ export class DataService {
               base: 'poste',
             },
             {
-              menuValue: 'Type d\'absence',
+              menuValue: "Type d'absence",
               route: routes.typeAbsence,
               base: 'type-absence',
             },
@@ -247,117 +247,9 @@ export class DataService {
 
 
   ];
-  public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<Array<SideBar>>(this.sideBar);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<
+    Array<SideBar>
+  >(this.sideBar);
 
   public getEmployees(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
@@ -1011,7 +903,7 @@ export class DataService {
       phone: '9876543210',
       status: 'Active',
       id: 1,
-      img:'assets/img/profiles/avatar-19.jpg'
+      img: 'assets/img/profiles/avatar-19.jpg',
     },
     {
       name: 'Tressa Wexler',
@@ -1023,7 +915,7 @@ export class DataService {
       phone: '9876543211',
       status: 'Inactive',
       id: 2,
-      img:'assets/img/profiles/avatar-29.jpg'
+      img: 'assets/img/profiles/avatar-29.jpg',
     },
     {
       name: 'Ruby Bartlett ',
@@ -1035,7 +927,7 @@ export class DataService {
       phone: '9876543212',
       status: 'Inactive',
       id: 3,
-      img:'assets/img/profiles/avatar-07.jpg'
+      img: 'assets/img/profiles/avatar-07.jpg',
     },
     {
       name: 'Misty Tison',
@@ -1047,7 +939,7 @@ export class DataService {
       phone: '9876543213',
       status: 'Inactive',
       id: 4,
-      img:'assets/img/profiles/avatar-06.jpg'
+      img: 'assets/img/profiles/avatar-06.jpg',
     },
     {
       name: 'Daniel Deacon',
@@ -1059,7 +951,7 @@ export class DataService {
       phone: '9876543214',
       status: 'Active',
       id: 5,
-      img:'assets/img/profiles/avatar-14.jpg'
+      img: 'assets/img/profiles/avatar-14.jpg',
     },
     {
       name: 'Walter  Weaver',
@@ -1071,7 +963,7 @@ export class DataService {
       phone: '9876543215',
       status: 'Active',
       id: 6,
-      img:'assets/img/profiles/avatar-18.jpg'
+      img: 'assets/img/profiles/avatar-18.jpg',
     },
     {
       name: 'Amanda Warren',
@@ -1083,7 +975,7 @@ export class DataService {
       phone: '9876543216',
       status: 'Active',
       id: 7,
-      img:'assets/img/profiles/avatar-28.jpg'
+      img: 'assets/img/profiles/avatar-28.jpg',
     },
     {
       name: 'Bretty Carlson',
@@ -1095,9 +987,8 @@ export class DataService {
       phone: '9876543217',
       status: 'Inactive',
       id: 8,
-      img:'assets/img/profiles/avatar-13.jpg'
-    }
-
+      img: 'assets/img/profiles/avatar-13.jpg',
+    },
   ];
 
   projects = [
@@ -1307,21 +1198,20 @@ export class DataService {
       leaveType: 'Casual Leave',
       leaveDays: '12 Days',
       id: 1,
-      status: 'Active'
+      status: 'Active',
     },
     {
       leaveType: 'Medical Leave',
       leaveDays: '12 Days',
       id: 2,
-      status: 'Inactive'
+      status: 'Inactive',
     },
     {
       leaveType: 'Loss of Pay',
       leaveDays: '10 Days',
       id: 3,
-      status: 'Active'
-    }
-
+      status: 'Active',
+    },
   ];
   lstEmployee = [
     {
@@ -1340,7 +1230,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 1,
-      img: "assets/img/profiles/avatar-02.jpg"
+      img: 'assets/img/profiles/avatar-02.jpg',
     },
     {
       firstname: 'Richard Miles',
@@ -1358,7 +1248,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 2,
-      img: "assets/img/profiles/avatar-09.jpg"
+      img: 'assets/img/profiles/avatar-09.jpg',
     },
     {
       firstname: 'John Smith',
@@ -1376,7 +1266,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 3,
-      img: "assets/img/profiles/avatar-10.jpg"
+      img: 'assets/img/profiles/avatar-10.jpg',
     },
     {
       firstname: 'Mike Litorus',
@@ -1394,7 +1284,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 4,
-      img: "assets/img/profiles/avatar-05.jpg"
+      img: 'assets/img/profiles/avatar-05.jpg',
     },
     {
       firstname: 'Wilmer Deluna',
@@ -1412,7 +1302,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 5,
-      img: "assets/img/profiles/avatar-01.jpg"
+      img: 'assets/img/profiles/avatar-01.jpg',
     },
     {
       firstname: 'Jeffrey Warden',
@@ -1430,7 +1320,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 6,
-      img: "assets/img/profiles/avatar-12.jpg"
+      img: 'assets/img/profiles/avatar-12.jpg',
     },
     {
       firstname: 'Bernardo Galaviz',
@@ -1448,7 +1338,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 7,
-      img: "assets/img/profiles/avatar-13.jpg"
+      img: 'assets/img/profiles/avatar-13.jpg',
     },
     {
       firstname: 'Lesley Grauer',
@@ -1466,7 +1356,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 8,
-      img: "assets/img/profiles/avatar-16.jpg"
+      img: 'assets/img/profiles/avatar-16.jpg',
     },
     {
       firstname: 'Jeffery Lalor',
@@ -1484,7 +1374,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 9,
-      img: "assets/img/profiles/avatar-16.jpg"
+      img: 'assets/img/profiles/avatar-16.jpg',
     },
     {
       firstname: 'Loren Gatlin',
@@ -1502,7 +1392,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 10,
-      img: "assets/img/profiles/avatar-04.jpg"
+      img: 'assets/img/profiles/avatar-04.jpg',
     },
     {
       firstname: 'Tarah Shropshire',
@@ -1520,7 +1410,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 11,
-      img: "assets/img/profiles/avatar-03.jpg"
+      img: 'assets/img/profiles/avatar-03.jpg',
     },
     {
       firstname: 'Catherine Manseau',
@@ -1538,8 +1428,7 @@ export class DataService {
       employeeId: 'FT-0001',
       company: 'FT-0001',
       id: 12,
-      img: "assets/img/profiles/avatar-08.jpg"
-    }
-
+      img: 'assets/img/profiles/avatar-08.jpg',
+    },
   ];
 }

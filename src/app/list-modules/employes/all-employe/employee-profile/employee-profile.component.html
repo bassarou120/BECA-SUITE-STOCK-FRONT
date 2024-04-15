@@ -44,12 +44,18 @@
                     <div class="staff-id">
                       Matricule: {{ curentEmploye.employe.matricule }}
                     </div>
+
+                    <div class="staff-id">
+                      Grade: {{ curentEmploye.grade.lib }}
+                    </div>
+
                     <div class="small doj text-muted">
                       Date d’entrée dans l’entreprise :
                       {{
                         curentEmploye.employe.date_arrivee | date : "dd-MM-YYYY"
                       }}
                     </div>
+
                     <div class="staff-msg">
                       <!--                      [routerLink]="routes.chat"-->
                       <a
@@ -460,9 +466,7 @@
                     </div>
                     <div class="experience-content">
                       <div class="timeline-content">
-                        <a href="#/" class="name"
-                          >Web Designer at Zen Corporation</a
-                        >
+                        <a href="#/" class="name">Analyste juridique</a>
                         <span class="time">Janvier 2019 - Décembre 2020</span>
                       </div>
                     </div>
@@ -473,10 +477,8 @@
                     </div>
                     <div class="experience-content">
                       <div class="timeline-content">
-                        <a href="#/" class="name">Web Designer at Ron-tech</a>
-                        <span class="time"
-                          >Jan 2013 - Present (5 years 2 months)</span
-                        >
+                        <a href="#/" class="name">Assistant en logistique</a>
+                        <span class="time">2010-2019</span>
                       </div>
                     </div>
                   </li>
@@ -487,11 +489,9 @@
                     <div class="experience-content">
                       <div class="timeline-content">
                         <a href="#/" class="name"
-                          >Web Designer at Dalt Technology</a
+                          >Gestionnaire administrative</a
                         >
-                        <span class="time"
-                          >Jan 2013 - Present (5 years 2 months)</span
-                        >
+                        <span class="time">2001-2011</span>
                       </div>
                     </div>
                   </li>
@@ -960,6 +960,13 @@
                           <b> {{ curentEmploye.last_contat?.etat }}</b>
                         </div>
                       </li>
+
+                      <li>
+                        <div class="title">Status :</div>
+                        <div class="text">
+                          <b> {{ curentEmploye.last_contat?.status }}</b>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -1029,6 +1036,7 @@
                   <th>Date de debut</th>
                   <th>Date de fin</th>
                   <th>Etat</th>
+                  <th>Status</th>
 
                   <th>Action</th>
                 </tr>
@@ -1048,12 +1056,19 @@
                   <td>
                     {{ contrat.etat === null ? "Non Valider" : contrat.etat }}
                   </td>
+                  <td>
+                    {{
+                      contrat.status === null
+                        ? "En cours de validation"
+                        : contrat.status
+                    }}
+                  </td>
 
                   <td>
                     <div class="table-actions d-flex">
-                      <a class="delete-table me-2" [routerLink]="'#'">
+                      <!-- <a class="delete-table me-2">
                         <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
-                      </a>
+                      </a> -->
 
                       <div class="dropdown">
                         <a
@@ -1088,6 +1103,20 @@
                             "
                           >
                             Rompre le contrat</a
+                          >
+
+                          <a
+                            class="dropdown-item"
+                            data-bs-toggle="modal"
+                            data-bs-target="#valide_contrat"
+                            (click)="
+                              getValideContratForm(
+                                contrat.id,
+                                'Suspendre le contrat'
+                              )
+                            "
+                          >
+                            Suspendre le contrat</a
                           >
                           <a
                             class="dropdown-item"
@@ -1395,8 +1424,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          Nouveau Contrat pour {{ curentEmploye.nom }}
-          {{ curentEmploye.prenom }}
+          Nouveau Contrat pour {{ curentEmploye.employe.nom }}
+          {{ curentEmploye.employe.prenom }}
         </h5>
         <button
           type="button"
@@ -1417,6 +1446,7 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Num Contrat </label>
                 <input
+                  readonly
                   type="text"
                   formControlName="num_contrat"
                   class="form-control"
@@ -1481,6 +1511,7 @@
                   >Base catégorielle /Rémunér. forfaitaire
                 </label>
                 <input
+                  readonly
                   type="text"
                   formControlName="base_categorielle"
                   class="form-control"
@@ -1491,6 +1522,7 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Prime d'ancienneté</label>
                 <input
+                  readonly
                   type="text"
                   formControlName="prime_anciennete"
                   class="form-control"
