@@ -729,6 +729,7 @@ export interface getConge {
   employe: string;
   status: string;
   congeJoui: boolean;
+  etat:  string;
 }
 
 export interface getDemande {

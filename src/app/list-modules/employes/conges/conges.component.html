@@ -46,6 +46,7 @@
               <th mat-sort-header="congeName">Libellé du Congé</th>
               <th mat-sort-header="employeeName">Nom de l'Employé</th>
               <th mat-sort-header="statutName">Statut</th>
+              <th mat-sort-header="etatConge">État</th>
               <th mat-sort-header="congeJoui">Congé joui</th>
               <th mat-sort-header="congeStart">Début du Congé</th>
               <th mat-sort-header="congeEnd">Fin du Congé</th>
@@ -58,6 +59,7 @@
               <td>{{item.libelle}}</td>
               <td>{{item.employe}}</td>
               <td>{{ item.status ? item.status : "-" }}</td>
+              <td>{{ item.etat ? item.etat : "-" }}</td>
               <td>{{ item.congeJoui ? "Oui" : "Non" }}</td>
               <td>{{item.date_debut}}</td>
               <td>{{item.date_fin}}</td>
