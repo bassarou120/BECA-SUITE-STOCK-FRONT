@@ -20,6 +20,8 @@ export class GradesComponent implements OnInit {
 
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
+  public lstImpo: Array<string> = ["Taux Impo en %", "Valeur Impo"];
+  public lstCNSS: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
   public lstCategorie: Array<getCategorie> = [];
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
@@ -58,6 +60,7 @@ export class GradesComponent implements OnInit {
       taux_retenu_cnss: ["", [Validators.required]],
       valeur_retenu_impo: ["", [Validators.required]],
       valeur_retenu_cnss: ["", [Validators.required]],
+      selected: ["", [Validators.required]],
     });
      this.editGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],

@@ -303,50 +303,43 @@
                 </div>
               </div>
             </div>
-          </div> --> 
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for="taux_retenu_impo">Sélectionner un taux ou une valeur pour impo<span
-                  class="text-danger">*</span></label>
-                  
-                 
-                <select class="select mat-cust-select form-control" formControlName="taux_retenu_impo" placeholder="Selectionner un taux ou une valeur">
-                  
-                  <option value="taux_retenu_impo">Taux retenu impo</option>
-                  <option value="valeur retenu impo">valeur retenu impo</option>
-                
-                </select>
-              
-              </div>
-              </div>
-          
-            <div class="col-sm-6">
+          </div> -->
+          <div class="col-sm-6">
             <div class="input-block mb-3">
-                <label class="col-form-label" for="taux_retenu_impo"></label>
-                <input class="form-control" type="text">
+                <label class="col-form-label" for="selected">Selectionner taux ou valeur pour Impo <span class="text-danger">*</span></label>
+                <mat-select  class="select mat-cust-select form-control"
+                    [class.invalid]="addGradeForm.get('selected')?.invalid && addGradeForm.get('selected')?.touched"
+                    formControlName="selected" placeholder="Selectionner taux ou valeur pour Impo">
+                    <mat-option *ngFor="let item of lstImpo" value={{item}}>{{ item }} </mat-option>
+                </mat-select>
+                <div>
+                    <small
+                        *ngIf="addGradeForm.get('selected')?.invalid && addGradeForm.get('selected')?.touched"
+                        class="text-danger"> *Impo est obligatoire</small>
+                </div>
             </div>
+        </div>
+
+
+
+        <div class="row" *ngIf="addGradeForm.get('selected')!.value === 'Taux Impo en %'">
+          <div class="col-sm-4">
+            <div class="input-block mb-3">
+              <label class="col-form-label" for="prime_enciennete">Prime Ancienneté <span
+                  class="text-danger">*</span></label>
+              <input class="form-control" type="number"
+                [class.invalid]="addGradeForm.get('prime_enciennete')?.invalid && addGradeForm.get('prime_enciennete')?.touched"
+                placeholder="Entrer la Prime d'Ancienneté " formControlName="prime_enciennete">
+              <div
+                *ngIf="addGradeForm.get('prime_enciennete')?.invalid && addGradeForm.get('prime_enciennete')?.touched">
+                <small
+                  *ngIf="addGradeForm.get('prime_enciennete')?.invalid && addGradeForm.get('prime_enciennete')?.touched"
+                  class="text-danger"> *La Prime d'Ancienneté est obligatoire</small>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for="taux_retenu_cnss">Sélectionner un taux ou une valeur pour CNSS<span
-                  class="text-danger">*</span></label>
-                  
-                 
-                <select class="select mat-cust-select form-control" formControlName="taux_retenu_cnss" placeholder="Selectionner un taux ou une valeur">
-                  
-                  <option value="taux_retenu_impo">Taux retenu CNSS</option>
-                  <option value="valeur retenu impo">valeur retenu CNSS</option>
-                
-                </select>
-              
-              </div>
-              </div>
-            
 
-            
+
             <div class="col-sm-6">
             <div class="input-block mb-3">
                 <label class="col-form-label" for="taux_retenu_cnss"></label>
