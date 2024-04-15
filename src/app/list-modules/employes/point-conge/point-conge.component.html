@@ -164,37 +164,38 @@
                     <div class="col-sm-12">
                         <div class="mb-3">
                         <div>
-                          <table matSort (matSortChange)="sortData($event)"
+                          <table matSort (matSortChange)="sortData($event)" id="table_conges_to_xlsx"
                               class="table table-striped custom-table datatable mb-0">
                               <thead>
                                   <tr>
                                       <th mat-sort-header="congeName">Libellé du Congé</th>
                                       <th mat-sort-header="congeStart">Début du Congé</th>
                                       <th mat-sort-header="congeEnd">Fin du Congé</th>
-                                      <th mat-sort-header="duree">Durée (Jours)</th>
-                                      </tr>
-                                      </thead>
-                                      <tbody>
-                                      <tr *ngFor="let item of shownPointConge.conges_joui">
+                                    <th mat-sort-header="duree">Durée (Jours)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let item of shownPointConge.conges_joui">
                                       <td>{{item.libelle}}</td>
                                       <td>{{item.date_debut}}</td>
                                       <td>{{item.date_fin}}</td>
                                       <td>{{item.jours}}</td>
-                                      </tr>
-                                      <tr *ngIf="shownPointConge.conges_joui.length === 0">
-                                      <td colspan="10">
+                                  </tr>
+                                  <tr *ngIf="shownPointConge.conges_joui.length === 0">
+                                    <td colspan="10">
                                       <h5 style="text-align: center;">Aucun résultat</h5>
-                                      </td>
-                                      </tr>
-                                      </tbody>
-                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                            </table>
                                       </div>
                                       </div>
                                       <br/>
                                       <h4>ABSENCES DÉDUCTIBLES</h4>
                                       <div class="mb-3">
                                       <div>
-                                      <table matSort (matSortChange)="sortData($event)"
+
+                              <table matSort (matSortChange)="sortData($event)" id="table_absences_to_xlsx"
                                       class="table table-striped custom-table datatable mb-0">
                                       <thead>
                                       <tr>

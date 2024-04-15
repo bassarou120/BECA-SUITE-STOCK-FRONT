@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
-
+import * as XLSX from 'xlsx';
 
 declare var $: any;
 @Component({
@@ -139,7 +139,23 @@ export class PointCongeComponent implements OnInit, AfterViewInit {
 
 
   exportToXLSX() {
-alert("xlsx");
+    const table1: HTMLElement | null = document.getElementById('table_conges_to_xlsx');
+    const table2: HTMLElement | null = document.getElementById('table_absences_to_xlsx');
+    const filename = this.shownPointConge.employe + ".xlsx";
+
+    if (table1 && table2) {
+      const wb = XLSX.utils.book_new();
+
+      const ws1 = XLSX.utils.table_to_sheet(table1);
+      XLSX.utils.book_append_sheet(wb, ws1, "Congés Jouis");
+
+      const ws2 = XLSX.utils.table_to_sheet(table2);
+      XLSX.utils.book_append_sheet(wb, ws2, "Absences déductibles");
+
+      XLSX.writeFile(wb, filename);
+    } else {
+      console.error("Une ou les deux tables avec les IDs spécifiés n'ont pas été trouvées.");
+    }
   }
 
 
