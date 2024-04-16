@@ -1,3 +1,4 @@
+import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
@@ -60,6 +61,7 @@ import { ExperiencesComponent } from './experiences/experiences.component';
     ExperiencesComponent,
     DepartEmployeComponent,
     PointCongeComponent,
+    PointContratComponent,
   ],
   imports: [
     CommonModule,

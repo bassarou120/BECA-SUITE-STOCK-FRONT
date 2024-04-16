@@ -132,6 +132,10 @@ export class routes {
     return this.baseUrl + '/employes/point-conge';
   }
 
+  public static get point_contrat(): string {
+    return this.baseUrl + '/employes/point-contrat';
+  }
+
 
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';

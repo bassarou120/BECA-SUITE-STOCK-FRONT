@@ -120,6 +120,11 @@ export class DataService {
               route: routes.point_conge,
               base: 'point-conge',
             },
+            {
+              menuValue: 'Point des Contrats',
+              route: routes.point_contrat,
+              base: 'point-contrat',
+            },
 
           ],
         },

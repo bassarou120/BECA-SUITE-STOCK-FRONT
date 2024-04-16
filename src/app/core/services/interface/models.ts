@@ -771,6 +771,18 @@ export interface getPointConge {
   total_jours_absences_deductibles: number;
 }
 
+export interface getPointContrat {
+  id: number;
+  id_employe: number;
+  employe: string;
+  type_contrat_id: number;
+  libelle: string;
+  date_signature: Date;
+  duree: number;
+  status_id: number;
+  libelleStatus: string;
+}
+
 export interface getFormation {
   id: number;
   employe_id: number;
