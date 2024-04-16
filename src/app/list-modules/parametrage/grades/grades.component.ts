@@ -16,7 +16,9 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class GradesComponent implements OnInit {
   public routes = routes;
-  selected = 'option1';
+
+  public selected: string = "Taux Impo en %";
+  public select: string = "Taux CNSS en %";
 
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
@@ -60,7 +62,8 @@ export class GradesComponent implements OnInit {
       taux_retenu_cnss: ["", [Validators.required]],
       valeur_retenu_impo: ["", [Validators.required]],
       valeur_retenu_cnss: ["", [Validators.required]],
-      selected: ["", [Validators.required]],
+      selected: ["Taux Impo en %", [Validators.required]],
+      select: ["Taux CNSS en %", [Validators.required]],
     });
      this.editGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
