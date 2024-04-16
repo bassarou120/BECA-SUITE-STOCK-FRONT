@@ -16,10 +16,14 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class GradesComponent implements OnInit {
   public routes = routes;
-  selected = 'option1';
+
+  public selected: string = "Taux Impo en %";
+  public select: string = "Taux CNSS en %";
 
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
+  public lstImpo: Array<string> = ["Taux Impo en %", "Valeur Impo"];
+  public lstCNSS: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
   public lstCategorie: Array<getCategorie> = [];
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
@@ -54,10 +58,12 @@ export class GradesComponent implements OnInit {
       classe_id: [0, [Validators.required]],
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
-      taux_retenu_impo: ["", [Validators.required]],
-      taux_retenu_cnss: ["", [Validators.required]],
-      valeur_retenu_impo: ["", [Validators.required]],
-      valeur_retenu_cnss: ["", [Validators.required]],
+      taux_retenu_impo: [" ", [Validators.required]],
+      taux_retenu_cnss: [" ", [Validators.required]],
+      valeur_retenu_impo: [" ", [Validators.required]],
+      valeur_retenu_cnss: [" ", [Validators.required]],
+      selected: ["Taux Impo en %", [Validators.required]],
+      select: ["Taux CNSS en %", [Validators.required]],
     });
      this.editGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -78,20 +84,26 @@ export class GradesComponent implements OnInit {
 
   onClickSubmitAddGrade(){
 
-      console.log(this.addGradeForm.value)
-
       if (this.addGradeForm.valid){
-        // const taux_retenu_impo = this.addGradeForm.get('taux_retenu_impo').value;
-        // const valeur_retenu_impo = this.addGradeForm.get('valeur_retenu_impo').value;
-        // const taux_retenu_cnss = this.addGradeForm.get('taux_retenu_cnss').value;
-        // const valeur_retenu_cnss = this.addGradeForm.get('valeur_retenu_cnss').value;
+        if (this.addGradeForm.value.selected == "Taux Impo en %") {
+          this.addGradeForm.patchValue({valeur_retenu_impo: ""});
+        } else {
+          this.addGradeForm.patchValue({taux_retenu_impo: ""});
+        }
+
+        if (this.addGradeForm.value.select == "Taux CNSS en %") {
+          this.addGradeForm.patchValue({valeur_retenu_cnss: ""});
+        } else {
+          this.addGradeForm.patchValue({taux_retenu_cnss: ""});
+        }
+
+
         this.data.saveGrade(this.addGradeForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
-        )
+        );
       }else {
-
         alert("desole le formulaire n'est pas bien renseigné")
       }
 
