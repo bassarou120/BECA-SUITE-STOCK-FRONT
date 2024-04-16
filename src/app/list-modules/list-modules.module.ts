@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SharedModule } from '../shared/sharedIndex';
 import { ListModulesRoutingModule } from './list-modules-routing.module';
 import { SideMenuOneComponent } from './common/side_menus/side-menu-one/side-menu-one.component';
@@ -10,9 +10,10 @@ import { SettingsMenuComponent } from './common/settings-menu/settings-menu.comp
 import { HeaderTwoComponent } from './common/headers/header-two/header-two.component';
 import { HeaderThreeComponent } from './common/headers/header-three/header-three.component';
 import { RouterModule } from '@angular/router';
-import {ListModulesComponent} from "./list-modules.component";
-import {HttpClientModule} from "@angular/common/http";
-
+import { ListModulesComponent } from './list-modules.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { fichepaieComponent } from './fichepaie/fichepaie.component';
 
 // @ts-ignore
 @NgModule({
@@ -25,13 +26,16 @@ import {HttpClientModule} from "@angular/common/http";
     SettingsMenuComponent,
     HeaderTwoComponent,
     HeaderThreeComponent,
-
+    fichepaieComponent,
   ],
   imports: [
     CommonModule,
     ListModulesRoutingModule,
     SharedModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
+  providers: [DatePipe],
 })
 export class ListModulesModule {}

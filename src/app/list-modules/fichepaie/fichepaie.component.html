@@ -26,7 +26,7 @@
           <ul class="nav nav-tabs nav-tabs-bottom">
             <li class="nav-item">
               <a
-                href="#emp_profile"
+                href="#edition_fiche"
                 data-bs-toggle="tab"
                 class="nav-link active"
                 >EDITION DES FICHES DE PAIE DU MOIS</a
@@ -34,13 +34,13 @@
             </li>
 
             <li class="nav-item">
-              <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
+              <a href="#fiche_valide" data-bs-toggle="tab" class="nav-link"
                 >FICHES DE PAIE VALIDE DU MOIS
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
+              <a href="#archive_fiche" data-bs-toggle="tab" class="nav-link"
                 >FICHES DE PAIE ARCHIVEES
               </a>
             </li>
@@ -50,11 +50,482 @@
     </div>
 
     <div class="tab-content" style="margin-top: 0px; padding-top: 0px">
-      <!-- Profile Info Tab -->
-      <div id="emp_profile" class="pro-overview tab-pane fade show active">
-        wdlk
+      <!-- EDITION DES FICHES DE PAIE DU MOIS Tab -->
+      <div id="edition_fiche" class="pro-overview tab-pane fade show active">
+        <a
+          class="btn add-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#add_fiche_modal"
+          (click)="initAddFiche()"
+          ><i class="fa-solid fa-plus"></i> Ajouter une fiche</a
+        >
+        <br />
+        <hr />
+
+        <div class="table-responsive table-newdatatable">
+          <table class="table table-new custom-table mb-0 datatable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Employé</th>
+                <th>Date</th>
+                <th>Salaire base</th>
+                <th>Total Prime</th>
+                <th>Total retenu</th>
+
+                <th>Status</th>
+
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let contrat of curentEmploye?.list_contrat;
+                  let i = index
+                "
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ contrat.num_contrat }}</td>
+                <td>CDD</td>
+                <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td>
+                <td>{{ contrat.date_fin | date : "dd/mm/YYYY" }}</td>
+                <td>
+                  {{ contrat.etat === null ? "Non Valider" : contrat.etat }}
+                </td>
+                <td>
+                  {{
+                    contrat.status === null
+                      ? "En cours de validation"
+                      : contrat.status
+                  }}
+                </td>
+
+                <td>
+                  <div class="table-actions d-flex">
+                    <!-- <a class="delete-table me-2">
+                      <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
+                    </a> -->
+
+                    <div class="dropdown">
+                      <a
+                        class="action-icon"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="material-icons">more_vert</i></a
+                      >
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                        >
+                          Valider le contrat</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                        >
+                          Rompre le contrat</a
+                        >
+
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                        >
+                          Suspendre le contrat</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                          >Supprimer le contrat</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br /><br /><br />
+          <br /><br /><br />
+          <br /><br /><br />
+        </div>
       </div>
-      <!-- /Profile Info Tab -->
+
+      <!--   FICHES DE PAIE DU MOIS VALIDE -->
+      <div id="fiche_valide" class="tab-pane fade">
+        <hr />
+        FICHES DE PAIE DU MOIS VALIDE
+        <div class="table-responsive table-newdatatable">
+          <table class="table table-new custom-table mb-0 datatable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Employé</th>
+                <th>Date</th>
+                <th>Salaire base</th>
+                <th>Total Prime</th>
+                <th>Total retenu</th>
+
+                <th>Status</th>
+
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 
+              <tr
+                *ngFor="
+                  let contrat of curentEmploye;
+                  let i = index
+                "
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ contrat.num_contrat }}</td>
+                <td>CDD</td>
+                <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td>
+                <td>{{ contrat.date_fin | date : "dd/mm/YYYY" }}</td>
+                <td>
+                  {{ contrat.etat === null ? "Non Valider" : contrat.etat }}
+                </td>
+                <td>
+                  {{
+                    contrat.status === null
+                      ? "En cours de validation"
+                      : contrat.status
+                  }}
+                </td>
+
+                <td>
+                  <div class="table-actions d-flex">
+                    
+
+                    <div class="dropdown">
+                      <a
+                        class="action-icon"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="material-icons">more_vert</i></a
+                      >
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                        >
+                          Valider le contrat</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                        >
+                          Rompre le contrat</a
+                        >
+
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                        >
+                          Suspendre le contrat</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_contrat"
+                          >Supprimer le contrat</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              -->
+            </tbody>
+          </table>
+          <br /><br /><br />
+          <br /><br /><br />
+          <br /><br /><br />
+        </div>
+      </div>
+    </div>
+
+    <!-- Ajouter contract Modal -->
+    <div id="add_fiche_modal" class="modal custom-modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              Edition fiche de paie
+              <!-- {{ curentEmploye.employe.nom }}
+              {{ curentEmploye.employe.prenom }} -->
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form
+              [formGroup]="addEmployeFichePaieForm"
+              (ngSubmit)="onClickSubmitaddEmployeFiche()"
+            >
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-block mb-3">
+                    <input hidden type="text" formControlName="employe_id" />
+                    <label class="col-form-label" for=""
+                      >Employé<span class="text-danger">*</span></label
+                    >
+
+                    <mat-select
+                      class="user-assets select form-control"
+                      placeholder="-"
+                      [(ngModel)]="selectedEmp"
+                      (selectionChange)="selectedEmpChange()"
+                      formControlName="employe"
+                    >
+                      <mat-option
+                        *ngFor="let data of employes_who_has_no_fiche"
+                        [value]="data"
+                      >
+                        {{ data.nom }} {{ data.prenom }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Grade</label>
+                    <input
+                      readonly
+                      type="text"
+                      formControlName="grade"
+                      class="form-control"
+                      value="P1-1"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for=""
+                      >Base catégorielle /Rémunér. forfaitaire
+                    </label>
+                    <input
+                      readonly
+                      type="text"
+                      formControlName="base_categorielle"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for=""
+                      >Prime d'ancienneté</label
+                    >
+                    <input
+                      readonly
+                      type="text"
+                      formControlName="prime_anciennete"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h5>Les primes</h5>
+                        <ul>
+                          <li
+                            *ngFor="
+                              let prime of this.selectedEmp?.contrats[0].prime
+                            "
+                          >
+                            {{ prime.indenmite }} :
+                            {{ prime.montant_indenmite }}
+                          </li>
+                        </ul>
+                        <br />
+                      </div>
+
+                      <div class="col-md-6">
+                        <h5>les retenues sur salaire</h5>
+
+                        <ul>
+                          <li>Cotisation CNSS (Permanent) : 500000</li>
+                          <li>ITS : 60000</li>
+                          <!-- <li>indemite de transport : 9000</li> -->
+                        </ul>
+                        <br />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="add-more">
+                          <a href="javascript:void(0); "
+                            ><i class="fa-solid fa-plus-circle"></i> ajouter
+                            autres primes</a
+                          >
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="add-more">
+                          <a href="javascript:void(0); "
+                            ><i class="fa-solid fa-plus-circle"></i> ajouter
+                            autres retenues</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <br />
+
+                    <!-- <h3 class="card-title">Les Primes fixes | FCFA</h3> -->
+
+                    <div class="row" [formGroup]="form">
+                      <div formArrayName="items">
+                        <div
+                          *ngFor="let item of items.controls; let i = index"
+                          [formGroupName]="i"
+                        >
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="input-block mb-3">
+                                <label class="col-form-label" for="">
+                                  Indemnité {{ i + 1 }}
+                                </label>
+                                <input
+                                  type="text"
+                                  id="indemnite"
+                                  formControlName="indenmite"
+                                  class="form-control"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="input-block mb-3">
+                                <label class="col-form-label" for=""
+                                  >Montant de l'indemnité {{ i + 1 }}</label
+                                >
+                                <input
+                                  type="number"
+                                  id="montant_indemnite"
+                                  formControlName="montant_indenmite"
+                                  class="form-control"
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-1" style="">
+                              <br />
+                              <br />
+                              <a href="javascript:void(0);" class="delete-icon"
+                                ><i class="fa-regular fa-trash-can"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!--                {{ form.value.items | json}}-->
+                    <!--               {{totalPrime}}-->
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="table-responsive">
+                      <table border="1" class="table table-newdatatable">
+                        <thead>
+                          <tr>
+                            <th rowspan="2" class="ceneter_cell">
+                              Salaire Brut
+                            </th>
+                            <th rowspan="2" class="ceneter_cell">
+                              Base imposable
+                            </th>
+
+                            <th colspan="2" class="ceneter_cell">
+                              Part Employé
+                            </th>
+                            <!-- <th>ITS (Part Employé)</th> -->
+
+                            <th colspan="2" class="ceneter_cell">
+                              Part Employeur
+                            </th>
+                            <!-- <th>ITS (Part Employeur)</th> -->
+                          </tr>
+
+                          <tr>
+                            <th class="ceneter_cell">CNSS</th>
+                            <th class="ceneter_cell">ITS</th>
+                            <th class="ceneter_cell">CNSS</th>
+                            <th class="ceneter_cell">ITS</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="ceneter_cell">
+                              {{
+                                selectedEmp?.contrats[0].base_categorielle +
+                                  this.selectedEmp?.contrats[0]
+                                    .prime_anciennete +
+                                  strToNumber(
+                                    this.selectedEmp?.contrats[0].total_prime
+                                  )
+                              }}
+                            </td>
+                            <td class="ceneter_cell">
+                              {{
+                                selectedEmp?.contrats[0].base_categorielle +
+                                  this.selectedEmp?.contrats[0]
+                                    .prime_anciennete +
+                                  strToNumber(
+                                    this.selectedEmp?.contrats[0].total_prime
+                                  )
+                              }}
+                            </td>
+
+                            <td class="ceneter_cell">333</td>
+                            <td class="ceneter_cell">100</td>
+                            <td class="ceneter_cell">10000</td>
+                            <td class="ceneter_cell">10000</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button
+                    (click)="onClickSubmitaddEmployeFiche()"
+                    class="btn btn-primary submit-btn"
+                  >
+                    Enregister
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            {{ selectedEmp | json }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
