@@ -781,6 +781,7 @@ export interface getPointContrat {
   duree: number;
   status_id: number;
   libelleStatus: string;
+  etat: string;
 }
 
 export interface getFormation {
