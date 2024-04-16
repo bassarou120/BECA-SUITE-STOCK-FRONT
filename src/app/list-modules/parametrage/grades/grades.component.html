@@ -63,10 +63,10 @@
               <td>{{item.ClasseLib}}</td>
               <td>{{item.base_categorielle}}</td>
               <td>{{item.prime_enciennete}}</td>
-              <td>{{item.taux_retenu_impo}}</td>
-              <td>{{item.taux_retenu_cnss}}</td>
-              <td>{{item.valeur_retenu_impo}}</td>
-              <td>{{item.valeur_retenu_cnss}}</td>
+              <td>{{item.taux_retenu_impo ? item.taux_retenu_impo : "-"}}</td>
+              <td>{{item.taux_retenu_cnss ? item.taux_retenu_cnss : "-"}}</td>
+              <td>{{item.valeur_retenu_impo ? item.valeur_retenu_impo : "-"}}</td>
+              <td>{{item.valeur_retenu_cnss ? item.valeur_retenu_cnss : "-"}}</td>
               <td class="text-end">
                 <div class="dropdown dropdown-action">
                   <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i
