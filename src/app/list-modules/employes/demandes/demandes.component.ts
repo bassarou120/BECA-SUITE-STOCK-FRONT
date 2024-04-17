@@ -94,7 +94,7 @@ export class DemandesComponent implements OnInit {
       date_M: [new Date(), [Validators.required]],
       autre_info: ["Aucun", [Validators.required]],
 
-    }, { validator: this.datesValidator });
+    }, /*{ validator: this.datesValidator }*/);
 
      this.deleteDemandeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -126,8 +126,13 @@ export class DemandesComponent implements OnInit {
     }
     const startDate = startDateControl.value;
     const endDate = endDateControl.value;
-    if (startDate && endDate && startDate >= endDate) {
-      return { datesInvalid: true };
+    if (startDate && endDate && startDate > endDate) {
+      return { endsBeforeStarts: true };
+    }
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    if (startDate && currentDate > startDate) {
+      return { startsBeforeNow: true };
     }
     return null;
   }
@@ -228,12 +233,57 @@ export class DemandesComponent implements OnInit {
       this.data.saveDemande(this.addDemandeForm.value).subscribe(
         (data:any)=>{
           location.reload();
+        },
+        (error: string) => {
+          this.showModal(error);
+          this.addDemandeForm.patchValue({ date_demande: this.convertToDate(this.addDemandeForm.value.date_demande) })
         }
       )
     } else {
       console.log("Désolé le formulaire n'est pas bien renseigné");
     }
   }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+  } else {
+    console.error("Modal element not found!");
+  }
+  }
+
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+  }
+
+
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
@@ -253,9 +303,12 @@ export class DemandesComponent implements OnInit {
       date_M: this.convertToDate(row.date_demande),
     });
     this.selectedTypeDemande = row.type_demande;
-    if(row.type_demande === "congé"  ||  row.type_demande === "absence") {
+    if(row.type_demande === "absence") {
       this.editDemandeForm.patchValue({date_debut: ""});
       this.editDemandeForm.patchValue({date_fin: ""});
+    } else if(row.type_demande === "congé") {
+      this.editDemandeForm.patchValue({date_debut: new Date()});
+      this.editDemandeForm.patchValue({date_fin: this.tomorrowDate()});
     } else if(row.type_demande === "plainte") {
       this.editDemandeForm.patchValue({autre_info: ""});
     }

@@ -308,8 +308,11 @@
                             </div>
                         </div>
 
-                        <div *ngIf="addDemandeForm.errors?.['datesInvalid']" class="text-danger">
-                            La date de fin doit être postérieure à la date de début.
+                        <div *ngIf="addDemandeForm.errors?.['endsBeforeStarts']" class="text-danger">
+                          La date de fin doit être postérieure à la date de début.
+                        </div>
+                        <div *ngIf="addDemandeForm.errors?.['startsBeforeNow']" class="text-danger">
+                          La date de début doit être postérieure à la date actuelle.
                         </div>
                     </div>
 
@@ -370,7 +373,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="type_demande">Type de la demande <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control" [disabled]="true"
@@ -383,67 +386,6 @@
                                     <small
                                         *ngIf="editDemandeForm.get('type_demande')?.invalid && editDemandeForm.get('type_demande')?.touched"
                                         class="text-danger"> *Le type de la demande est obligatoire</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="date_demande">Date de la demande <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input class="form-control" type="text"
-                                        [class.invalid]="editDemandeForm.get('date_demande')?.invalid && editDemandeForm.get('date_demande')?.touched"
-                                        placeholder="{{ editDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_demande" readonly>
-                                        <div> <small class="text-secondary"> {{ editDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}</small> </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="contenue">Contenu de la demande <span class="text-danger">*</span></label>
-                                <textarea class="form-control custom-textarea" rows="4"
-                                          [class.invalid]="editDemandeForm.get('contenue')?.invalid && editDemandeForm.get('contenue')?.touched"
-                                          placeholder="Entrez le contenun de la demande." formControlName="contenue"></textarea>
-                                <div *ngIf="editDemandeForm.get('contenue')?.invalid && editDemandeForm.get('contenue')?.touched">
-                                    <small class="text-danger"> *Le contenue de la demande est obligatoire</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row" *ngIf="editDemandeForm.get('type_demande')!.value === 'congé' || editDemandeForm.get('type_demande')!.value === 'absence'">
-                        <div class="col-sm-4">
-                            <div class="input-block mb-3 date-input1">
-                                <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                        [class.invalid]="editDemandeForm.get('date_debut')?.invalid && editDemandeForm.get('date_debut')?.touched"
-                                        formControlName="date_debut" placeholder="Sélectionner la date de début du congé">
-                                        <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div>
-                                        <small
-                                            *ngIf="editDemandeForm.get('date_debut')?.invalid && editDemandeForm.get('date_debut')?.touched"
-                                            class="text-danger"> *La date de début est obligatoire</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
-                                <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                    [class.invalid]="editDemandeForm.get('date_fin')?.invalid && editDemandeForm.get('date_fin')?.touched"
-                                    formControlName="date_fin" placeholder="Sélectionner la date de fin du congé">
-                                    <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                                    <div>
-                                        <small
-                                            *ngIf="editDemandeForm.get('date_fin')?.invalid && editDemandeForm.get('date_fin')?.touched"
-                                            class="text-danger"> *La data de fin est obligatoire </small>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -480,8 +422,28 @@
                             </div>
                         </div>
 
-                        <div *ngIf="editDemandeForm.errors?.['datesInvalid']" class="text-danger">
-                            La date de fin doit être postérieure à la date de début.
+                        <div class="col-sm-4">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="date_demande">Date de la demande <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control" type="text"
+                                        [class.invalid]="editDemandeForm.get('date_demande')?.invalid && editDemandeForm.get('date_demande')?.touched"
+                                        placeholder="{{ editDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_demande" readonly>
+                                        <div> <small class="text-secondary"> {{ editDemandeForm.get('date_demande')!.value | date: 'MM/dd/yyyy' }}</small> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="contenue">Contenu de la demande <span class="text-danger">*</span></label>
+                                <textarea class="form-control custom-textarea" rows="4"
+                                          [class.invalid]="editDemandeForm.get('contenue')?.invalid && editDemandeForm.get('contenue')?.touched"
+                                          placeholder="Entrez le contenun de la demande." formControlName="contenue"></textarea>
+                                <div *ngIf="editDemandeForm.get('contenue')?.invalid && editDemandeForm.get('contenue')?.touched">
+                                    <small class="text-danger"> *Le contenue de la demande est obligatoire</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -556,3 +518,29 @@
     </div>
 </div>
 <!-- /Delete Department Modal -->
+
+
+
+<!-- Alert Modal -->
+<div class="modal custom-modal-overlay fade" id="alert_modal" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Alerte !</h3>
+          <p></p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+            <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Ok</a>
+            </div>
+            <div class="col-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Alert Modal -->

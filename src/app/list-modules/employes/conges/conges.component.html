@@ -162,7 +162,7 @@
 <!-- /Page Content -->
 
 <!-- Add Congé Modal -->
-<div id="add_conge" class="modal custom-modal fade" role="dialog">
+<div id="add_conge" class="modal custom-modal fade" role="dialog" tabindex="-1"  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -241,8 +241,11 @@
               </div>
             </div>
           </div>
-          <div *ngIf="addCongeForm.errors?.['datesInvalid']" class="text-danger">
+          <div *ngIf="addCongeForm.errors?.['endsBeforeStarts']" class="text-danger">
             La date de fin doit être postérieure à la date de début.
+          </div>
+          <div *ngIf="addCongeForm.errors?.['startsBeforeNow']" class="text-danger">
+            La date de début doit être postérieure à la date actuelle.
           </div>
 
           <div class="submit-section">
@@ -309,11 +312,11 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="date_debut">Date de début <span class="text-danger">*</span></label>
                 <div class="cal-icon">
-                  <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
-                    container=".date-input2"
+                  <input class="form-control datetimepicker" type="text" readonly
+                  placeholder="{{editCongeForm.get('date_debut')!.value | date: 'MM/dd/yyyy' }}"
                     [class.invalid]="editCongeForm.get('date_debut')?.invalid && editCongeForm.get('date_debut')?.touched"
                     formControlName="date_debut">
-                  <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                    <div> <small class="text-secondary"> {{ editCongeForm.get('date_debut')!.value | date: 'MM/dd/yyyy' }}</small> </div>
                   <div *ngIf="editCongeForm.get('date_debut')?.invalid && editCongeForm.get('date_debut')?.touched">
                     <small *ngIf="editCongeForm.get('date_debut')?.invalid && editCongeForm.get('date_debut')?.touched"
                       class="text-danger"> *La date de début est obligatoire</small>
@@ -326,10 +329,10 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="date_fin">Date de fin <span class="text-danger">*</span> </label>
                 <div class="cal-icon">
-                  <input class="form-control datetimepicker" type="text" bsDatepicker container=".date-input2"
+                  <input class="form-control datetimepicker" type="text"
                     [class.invalid]="editCongeForm.get('date_fin')?.invalid && editCongeForm.get('date_fin')?.touched"
-                    formControlName="date_fin">
-                  <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                    placeholder="{{editCongeForm.get('date_fin')!.value | date: 'MM/dd/yyyy' }}" formControlName="date_fin" readonly>
+                    <div> <small class="text-secondary"> {{ editCongeForm.get('date_fin')!.value | date: 'MM/dd/yyyy' }}</small> </div>
                   <div *ngIf="editCongeForm.get('date_fin')?.invalid && editCongeForm.get('date_fin')?.touched">
                     <small *ngIf="editCongeForm.get('date_fin')?.invalid && editCongeForm.get('date_fin')?.touched"
                       class="text-danger"> *La data de fin est obligatoire </small>
@@ -350,9 +353,12 @@
               </div>
             </div>
           </div>
-          <div *ngIf="editCongeForm.errors?.['datesInvalid']" class="text-danger">
-            La date de fin doit être postérieure à la date de début.
+         <!-- <div *ngIf="editCongeForm.errors?.['endsBeforeStarts']" class="text-danger">
+            La date de fin doit être postérieure ou égale à la date de début.
           </div>
+          <div *ngIf="editCongeForm.errors?.['startsBeforeNow']" class="text-danger">
+            La date de début doit être postérieure à la date actuelle.
+          </div> -->
 
           <div class="submit-section">
             <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
@@ -465,3 +471,32 @@
   </div>
 </div>
 <!-- /Delete Department Modal -->
+
+
+
+
+
+
+<!-- Alert Modal -->
+<div class="modal custom-modal-overlay fade" id="alert_modal" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Alerte !</h3>
+          <p></p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+            <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Ok</a>
+            </div>
+            <div class="col-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Alert Modal -->

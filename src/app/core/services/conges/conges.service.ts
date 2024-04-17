@@ -47,7 +47,7 @@ deleteConge(data:any): Observable<any> {
         if (error.error && error.error.error) {
           errorMessage = error.error.error;
         }
-        alert(errorMessage);
+        // alert(errorMessage);
         return throwError(errorMessage);
       })
     );

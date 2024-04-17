@@ -52,7 +52,7 @@ export class DemandeService  {
           if (error.error && error.error.error) {
             errorMessage = error.error.error;
           }
-          alert(errorMessage);
+          // alert(errorMessage);
           return throwError(errorMessage);
         })
       );

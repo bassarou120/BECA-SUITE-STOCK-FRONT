@@ -28,6 +28,7 @@
     "@fullcalendar/list": "^6.0.1",
     "@fullcalendar/timegrid": "^6.0.1",
     "@kolkov/angular-editor": "^3.0.0-beta.0",
+    "@types/bootstrap": "^5.2.10",
     "apexcharts": "^3.46.0",
     "bn-ng-idle": "^2.0.4",
     "bootstrap": "^5.3.1",
