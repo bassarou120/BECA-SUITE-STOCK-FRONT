@@ -202,7 +202,6 @@ export class TypeCongeComponent implements OnInit {
 
 
 
-
   public sortData(sort: Sort) {
     const data = this.lstTypeConges.slice();
 
