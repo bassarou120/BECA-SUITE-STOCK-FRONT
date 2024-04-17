@@ -24,6 +24,8 @@ export class GradesComponent implements OnInit {
   public lstClasse: Array<getClasse> = [];
   public lstImpo: Array<string> = ["Taux Impo en %", "Valeur Impo"];
   public lstCNSS: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
+  public lstIts: Array<string> = ["Taux Impo en %", "Valeur Impo"];
+  public lstcnss: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
   public lstCategorie: Array<getCategorie> = [];
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
@@ -58,12 +60,14 @@ export class GradesComponent implements OnInit {
       classe_id: [0, [Validators.required]],
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
-      taux_retenu_impo: [" ", [Validators.required]],
-      taux_retenu_cnss: [" ", [Validators.required]],
-      valeur_retenu_impo: [" ", [Validators.required]],
-      valeur_retenu_cnss: [" ", [Validators.required]],
+      taux_retenu_its_employe: [" ", [Validators.required]],
+      taux_retenu_cnss_employe: [" ", [Validators.required]],
+      valeur_retenu_its_employe: [" ", [Validators.required]],
+      valeur_retenu_cnss_employe: [" ", [Validators.required]],
       selected: ["Taux Impo en %", [Validators.required]],
       select: ["Taux CNSS en %", [Validators.required]],
+      employe: ["Taux Impo en %", [Validators.required]],
+      selection: ["Taux CNSS en %", [Validators.required]],
     });
      this.editGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -71,10 +75,10 @@ export class GradesComponent implements OnInit {
       classe_id: [0, [Validators.required]],
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
-      taux_retenu_impo: [""],
-      taux_retenu_cnss: [""],
-      valeur_retenu_impo: [""],
-      valeur_retenu_cnss: [""],
+      taux_retenu_its_employe: [""],
+      taux_retenu_cnss_employe: [""],
+      valeur_retenu_its_employe: [""],
+      valeur_retenu_cnss_employe: [""],
     });
      this.deleteGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -86,15 +90,15 @@ export class GradesComponent implements OnInit {
 
       if (this.addGradeForm.valid){
         if (this.addGradeForm.value.selected == "Taux Impo en %") {
-          this.addGradeForm.patchValue({valeur_retenu_impo: ""});
+          this.addGradeForm.patchValue({valeur_retenu_its_employe: ""});
         } else {
-          this.addGradeForm.patchValue({taux_retenu_impo: ""});
+          this.addGradeForm.patchValue({taux_retenu_its_employe: ""});
         }
 
         if (this.addGradeForm.value.select == "Taux CNSS en %") {
-          this.addGradeForm.patchValue({valeur_retenu_cnss: ""});
+          this.addGradeForm.patchValue({valeur_retenu_cnss_employe: ""});
         } else {
-          this.addGradeForm.patchValue({taux_retenu_cnss: ""});
+          this.addGradeForm.patchValue({taux_retenu_cnss_employe: ""});
         }
 
 
@@ -103,6 +107,25 @@ export class GradesComponent implements OnInit {
             location.reload();
           }
         );
+      }if (this.addGradeForm.valid){
+          if (this.addGradeForm.value.employe == "Taux Impo en %") {
+            this.addGradeForm.patchValue({valeur_retenu_its_employeur: ""});
+          } else {
+            this.addGradeForm.patchValue({taux_retenu_its_employeur: ""});
+          }
+
+          if (this.addGradeForm.value.selection == "Taux CNSS en %") {
+            this.addGradeForm.patchValue({valeur_retenu_cnss_employeur: ""});
+          } else {
+            this.addGradeForm.patchValue({taux_retenu_cnss_employeur: ""});
+          }
+
+
+          this.data.saveGrade(this.addGradeForm.value).subscribe(
+            (data:any)=>{
+              location.reload();
+            }
+          );
       }else {
         alert("desole le formulaire n'est pas bien renseigné")
       }
@@ -158,10 +181,10 @@ export class GradesComponent implements OnInit {
       classe_id: row.classe_id,
       base_categorielle: row.base_categorielle,
       prime_enciennete: row.prime_enciennete,
-      taux_retenu_impo: row.taux_retenu_impo,
-      taux_retenu_cnss: row.taux_retenu_cnss,
-      valeur_retenu_impo: row.valeur_retenu_impo,
-      valeur_retenu_cnss: row.valeur_retenu_cnss,
+      taux_retenu_its_employe: row.taux_retenu_impo,
+      taux_retenu_cnss_employe: row.taux_retenu_cnss,
+      valeur_retenu_its_employe: row.valeur_retenu_impo,
+      valeur_retenu_cnss_employe: row.valeur_retenu_cnss,
     });
 
     this.editFormSelectedCategorieId = row.categorie_id;
