@@ -39,21 +39,21 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div  id="to_export">
                 <table matSort (matSortChange)="sortData($event)"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="departmentName">Nom du Rôle</th>
-                            <th class="text-end">Action</th>
+                            <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of lstRole">
                             <td>{{item.id}}</td>
                             <td>{{item.lib}}</td>
-                            <td class="text-end">
+                            <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -142,6 +142,19 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="col-sm-12 col-md-3"></div>
+        <div class="col-sm-12 col-md-6 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-3"></div>
+
     </div>
 </div>
 <!-- /Page Content -->
