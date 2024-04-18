@@ -32,8 +32,8 @@ export class FichepaieService {
     return this.http.get(`${this.url}/fiche_paies/getEmpNeedFichePay`);
   }
 
-  saveContatEmploye(data: any): Observable<Object> {
-    return this.http.post(`${this.url}/contrats`, data);
+  saveFichePaieEmploye(data: any): Observable<Object> {
+    return this.http.post(`${this.url}/fiche_paie`, data);
   }
   validerContatEmploye(id: any, data: any): Observable<Object> {
     return this.http.post(`${this.url}/contrats/valider/${id}`, data);

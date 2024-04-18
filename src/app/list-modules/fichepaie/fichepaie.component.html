@@ -68,37 +68,100 @@
               <tr>
                 <th>#</th>
                 <th>Employé</th>
-                <th>Date</th>
+
                 <th>Salaire base</th>
                 <th>Total Prime</th>
-                <th>Total retenu</th>
+                <th>Total retenue</th>
+                <th>Salaire net</th>
 
-                <th>Status</th>
+                <th>Validation N.1</th>
+                <th>Validation N.2</th>
 
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="
-                  let contrat of curentEmploye?.list_contrat;
-                  let i = index
-                "
-              >
+              <tr *ngFor="let employe of employes_who_has_fiche; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ contrat.num_contrat }}</td>
-                <td>CDD</td>
-                <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td>
-                <td>{{ contrat.date_fin | date : "dd/mm/YYYY" }}</td>
+                <td>{{ employe.nom }} {{ employe.prenom }}</td>
+
+                <!-- <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td> -->
                 <td>
-                  {{ contrat.etat === null ? "Non Valider" : contrat.etat }}
+                  {{
+                    employe.contrats[0].base_categorielle +
+                      employe.contrats[0].prime_anciennete
+                  }}
                 </td>
                 <td>
                   {{
-                    contrat.status === null
-                      ? "En cours de validation"
-                      : contrat.status
+                    strToNumber(employe.contrats[0].total_prime) +
+                      calculateTotalAutrePrime(
+                        employe.fichepaies[0].autre_primes
+                      )
                   }}
+                </td>
+                <td>
+                  {{
+                    ((employe.contrats[0].base_categorielle +
+                      employe.contrats[0].prime_anciennete +
+                      strToNumber(employe.contrats[0].total_prime) +
+                      calculateTotalAutrePrime(
+                        employe.fichepaies[0].autre_primes
+                      )) *
+                      employe.grade.taux_retenu_cnss_employe) /
+                      100 +
+                      employe.grade.valeur_retenu_its_employe +
+                      calculateTotalRetenue(
+                        employe.fichepaies[0].autre_retenues
+                      )
+                  }}
+                </td>
+                <td>
+                  {{
+                    employe.contrats[0].base_categorielle +
+                      employe.contrats[0].prime_anciennete +
+                      strToNumber(employe.contrats[0].total_prime) +
+                      calculateTotalAutrePrime(
+                        employe.fichepaies[0].autre_primes
+                      ) -
+                      ((employe.contrats[0].base_categorielle +
+                        employe.contrats[0].prime_anciennete +
+                        strToNumber(employe.contrats[0].total_prime) +
+                        calculateTotalAutrePrime(
+                          employe.fichepaies[0].autre_primes
+                        )) *
+                        employe.grade.taux_retenu_cnss_employe) /
+                        100 +
+                      employe.grade.valeur_retenu_its_employe +
+                      calculateTotalRetenue(
+                        employe.fichepaies[0].autre_retenues
+                      )
+                  }}
+                </td>
+                <td>
+                  <span
+                    *ngIf="employe.fichepaies[0].validation1 == 1"
+                    class="badge bg-inverse-success"
+                    >OUI</span
+                  >
+                  <span
+                    *ngIf="employe.fichepaies[0].validation1 == 0"
+                    class="badge bg-inverse-warning"
+                    >NON</span
+                  >
+                </td>
+
+                <td>
+                  <span
+                    *ngIf="employe.fichepaies[0].validation2 == 1"
+                    class="badge bg-inverse-success"
+                    >OUI</span
+                  >
+                  <span
+                    *ngIf="employe.fichepaies[0].validation2 == 0"
+                    class="badge bg-inverse-warning"
+                    >NON</span
+                  >
                 </td>
 
                 <td>
@@ -120,28 +183,29 @@
                           data-bs-toggle="modal"
                           data-bs-target="#valide_contrat"
                         >
-                          Valider le contrat</a
+                          Affiche la fiche</a
+                        >
+
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#valide_fiche"
+                        >
+                          Valider Niveau 1</a
                         >
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
+                          data-bs-target="#valide_fiche"
                         >
-                          Rompre le contrat</a
+                          Valider Niveau 2</a
                         >
 
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#valide_contrat"
-                        >
-                          Suspendre le contrat</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
-                          >Supprimer le contrat</a
+                          >Supprimer la fiche</a
                         >
                       </div>
                     </div>
@@ -166,86 +230,134 @@
               <tr>
                 <th>#</th>
                 <th>Employé</th>
-                <th>Date</th>
+
                 <th>Salaire base</th>
                 <th>Total Prime</th>
-                <th>Total retenu</th>
+                <th>Total retenue</th>
+                <th>Salaire net</th>
 
-                <th>Status</th>
+                <th>Validation N.1</th>
+                <th>Validation N.2</th>
 
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <!-- 
-              <tr
-                *ngFor="
-                  let contrat of curentEmploye;
-                  let i = index
-                "
-              >
-                <td>{{ i + 1 }}</td>
-                <td>{{ contrat.num_contrat }}</td>
-                <td>CDD</td>
-                <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td>
-                <td>{{ contrat.date_fin | date : "dd/mm/YYYY" }}</td>
-                <td>
-                  {{ contrat.etat === null ? "Non Valider" : contrat.etat }}
-                </td>
-                <td>
-                  {{
-                    contrat.status === null
-                      ? "En cours de validation"
-                      : contrat.status
-                  }}
-                </td>
+              <tr *ngFor="let employe of employes_who_has_fiche; let i = index">
+                <div
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  <td>{{ employe.nom }} {{ employe.prenom }}</td>
 
-                <td>
-                  <div class="table-actions d-flex">
-                    
+                  <!-- <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td> -->
+                  <td>
+                    {{
+                      employe.contrats[0].base_categorielle +
+                        employe.contrats[0].prime_anciennete
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      strToNumber(employe.contrats[0].total_prime) +
+                        calculateTotalAutrePrime(
+                          employe.fichepaies[0].autre_primes
+                        )
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      ((employe.contrats[0].base_categorielle +
+                        employe.contrats[0].prime_anciennete +
+                        strToNumber(employe.contrats[0].total_prime) +
+                        calculateTotalAutrePrime(
+                          employe.fichepaies[0].autre_primes
+                        )) *
+                        employe.grade.taux_retenu_cnss_employe) /
+                        100 +
+                        employe.grade.valeur_retenu_its_employe +
+                        calculateTotalRetenue(
+                          employe.fichepaies[0].autre_retenues
+                        )
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      employe.contrats[0].base_categorielle +
+                        employe.contrats[0].prime_anciennete +
+                        strToNumber(employe.contrats[0].total_prime) +
+                        calculateTotalAutrePrime(
+                          employe.fichepaies[0].autre_primes
+                        ) -
+                        ((employe.contrats[0].base_categorielle +
+                          employe.contrats[0].prime_anciennete +
+                          strToNumber(employe.contrats[0].total_prime) +
+                          calculateTotalAutrePrime(
+                            employe.fichepaies[0].autre_primes
+                          )) *
+                          employe.grade.taux_retenu_cnss_employe) /
+                          100 +
+                        employe.grade.valeur_retenu_its_employe +
+                        calculateTotalRetenue(
+                          employe.fichepaies[0].autre_retenues
+                        )
+                    }}
+                  </td>
+                  <td>
+                    <span
+                      *ngIf="employe.fichepaies[0].validation1 == 1"
+                      class="badge bg-inverse-success"
+                      >OUI</span
+                    >
+                    <span
+                      *ngIf="employe.fichepaies[0].validation1 == 0"
+                      class="badge bg-inverse-warning"
+                      >NON</span
+                    >
+                  </td>
 
-                    <div class="dropdown">
-                      <a
-                        class="action-icon"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        ><i class="material-icons">more_vert</i></a
-                      >
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
-                        >
-                          Valider le contrat</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
-                        >
-                          Rompre le contrat</a
-                        >
+                  <td>
+                    <span
+                      *ngIf="employe.fichepaies[0].validation2 == 1"
+                      class="badge bg-inverse-success"
+                      >OUI</span
+                    >
+                    <span
+                      *ngIf="employe.fichepaies[0].validation2 == 0"
+                      class="badge bg-inverse-warning"
+                      >NON</span
+                    >
+                  </td>
 
+                  <td>
+                    <div class="table-actions d-flex">
+                      <!-- <a class="delete-table me-2">
+                      <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
+                    </a> -->
+
+                      <div class="dropdown">
                         <a
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
+                          class="action-icon"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          ><i class="material-icons">more_vert</i></a
                         >
-                          Suspendre le contrat</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
-                          >Supprimer le contrat</a
-                        >
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a
+                            class="dropdown-item"
+                            data-bs-toggle="modal"
+                            data-bs-target="#valide_contrat"
+                          >
+                            Afficehe</a
+                          >
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
+                  </td>
+                </div>
               </tr>
-              -->
             </tbody>
           </table>
           <br /><br /><br />
@@ -348,7 +460,11 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="col-md-6">
-                        <h5>Les primes</h5>
+                        <h5>
+                          Les primes ({{
+                            this.selectedEmp?.contrats[0].total_prime
+                          }})
+                        </h5>
                         <ul>
                           <li
                             *ngFor="
@@ -360,23 +476,155 @@
                           </li>
                         </ul>
                         <br />
+
+                        <h5>Autre Indemnités ({{ totalAutrePrime }})</h5>
+
+                        <div class="row" [formGroup]="formAutrePrime">
+                          <div formArrayName="itemsAutrePrimes">
+                            <div
+                              *ngFor="
+                                let item of itemsAutrePrimes.controls;
+                                let i = index
+                              "
+                              [formGroupName]="i"
+                            >
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="input-block mb-3">
+                                    <label class="col-form-label" for="">
+                                      Indemnité {{ i + 1 }}
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="indemnite"
+                                      formControlName="indenmite"
+                                      class="form-control"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="input-block mb-3">
+                                    <label class="col-form-label" for=""
+                                      >Montant {{ i + 1 }}</label
+                                    >
+                                    <input
+                                      type="number"
+                                      id="montant_indemnite"
+                                      (change)="calucleTotalAutrePrime()"
+                                      formControlName="montant_indenmite"
+                                      class="form-control"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-1" style="">
+                                  <br />
+                                  <br />
+                                  <a
+                                    href="javascript:void(0);"
+                                    class="delete-icon"
+                                    (click)="removeAutrePrime(i)"
+                                    ><i class="fa-regular fa-trash-can"></i
+                                  ></a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       <div class="col-md-6">
                         <h5>les retenues sur salaire</h5>
 
                         <ul>
-                          <li>Cotisation CNSS (Permanent) : 500000</li>
-                          <li>ITS : 60000</li>
+                          <li>
+                            Cotisation CNSS ({{
+                              this.selectedEmp?.grade.taux_retenu_cnss_employe
+                            }}%) :
+                            {{
+                              (selectedEmp?.contrats[0].base_categorielle +
+                                this.selectedEmp?.contrats[0].prime_anciennete +
+                                strToNumber(
+                                  this.selectedEmp?.contrats[0].total_prime
+                                ) +
+                                strToNumber(totalAutrePrime) *
+                                  this.selectedEmp?.grade
+                                    .taux_retenu_cnss_employe) /
+                                100
+                            }}
+                          </li>
+                          <li>
+                            ITS :
+                            {{
+                              this.selectedEmp?.grade.valeur_retenu_its_employe
+                            }}
+                          </li>
                           <!-- <li>indemite de transport : 9000</li> -->
                         </ul>
                         <br />
+                        <br />
+
+                        <h5>
+                          Autre retenues sur salaire({{ totalAutreRetenue }})
+                        </h5>
+
+                        <div class="row" [formGroup]="formAutreRetenue">
+                          <div formArrayName="itemsAutreRetenues">
+                            <div
+                              *ngFor="
+                                let item of itemsAutreRetenues.controls;
+                                let i = index
+                              "
+                              [formGroupName]="i"
+                            >
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="input-block mb-3">
+                                    <label class="col-form-label" for="">
+                                      Retenue {{ i + 1 }}
+                                    </label>
+                                    <input
+                                      type="text"
+                                      formControlName="retenue"
+                                      class="form-control"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="input-block mb-3">
+                                    <label class="col-form-label" for=""
+                                      >Montant {{ i + 1 }}</label
+                                    >
+                                    <input
+                                      type="number"
+                                      (change)="calucleTotalAutreRetenue()"
+                                      formControlName="montant"
+                                      class="form-control"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-1" style="">
+                                  <br />
+                                  <br />
+                                  <a
+                                    href="javascript:void(0);"
+                                    class="delete-icon"
+                                    (click)="removeAutreRetenue(i)"
+                                    ><i class="fa-regular fa-trash-can"></i
+                                  ></a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="col-md-6">
                         <div class="add-more">
-                          <a href="javascript:void(0); "
+                          <a
+                            href="javascript:void(0); "
+                            (click)="addAutrePrime()"
                             ><i class="fa-solid fa-plus-circle"></i> ajouter
                             autres primes</a
                           >
@@ -384,7 +632,9 @@
                       </div>
                       <div class="col-md-6">
                         <div class="add-more">
-                          <a href="javascript:void(0); "
+                          <a
+                            href="javascript:void(0); "
+                            (click)="addAutreRetenue()"
                             ><i class="fa-solid fa-plus-circle"></i> ajouter
                             autres retenues</a
                           >
@@ -396,7 +646,7 @@
 
                     <!-- <h3 class="card-title">Les Primes fixes | FCFA</h3> -->
 
-                    <div class="row" [formGroup]="form">
+                    <!-- <div class="row" [formGroup]="form">
                       <div formArrayName="items">
                         <div
                           *ngFor="let item of items.controls; let i = index"
@@ -423,7 +673,7 @@
                                 >
                                 <input
                                   type="number"
-                                  id="montant_indemnite"
+                                  (change)="calucleTotalAutrePrime()"
                                   formControlName="montant_indenmite"
                                   class="form-control"
                                 />
@@ -439,7 +689,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
 
                     <!--                {{ form.value.items | json}}-->
                     <!--               {{totalPrime}}-->
@@ -486,7 +736,8 @@
                                     .prime_anciennete +
                                   strToNumber(
                                     this.selectedEmp?.contrats[0].total_prime
-                                  )
+                                  ) +
+                                  strToNumber(totalAutrePrime)
                               }}
                             </td>
                             <td class="ceneter_cell">
@@ -496,14 +747,51 @@
                                     .prime_anciennete +
                                   strToNumber(
                                     this.selectedEmp?.contrats[0].total_prime
-                                  )
+                                  ) +
+                                  strToNumber(totalAutrePrime)
                               }}
                             </td>
 
-                            <td class="ceneter_cell">333</td>
-                            <td class="ceneter_cell">100</td>
-                            <td class="ceneter_cell">10000</td>
-                            <td class="ceneter_cell">10000</td>
+                            <td class="ceneter_cell">
+                              {{
+                                (selectedEmp?.contrats[0].base_categorielle +
+                                  this.selectedEmp?.contrats[0]
+                                    .prime_anciennete +
+                                  strToNumber(
+                                    this.selectedEmp?.contrats[0].total_prime
+                                  ) +
+                                  strToNumber(totalAutrePrime) *
+                                    this.selectedEmp?.grade
+                                      .taux_retenu_cnss_employe) /
+                                  100
+                              }}
+                            </td>
+                            <td class="ceneter_cell">
+                              {{
+                                this.selectedEmp?.grade
+                                  .valeur_retenu_its_employe
+                              }}
+                            </td>
+                            <td class="ceneter_cell">
+                              {{
+                                (selectedEmp?.contrats[0].base_categorielle +
+                                  this.selectedEmp?.contrats[0]
+                                    .prime_anciennete +
+                                  strToNumber(
+                                    this.selectedEmp?.contrats[0].total_prime
+                                  ) +
+                                  strToNumber(totalAutrePrime) *
+                                    this.selectedEmp?.grade
+                                      .taux_retenu_cnss_employeur) /
+                                  100
+                              }}
+                            </td>
+                            <td class="ceneter_cell">
+                              {{
+                                this.selectedEmp?.grade
+                                  .valeur_retenu_its_employeur
+                              }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -512,21 +800,60 @@
                 </div>
 
                 <div class="submit-section">
-                  <button
-                    (click)="onClickSubmitaddEmployeFiche()"
-                    class="btn btn-primary submit-btn"
-                  >
-                    Enregister
-                  </button>
+                  <button class="btn btn-primary submit-btn">Enregister</button>
                 </div>
               </div>
             </form>
 
-            {{ selectedEmp | json }}
+            <!-- {{ itemsAutreRetenues.value | json }} -->
+
+            <br />
+
+            <!-- {{ selectedEmp | json }} -->
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Valider Contrat Modal -->
+    <div class="modal custom-modal fade" id="valide_fiche" role="dialog">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="form-header">
+              <h3>{{ titreAction }}</h3>
+              <p>Êtes-vous sûr de vouloir{{ titreAction }} ?</p>
+            </div>
+            <div class="modal-btn delete-action">
+              <div class="row">
+                <div class="col-6">
+                  <form [formGroup]="valideFichepaieForm">
+                    <input type="hidden" formControlName="id" />
+                    <input type="hidden" formControlName="action" />
+                    <a
+                      href="javascript:void(0);"
+                      class="btn btn-primary continue-btn"
+                      type="submit"
+                      (click)="onClickSubmitValideFiche()"
+                      >OUI</a
+                    >
+                  </form>
+                </div>
+                <div class="col-6">
+                  <a
+                    href="javascript:void(0);"
+                    data-bs-dismiss="modal"
+                    class="btn btn-primary cancel-btn"
+                    >Annuler</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Delete role Modal -->
   </div>
 </div>
 <!-- /Page Wrapper -->
