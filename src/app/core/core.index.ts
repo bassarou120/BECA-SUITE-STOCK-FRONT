@@ -26,3 +26,5 @@ export * from './services/type-depart/type-depart.service';
 export * from './services/depart-employe/depart-employe.service';
 export * from './services/classes/classes.service';
 export * from './services/point-conge/point-conge.service';
+export * from './services/grades/grades.service';
+export * from './services/point-contrat/point-contrat.service';

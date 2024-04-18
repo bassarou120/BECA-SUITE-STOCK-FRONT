@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Point des Congés et Absences</h3>
+                <h3 class="page-title">Point des Contrats</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Point des congés</li>
+                    <li class="breadcrumb-item active">Point des contrats</li>
                 </ul>
             </div>
             <!-- <div class="col-auto float-end ms-auto">
@@ -46,30 +46,36 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="employeId">Nom de l'Employé</th>
-                            <th mat-sort-header="congesJoui">Jours de congés jouis</th>
-                            <th mat-sort-header="CongesRestant">Jours de congés restants</th>
-                            <th class="text-end">Action</th>
+                            <th mat-sort-header="typeContrat">Type de contrat</th>
+                            <th mat-sort-header="dateSignature">Date de signature</th>
+                            <th mat-sort-header="dureeContrat">Durée (en années)</th>
+                            <th mat-sort-header="etatContrat">Etat du contrat</th>
+                            <th mat-sort-header="statutContrat">Statut du contrat</th>
+                            <!-- <th class="text-end">Action</th> -->
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstPointConge">
-                            <td>{{item.id_employe}}</td>
+                        <tr *ngFor="let item of lstPointContrat">
+                            <td>{{item.id}}</td>
                             <td>{{item.employe}}</td>
-                            <td>{{item.total_jours_conges_joui + item.total_jours_absences_deductibles}}</td>
-                            <td>{{((totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles) <= 0 ) ? 0 : totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles}}</td>
-                            <td class="text-end">
+                            <td>{{item.libelle}}</td>
+                            <td>{{item.date_signature}}</td>
+                            <td>{{item.duree}}</td>
+                            <td>{{item.etat}}</td>
+                            <td>{{item.libelleStatus}}</td>
+                            <!-- <td class="text-end">ibles) <
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="setShownDetails(item)"
+                                        <a class="dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#show_details"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Détails</a>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
                         </tr>
-                        <tr *ngIf="lstPointConge.length === 0">
+                        <tr *ngIf="lstPointContrat.length === 0">
                             <td colspan="10">
                                 <h5 style="text-align: center;">Aucun résultat</h5>
                             </td>
@@ -133,7 +139,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                            lstPointConge.length === 0
+                            lstPointContrat.length === 0
                         }">
                                 <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
@@ -146,94 +152,3 @@
     </div>
 </div>
 <!-- /Page Content -->
-
-
-<!-- Details Modal -->
-<div id="show_details" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Détails des congés est absences déductible de {{ shownPointConge.employe }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="exclusion-1">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <h4>CONGÉS</h4>
-                    <div class="col-sm-12">
-                        <div class="mb-3">
-                        <div>
-                          <table matSort (matSortChange)="sortData($event)" id="table_conges_to_xlsx"
-                              class="table table-striped custom-table datatable mb-0">
-                              <thead>
-                                  <tr>
-                                      <th mat-sort-header="congeName">Libellé du Congé</th>
-                                      <th mat-sort-header="congeStart">Début du Congé</th>
-                                      <th mat-sort-header="congeEnd">Fin du Congé</th>
-                                    <th mat-sort-header="duree">Durée (Jours)</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr *ngFor="let item of shownPointConge.conges_joui">
-                                      <td>{{item.libelle}}</td>
-                                      <td>{{item.date_debut}}</td>
-                                      <td>{{item.date_fin}}</td>
-                                      <td>{{item.jours}}</td>
-                                  </tr>
-                                  <tr *ngIf="shownPointConge.conges_joui.length === 0">
-                                    <td colspan="10">
-                                      <h5 style="text-align: center;">Aucun résultat</h5>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                            </table>
-                                      </div>
-                                      </div>
-                                      <br/>
-                                      <h4>ABSENCES DÉDUCTIBLES</h4>
-                                      <div class="mb-3">
-                                      <div>
-
-                              <table matSort (matSortChange)="sortData($event)" id="table_absences_to_xlsx"
-                                      class="table table-striped custom-table datatable mb-0">
-                                      <thead>
-                                      <tr>
-                                      <th mat-sort-header="congeName">Libellé de l'Absence</th>
-                                      <th mat-sort-header="congeStart">Début de l'Absence</th>
-                                      <th mat-sort-header="congeEnd">Fin de l'Absence</th>
-                                      <th mat-sort-header="duree">Durée (Jours)</th>
-                                      </tr>
-                              </thead>
-                              <tbody>
-                                  <tr *ngFor="let item of shownPointConge.absences_deductibles">
-                                      <td>{{item.libelle}}</td>
-                                      <td>{{item.date_debut}}</td>
-                                      <td>{{item.date_fin}}</td>
-                                      <td>{{item.jours}}</td>
-                                  </tr>
-                                  <tr *ngIf="shownPointConge.absences_deductibles.length === 0">
-                                      <td colspan="10">
-                                          <h5 style="text-align: center;">Aucun résultat</h5>
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <br/>
-                        </div>
-                    </div>
-                    </div>
-
-                    <div class="col-6" id="exclusion-2">
-                    <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
-                    </div>
-                    <div class="col-6" id="exclusion-3">
-                    <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Details Modal -->

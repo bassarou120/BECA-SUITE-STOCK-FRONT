@@ -1,3 +1,4 @@
+import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
@@ -54,6 +55,7 @@ const routes: Routes = [
       { path: "experiences", component: ExperiencesComponent },
       { path: "depart-employe", component: DepartEmployeComponent },
       { path: "point-conge", component: PointCongeComponent },
+      { path: "point-contrat", component: PointContratComponent },
     ],
   },
 ];

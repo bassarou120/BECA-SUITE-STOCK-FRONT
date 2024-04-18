@@ -84,6 +84,10 @@ export class routes {
     return this.baseUrl + '/parametrage/departments';
   }
 
+  public static get grades(): string {
+    return this.baseUrl + '/parametrage/grades';
+  }
+
   public static get poste(): string {
     return this.baseUrl + '/parametrage/postes';
   }
@@ -126,6 +130,10 @@ export class routes {
 
   public static get point_conge(): string {
     return this.baseUrl + '/employes/point-conge';
+  }
+
+  public static get point_contrat(): string {
+    return this.baseUrl + '/employes/point-contrat';
   }
 
 

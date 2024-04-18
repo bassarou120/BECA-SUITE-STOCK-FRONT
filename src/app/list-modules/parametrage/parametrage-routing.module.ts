@@ -13,6 +13,7 @@ import { RoleComponent } from './role/role.component';
 import { ParametrageComponent } from './parametrage.component';
 import { CategorieComponent } from './categorie/categorie.component';
 import { StatutComponent } from './statut/statut.component';
+import { GradesComponent } from './grades/grades.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
     { path: "infos-de-base", component: InfosDeBaseComponent },
     { path: "type-depart", component: TypeDepartComponent },
     { path: "classes", component: ClasseComponent },
+    { path: "grades", component: GradesComponent },
   ],
  }];
 

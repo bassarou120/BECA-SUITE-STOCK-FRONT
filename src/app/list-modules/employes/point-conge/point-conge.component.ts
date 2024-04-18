@@ -1,30 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit,AfterViewInit  } from '@angular/core';
 import { Router } from '@angular/router';
 import { getPointConge, routes, PointCongeService } from 'src/app/core/core.index';
-
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
 
-
+declare var $: any;
 @Component({
   selector: 'app-point-conge',
   templateUrl: './point-conge.component.html',
   styleUrls: ['./point-conge.component.scss']
 })
-export class PointCongeComponent implements OnInit {
+export class PointCongeComponent implements OnInit, AfterViewInit {
   public routes = routes;
   selected = 'option1';
 
-  public totalConges: number = 20;
+  public totalJoursConges: number = 0;
   public shownPointConge: getPointConge = {
     "id_employe": 0,
     "employe": "",
     "conges_joui": [],
     "total_conges_joui": 0,
+    "total_jours_conges_joui": 0,
     "absences_deductibles": [],
-    "total_absences_deductibles": 0
+    "total_absences_deductibles": 0,
+    "total_jours_absences_deductibles": 0,
   };
   public selectedTypeDemande: string = "";
   public lstPointConge: Array<getPointConge> = [];
@@ -44,6 +47,7 @@ export class PointCongeComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
+
   constructor(public router: Router,private data: PointCongeService) {}
 
   ngOnInit(): void {
@@ -57,7 +61,7 @@ export class PointCongeComponent implements OnInit {
 
       this.data.getAllPointsConges().subscribe((res: any) => {
         this.totalData = res.data.total;
-        this.totalConges = res.TOTAL_CONGE;
+        this.totalJoursConges = res.TOTAL_JOURS_CONGE;
 
       if (res && res.data) {
         this.lstPointConge = res.data.map((item: any) => ({
@@ -72,9 +76,12 @@ export class PointCongeComponent implements OnInit {
             libelle: conge.libelle,
             employe: conge.employe,
             status: conge.status,
-            congeJoui: conge.congeJoui
+            congeJoui: conge.congeJoui,
+            etat: conge.etat,
+            jours: conge.jours,
           })),
           total_conges_joui: item.total_conges_joui,
+          total_jours_conges_joui: item.total_jours_conges_joui,
           absences_deductibles: item.absences_deductibles.map((absence: any) => ({
             id: absence.id,
             date_debut: absence.date_debut,
@@ -83,9 +90,11 @@ export class PointCongeComponent implements OnInit {
             type_absence_id: absence.type_absence_id,
             libelle: absence.libelle,
             employe: absence.employe,
-            status: absence.status
+            status: absence.status,
+            jours: absence.jours,
           })),
-          total_absences_deductibles: item.total_absences_deductibles
+          total_absences_deductibles: item.total_absences_deductibles,
+          total_jours_absences_deductibles: item.total_jours_absences_joui,
         }));
       }
 
@@ -98,6 +107,56 @@ export class PointCongeComponent implements OnInit {
     this.shownPointConge = row;
   }
 
+
+  exportToPDF() {
+    const content: HTMLElement | null = document.getElementById('show_details');
+    const pdfname = this.shownPointConge.employe + ".pdf"
+
+    if (content) {
+      const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+      html2canvas(content, {
+        ignoreElements: (element: Element) => {
+          const idsToExclude: string[] = ['exclusion-1', 'exclusion-2', 'exclusion-3'];
+          return idsToExclude.includes(element.id);
+        },
+        scale: 1.75
+      }).then(canvas => {
+        const imageData = canvas.toDataURL('image/jpeg');
+        const imageWidth = 210;
+        const imageHeight = canvas.height * imageWidth / canvas.width;
+
+        const scaleFactor = 1.75;
+        const scaledWidth = imageWidth * scaleFactor;
+        const scaledHeight = imageHeight * scaleFactor;
+
+        pdf.addImage(imageData, 'JPEG', -75, 0, scaledWidth, scaledHeight);
+        pdf.save(pdfname);
+      });
+    } else {
+      console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
+    }
+  }
+
+
+  exportToXLSX() {
+    const table1: HTMLElement | null = document.getElementById('table_conges_to_xlsx');
+    const table2: HTMLElement | null = document.getElementById('table_absences_to_xlsx');
+    const filename = this.shownPointConge.employe + ".xlsx";
+
+    if (table1 && table2) {
+      const wb = XLSX.utils.book_new();
+
+      const ws1 = XLSX.utils.table_to_sheet(table1);
+      XLSX.utils.book_append_sheet(wb, ws1, "Congés Jouis");
+
+      const ws2 = XLSX.utils.table_to_sheet(table2);
+      XLSX.utils.book_append_sheet(wb, ws2, "Absences déductibles");
+
+      XLSX.writeFile(wb, filename);
+    } else {
+      console.error("Une ou les deux tables avec les IDs spécifiés n'ont pas été trouvées.");
+    }
+  }
 
 
 
@@ -176,7 +235,18 @@ export class PointCongeComponent implements OnInit {
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
+
+  ngAfterViewInit(): void {
+    $(document).ready(function () {
+      $('#example').DataTable({
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+      });
+    });
+  }
+
 }
+
+
 export interface pageSelection {
   skip: number;
   limit: number;

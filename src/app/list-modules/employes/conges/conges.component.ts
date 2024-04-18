@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { NgForm } from '@angular/forms';
+
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getConge, routes, CongeService, getTypeConge, getIfCongeJoui, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { getConge, routes, CongeService, getTypeConge, getIfCongeJoui, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {environment} from "../../../../environments/environment";
-
 
 @Component({
   selector: 'app-conges',
@@ -24,6 +23,7 @@ export class CongesComponent implements OnInit {
   public default_status: string = environment.default_statut_for_demands;
 
   public lstStatus: Array<string> = ["Non Traité", "Rejeté", "Approuvé"];
+  public lstEtat: Array<string> = ["À venir", "En cours", "Terminé"];
   public lstValsCongeJoui: Array<getIfCongeJoui> = [{val: 0, lib: "Non"}, {val: 1, lib: "Oui"}];
   public selectedCongeJoui = 0;
   public onModifId: number = 0;
@@ -34,6 +34,7 @@ export class CongesComponent implements OnInit {
   public editFormSelectedTypeCongeId: number = 0;
   public editFormSelectedEmployeId: number = 0;
   public editFormSelectedStatus: string = "";
+  public editFormSelectedEtat: string = "";
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getConge>;
   // pagination variables
@@ -74,8 +75,9 @@ export class CongesComponent implements OnInit {
       date_debut: ["", [Validators.required]],
       date_fin: ["", [Validators.required]],
       status: [this.default_status, [Validators.required]],
+      etat: ["À venir", [Validators.required]],
       congeJoui: [0, [Validators.required]],
-    }, { validator: this.datesValidator });
+    }, /*{ validator: this.datesValidator }*/);
 
      this.deleteCongeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -90,8 +92,13 @@ export class CongesComponent implements OnInit {
     }
     const startDate = startDateControl.value;
     const endDate = endDateControl.value;
-    if (startDate && endDate && startDate >= endDate) {
-      return { datesInvalid: true };
+    if (startDate && endDate && startDate > endDate) {
+      return { endsBeforeStarts: true };
+    }
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    if (startDate && currentDate > startDate) {
+      return { startsBeforeNow: true };
     }
     return null;
   }
@@ -155,14 +162,58 @@ export class CongesComponent implements OnInit {
       this.addCongeForm.patchValue({ date_fin: this.formatDateToString(this.addCongeForm.value.date_fin) });
 
       this.data.saveConge(this.addCongeForm.value).subscribe(
-        (data:any)=>{
+        (data: any)=>{
           location.reload();
+        },
+        (error: string) => {
+          this.showModal(error);
         }
-      )
+      );
     }else {
       console.log("Désolé le formulaire n'est pas bien renseigné")
     }
   }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+  } else {
+    console.error("Modal element not found!");
+  }
+  }
+
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+  }
+
+
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
@@ -182,6 +233,7 @@ export class CongesComponent implements OnInit {
     this.editFormSelectedTypeCongeId = row.type_conges_id;
     this.editFormSelectedEmployeId = row.employe_id;
     this.editFormSelectedStatus = row.status;
+    this.editFormSelectedEtat = row.etat;
     this.onModifId = row.id;
     this.selectedCongeJoui = row.congeJoui;
   }
@@ -307,6 +359,8 @@ export class CongesComponent implements OnInit {
     }
   }
 }
+
+
 export interface pageSelection {
   skip: number;
   limit: number;

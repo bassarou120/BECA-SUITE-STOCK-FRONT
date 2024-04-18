@@ -729,6 +729,8 @@ export interface getConge {
   employe: string;
   status: string;
   congeJoui: boolean;
+  etat:  string;
+  jours: number;
 }
 
 export interface getDemande {
@@ -743,13 +745,47 @@ export interface getDemande {
   employe: string;
 }
 
+export interface getGrade {
+  id: number;
+  lib: string;
+  libelle: string;
+  categorie_id: number;
+  classe_id: number;
+  base_categorielle: number;
+  prime_enciennete: number;
+  taux_retenu_its_employe: number;
+  valeur_retenu_cnss_employe: number;
+  valeur_retenu_its_employe: number;
+  taux_retenu_cnss_employe: number;
+  taux_retenu_its_employeur: number;
+  valeur_retenu_its_employeur: number;
+  taux_retenu_cnss_employeur: number;
+  valeur_retenu_cnss_employeur: number;
+  ClasseLib: string;
+}
+
 export interface getPointConge {
   id_employe: number;
   employe: string;
   conges_joui: getConge[];
   total_conges_joui: number;
+  total_jours_conges_joui: number;
   absences_deductibles: getAbsence[];
   total_absences_deductibles: number;
+  total_jours_absences_deductibles: number;
+}
+
+export interface getPointContrat {
+  id: number;
+  id_employe: number;
+  employe: string;
+  type_contrat_id: number;
+  libelle: string;
+  date_signature: Date;
+  duree: number;
+  status_id: number;
+  libelleStatus: string;
+  etat: string;
 }
 
 export interface getFormation {
@@ -781,6 +817,7 @@ export interface getAbsence {
   libelle: string;
   employe: string;
   status: string;
+  jours: number;
 }
 
 export interface getPlainte {
