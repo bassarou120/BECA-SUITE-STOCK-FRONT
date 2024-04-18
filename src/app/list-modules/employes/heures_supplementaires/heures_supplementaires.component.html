@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div>
-                <table matSort (matSortChange)="sortData($event)"
+                <table matSort (matSortChange)="sortData($event)" id="to_export"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
@@ -49,7 +49,7 @@
                             <th mat-sort-header="dateHeureSup">Date </th>
                             <th mat-sort-header="heuresSup">Nombre d'heures</th>
                             <th mat-sort-header="autreInfo">Autre Infos</th>
-                            <th class="text-end">Action</th>
+                            <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,7 +59,7 @@
                             <td>{{ item.dateH }}</td>
                             <td>{{ item.nombreHeure }}</td>
                             <td>{{ item.autreInfo }}</td>
-                            <td class="text-end">
+                            <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -148,9 +148,22 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-12 col-md-4"></div>
+        <div class="col-sm-12 col-md-4 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4"></div>
+
     </div>
 </div>
 <!-- /Page Content -->
+
 <!-- Add Department Modal -->
 <div id="add_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
