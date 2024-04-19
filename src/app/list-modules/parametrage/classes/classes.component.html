@@ -21,7 +21,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="table-responsive">
+            <div class="table-responsive" id="to_export">
                 <table  matSort
                 (matSortChange)="sortData($event)" class="table table-striped custom-table mb-0">
                     <thead>
@@ -30,7 +30,7 @@
                             <th mat-sort-header="title">Libellé de la classe</th>
                             <th class="borneInf">Borne Inférieure</th>
                             <th class="borneSup">Borne Supérieure</th>
-                            <th class="text-end">Actions</th>
+                            <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +39,7 @@
                             <td>{{row.lib}}</td>
                             <td>{{row.borneInf}}</td>
                             <td>{{row.borneSup}}</td>
-                            <td class="text-end">
+                            <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -160,6 +160,17 @@
                 </div>
               </div>
         </div>
+
+        <div class="col-sm-12 col-md-3"></div>
+        <div class="col-sm-12 col-md-6 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-3"></div>
     </div>
 </div>
 <!-- /Page Content -->
