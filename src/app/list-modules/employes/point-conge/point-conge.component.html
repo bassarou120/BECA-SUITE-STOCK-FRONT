@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div id="example">
-                <table matSort (matSortChange)="sortData($event)"
+                <table matSort (matSortChange)="sortData($event)" id="to_export"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
@@ -48,7 +48,7 @@
                             <th mat-sort-header="employeId">Nom de l'Employé</th>
                             <th mat-sort-header="congesJoui">Jours de congés jouis</th>
                             <th mat-sort-header="CongesRestant">Jours de congés restants</th>
-                            <th class="text-end">Action</th>
+                            <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,7 +57,7 @@
                             <td>{{item.employe}}</td>
                             <td>{{item.total_jours_conges_joui + item.total_jours_absences_deductibles}}</td>
                             <td>{{((totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles) <= 0 ) ? 0 : totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles}}</td>
-                            <td class="text-end">
+                            <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -143,6 +143,18 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-12 col-md-4"></div>
+        <div class="col-sm-12 col-md-4 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF2()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX2()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4"></div>
+
     </div>
 </div>
 <!-- /Page Content -->
