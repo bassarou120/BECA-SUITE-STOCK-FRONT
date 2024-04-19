@@ -896,6 +896,7 @@ export interface getTypeDepart {
 export interface getRole {
   id: number;
   lib: string;
+  niveau: string;
 }
 
 export interface getEmployees {

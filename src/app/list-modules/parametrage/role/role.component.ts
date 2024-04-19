@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { DataService,apiResultFormat, routes, roleService, getRole  } from 'src/app/core/core.index';
+import { FormBuilder } from "@angular/forms";
+import { routes, roleService, getRole  } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -41,95 +41,12 @@ export class RoleComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-
-  public addRoleForm!: FormGroup ;
-  public editRoleForm!: FormGroup
-  public deleteRoleForm!: FormGroup
-
   constructor(private formBuilder: FormBuilder,public router: Router, private data: roleService) {}
 
 
   ngOnInit(): void {
     this.getTableData();
-    this.addRoleForm = this.formBuilder.group({
-      lib: ["", [Validators.required]],
-   });
-   this.editRoleForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-    lib: ["", [Validators.required]],
-  });
-   this.deleteRoleForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
  }
-
- onClickSubmitAddRole(){
-
-  console.log(this.addRoleForm.value)
-
-  if (this.addRoleForm.valid){
-    this.data.saveRole(this.addRoleForm.value).subscribe(
-      (data:any)=>{
-        location.reload();
-      }
-    )
-  }else {
-
-    alert("desole le formulaire n'est pas bien renseigné")
-  }
-
-
-}
-
-onClickSubmitEditRole(){
-  console.log(this.editRoleForm.value)
-
-    if (this.editRoleForm.valid){
-      const id = this.editRoleForm.value.id;
-      this.data.editRole(this.editRoleForm.value).subscribe(
-        (data:any)=>{
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-onClickSubmitDeleteRole(){
-  console.log(this.deleteRoleForm.value)
-
-    if (this.deleteRoleForm.valid){
-      const id = this.deleteRoleForm.value.id;
-      this.data.deleteRole(this.deleteRoleForm.value).subscribe(
-        (data:any)=>{
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-getEditForm(row: any){
-  this.editRoleForm.patchValue({
-   id:row.id,
-   lib:row.lib
-  })
-}
-
-getDeleteForm(row: any){
-  this.deleteRoleForm.patchValue({
-   id:row.id,
-  })
-}
-
 
 
 exportToPDF() {
