@@ -117,7 +117,7 @@
         </div>
     </div>
   -->
-  <!--   
+  <!--
   <div class="row">
     <div class="col-md-12">
       <div class="card-group m-b-30">
@@ -532,7 +532,7 @@
                   <td>{{ emp.date_arrivee | date : "dd/MM/YYYY" }}</td>
                 </tr>
 
-                <!--   
+                <!--
                 <tr>
                   <td>
                     <h2 class="table-avatar">
@@ -654,7 +654,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <a [routerLink]="routes.employee_page">voir Tous les employés</a>
+          <a [routerLink]="routes.employee_page">Voir tous les employés</a>
         </div>
       </div>
     </div>
@@ -687,7 +687,7 @@
                   <td>{{ emp.conge.created_at | date : "dd/MM/YYYY" }}</td>
                 </tr>
 
-                <!--   
+                <!--
                 <tr>
                   <td>
                     <h2>
@@ -777,7 +777,7 @@
                       </div>
                     </div>
                   </td>
-                
+
                 <tr>
                   <td>
                     <h2>
@@ -870,7 +870,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <a [routerLink]="routes.employee_page">voir Tous les plaintes</a>
+          <a [routerLink]="routes.plaintesGRH">Voir toutes les plaintes</a>
         </div>
       </div>
     </div>
@@ -898,16 +898,16 @@
                   "
                 >
                   <td>{{ emp.emplye.nom }} {{ emp.emplye.prenom }}</td>
-                  <td>{{ emp.conge.date_debut | date : "dd/MM/YYYY" }}</td>
-                  <td>{{ emp.conge.date_fin | date : "dd/MM/YYYY" }}</td>
-                  <td>{{ emp.conge.created_at | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.absence.date_debut | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.absence.date_fin | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.absence.created_at | date : "dd/MM/YYYY" }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
         <div class="card-footer">
-          <a [routerLink]="'/employes/conges'">Voir tous les Absences</a>
+          <a [routerLink]="routes.absences">Voir toutes les Absences</a>
         </div>
       </div>
     </div>
