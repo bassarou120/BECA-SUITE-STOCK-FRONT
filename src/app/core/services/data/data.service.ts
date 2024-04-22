@@ -73,11 +73,6 @@ export class DataService {
               route: routes.plaintes,
               base: 'mes-plaintes',
             },
-            {
-              menuValue: 'Heure supplémentaire',
-              route: routes.heures_supplementaires,
-              base: 'heures-supllémetaires',
-            },
 
           ],
         },
@@ -103,6 +98,11 @@ export class DataService {
               menuValue: 'Départ Employé',
               route: routes.depart_employe,
               base: 'depart-employe',
+            },
+            {
+              menuValue: 'Heure supplémentaire',
+              route: routes.heures_supplementaires,
+              base: 'heures-supllémetaires',
             },
             {
               menuValue: 'Les Absences (GRH)',
