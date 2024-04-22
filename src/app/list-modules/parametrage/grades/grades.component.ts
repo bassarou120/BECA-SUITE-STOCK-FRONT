@@ -19,6 +19,8 @@ export class GradesComponent implements OnInit {
 
   public selected: string = "Taux Impo en %";
   public select: string = "Taux CNSS en %";
+  public  employe: string ="Valeur Impo";
+  public selection: string ="Valeur CNSS"
 
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
@@ -64,6 +66,10 @@ export class GradesComponent implements OnInit {
       taux_retenu_cnss_employe: [" ", [Validators.required]],
       valeur_retenu_its_employe: [" ", [Validators.required]],
       valeur_retenu_cnss_employe: [" ", [Validators.required]],
+      taux_retenu_its_employeur: [" ", [Validators.required]],
+      taux_retenu_cnss_employeur: [" ", [Validators.required]],
+      valeur_retenu_its_employeur: [" ", [Validators.required]],
+      valeur_retenu_cnss_employeur: [" ", [Validators.required]],
       selected: ["Taux Impo en %", [Validators.required]],
       select: ["Taux CNSS en %", [Validators.required]],
       employe: ["Taux Impo en %", [Validators.required]],
@@ -79,6 +85,11 @@ export class GradesComponent implements OnInit {
       taux_retenu_cnss_employe: [""],
       valeur_retenu_its_employe: [""],
       valeur_retenu_cnss_employe: [""],
+
+      taux_retenu_its_employeur: [""],
+      taux_retenu_cnss_employeur: [""],
+      valeur_retenu_its_employeur: [""],
+      valeur_retenu_cnss_employeur: [""],
     });
      this.deleteGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
