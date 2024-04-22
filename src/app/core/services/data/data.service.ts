@@ -64,13 +64,6 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
-              menuValue: 'Tous les employés',
-              route: routes.employee_page,
-
-              base: 'employee-page',
-              base2: 'employee-list',
-            },
-            {
               menuValue: 'Mes Demandes',
               route: routes.demandes,
               base: 'demandes',
@@ -81,49 +74,9 @@ export class DataService {
               base: 'mes-plaintes',
             },
             {
-              menuValue: 'Les Congés (GRH)',
-              route: routes.conges,
-              base: 'holidays',
-            },
-            {
-              menuValue: 'Les Absences (GRH)',
-              route: routes.absences,
-              base: 'absences',
-            },
-            {
-              menuValue: 'Les Plaintes (GRH)',
-              route: routes.plaintesGRH,
-              base: 'plaintes',
-            },
-            {
-              menuValue: 'Les Formations (GRH)',
-              route: routes.formationsGRH,
-              base: 'formations',
-            },
-            {
-              menuValue: 'Les Expériences',
-              route: routes.experiences,
-              base: 'experiences',
-            },
-            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
-            },
-            {
-              menuValue: 'Départ Employé',
-              route: routes.depart_employe,
-              base: 'depart-employe',
-            },
-            {
-              menuValue: 'Point des Congés',
-              route: routes.point_conge,
-              base: 'point-conge',
-            },
-            {
-              menuValue: 'Point des Contrats',
-              route: routes.point_contrat,
-              base: 'point-contrat',
             },
 
           ],
@@ -148,9 +101,56 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
+              menuValue: 'Tous les employés',
+              route: routes.employee_page,
+
+              base: 'employee-page',
+              base2: 'employee-list',
+            },
+            {
               menuValue: 'Gestion de paie',
               route: routes.fichePaie,
               base: 'employee-salary',
+            },
+            {
+              menuValue: 'Départ Employé',
+              route: routes.depart_employe,
+              base: 'depart-employe',
+            },
+            {
+              menuValue: 'Les Absences (GRH)',
+              route: routes.absences,
+              base: 'absences',
+            },
+            {
+              menuValue: 'Les Congés (GRH)',
+              route: routes.conges,
+              base: 'holidays',
+            },
+            {
+              menuValue: 'Les Expériences (GRH)',
+              route: routes.experiences,
+              base: 'experiences',
+            },
+            {
+              menuValue: 'Les Formations (GRH)',
+              route: routes.formationsGRH,
+              base: 'formations',
+            },
+            {
+              menuValue: 'Les Plaintes (GRH)',
+              route: routes.plaintesGRH,
+              base: 'plaintes',
+            },
+            {
+              menuValue: 'Point des Congés',
+              route: routes.point_conge,
+              base: 'point-conge',
+            },
+            {
+              menuValue: 'Point des Contrats',
+              route: routes.point_contrat,
+              base: 'point-contrat',
             },
 
           ],
