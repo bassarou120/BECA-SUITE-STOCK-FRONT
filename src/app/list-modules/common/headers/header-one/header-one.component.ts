@@ -11,6 +11,7 @@ import { routes } from 'src/app/core/helpers/routes/routes';
   styleUrls: ['./header-one.component.scss'],
 })
 export class HeaderOneComponent {
+  public loggedUserData = this.getLoggedUserData();
   public base = '';
   public page = '';
   public routes = routes;
@@ -50,6 +51,15 @@ export class HeaderOneComponent {
       this.baricon = true;
     } else {
       this.baricon = false;
+    }
+  }
+
+  private getLoggedUserData() {
+    const userDataString = localStorage.getItem('userDataString');
+    if(userDataString) {
+      return JSON.parse(userDataString);
+    } else {
+      return null;
     }
   }
 

@@ -316,21 +316,21 @@
       >
         <span class="user-img me-2"></span>
         <!-- <img src="assets/img/profiles/avatar-21.jpg" alt="" /> -->
-        <span class="status online"> Admin</span>
+        <span class="status online"> {{ loggedUserData.username }} </span>
       </a>
       <div class="dropdown-menu">
         <a class="dropdown-item" [routerLink]="routes.employeProfile"
-          >My Profile</a
+          >Mon Profil</a
         >
         <a class="dropdown-item" [routerLink]="'/settings/company-settings'"
-          >Settings</a
+          >Paramètres</a
         >
         <a
           class="dropdown-item"
           (click)="logout()"
           (keydown.enter)="logout()"
           tabindex="0"
-          >Logout</a
+          >Se déconnecter</a
         >
       </div>
     </li>
