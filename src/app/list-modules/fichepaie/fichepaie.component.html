@@ -82,17 +82,41 @@
             </thead>
             <tbody>
               <tr *ngFor="let employe of employes_who_has_fiche; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ employe.nom }} {{ employe.prenom }}</td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
+                  {{ i + 1 }}
+                </td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
+                  {{ employe.nom }} {{ employe.prenom }}
+                </td>
 
                 <!-- <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td> -->
-                <td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
                   {{
                     employe.contrats[0].base_categorielle +
                       employe.contrats[0].prime_anciennete
                   }}
                 </td>
-                <td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
                   {{
                     strToNumber(employe.contrats[0].total_prime) +
                       calculateTotalAutrePrime(
@@ -100,7 +124,12 @@
                       )
                   }}
                 </td>
-                <td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
                   {{
                     ((employe.contrats[0].base_categorielle +
                       employe.contrats[0].prime_anciennete +
@@ -116,7 +145,12 @@
                       )
                   }}
                 </td>
-                <td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
                   {{
                     employe.contrats[0].base_categorielle +
                       employe.contrats[0].prime_anciennete +
@@ -138,33 +172,78 @@
                       )
                   }}
                 </td>
-                <td>
-                  <span
-                    *ngIf="employe.fichepaies[0].validation1 == 1"
-                    class="badge bg-inverse-success"
-                    >OUI</span
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
+                  <mat-slide-toggle
+                    color="primary"
+                    (change)="
+                      getValideFicheFormSwitch(
+                        employe.fichepaies[0].id,
+                        'Valider Niveau 1'
+                      )
+                    "
+                    [checked]="
+                      employe.fichepaies[0].validation1 == 1 ? true : false
+                    "
                   >
-                  <span
-                    *ngIf="employe.fichepaies[0].validation1 == 0"
-                    class="badge bg-inverse-warning"
-                    >NON</span
-                  >
+                    <span
+                      *ngIf="employe.fichepaies[0].validation1 == 1"
+                      class="badge bg-inverse-success"
+                      >OUI</span
+                    >
+                    <span
+                      *ngIf="employe.fichepaies[0].validation1 == 0"
+                      class="badge bg-inverse-warning"
+                      >NON</span
+                    >
+                  </mat-slide-toggle>
+                  <!-- 
+                  <mat-slide-toggle [checked]="a.isvedette ==1 ? true:false " (change)="checkCheckBoxvalue($event,a.id)">
+ 
+                                            </mat-slide-toggle> -->
                 </td>
 
-                <td>
-                  <span
-                    *ngIf="employe.fichepaies[0].validation2 == 1"
-                    class="badge bg-inverse-success"
-                    >OUI</span
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
+                  <mat-slide-toggle
+                    color="primary"
+                    (change)="
+                      getValideFicheFormSwitch(
+                        employe.fichepaies[0].id,
+                        'Valider Niveau 2'
+                      )
+                    "
+                    [checked]="
+                      employe.fichepaies[0].validation2 == 1 ? true : false
+                    "
                   >
-                  <span
-                    *ngIf="employe.fichepaies[0].validation2 == 0"
-                    class="badge bg-inverse-warning"
-                    >NON</span
-                  >
+                    <span
+                      *ngIf="employe.fichepaies[0].validation2 == 1"
+                      class="badge bg-inverse-success"
+                      >OUI</span
+                    >
+                    <span
+                      *ngIf="employe.fichepaies[0].validation2 == 0"
+                      class="badge bg-inverse-warning"
+                      >NON</span
+                    >
+                  </mat-slide-toggle>
                 </td>
 
-                <td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 0 ||
+                    employe.fichepaies[0].validation2 == 0
+                  "
+                >
                   <div class="table-actions d-flex">
                     <!-- <a class="delete-table me-2">
                       <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
@@ -180,8 +259,9 @@
                       <div class="dropdown-menu dropdown-menu-right">
                         <a
                           class="dropdown-item"
+                          (click)="initEditeFiche(employe.fichepaies[0].id)"
                           data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
+                          data-bs-target="#add_fiche_modal"
                         >
                           Affiche la fiche</a
                         >
@@ -190,6 +270,12 @@
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#valide_fiche"
+                          (click)="
+                            getValideFicheForm(
+                              employe.fichepaies[0].id,
+                              'Valider Niveau 1'
+                            )
+                          "
                         >
                           Valider Niveau 1</a
                         >
@@ -197,6 +283,12 @@
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#valide_fiche"
+                          (click)="
+                            getValideFicheForm(
+                              employe.fichepaies[0].id,
+                              'Valider Niveau 1'
+                            )
+                          "
                         >
                           Valider Niveau 2</a
                         >
@@ -204,7 +296,13 @@
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
-                          data-bs-target="#valide_contrat"
+                          data-bs-target="#valide_fiche"
+                          (click)="
+                            getValideFicheForm(
+                              employe.fichepaies[0].id,
+                              'Supprimer la fiche'
+                            )
+                          "
                           >Supprimer la fiche</a
                         >
                       </div>
@@ -244,31 +342,82 @@
             </thead>
             <tbody>
               <tr *ngFor="let employe of employes_who_has_fiche; let i = index">
-                <div
+                <td
                   *ngIf="
                     employe.fichepaies[0].validation1 == 1 &&
                     employe.fichepaies[0].validation2 == 1
                   "
                 >
-                  <td>{{ employe.nom }} {{ employe.prenom }}</td>
+                  {{ i + 1 }}
+                </td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  {{ employe.nom }} {{ employe.prenom }}
+                </td>
 
-                  <!-- <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td> -->
-                  <td>
-                    {{
-                      employe.contrats[0].base_categorielle +
-                        employe.contrats[0].prime_anciennete
-                    }}
-                  </td>
-                  <td>
-                    {{
+                <!-- <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td> -->
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  {{
+                    employe.contrats[0].base_categorielle +
+                      employe.contrats[0].prime_anciennete
+                  }}
+                </td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  {{
+                    strToNumber(employe.contrats[0].total_prime) +
+                      calculateTotalAutrePrime(
+                        employe.fichepaies[0].autre_primes
+                      )
+                  }}
+                </td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  {{
+                    ((employe.contrats[0].base_categorielle +
+                      employe.contrats[0].prime_anciennete +
                       strToNumber(employe.contrats[0].total_prime) +
-                        calculateTotalAutrePrime(
-                          employe.fichepaies[0].autre_primes
-                        )
-                    }}
-                  </td>
-                  <td>
-                    {{
+                      calculateTotalAutrePrime(
+                        employe.fichepaies[0].autre_primes
+                      )) *
+                      employe.grade.taux_retenu_cnss_employe) /
+                      100 +
+                      employe.grade.valeur_retenu_its_employe +
+                      calculateTotalRetenue(
+                        employe.fichepaies[0].autre_retenues
+                      )
+                  }}
+                </td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  {{
+                    employe.contrats[0].base_categorielle +
+                      employe.contrats[0].prime_anciennete +
+                      strToNumber(employe.contrats[0].total_prime) +
+                      calculateTotalAutrePrime(
+                        employe.fichepaies[0].autre_primes
+                      ) -
                       ((employe.contrats[0].base_categorielle +
                         employe.contrats[0].prime_anciennete +
                         strToNumber(employe.contrats[0].total_prime) +
@@ -277,35 +426,25 @@
                         )) *
                         employe.grade.taux_retenu_cnss_employe) /
                         100 +
-                        employe.grade.valeur_retenu_its_employe +
-                        calculateTotalRetenue(
-                          employe.fichepaies[0].autre_retenues
-                        )
-                    }}
-                  </td>
-                  <td>
-                    {{
-                      employe.contrats[0].base_categorielle +
-                        employe.contrats[0].prime_anciennete +
-                        strToNumber(employe.contrats[0].total_prime) +
-                        calculateTotalAutrePrime(
-                          employe.fichepaies[0].autre_primes
-                        ) -
-                        ((employe.contrats[0].base_categorielle +
-                          employe.contrats[0].prime_anciennete +
-                          strToNumber(employe.contrats[0].total_prime) +
-                          calculateTotalAutrePrime(
-                            employe.fichepaies[0].autre_primes
-                          )) *
-                          employe.grade.taux_retenu_cnss_employe) /
-                          100 +
-                        employe.grade.valeur_retenu_its_employe +
-                        calculateTotalRetenue(
-                          employe.fichepaies[0].autre_retenues
-                        )
-                    }}
-                  </td>
-                  <td>
+                      employe.grade.valeur_retenu_its_employe +
+                      calculateTotalRetenue(
+                        employe.fichepaies[0].autre_retenues
+                      )
+                  }}
+                </td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  <mat-slide-toggle
+                    disabled="true"
+                    color="primary"
+                    [checked]="
+                      employe.fichepaies[0].validation1 == 1 ? true : false
+                    "
+                  >
                     <span
                       *ngIf="employe.fichepaies[0].validation1 == 1"
                       class="badge bg-inverse-success"
@@ -316,9 +455,26 @@
                       class="badge bg-inverse-warning"
                       >NON</span
                     >
-                  </td>
+                  </mat-slide-toggle>
+                  <!-- 
+                  <mat-slide-toggle [checked]="a.isvedette ==1 ? true:false " (change)="checkCheckBoxvalue($event,a.id)">
+ 
+                                            </mat-slide-toggle> -->
+                </td>
 
-                  <td>
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  <mat-slide-toggle
+                    disabled="true"
+                    color="primary"
+                    [checked]="
+                      employe.fichepaies[0].validation2 == 1 ? true : false
+                    "
+                  >
                     <span
                       *ngIf="employe.fichepaies[0].validation2 == 1"
                       class="badge bg-inverse-success"
@@ -329,37 +485,42 @@
                       class="badge bg-inverse-warning"
                       >NON</span
                     >
-                  </td>
+                  </mat-slide-toggle>
+                </td>
 
-                  <td>
-                    <div class="table-actions d-flex">
-                      <!-- <a class="delete-table me-2">
+                <td
+                  *ngIf="
+                    employe.fichepaies[0].validation1 == 1 &&
+                    employe.fichepaies[0].validation2 == 1
+                  "
+                >
+                  <div class="table-actions d-flex">
+                    <!-- <a class="delete-table me-2">
                       <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
                     </a> -->
 
-                      <div class="dropdown">
+                    <div class="dropdown">
+                      <a
+                        class="action-icon"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="material-icons">more_vert</i></a
+                      >
+                      <div class="dropdown-menu dropdown-menu-right">
                         <a
-                          class="action-icon"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          ><i class="material-icons">more_vert</i></a
+                          class="dropdown-item"
+                          (click)="exportFichePaie(employe.fichepaies[0].id)"
                         >
-                        <div class="dropdown-menu dropdown-menu-right">
-                          <a
-                            class="dropdown-item"
-                            data-bs-toggle="modal"
-                            data-bs-target="#valide_contrat"
-                          >
-                            Afficehe</a
-                          >
-                        </div>
+                          Affiche la fiche</a
+                        >
                       </div>
                     </div>
-                  </td>
-                </div>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
+
           <br /><br /><br />
           <br /><br /><br />
           <br /><br /><br />
@@ -401,8 +562,10 @@
                     >
 
                     <mat-select
+                      *ngIf="editMode == false"
                       class="user-assets select form-control"
                       placeholder="-"
+                      [compareWith]="compareEmployeObjects"
                       [(ngModel)]="selectedEmp"
                       (selectionChange)="selectedEmpChange()"
                       formControlName="employe"
@@ -412,6 +575,19 @@
                         [value]="data"
                       >
                         {{ data.nom }} {{ data.prenom }}
+                      </mat-option>
+                    </mat-select>
+
+                    <mat-select
+                      *ngIf="editMode == true"
+                      class="user-assets select form-control"
+                      placeholder="-"
+                      [compareWith]="compareEmployeObjects"
+                      formControlName="employe_edit"
+                      [(value)]="selectedEmp"
+                    >
+                      <mat-option [value]="selectedEmp" selected>
+                        {{ selectedEmp.nom }} {{ selectedEmp.prenom }}
                       </mat-option>
                     </mat-select>
                   </div>
@@ -625,7 +801,7 @@
                           <a
                             href="javascript:void(0); "
                             (click)="addAutrePrime()"
-                            ><i class="fa-solid fa-plus-circle"></i> ajouter
+                            ><i class="fa-solid fa-plus-circle"></i> Ajouter
                             autres primes</a
                           >
                         </div>
@@ -635,7 +811,7 @@
                           <a
                             href="javascript:void(0); "
                             (click)="addAutreRetenue()"
-                            ><i class="fa-solid fa-plus-circle"></i> ajouter
+                            ><i class="fa-solid fa-plus-circle"></i> Ajouter
                             autres retenues</a
                           >
                         </div>
@@ -699,7 +875,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="table-responsive">
-                      <table border="1" class="table table-newdatatable">
+                      <table border="1" class="table">
                         <thead>
                           <tr>
                             <th rowspan="2" class="ceneter_cell">
@@ -816,13 +992,14 @@
     </div>
 
     <!-- Valider Contrat Modal -->
+
     <div class="modal custom-modal fade" id="valide_fiche" role="dialog">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
             <div class="form-header">
               <h3>{{ titreAction }}</h3>
-              <p>Êtes-vous sûr de vouloir{{ titreAction }} ?</p>
+              <p>Êtes-vous sûr de vouloir {{ titreAction }} ?</p>
             </div>
             <div class="modal-btn delete-action">
               <div class="row">
