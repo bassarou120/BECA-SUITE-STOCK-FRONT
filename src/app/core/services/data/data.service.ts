@@ -82,23 +82,15 @@ export class DataService {
           ],
         },
 
-      ],
-    },
-    {
-      tittle: 'GRH',
-      icon: 'file',
-      showAsTab: false,
-      separateRoute: false,
-      menu: [
-
         {
-          menuValue: 'Fiche de paie',
-          route: routes.payroll,
+          menuValue: 'Employés (GRH)',
+          route: routes.employees,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'money',
-          base: 'payroll',
-          materialicons: 'request_quote',
+          icon: 'user',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Tous les employés',
@@ -106,11 +98,6 @@ export class DataService {
 
               base: 'employee-page',
               base2: 'employee-list',
-            },
-            {
-              menuValue: 'Gestion de paie',
-              route: routes.fichePaie,
-              base: 'employee-salary',
             },
             {
               menuValue: 'Départ Employé',
@@ -151,6 +138,32 @@ export class DataService {
               menuValue: 'Point des Contrats',
               route: routes.point_contrat,
               base: 'point-contrat',
+            },
+          ],
+        },
+
+      ],
+    },
+    {
+      tittle: 'GRH',
+      icon: 'file',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'Fiche de paie',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'money',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Gestion de paie',
+              route: routes.fichePaie,
+              base: 'employee-salary',
             },
 
           ],
