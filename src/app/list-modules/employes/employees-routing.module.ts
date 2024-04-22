@@ -1,3 +1,4 @@
+import { GRHGuard } from './../../core/services/auth/guards.service';
 import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
@@ -33,7 +34,7 @@ const routes: Routes = [
     component: EmployeesComponent,
     children: [
       { path: 'employe-list', component: EmployeListComponent },
-      { path: 'employe-page', component: EmployePageContentComponent },
+      { path: 'employe-page', component: EmployePageContentComponent, canActivate: [GRHGuard] },
       { path: 'employe-profile/:id', component: EmployeeProfileComponent },
       { path: 'leave-admin', component: LeaveAdminComponent },
       { path: 'leave-employee', component: LeaveEmployeeComponent },
