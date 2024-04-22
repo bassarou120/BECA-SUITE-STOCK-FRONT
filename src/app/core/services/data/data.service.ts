@@ -177,54 +177,9 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Type de Congé',
-              route: routes.type_conge,
-              base: 'type-contrat',
-            },
-            {
-              menuValue: 'Type de Contrat',
-              route: routes.type_contrat,
-              base: 'type-contrat',
-            },
-            {
-              menuValue: 'Type de Prime',
-              route: routes.type_prime,
-              base: 'type-prime',
-            },
-            {
-              menuValue: 'Département',
-              route: routes.departement,
-              base: 'departement',
-            },
-            {
-              menuValue: 'Poste',
-              route: routes.poste,
-              base: 'poste',
-            },
-            {
-              menuValue: "Type d'absence",
-              route: routes.typeAbsence,
-              base: 'type-absence',
-            },
-            {
-              menuValue: 'Rôle',
-              route: routes.role,
-              base: 'role',
-            },
-            {
               menuValue: 'Catégorie',
               route: routes.categorie,
               base: 'categorie',
-            },
-            {
-              menuValue: 'Informations de base',
-              route: routes.infos_de_base,
-              base: 'infos-de-base',
-            },
-            {
-              menuValue: 'Type Départ',
-              route: routes.type_depart,
-              base: 'type-depart',
             },
             {
               menuValue: 'Classes',
@@ -232,10 +187,57 @@ export class DataService {
               base: 'classes',
             },
             {
+              menuValue: 'Département',
+              route: routes.departement,
+              base: 'departement',
+            },
+            {
               menuValue: 'Grades',
               route: routes.grades,
               base: 'grades',
             },
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
+            },
+            {
+              menuValue: 'Poste',
+              route: routes.poste,
+              base: 'poste',
+            },
+            {
+              menuValue: 'Rôle',
+              route: routes.role,
+              base: 'role',
+            },
+            {
+              menuValue: 'Type de Contrat',
+              route: routes.type_contrat,
+              base: 'type-contrat',
+            },
+            {
+              menuValue: "Type d'absence",
+              route: routes.typeAbsence,
+              base: 'type-absence',
+            },
+            {
+              menuValue: 'Type de Congé',
+              route: routes.type_conge,
+              base: 'type-contrat',
+            },
+            {
+              menuValue: 'Type Départ',
+              route: routes.type_depart,
+              base: 'type-depart',
+            },
+            {
+              menuValue: 'Type de Prime',
+              route: routes.type_prime,
+              base: 'type-prime',
+            },
+
+
 
             // {
             //   menuValue: 'Statut',
