@@ -762,6 +762,7 @@ export interface getGrade {
   taux_retenu_cnss_employeur: number;
   valeur_retenu_cnss_employeur: number;
   ClasseLib: string;
+  tauxHoraireHeureSup: number;
 }
 
 export interface getPointConge {
