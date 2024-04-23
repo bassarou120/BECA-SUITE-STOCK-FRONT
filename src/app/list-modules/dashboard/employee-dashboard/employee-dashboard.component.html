@@ -7,7 +7,7 @@
           <img alt="" src="assets/img/profiles/avatar-2.jpg" />
         </div>
         <div class="welcome-det">
-          <h3>Bienvenu , John Doe</h3>
+          <h3> Bienvenu, {{ dashboard.employe.nom }} {{ dashboard.employe.prenom }} </h3>
           <!-- <p>Lundi, 20 mars 2024</p> -->
         </div>
       </div>
@@ -34,24 +34,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- <tr
-                    *ngFor="
-                      let emp of dataTableauBord.top10_employe.data;
-                      let i = index
-                    "
-                  >
-                    <td>{{ emp.matricule }}</td>
-                    <td>{{ emp.nom }} {{ emp.prenom }}</td>
-                    <td>{{ emp.titre }}</td>
-                    <td>{{ emp.email }}</td>
-                    <td>{{ emp.date_arrivee | date : "dd/MM/YYYY" }}</td>
-                  </tr> -->
+                  <tr *ngFor="let demande of dashboard.top10_demandes">
+                    <td>{{ demande.id }}</td>
+                    <td>{{ demande.objet }}</td>
+                    <td>{{ demande.contenue }}</td>
+                    <td>{{ demande.status }}</td>
+                    <td>{{ demande.date_demande | date : "dd/MM/YYYY" }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div class="card-footer">
-            <a [routerLink]="'#'">0 demande</a>
+            <a [routerLink]="routes.demandes">Voir toutes mes demandes</a>
           </div>
         </div>
       </div>
@@ -74,24 +69,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- <tr
-                    *ngFor="
-                      let emp of dataTableauBord.top10_employe.data;
-                      let i = index
-                    "
-                  >
-                    <td>{{ emp.matricule }}</td>
-                    <td>{{ emp.nom }} {{ emp.prenom }}</td>
-                    <td>{{ emp.titre }}</td>
-                    <td>{{ emp.email }}</td>
-                    <td>{{ emp.date_arrivee | date : "dd/MM/YYYY" }}</td>
-                  </tr> -->
+                <tr *ngFor="let plainte of dashboard.top10_plaintes">
+                    <td>{{ plainte.id }}</td>
+                    <td>{{ plainte.titre }}</td>
+                    <td>{{ plainte.description }}</td>
+                    <td>{{ (plainte.status) ? plainte.status : "-" }}</td>
+                    <td>{{ plainte.date_M | date : "dd/MM/YYYY" }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div class="card-footer">
-            <a [routerLink]="'/employes/plaintes'">0 plainte</a>
+            <a [routerLink]="routes.plaintes">Voir toutes mes plaintes</a>
           </div>
         </div>
       </div>
@@ -105,16 +95,16 @@
             <div class="card-body">
               <div class="time-list">
                 <div class="dash-stats-list">
-                  <h4>10</h4>
-                  <p>CONGÉ PRIS</p>
+                  <h4>{{ dashboard.conges_info.jours_conges_pris }} jours</h4>
+                  <p>CONGÉS PRIS</p>
                 </div>
                 <div class="dash-stats-list">
-                  <h4>14</h4>
-                  <p>RESTANT</p>
+                  <h4>{{ dashboard.conges_info.TOTAL_JOURS_CONGE - dashboard.conges_info.jours_conges_pris }} jours</h4>
+                  <p>CONGÉS RESTANTS</p>
                 </div>
               </div>
               <div class="request-btn">
-                <a class="btn btn-primary">Demande de congé</a>
+                <a [routerLink]="routes.demandes" class="btn btn-primary">Demande de congé</a>
               </div>
             </div>
           </div>
@@ -125,16 +115,16 @@
             <div class="card-body">
               <div class="time-list">
                 <div class="dash-stats-list">
-                  <h4>10 Heures</h4>
-                  <p>Approuvée</p>
+                  <h4>{{ dashboard.heures_sup_infos.heures_sup_approuves }} Heures</h4>
+                  <p>Approuvées</p>
                 </div>
                 <div class="dash-stats-list">
-                  <h4>15 Houres</h4>
-                  <p>Non Approuvée</p>
+                  <h4>{{ dashboard.heures_sup_infos.heures_sup_non_approuves }} Heures</h4>
+                  <p>Non Approuvées</p>
                 </div>
               </div>
               <div class="request-btn">
-                <a class="btn btn-primary">Ajouter</a>
+                <a [routerLink]="routes.mes_heures_supplementaires" class="btn btn-primary">Ajouter</a>
               </div>
             </div>
           </div>
