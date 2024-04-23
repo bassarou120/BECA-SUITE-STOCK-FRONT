@@ -207,11 +207,6 @@ export class DataService {
               base: 'grades',
             },
             {
-              menuValue: 'Informations de base',
-              route: routes.infos_de_base,
-              base: 'infos-de-base',
-            },
-            {
               menuValue: 'Poste',
               route: routes.poste,
               base: 'poste',
@@ -245,6 +240,11 @@ export class DataService {
               menuValue: 'Type de Prime',
               route: routes.type_prime,
               base: 'type-prime',
+            },
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
             },
 
             // {

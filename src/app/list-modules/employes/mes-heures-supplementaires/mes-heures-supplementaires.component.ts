@@ -95,25 +95,64 @@ export class MesHeuresSupplementairesComponent implements OnInit {
   }
 
   onClickSubmitAddHeureSupplementaire(){
-
-      console.log(this.addHeureSupplementaireForm.value)
+      // console.log(this.addHeureSupplementaireForm.value)
 
       if (this.addHeureSupplementaireForm.valid){
-
       this.addHeureSupplementaireForm.patchValue({ dateH: this.formatDateToString(this.addHeureSupplementaireForm.value.dateH) });
 
         console.log(this.addHeureSupplementaireForm.value);
         this.data.saveHeureSupplementaire(this.addHeureSupplementaireForm.value).subscribe(
           (data:any)=>{
             location.reload();
+          },
+          (error: string) => {
+            this.showModal(error);
           }
         )
-      }else {
-
+      } else {
         console.log("desole le formulaire n'est pas bien renseigné");
       }
-
   }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+    } else {
+      console.error("Modal element not found!");
+    }
+  }
+
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+  }
+
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
@@ -217,11 +256,11 @@ export class MesHeuresSupplementairesComponent implements OnInit {
 
   exportToPDF() {
     const content: HTMLElement | null = document.getElementById('to_export');
-    const pdfname = "Les Heures Supplémentaires.pdf"
+    const pdfname = "Mes Heures Supplémentaires.pdf"
 
     if (content) {
       const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-      const text = "Les Heures Supplémentaires";
+      const text = "Mes Heures Supplémentaires";
       const fontSize = 12; // Taille de la police du texte
       const textWidth = pdf.getTextWidth(text); // Largeur du texte
       const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
@@ -256,7 +295,7 @@ export class MesHeuresSupplementairesComponent implements OnInit {
 
   exportToXLSX() {
     const table: HTMLElement | null = document.getElementById('to_export');
-    const filename = "Les Heures Supplémentaires.xlsx";
+    const filename = "Mes Heures Supplémentaires.xlsx";
 
     if (table) {
       const wb = XLSX.utils.book_new();
@@ -277,7 +316,7 @@ export class MesHeuresSupplementairesComponent implements OnInit {
       });
 
       const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-      XLSX.utils.book_append_sheet(wb, ws1, "Les Heures Supplémentaires");
+      XLSX.utils.book_append_sheet(wb, ws1, "Mes Heures Supplémentaires");
 
       XLSX.writeFile(wb, filename);
     } else {

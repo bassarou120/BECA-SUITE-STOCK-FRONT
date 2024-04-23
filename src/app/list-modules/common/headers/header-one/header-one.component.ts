@@ -74,8 +74,11 @@ export class HeaderOneComponent {
   logout() {
     localStorage.removeItem('LoginData');
     localStorage.removeItem('LoginToken');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
+
   navigation() {
     this.router.navigate([routes.search]);
   }
