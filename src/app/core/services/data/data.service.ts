@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/core/core.index';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import {
@@ -13,9 +14,9 @@ import { HttpClient } from '@angular/common/http';
 export class DataService {
   allAppliedCandidates!: Array<object>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  public sideBar: SideBar[] = [
+  public grhSideBar: SideBar[] = [
     {
       tittle: 'Menu principal',
       icon: 'airplay',
@@ -43,8 +44,6 @@ export class DataService {
             },
           ],
         },
-
-
       ],
     },
     {
@@ -69,6 +68,11 @@ export class DataService {
               base: 'demandes',
             },
             {
+              menuValue: 'Mes Heures Supplémentaires',
+              route: routes.mes_heures_supplementaires,
+              base: 'mes-heures-supllémetaires',
+            },
+            {
               menuValue: 'Mes Plaintes',
               route: routes.plaintes,
               base: 'mes-plaintes',
@@ -76,7 +80,6 @@ export class DataService {
 
           ],
         },
-
         {
           menuValue: 'Employés (GRH)',
           route: routes.employees,
@@ -141,7 +144,6 @@ export class DataService {
             },
           ],
         },
-
       ],
     },
     {
@@ -150,7 +152,6 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
-
         {
           menuValue: 'Fiche de paie',
           route: routes.payroll,
@@ -165,14 +166,10 @@ export class DataService {
               route: routes.fichePaie,
               base: 'employee-salary',
             },
-
           ],
         },
-
-
       ],
     },
-
     {
       tittle: 'PARAMETRAGE',
       icon: 'set',
@@ -210,11 +207,6 @@ export class DataService {
               base: 'grades',
             },
             {
-              menuValue: 'Informations de base',
-              route: routes.infos_de_base,
-              base: 'infos-de-base',
-            },
-            {
               menuValue: 'Poste',
               route: routes.poste,
               base: 'poste',
@@ -249,8 +241,11 @@ export class DataService {
               route: routes.type_prime,
               base: 'type-prime',
             },
-
-
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
+            },
 
             // {
             //   menuValue: 'Statut',
@@ -260,13 +255,77 @@ export class DataService {
 
           ],
         },
-
-
       ],
     },
-
-
   ];
+
+  public employeSideBar: SideBar[] = [
+    {
+      tittle: 'Menu principal',
+      icon: 'airplay',
+      showAsTab: true,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Tableau de bord',
+          route: routes.dashboard,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'dashboard',
+          base: 'dashboard',
+          materialicons: 'home',
+          subMenus: [
+            {
+              menuValue: 'Employé Dashboard',
+              route: routes.employee,
+              base: 'employee',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      tittle: 'Gestion des Employés',
+      icon: 'layers',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Employés',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Mes Demandes',
+              route: routes.demandes,
+              base: 'demandes',
+            },
+            {
+              menuValue: 'Mes Heures Supplémentaires',
+              route: routes.mes_heures_supplementaires,
+              base: 'mes-heures-supllémetaires',
+            },
+            {
+              menuValue: 'Mes Plaintes',
+              route: routes.plaintes,
+              base: 'mes-plaintes',
+            },
+
+          ],
+        },
+      ],
+    },
+  ];
+
+  public sideBar = (this.authService.userRole && this.authService.userRole < 3) ? this.grhSideBar : this.employeSideBar;
+
+
+
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<
     Array<SideBar>
   >(this.sideBar);

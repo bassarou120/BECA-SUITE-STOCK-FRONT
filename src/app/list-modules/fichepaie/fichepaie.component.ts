@@ -5,7 +5,9 @@ import { ContratService } from 'src/app/core/services/contrat/contrat.service';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
 import { FichepaieService } from 'src/app/core/services/fiche-paie/fichepaie.service';
 import { TypeContratService } from 'src/app/core/services/typeContrat/typeContrat.service';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import * as bootstrap from 'bootstrap';
+import * as $ from 'jquery';
 @Component({
   selector: 'app-fichepaie',
   templateUrl: './fichepaie.component.html',
@@ -19,6 +21,9 @@ export class fichepaieComponent implements OnInit {
   employes_who_has_fiche: any;
 
   selectedEmp: any;
+  selectedFiche: any;
+
+  editMode = false;
 
   public addEmployeFichePaieForm!: FormGroup;
   public valideFichepaieForm!: FormGroup;
@@ -39,6 +44,7 @@ export class fichepaieComponent implements OnInit {
       contrat_id: ['', [Validators.required]],
       employe_id: ['', [Validators.required]],
       employe: ['', []],
+      employe_edit: ['', []],
       base_categorielle: ['', []],
       prime_anciennete: ['', []],
       autre_primes: ['', []],
@@ -46,6 +52,8 @@ export class fichepaieComponent implements OnInit {
       autre_retenues: ['', []],
       rappel_emp: ['', []],
       grade: ['', [Validators.required]],
+      edite_fiche_mode: [null, []],
+      fiche_id: [null, []],
     });
 
     this.valideFichepaieForm = this.formBuilder.group({
@@ -163,6 +171,95 @@ export class fichepaieComponent implements OnInit {
     );
   }
 
+  compareEmployeObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
+  initEditeFiche(id: any) {
+    // alert(id);
+    this.editMode = true;
+    this.fichepaieService.getFichepaie(id).subscribe(
+      (response: any) => {
+        // alert(JSON.stringify(response.data[0].employe));
+
+        this.selectedEmp = response.data[0].employe;
+        this.selectedFiche = response.data[0];
+
+        this.addEmployeFichePaieForm.get('edite_fiche_mode')?.setValue(true);
+
+        this.addEmployeFichePaieForm
+          .get('fiche_id')
+          ?.setValue(this.selectedFiche.id);
+
+        this.addEmployeFichePaieForm
+          .get('base_categorielle')
+          ?.setValue(this.selectedFiche.employe.contrats[0].base_categorielle);
+
+        this.addEmployeFichePaieForm
+          .get('grade')
+          ?.setValue(this.selectedFiche.employe.grade.lib);
+        this.addEmployeFichePaieForm
+          .get('grade_id')
+          ?.setValue(this.selectedFiche.employe.grade.id);
+
+        // this.addEmployeFichePaieForm
+        // .get('grade_id')
+        // ?.setValue(this.selectedFiche.employe.grade.id);
+
+        this.addEmployeFichePaieForm
+          .get('employe')
+          ?.setValue(this.selectedFiche.employe);
+
+        this.addEmployeFichePaieForm.get('employe')?.disable();
+
+        this.addEmployeFichePaieForm
+          .get('prime_anciennete')
+          ?.setValue(this.selectedFiche.employe.contrats[0].prime_anciennete);
+
+        this.addEmployeFichePaieForm
+          .get('contrat_id')
+          ?.setValue(this.selectedFiche.employe.contrats[0].id);
+
+        this.addEmployeFichePaieForm
+          .get('employe_id')
+          ?.setValue(this.selectedFiche.employe.id);
+
+        this.addEmployeFichePaieForm
+          .get('rappel_emp')
+          ?.setValue(
+            this.selectedFiche.employe.nom +
+              ' ' +
+              this.selectedFiche.employe.prenom
+          );
+
+        this.selectedFiche.autre_primes.map((prime: any) => {
+          this.itemsAutrePrimes.push(
+            this.formBuilder.group({
+              indenmite: [prime.lib],
+              montant_indenmite: [prime.montant],
+            })
+          );
+        });
+
+        this.calucleTotalAutrePrime();
+
+        this.selectedFiche.autre_retenues.map((retenue: any) => {
+          this.itemsAutreRetenues.push(
+            this.formBuilder.group({
+              retenue: [retenue.lib],
+              montant: [retenue.montant],
+            })
+          );
+        });
+
+        this.calucleTotalAutreRetenue();
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
+
   selectedEmpChange() {
     // alert('je viens de changer');
     this.addEmployeFichePaieForm
@@ -191,6 +288,25 @@ export class fichepaieComponent implements OnInit {
     this.addEmployeFichePaieForm
       .get('rappel_emp')
       ?.setValue(this.selectedEmp.nom + ' ' + this.selectedEmp.prenom);
+  }
+
+  exportFichePaie(id: any) {
+    this.fichepaieService.exportFichepaie(id).subscribe(
+      (response: any) => {
+        alert(response.data);
+        window.open(response.data, '_blank');
+        // alert(JSON.stringify(response));
+        // if (response.success == true) {
+
+        //   location.reload();
+        // } else {
+        //   alert(response.message);
+        // }
+      },
+      (erroe: any) => {
+        alert(JSON.stringify(erroe));
+      }
+    );
   }
 
   onClickSubmitaddEmployeFiche() {
@@ -258,6 +374,8 @@ export class fichepaieComponent implements OnInit {
 
   titreAction: any;
   getValideFicheForm(id: any, action: any) {
+    // $('#valide_fiche').modal('show');
+
     this.valideFichepaieForm.patchValue({
       id: id,
       action: action,
@@ -265,13 +383,23 @@ export class fichepaieComponent implements OnInit {
     this.titreAction = action;
   }
 
+  getValideFicheFormSwitch(id: any, action: any) {
+    this.valideFichepaieForm.patchValue({
+      id: id,
+      action: action,
+    });
+    this.titreAction = action;
+
+    this.onClickSubmitValideFiche();
+  }
+
   onClickSubmitValideFiche() {
     this.valideFichepaieForm.value;
 
-    // alert(JSON.stringify(this.valideContratForm.value));
+    // alert(JSON.stringify(this.valideFichepaieForm.value));
 
-    this.contraService
-      .validerContatEmploye(
+    this.fichepaieService
+      .validerFicheEmploye(
         this.valideFichepaieForm.value.id,
         this.valideFichepaieForm.value
       )

@@ -185,7 +185,8 @@
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner l'employé">
-                                    <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
+                                    [class.mat-selected] ="item.id === loggedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
                                     *ngIf="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched">
@@ -267,8 +268,8 @@
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched"
                                     formControlName="employe_id" placeholder="Selectionner l'employé">
-                                    <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
-                                    [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
+                                    [class.mat-selected] ="item.id === loggedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
                                     *ngIf="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched">
@@ -295,7 +296,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="autreInfo">Autres Informations<span class="text-danger">*</span></label>
                                     <input class="form-control" type="text"
@@ -307,7 +308,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="nombreHeure">Nombre d'heures <span class="text-danger">*</span> </label>
                                     <input class="form-control" type="number"
@@ -319,20 +320,6 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
-                          <div class="input-block mb-3">
-                            <label class="col-form-label" for="status">Statut<span class="text-danger">*</span></label>
-                            <mat-select class="select mat-cust-select form-control"
-                              [class.invalid]="editHeureSupplementaireForm.get('status')?.invalid && editHeureSupplementaireForm.get('status')?.touched"
-                              formControlName="status" placeholder="Selectionner le statut">
-                              <mat-option *ngFor="let item of lstStatuts" [value]="item"
-                                [class.mat-selected]="item === editFormSelectedStatut">{{ item }} </mat-option>
-                            </mat-select>
-                            <div *ngIf="editHeureSupplementaireForm.get('status')?.invalid && editHeureSupplementaireForm.get('status')?.touched">
-                              <small class="text-danger"> *Le statut est obligatoire</small>
-                            </div>
-                          </div>
-                        </div>
                     </div>
 
                     <div class="submit-section">

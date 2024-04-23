@@ -1,3 +1,4 @@
+import { GRHGuard, EmployeGuard } from './../../core/services/auth/guards.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
@@ -11,11 +12,8 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     children: [
-      {
-        path: 'admin',
-        component: AdminDashboardComponent,
-      },
-      { path: 'employee', component: EmployeeDashboardComponent },
+      { path: 'admin', component: AdminDashboardComponent, canActivate: [GRHGuard]},
+      { path: 'employee', component: EmployeeDashboardComponent, canActivate: [EmployeGuard] },
     ],
   },
 ];

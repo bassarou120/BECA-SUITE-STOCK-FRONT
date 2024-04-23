@@ -851,6 +851,7 @@ export interface getHeureSupplementaire {
   autreInfo: string;
   employe_id: number;
   employe: string;
+  status: string;
 }
 
 export interface getDepartEmploye {

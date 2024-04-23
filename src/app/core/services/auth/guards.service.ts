@@ -16,7 +16,7 @@ export class SuperAdminGuard implements CanActivate {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
-    this.router.navigate(['/unauthorized']);
+    this.router.navigate(['/dashboard/employee']);
     return false;
   }
 }
@@ -34,7 +34,7 @@ export class AdminGuard implements CanActivate {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
-    this.router.navigate(['/unauthorized']);
+    this.router.navigate(['/dashboard/employee']);
     return false;
   }
 }
@@ -52,7 +52,7 @@ export class GRHGuard implements CanActivate {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
-    this.router.navigate(['/unauthorized']);
+    this.router.navigate(['/dashboard/employee']);
     return false;
   }
 }

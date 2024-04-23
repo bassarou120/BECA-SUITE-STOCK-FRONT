@@ -1,3 +1,4 @@
+import { MesHeuresSupplementairesComponent } from './mes-heures-supplementaires/mes-heures-supplementaires.component';
 import { GRHGuard, EmployeGuard } from './../../core/services/auth/guards.service';
 import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
@@ -33,9 +34,6 @@ const routes: Routes = [
     path: '',
     component: EmployeesComponent,
     children: [
-      { path: 'employe-list', component: EmployeListComponent },
-      { path: 'employe-page', component: EmployePageContentComponent, canActivate: [GRHGuard] },
-      { path: 'employe-profile/:id', component: EmployeeProfileComponent, canActivate: [GRHGuard] },
       // { path: 'leave-admin', component: LeaveAdminComponent },
       // { path: 'leave-employee', component: LeaveEmployeeComponent },
       // { path: 'leave-settings', component: LeaveSettingsComponent },
@@ -48,6 +46,11 @@ const routes: Routes = [
       // { path: 'shift-list', component: ShiftListComponent },
       { path: "demandes", component: DemandesComponent, canActivate: [EmployeGuard] },
       { path: "mes-plaintes", component: MesPlaintesComponent, canActivate: [EmployeGuard] },
+      { path: "mes-heures-supplementaires", component: MesHeuresSupplementairesComponent, canActivate: [EmployeGuard] },
+
+      { path: 'employe-list', component: EmployeListComponent },
+      { path: 'employe-page', component: EmployePageContentComponent, canActivate: [GRHGuard] },
+      { path: 'employe-profile/:id', component: EmployeeProfileComponent, canActivate: [GRHGuard] },
       { path: 'conges', component: CongesComponent, canActivate: [GRHGuard] },
       { path: 'absences', component: AbsencesComponent, canActivate: [GRHGuard] },
       { path: "plaintes", component: PlaintesComponent, canActivate: [GRHGuard] },
