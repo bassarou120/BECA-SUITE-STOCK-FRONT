@@ -20,6 +20,14 @@ export class HeureSupplementaireService  {
     return this.http.post(`${this.url}/heure_supplementaires`, data);
   }
 
+  getAllUserHeureSupplementaire(data: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/heure_supplementaires/${data}`);
+  }
+
+  getConnectedEmployeID(data: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/getemployeid/${data}`);
+  }
+
   getAllHeureSupplementaire(): Observable<any> {
     return this.http.get<any>(`${this.url}/heure_supplementaires`);
   }

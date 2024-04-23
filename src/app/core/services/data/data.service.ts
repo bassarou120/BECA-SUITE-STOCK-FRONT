@@ -68,6 +68,11 @@ export class DataService {
               base: 'demandes',
             },
             {
+              menuValue: 'Mes Heures Supplémentaires',
+              route: routes.mes_heures_supplementaires,
+              base: 'mes-heures-supllémetaires',
+            },
+            {
               menuValue: 'Mes Plaintes',
               route: routes.plaintes,
               base: 'mes-plaintes',
@@ -299,6 +304,11 @@ export class DataService {
               menuValue: 'Mes Demandes',
               route: routes.demandes,
               base: 'demandes',
+            },
+            {
+              menuValue: 'Mes Heures Supplémentaires',
+              route: routes.mes_heures_supplementaires,
+              base: 'mes-heures-supllémetaires',
             },
             {
               menuValue: 'Mes Plaintes',

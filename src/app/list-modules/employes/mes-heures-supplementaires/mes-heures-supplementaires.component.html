@@ -1,0 +1,362 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Heures Supplémentaires</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+                    <li class="breadcrumb-item active">Heures Supplémentaires</li>
+                </ul>
+            </div>
+            <div class="col-auto float-end ms-auto">
+                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
+                        class="fa-solid fa-plus"></i> Ajouter des Heures Supplémentaires</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table_header">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length">
+                            <label class="col-form-label" for="">
+                                Afficher
+                                <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
+                                    class="form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                Entrées
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <table matSort (matSortChange)="sortData($event)" id="to_export"
+                    class="table table-striped custom-table datatable mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th mat-sort-header="employeeName">Nom de l'employé</th>
+                            <th mat-sort-header="dateHeureSup">Date </th>
+                            <th mat-sort-header="heuresSup">Nombre d'heures</th>
+                            <th mat-sort-header="status">Statut</th>
+                            <th mat-sort-header="autreInfo">Autre Infos</th>
+                            <th class="text-end" id="exclusion-1">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstHeureSupplementaire">
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.employe }}</td>
+                            <td>{{ item.dateH }}</td>
+                            <td>{{ item.nombreHeure }}</td>
+                            <td>{{ item.status }}</td>
+                            <td>{{ item.autreInfo }}</td>
+                            <td class="text-end" id="exclusion-2">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
+                                            data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            Modifier</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
+                                            data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            Supprimer</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="lstHeureSupplementaire.length === 0">
+                            <td colspan="10">
+                                <h5 style="text-align: center;">Aucun résultat</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table_footer">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info">
+                        Affichage de {{ serialNumberArray[0] }} à
+                        {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                        {{ totalData }} Entrées
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7">
+                    <div class="pagination_section">
+                        <ul class="pagination">
+                            <li class="page-item" [ngClass]="{
+                          disabled: currentPage === 1
+                        }">
+                                <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                                    tabindex="-1">Précédent</a>
+                            </li>
+
+                            <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                                <li class="page-item" [class.active]="item === currentPage" [ngClass]="
+                            (pageNumberArray[currentPage - 2] > item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6) ||
+                            (pageNumberArray[currentPage] < item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6 &&
+                              pageNumberArray.length !== item)
+                              ? 'hide-page-no'
+                              : 'show-page-no'
+                          ">
+                                    <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                                        {{ item }}
+                                    </a>
+                                </li>
+                                <li class="page-item" *ngIf="
+                            i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                                <li *ngIf="
+                            i === pageNumberArray.length - 2 &&
+                            pageNumberArray.length > 6
+                          " [hidden]="
+                            currentPage >=
+                              pageNumberArray[pageNumberArray.length - 2] ||
+                            totalData < serialNumberArray[serialNumberArray.length - 1]
+                          " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                            </ng-container>
+
+                            <li class="page-item" [ngClass]="{
+                          disabled:
+                            currentPage ===
+                              pageNumberArray[pageNumberArray.length - 1] ||
+                            lstHeureSupplementaire.length === 0
+                        }">
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-4"></div>
+        <div class="col-sm-12 col-md-4 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4"></div>
+
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Department Modal -->
+<div id="add_department" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter des Heures Supplémentaires</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <form [formGroup]="addHeureSupplementaireForm" (ngSubmit)="onClickSubmitAddHeureSupplementaire()" novalidate>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched"
+                                    formControlName="employe_id" placeholder="Selectionner l'employé">
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
+                                    [class.mat-selected] ="item.id === loggedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched">
+                                    <small
+                                        *ngIf="addHeureSupplementaireForm.get('employe_id')?.invalid && addHeureSupplementaireForm.get('employe_id')?.touched"
+                                        class="text-danger"> *L'employé est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3 date-input1">
+                                <label class="col-form-label" for="dateH">Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
+                                        [class.invalid]="addHeureSupplementaireForm.get('dateH')?.invalid && addHeureSupplementaireForm.get('dateH')?.touched"
+                                        placeholder="Sélectionner la date des heures supplémentaires" formControlName="dateH">
+                                        <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                                    <div> <small
+                                            *ngIf="addHeureSupplementaireForm.get('dateH')?.invalid && addHeureSupplementaireForm.get('dateH')?.touched"
+                                            class="text-danger"> *La date des heurs supplémentaires est obligatoire </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="autreInfo">Autres Informations<span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text"
+                                        [class.invalid]="addHeureSupplementaireForm.get('autreInfo')?.invalid && addHeureSupplementaireForm.get('autreInfo')?.touched"
+                                        placeholder="Informations supplémentaires" formControlName="autreInfo">
+                                    <div> <small *ngIf="addHeureSupplementaireForm.get('autreInfo')?.invalid && addHeureSupplementaireForm.get('autreInfo')?.touched"
+                                            class="text-danger"> *Autres informations est obligatoire</small>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="nombreHeure">Nombre d'heures <span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="number"
+                                    [class.invalid]="addHeureSupplementaireForm.get('nombreHeure')?.invalid && addHeureSupplementaireForm.get('nombreHeure')?.touched"
+                                    placeholder="Entrer le nombre d'heures effectué" formControlName="nombreHeure">
+                                    <div> <small  *ngIf="addHeureSupplementaireForm.get('nombreHeure')?.invalid && addHeureSupplementaireForm.get('nombreHeure')?.touched"
+                                            class="text-danger"> *La valeur entrée est invalide </small>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Department Modal -->
+
+<!-- Edit Department Modal -->
+<div id="edit_department" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier des Heures Supplémentaires</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <form [formGroup]="editHeureSupplementaireForm" (ngSubmit)="onClickSubmitEditHeureSupplementaire()" novalidate>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <input type="hidden" formControlName="id">
+                                <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched"
+                                    formControlName="employe_id" placeholder="Selectionner l'employé">
+                                    <mat-option *ngFor="let item of lstEmploye" [disabled]="true" [value]="item.id"
+                                    [class.mat-selected] ="item.id === loggedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched">
+                                    <small
+                                        *ngIf="editHeureSupplementaireForm.get('employe_id')?.invalid && editHeureSupplementaireForm.get('employe_id')?.touched"
+                                        class="text-danger"> *L'employé est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3 date-input2">
+                                <label class="col-form-label" for="dateH">Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
+                                        [class.invalid]="editHeureSupplementaireForm.get('dateH')?.invalid && editHeureSupplementaireForm.get('dateH')?.touched"
+                                        placeholder="Sélectionner la date des heures supplémentaires" formControlName="dateH">
+                                        <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                                    <div> <small
+                                            *ngIf="editHeureSupplementaireForm.get('dateH')?.invalid && editHeureSupplementaireForm.get('dateH')?.touched"
+                                            class="text-danger"> *La date des heurs supplémentaires est obligatoire </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="autreInfo">Autres Informations<span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text"
+                                        [class.invalid]="editHeureSupplementaireForm.get('autreInfo')?.invalid && editHeureSupplementaireForm.get('autreInfo')?.touched"
+                                        placeholder="Informations supplémentaires" formControlName="autreInfo">
+                                    <div> <small *ngIf="editHeureSupplementaireForm.get('autreInfo')?.invalid && editHeureSupplementaireForm.get('autreInfo')?.touched"
+                                            class="text-danger"> *Autres informations est obligatoire</small>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="nombreHeure">Nombre d'heures <span class="text-danger">*</span> </label>
+                                    <input class="form-control" type="number"
+                                    [class.invalid]="editHeureSupplementaireForm.get('nombreHeure')?.invalid && editHeureSupplementaireForm.get('nombreHeure')?.touched"
+                                    placeholder="Entrer le nombre d'heures effectué" formControlName="nombreHeure">
+                                    <div> <small  *ngIf="editHeureSupplementaireForm.get('nombreHeure')?.invalid && editHeureSupplementaireForm.get('nombreHeure')?.touched"
+                                            class="text-danger"> *La valeur entrée est invalide </small>
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Department Modal -->
+
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_department" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Supprimer les heures supplémentaires</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                          <form [formGroup]="deleteHeureSupplementaireForm" (ngSubmit)="onClickSubmitDeleteHeureSupplementaire()">
+                            <input type="hidden" formControlName="id">
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteHeureSupplementaire()">Supprimer</a>
+                          </form>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Annuler</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Department Modal -->
