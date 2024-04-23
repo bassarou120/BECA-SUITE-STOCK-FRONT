@@ -62,6 +62,7 @@ export class GradesComponent implements OnInit {
       classe_id: [0, [Validators.required]],
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
+      tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: [" ", [Validators.required]],
       taux_retenu_cnss_employe: [" ", [Validators.required]],
       valeur_retenu_its_employe: [" ", [Validators.required]],
@@ -81,6 +82,7 @@ export class GradesComponent implements OnInit {
       classe_id: [0, [Validators.required]],
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
+      tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: [""],
       taux_retenu_cnss_employe: [""],
       valeur_retenu_its_employe: [""],
@@ -138,7 +140,7 @@ export class GradesComponent implements OnInit {
             }
           );
       }else {
-        alert("desole le formulaire n'est pas bien renseigné")
+        //alert("desole le formulaire n'est pas bien renseigné")
       }
 
 
