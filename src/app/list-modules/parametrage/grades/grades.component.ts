@@ -22,6 +22,11 @@ export class GradesComponent implements OnInit {
   public  employe: string ="Valeur Impo";
   public selection: string ="Valeur CNSS"
 
+  public selectedEdit: string = "Taux Impo en %";
+  public selectEdit: string = "Taux CNSS en %";
+  public  employeEdit: string ="Valeur Impo";
+  public selectionEdit: string ="Valeur CNSS"
+
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
   public lstImpo: Array<string> = ["Taux Impo en %", "Valeur Impo"];
@@ -83,15 +88,19 @@ export class GradesComponent implements OnInit {
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
       tauxHoraireHeureSup: ["", [Validators.required]],
-      taux_retenu_its_employe: [""],
-      taux_retenu_cnss_employe: [""],
-      valeur_retenu_its_employe: [""],
-      valeur_retenu_cnss_employe: [""],
+      taux_retenu_its_employe: [" ", [Validators.required]],
+      taux_retenu_cnss_employe: [" ", [Validators.required]],
+      valeur_retenu_its_employe: [" ", [Validators.required]],
+      valeur_retenu_cnss_employe: [" ", [Validators.required]],
+      taux_retenu_its_employeur: [" ", [Validators.required]],
+      taux_retenu_cnss_employeur: [" ", [Validators.required]],
+      valeur_retenu_its_employeur: [" ", [Validators.required]],
+      valeur_retenu_cnss_employeur: [" ", [Validators.required]],
 
-      taux_retenu_its_employeur: [""],
-      taux_retenu_cnss_employeur: [""],
-      valeur_retenu_its_employeur: [""],
-      valeur_retenu_cnss_employeur: [""],
+      selectedEdit: ["Taux Impo en %", [Validators.required]],
+      selectEdit: ["Taux CNSS en %", [Validators.required]],
+      employeEdit: ["Taux Impo en %", [Validators.required]],
+      selectionEdit: ["Taux CNSS en %", [Validators.required]],
     });
      this.deleteGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -147,15 +156,50 @@ export class GradesComponent implements OnInit {
   }
 
   onClickSubmitEditGrade(){
-    console.log(this.editGradeForm.value)
+    // console.log(this.editGradeForm.value)
+    //   if (this.editGradeForm.valid){
+    //     const id = this.editGradeForm.value.id;
+    //     this.data.editGrade(this.editGradeForm.value).subscribe(
+    //       (data:any)=>{
       if (this.editGradeForm.valid){
-        const id = this.editGradeForm.value.id;
+        if (this.editGradeForm.value.selectedEdit == "Taux Impo en %") {
+          this.editGradeForm.patchValue({valeur_retenu_its_employe: ""});
+        } else {
+          this.editGradeForm.patchValue({taux_retenu_its_employe: ""});
+        }
+
+        if (this.editGradeForm.value.selectEdit == "Taux CNSS en %") {
+          this.editGradeForm.patchValue({valeur_retenu_cnss_employe: ""});
+        } else {
+          this.editGradeForm.patchValue({taux_retenu_cnss_employe: ""});
+        }
+
+
         this.data.editGrade(this.editGradeForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
-        )
-        console.log("success")
+        );
+      }if (this.editGradeForm.valid){
+          if (this.editGradeForm.value.employeEdit == "Taux Impo en %") {
+            this.editGradeForm.patchValue({valeur_retenu_its_employeur: ""});
+          } else {
+            this.editGradeForm.patchValue({taux_retenu_its_employeur: ""});
+          }
+
+          if (this.editGradeForm.value.selectionEdit == "Taux CNSS en %") {
+            this.editGradeForm.patchValue({valeur_retenu_cnss_employeur: ""});
+          } else {
+            this.editGradeForm.patchValue({taux_retenu_cnss_employeur: ""});
+          }
+
+
+          this.data.editGrade(this.editGradeForm.value).subscribe(
+            (data:any)=>{
+            location.reload();
+          }
+        );
+        //console.log("success")
       }else {
 
         alert("desole le formulaire n'est pas bien renseigné")
