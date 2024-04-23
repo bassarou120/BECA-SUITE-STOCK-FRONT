@@ -48,6 +48,7 @@
                             <th mat-sort-header="employeeName">Nom de l'employé</th>
                             <th mat-sort-header="dateHeureSup">Date </th>
                             <th mat-sort-header="heuresSup">Nombre d'heures</th>
+                            <th mat-sort-header="status">Statut</th>
                             <th mat-sort-header="autreInfo">Autre Infos</th>
                             <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
@@ -58,6 +59,7 @@
                             <td>{{ item.employe }}</td>
                             <td>{{ item.dateH }}</td>
                             <td>{{ item.nombreHeure }}</td>
+                            <td>{{ item.status }}</td>
                             <td>{{ item.autreInfo }}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
@@ -293,7 +295,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="autreInfo">Autres Informations<span class="text-danger">*</span></label>
                                     <input class="form-control" type="text"
@@ -305,7 +307,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="nombreHeure">Nombre d'heures <span class="text-danger">*</span> </label>
                                     <input class="form-control" type="number"
@@ -315,6 +317,21 @@
                                             class="text-danger"> *La valeur entrée est invalide </small>
                                     </div>
                             </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="status">Statut<span class="text-danger">*</span></label>
+                            <mat-select class="select mat-cust-select form-control"
+                              [class.invalid]="editHeureSupplementaireForm.get('status')?.invalid && editHeureSupplementaireForm.get('status')?.touched"
+                              formControlName="status" placeholder="Selectionner le statut">
+                              <mat-option *ngFor="let item of lstStatuts" [value]="item"
+                                [class.mat-selected]="item === editFormSelectedStatut">{{ item }} </mat-option>
+                            </mat-select>
+                            <div *ngIf="editHeureSupplementaireForm.get('status')?.invalid && editHeureSupplementaireForm.get('status')?.touched">
+                              <small class="text-danger"> *Le statut est obligatoire</small>
+                            </div>
+                          </div>
                         </div>
                     </div>
 
@@ -327,6 +344,7 @@
     </div>
 </div>
 <!-- /Edit Department Modal -->
+
 <!-- Delete Department Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
     <div class="modal-dialog modal-dialog-centered">

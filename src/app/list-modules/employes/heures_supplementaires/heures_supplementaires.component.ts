@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getHeureSupplementaire, routes, HeureSupplementaireService, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { getHeureSupplementaire, routes, HeureSupplementaireService, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,9 +25,11 @@ export class HeuresSupplementairesComponent implements OnInit {
   mon_dep: any;
 
 
+  public lstStatuts: Array<string> = ["Non Approuvé", "Approuvé"];
   public lstHeureSupplementaire: Array<getHeureSupplementaire> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: Number = 0;
+  public editFormSelectedStatut: string = "";
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getHeureSupplementaire>;
   // pagination variables
@@ -57,13 +59,15 @@ export class HeuresSupplementairesComponent implements OnInit {
       nombreHeure: [1, [Validators.required]],
       autreInfo: ["Aucun", [Validators.required]],
       employe_id: [0, [Validators.required]],
+      status: ["Non Approuvé", [Validators.required]],
     });
-     this.editHeureSupplementaireForm = this.formBuilder.group({
+    this.editHeureSupplementaireForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       dateH: ["", [Validators.required]],
       nombreHeure: [0, [Validators.required]],
       autreInfo: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
+      status: ["Non Approuvé", [Validators.required]],
     });
      this.deleteHeureSupplementaireForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -111,8 +115,10 @@ export class HeuresSupplementairesComponent implements OnInit {
       autreInfo: row.autreInfo,
       nombreHeure: row.nombreHeure,
       dateH: this.convertToDate(row.dateH),
+      status: row.status,
     })
     this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedStatut = row.status;
   }
 
   onClickSubmitEditHeureSupplementaire(){
