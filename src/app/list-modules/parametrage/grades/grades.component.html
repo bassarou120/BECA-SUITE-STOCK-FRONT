@@ -48,14 +48,15 @@
               <th mat-sort-header="ClasseName">Classe</th>
               <th mat-sort-header="BaseName">Base Catégorielle</th>
               <th mat-sort-header="Prime">Prime</th>
+              <th mat-sort-header="Taux">Taux horraire</th>
               <th mat-sort-header="impotxname">Its employé %</th>
               <th mat-sort-header="cnsstxname">CNSS employé %</th>
               <th mat-sort-header="valeurImpoName">Valeur its employé</th>
               <th mat-sort-header="valeurCnssName">Valeur cnss employé</th>
-              <th mat-sort-header="impotxname">Its employeur %</th>
-              <th mat-sort-header="cnsstxname">CNSS employeur %</th>
-              <th mat-sort-header="valeurImpoName">Valeur its employeur</th>
-              <th mat-sort-header="valeurCnssName">Valeur cnss employeur</th>
+              <th mat-sort-header="impotxnameR">Its employeur %</th>
+              <th mat-sort-header="cnsstxnameR">CNSS employeur %</th>
+              <th mat-sort-header="valeurImpoNameR">Valeur its employeur</th>
+              <th mat-sort-header="valeurCnssNameR">Valeur cnss employeur</th>
               <th class="text-end">Action</th>
             </tr>
           </thead>
@@ -67,6 +68,7 @@
               <td>{{item.ClasseLib}}</td>
               <td>{{item.base_categorielle}}</td>
               <td>{{item.prime_enciennete}}</td>
+              <td>{{item.tauxHoraireHeureSup}}</td>
               <td>{{item.taux_retenu_its_employe ? item.taux_retenu_its_employe : "-"}}</td>
               <td>{{item.taux_retenu_cnss_employe ? item.taux_retenu_cnss_employe : "-"}}</td>
               <td>{{item.valeur_retenu_its_employe ? item.valeur_retenu_its_employe : "-"}}</td>
@@ -81,10 +83,10 @@
                       class="material-icons">more_vert</i></a>
                   <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                      data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
+                      data-bs-target="#edit_grade"><i class="fa-solid fa-pencil m-r-5"></i>
                       Modifier</a>
                     <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                      data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
+                      data-bs-target="#delete_grade"><i class="fa-regular fa-trash-can m-r-5"></i>
                       Supprimer</a>
                   </div>
                 </div>
@@ -248,8 +250,23 @@
                 </div>
               </div>
             </div>
+          
+          <div class="col-sm-12">
+            <div class="input-block mb-3">
+              <label class="col-form-label" for="tauxHoraireHeureSup"> Taux horaire heure supplémentaire <span
+                  class="text-danger">*</span></label>
+              <input class="form-control" type="number"
+                [class.invalid]="addGradeForm.get('tauxHoraireHeureSup')?.invalid && addGradeForm.get('tauxHoraireHeureSup')?.touched"
+                placeholder="Entrer le taux horaire " formControlName="tauxHoraireHeureSup">
+              <div
+                *ngIf="addGradeForm.get('tauxHoraireHeureSup')?.invalid && addGradeForm.get('tauxHoraireHeureSup')?.touched">
+                <small
+                  *ngIf="addGradeForm.get('tauxHoraireHeureSup')?.invalid && addGradeForm.get('tauxHoraireHeureSup')?.touched"
+                  class="text-danger"> *Le taux horaire est obligatoire</small>
+              </div>
+            </div>
           </div>
-
+        </div>
           <div class="row">
             <div class="col-sm-6">
               <div class="input-block mb-3">
@@ -463,7 +480,7 @@
         <!-- /Add Department Modal -->
 
         <!-- Edit Department Modal -->
-        <div id="edit_department" class="modal custom-modal fade" role="dialog">
+        <div id="edit_grade" class="modal custom-modal fade" role="dialog">
           <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -543,71 +560,225 @@
                         </div>
                       </div>
                     </div>
+                    <div class="col-sm-6">
+                      <div class="input-block mb-3">
+                        <label class="col-form-label" for="tauxHoraireHeureSup">Taux horaire <span
+                            class="text-danger">*</span></label>
+                        <input class="form-control" type="number"
+                          [class.invalid]="editGradeForm.get('tauxHoraireHeureSup')?.invalid && editGradeForm.get('tauxHoraireHeureSup')?.touched"
+                          placeholder="Entrer le taux horaire " formControlName="tauxHoraireHeureSup">
+                        <div
+                          *ngIf="editGradeForm.get('tauxHoraireHeureSup')?.invalid && editGradeForm.get('tauxHoraireHeureSup')?.touched">
+                          <small
+                            *ngIf="editGradeForm.get('tauxHoraireHeureSup')?.invalid && editGradeForm.get('tauxHoraireHeureSup')?.touched"
+                            class="text-danger"> *Le taux horraire est obligatoire</small>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="input-block mb-3">
-                        <label class="col-form-label" for="taux_retenu_impo">Taux retenu impôt en %<span
+                        <label class="col-form-label" for="selectedEdit">Selectionner taux ou valeur Its pour employé <span
                             class="text-danger">*</span></label>
-                        <input class="form-control" type="number"
-                          [class.invalid]="editGradeForm.get('taux_retenu_impo')?.invalid && editGradeForm.get('taux_retenu_impo')?.touched"
-                          placeholder="Entrer le taux retenu impôt " formControlName="taux_retenu_impo">
-                        <div
-                          *ngIf="editGradeForm.get('taux_retenu_impo')?.invalid && editGradeForm.get('taux_retenu_impo')?.touched">
-                          <small
-                            *ngIf="editGradeForm.get('taux_retenu_impo')?.invalid && editGradeForm.get('taux_retenu_impo')?.touched"
-                            class="text-danger"> *Le taux retenu impôt est obligatoire</small>
+                        <mat-select class="select mat-cust-select form-control"
+                          [class.invalid]="editGradeForm.get('selectedEdit')?.invalid && editGradeForm.get('selectedEdit')?.touched"
+                          formControlName="selectedEdit" placeholder="Selectionner taux ou valeur pour Impo">
+                          <mat-option *ngFor="let item of lstImpo" [value]="item"
+                          [class.mat-selected]="item === selectedEdit">{{ item }} </mat-option>
+                        </mat-select>
+                        <div>
+                          <small *ngIf="editGradeForm.get('selectedEdit')?.invalid && editGradeForm.get('selectedEdit')?.touched"
+                            class="text-danger"> *Impo est obligatoire</small>
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="input-block mb-3">
-                        <label class="col-form-label" for="valeur_retenu_impo">Valeur retenu impôt<span
-                            class="text-danger">*</span></label>
-                        <input class="form-control" type="number"
-                          [class.invalid]="editGradeForm.get('valeur_retenu_impo')?.invalid && editGradeForm.get('valeur_retenu_impo')?.touched"
-                          placeholder="Entrer la valeur retenu impôt " formControlName="valeur_retenu_impo">
-                        <div
-                          *ngIf="editGradeForm.get('valeur_retenu_impo')?.invalid && editGradeForm.get('valeur_retenu_impo')?.touched">
-                          <small
-                            *ngIf="editGradeForm.get('valeur_retenu_impo')?.invalid && editGradeForm.get('valeur_retenu_impo')?.touched"
-                            class="text-danger"> *La valeur retenu impôt est obligatoire</small>
+        
+                      <div class="col-sm-6" *ngIf="editGradeForm.get('selectedEdit')!.value === 'Taux Impo en %'">
+                        <div class="input-block mb-3">
+                          <label class="col-form-label" for="Taux Impo en %">Taux de Its en % <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" type="number"
+                            [class.invalid]="editGradeForm.get('taux_retenu_its_employe')?.invalid && editGradeForm.get('taux_retenu_its_employe')?.touched"
+                            placeholder="Entrer le taux d'Impo" formControlName="taux_retenu_its_employe">
+                          <div
+                            *ngIf="editGradeForm.get('taux_retenu_its_employe')?.invalid && editGradeForm.get('taux_retenu_its_employe')?.touched">
+                            <small
+                              *ngIf="editGradeForm.get('taux_retenu_its_employe')?.invalid && editGradeForm.get('taux_retenu_its_employe')?.touched"
+                              class="text-danger"> *Le taux d'impo est obligatoire</small>
+                          </div>
                         </div>
                       </div>
-                    </div>
+        
+                        <div class="col-sm-6" *ngIf="editGradeForm.get('selectedEdit')!.value === 'Valeur Impo'">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="Valeur Impo">Valeur retenu Its <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" type="number"
+                              [class.invalid]="editGradeForm.get('valeur_retenu_its_employe')?.invalid && editGradeForm.get('valeur_retenu_its_employe')?.touched"
+                              placeholder="Entrer la valeur retenue pour Impo" formControlName="valeur_retenu_its_employe">
+                            <div
+                              *ngIf="editGradeForm.get('valeur_retenu_its_employe')?.invalid && editGradeForm.get('valeur_retenu_its_employe')?.touched">
+                              <small
+                                *ngIf="editGradeForm.get('valeur_retenu_its_employe')?.invalid && editGradeForm.get('valeur_retenu_its_employe')?.touched"
+                                class="text-danger"> *La valeur d'impo est obligatoire</small>
+                            </div>
+                          </div>
+                        </div>
                   </div>
+
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="input-block mb-3">
-                        <label class="col-form-label" for="taux_retenu_cnss">Taux retenu CNSS en %<span
+                        <label class="col-form-label" for="selectEdit">Selectionner taux ou valeur CNSS pour employe <span
                             class="text-danger">*</span></label>
-                        <input class="form-control" type="number"
-                          [class.invalid]="editGradeForm.get('taux_retenu_cnss')?.invalid && editGradeForm.get('taux_retenu_cnss')?.touched"
-                          placeholder="Entrer le taux retenu CNSS " formControlName="taux_retenu_cnss">
-                        <div
-                          *ngIf="editGradeForm.get('taux_retenu_cnss')?.invalid && editGradeForm.get('taux_retenu_cnss')?.touched">
-                          <small
-                            *ngIf="editGradeForm.get('taux_retenu_cnss')?.invalid && editGradeForm.get('taux_retenu_cnss')?.touched"
-                            class="text-danger"> *Le taux retenu CNSS est obligatoire</small>
+                        <mat-select class="select mat-cust-select form-control"
+                          [class.invalid]="editGradeForm.get('selectEdit')?.invalid && editGradeForm.get('selectEdit')?.touched"
+                          formControlName="selectEdit" placeholder="Selectionner taux ou valeur pour CNSS">
+                          <mat-option *ngFor="let item of lstCNSS" [value]="item"
+                          [class.mat-selected]="item === select">{{ item }} </mat-option>
+                        </mat-select>
+                        <div>
+                          <small *ngIf="editGradeForm.get('selectEdit')?.invalid && addGradeForm.get('selectEdit')?.touched"
+                            class="text-danger"> *Info CNSS est obligatoire</small>
                         </div>
                       </div>
                     </div>
+        
+                      <div class="col-sm-6" *ngIf="editGradeForm.get('selectEdit')!.value === 'Taux CNSS en %'">
+                        <div class="input-block mb-3">
+                          <label class="col-form-label" for="Taux CNSS en %">Taux CNSS en % <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" type="number"
+                            [class.invalid]="editGradeForm.get('taux_retenu_cnss_employe')?.invalid && editGradeForm.get('taux_retenu_cnss_employe')?.touched"
+                            placeholder="Entrer le taux pour cnss" formControlName="taux_retenu_cnss_employe">
+                          <div
+                            *ngIf="editGradeForm.get('taux_retenu_cnss_employe')?.invalid && editGradeForm.get('taux_retenu_cnss_employe')?.touched">
+                            <small
+                              *ngIf="editGradeForm.get('taux_retenu_cnss_employe')?.invalid && editGradeForm.get('taux_retenu_cnss_employe')?.touched"
+                              class="text-danger"> *Le taux cnss est obligatoire</small>
+                          </div>
+                        </div>
+                      </div>
+        
+                        <div class="col-sm-6" *ngIf="editGradeForm.get('selectEdit')!.value === 'Valeur CNSS'">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="Valeur CNSS">Valeur retenu pour CNSS <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" type="number"
+                              [class.invalid]="editGradeForm.get('valeur_retenu_cnss_employe')?.invalid && editGradeForm.get('valeur_retenu_cnss_employe')?.touched"
+                              placeholder="Entrer la valeur retenue pour CNSS" formControlName="valeur_retenu_cnss_employe">
+                            <div
+                              *ngIf="editGradeForm.get('valeur_retenu_cnss_employe')?.invalid && editGradeForm.get('valeur_retenu_cnss_employe')?.touched">
+                              <small
+                                *ngIf="editGradeForm.get('valeur_retenu_cnss_employe')?.invalid && editGradeForm.get('valeur_retenu_cnss_employe')?.touched"
+                                class="text-danger"> *La valeur cnss est obligatoire</small>
+                            </div>
+                          </div>
+                        </div>
+                  </div>
+
+                  <div class="row">
                     <div class="col-sm-6">
                       <div class="input-block mb-3">
-                        <label class="col-form-label" for="valeur_retenu_cnss">Valeur retenu CNSS<span
+                        <label class="col-form-label" for="employeEdit">Selectionner taux ou valeur Its pour employeur <span
                             class="text-danger">*</span></label>
-                        <input class="form-control" type="number"
-                          [class.invalid]="editGradeForm.get('valeur_retenu_cnss')?.invalid && editGradeForm.get('valeur_retenu_cnss')?.touched"
-                          placeholder="Entrer la valeur retenue CNSS " formControlName="valeur_retenu_cnss">
-                        <div
-                          *ngIf="editGradeForm.get('valeur_retenu_cnss')?.invalid && editGradeForm.get('valeur_retenu_cnss')?.touched">
-                          <small
-                            *ngIf="editGradeForm.get('valeur_retenu_cnss')?.invalid && editGradeForm.get('valeur_retenu_cnss')?.touched"
-                            class="text-danger"> *La valeur retenu cnss est obligatoire</small>
+                        <mat-select class="select mat-cust-select form-control"
+                          [class.invalid]="editGradeForm.get('employe')?.invalid && editGradeForm.get('employeEdit')?.touched"
+                          formControlName="employeEdit" placeholder="Selectionner taux ou valeur pour Impo">
+                          <mat-option *ngFor="let item of lstImpo" [value]="item"
+                          [class.mat-selected]="item === selected">{{ item }} </mat-option>
+                        </mat-select>
+                        <div>
+                          <small *ngIf="editGradeForm.get('employeEdit')?.invalid && editGradeForm.get('employeEdit')?.touched"
+                            class="text-danger"> *Impo est obligatoire</small>
                         </div>
                       </div>
                     </div>
+        
+                      <div class="col-sm-6" *ngIf="editGradeForm.get('employeEdit')!.value === 'Taux Impo en %'">
+                        <div class="input-block mb-3">
+                          <label class="col-form-label" for="Taux Impo en %">Taux de Its en % <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" type="number"
+                            [class.invalid]="editGradeForm.get('taux_retenu_its_employeur')?.invalid && editGradeForm.get('taux_retenu_its_employeur')?.touched"
+                            placeholder="Entrer le taux d'Impo" formControlName="taux_retenu_its_employeur">
+                          <div
+                            *ngIf="editGradeForm.get('taux_retenu_its_employeur')?.invalid && editGradeForm.get('taux_retenu_its_employeur')?.touched">
+                            <small
+                              *ngIf="editGradeForm.get('taux_retenu_its_employeur')?.invalid && editGradeForm.get('taux_retenu_its_employeur')?.touched"
+                              class="text-danger"> *Le taux d'impo est obligatoire</small>
+                          </div>
+                        </div>
+                      </div>
+        
+                        <div class="col-sm-6" *ngIf="editGradeForm.get('employeEdit')!.value === 'Valeur Impo'">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="Valeur Impo">Valeur retenu Its <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" type="number"
+                              [class.invalid]="editGradeForm.get('valeur_retenu_its_employeur')?.invalid && editGradeForm.get('valeur_retenu_its_employeur')?.touched"
+                              placeholder="Entrer la valeur retenue pour Impo" formControlName="valeur_retenu_its_employeur">
+                            <div
+                              *ngIf="editGradeForm.get('valeur_retenu_its_employeur')?.invalid && editGradeForm.get('valeur_retenu_its_employeur')?.touched">
+                              <small
+                                *ngIf="editGradeForm.get('valeur_retenu_its_employeur')?.invalid && editGradeForm.get('valeur_retenu_its_employeur')?.touched"
+                                class="text-danger"> *La valeur d'impo est obligatoire</small>
+                            </div>
+                          </div>
+                        </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-block mb-3">
+                        <label class="col-form-label" for="selection">Selectionner taux ou valeur CNSS pour employeur <span
+                            class="text-danger">*</span></label>
+                        <mat-select class="select mat-cust-select form-control"
+                          [class.invalid]="addGradeForm.get('selectionEdit')?.invalid && addGradeForm.get('selectionEdit')?.touched"
+                          formControlName="selectionEdit" placeholder="Selectionner taux ou valeur pour CNSS">
+                          <mat-option *ngFor="let item of lstCNSS" [value]="item"
+                          [class.mat-selected]="item === select">{{ item }} </mat-option>
+                        </mat-select>
+                        <div>
+                          <small *ngIf="addGradeForm.get('selectionEdit')?.invalid && addGradeForm.get('selectionEdit')?.touched"
+                            class="text-danger"> *Info CNSS est obligatoire</small>
+                        </div>
+                      </div>
+                    </div>
+        
+                      <div class="col-sm-6" *ngIf="editGradeForm.get('selectionEdit')!.value === 'Taux CNSS en %'">
+                        <div class="input-block mb-3">
+                          <label class="col-form-label" for="Taux CNSS en %">Taux CNSS en % <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" type="number"
+                            [class.invalid]="editGradeForm.get('taux_retenu_cnss_employeur')?.invalid && editGradeForm.get('taux_retenu_cnss_employeur')?.touched"
+                            placeholder="Entrer le taux pour cnss" formControlName="taux_retenu_cnss_employeur">
+                          <div
+                            *ngIf="editGradeForm.get('taux_retenu_cnss_employeur')?.invalid && editGradeForm.get('taux_retenu_cnss_employeur')?.touched">
+                            <small
+                              *ngIf="editGradeForm.get('taux_retenu_cnss_employeur')?.invalid && editGradeForm.get('taux_retenu_cnss_employeur')?.touched"
+                              class="text-danger"> *Le taux cnss est obligatoire</small>
+                          </div>
+                        </div>
+                      </div>
+        
+                        <div class="col-sm-6" *ngIf="editGradeForm.get('selectionEdit')!.value === 'Valeur CNSS'">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="Valeur CNSS">Valeur retenu pour CNSS <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" type="number"
+                              [class.invalid]="editGradeForm.get('valeur_retenu_cnss_employeur')?.invalid && editGradeForm.get('valeur_retenu_cnss_employeur')?.touched"
+                              placeholder="Entrer la valeur retenue pour CNSS" formControlName="valeur_retenu_cnss_employeur">
+                            <div
+                              *ngIf="editGradeForm.get('valeur_retenu_cnss_employeur')?.invalid && editGradeForm.get('valeur_retenu_cnss_employeur')?.touched">
+                              <small
+                                *ngIf="editGradeForm.get('valeur_retenu_cnss_employeur')?.invalid && editGradeForm.get('valeur_retenu_cnss_employeur')?.touched"
+                                class="text-danger"> *La valeur cnss est obligatoire</small>
+                            </div>
+                          </div>
+                        </div>
                   </div>
 
                   <div class="submit-section">
@@ -621,12 +792,12 @@
         <!-- /Edit Department Modal -->
 
         <!-- Delete Department Modal -->
-        <div class="modal custom-modal fade" id="delete_department" role="dialog">
+        <div class="modal custom-modal fade" id="delete_grade" role="dialog">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-body">
                 <div class="form-header">
-                  <h3>Supprimer la </h3>
+                  <h3>Supprimer</h3>
                   <p>Êtes-vous sûr de vouloir supprimer ?</p>
                 </div>
                 <div class="modal-btn delete-action">

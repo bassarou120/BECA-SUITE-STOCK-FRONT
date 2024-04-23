@@ -13,17 +13,19 @@ import * as XLSX from 'xlsx';
 
 
 @Component({
-  selector: 'app-heures_supplementaires',
-  templateUrl: './heures_supplementaires.component.html',
-  styleUrls: ['./heures_supplementaires.component.scss']
+  selector: 'app-mes-heures-supplementaires',
+  templateUrl: './mes-heures-supplementaires.component.html',
+  styleUrls: ['./mes-heures-supplementaires.component.scss']
 })
-export class HeuresSupplementairesComponent implements OnInit {
+export class MesHeuresSupplementairesComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
   public lstDpt: Array<any>=[];
   mon_dep: any;
 
+  public loggedUserId: number = 0;
+  public loggedEmployeId: number = 0;
 
   public lstStatuts: Array<string> = ["Non Approuvé", "Approuvé"];
   public lstHeureSupplementaire: Array<getHeureSupplementaire> = [];
@@ -53,7 +55,8 @@ export class HeuresSupplementairesComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,public router: Router,private data: HeureSupplementaireService) {}
 
   ngOnInit(): void {
-     this.getTableData();
+    this.getLoggedUserId();
+    this.getTableData();
      this.addHeureSupplementaireForm = this.formBuilder.group({
       dateH: ["", [Validators.required]],
       nombreHeure: [1, [Validators.required]],
@@ -74,6 +77,15 @@ export class HeuresSupplementairesComponent implements OnInit {
     });
   }
 
+  private getLoggedUserId() {
+    const userDataString = localStorage.getItem('userDataString');
+    if(userDataString) {
+      const userData = JSON.parse(userDataString)
+      this.loggedUserId = userData['id'];
+    } else {
+      console.log("erreur")
+    }
+  }
 
   private formatDateToString(date: Date): string {
     const year = date.getFullYear();
@@ -83,25 +95,64 @@ export class HeuresSupplementairesComponent implements OnInit {
   }
 
   onClickSubmitAddHeureSupplementaire(){
-
-      console.log(this.addHeureSupplementaireForm.value)
+      // console.log(this.addHeureSupplementaireForm.value)
 
       if (this.addHeureSupplementaireForm.valid){
-
       this.addHeureSupplementaireForm.patchValue({ dateH: this.formatDateToString(this.addHeureSupplementaireForm.value.dateH) });
 
         console.log(this.addHeureSupplementaireForm.value);
         this.data.saveHeureSupplementaire(this.addHeureSupplementaireForm.value).subscribe(
           (data:any)=>{
             location.reload();
+          },
+          (error: string) => {
+            this.showModal(error);
           }
         )
-      }else {
-
+      } else {
         console.log("desole le formulaire n'est pas bien renseigné");
       }
-
   }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+    } else {
+      console.error("Modal element not found!");
+    }
+  }
+
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+  }
+
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
@@ -170,7 +221,7 @@ export class HeuresSupplementairesComponent implements OnInit {
     this.lstHeureSupplementaire = [];
     this.serialNumberArray = [];
 
-    this.data.getAllHeureSupplementaire().subscribe((res: any) => {
+    this.data.getAllUserHeureSupplementaire(this.loggedUserId).subscribe((res: any) => {
       this.totalData = res.data.total;
       res.data.map((res: getHeureSupplementaire, index: number) => {
         const serialNumber = index + 1;
@@ -182,6 +233,12 @@ export class HeuresSupplementairesComponent implements OnInit {
       });
       this.dataSource = new MatTableDataSource<getHeureSupplementaire>(this.lstHeureSupplementaire);
       this.calculateTotalPages(this.totalData, this.pageSize);
+    });
+
+    this.data.getConnectedEmployeID(this.loggedUserId).subscribe((res: any) => {
+      this.addHeureSupplementaireForm.patchValue({employe_id: res.data});
+      this.editHeureSupplementaireForm.patchValue({employe_id: res.data});
+      this.loggedEmployeId = res.data;
     });
 
     this.data.getAllEmployes().subscribe((res: any) => {
@@ -199,11 +256,11 @@ export class HeuresSupplementairesComponent implements OnInit {
 
   exportToPDF() {
     const content: HTMLElement | null = document.getElementById('to_export');
-    const pdfname = "Les Heures Supplémentaires.pdf"
+    const pdfname = "Mes Heures Supplémentaires.pdf"
 
     if (content) {
       const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-      const text = "Les Heures Supplémentaires";
+      const text = "Mes Heures Supplémentaires";
       const fontSize = 12; // Taille de la police du texte
       const textWidth = pdf.getTextWidth(text); // Largeur du texte
       const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
@@ -238,7 +295,7 @@ export class HeuresSupplementairesComponent implements OnInit {
 
   exportToXLSX() {
     const table: HTMLElement | null = document.getElementById('to_export');
-    const filename = "Les Heures Supplémentaires.xlsx";
+    const filename = "Mes Heures Supplémentaires.xlsx";
 
     if (table) {
       const wb = XLSX.utils.book_new();
@@ -259,7 +316,7 @@ export class HeuresSupplementairesComponent implements OnInit {
       });
 
       const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-      XLSX.utils.book_append_sheet(wb, ws1, "Les Heures Supplémentaires");
+      XLSX.utils.book_append_sheet(wb, ws1, "Mes Heures Supplémentaires");
 
       XLSX.writeFile(wb, filename);
     } else {

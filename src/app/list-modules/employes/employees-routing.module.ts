@@ -1,3 +1,4 @@
+import { MesHeuresSupplementairesComponent } from './mes-heures-supplementaires/mes-heures-supplementaires.component';
 import { GRHGuard, EmployeGuard } from './../../core/services/auth/guards.service';
 import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
@@ -45,6 +46,7 @@ const routes: Routes = [
       // { path: 'shift-list', component: ShiftListComponent },
       { path: "demandes", component: DemandesComponent, canActivate: [EmployeGuard] },
       { path: "mes-plaintes", component: MesPlaintesComponent, canActivate: [EmployeGuard] },
+      { path: "mes-heures-supplementaires", component: MesHeuresSupplementairesComponent, canActivate: [EmployeGuard] },
 
       { path: 'employe-list', component: EmployeListComponent },
       { path: 'employe-page', component: EmployePageContentComponent, canActivate: [GRHGuard] },
