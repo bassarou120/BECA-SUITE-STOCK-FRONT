@@ -14,6 +14,7 @@ import { ListModulesComponent } from './list-modules.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { fichepaieComponent } from './fichepaie/fichepaie.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // @ts-ignore
 @NgModule({
@@ -35,6 +36,7 @@ import { fichepaieComponent } from './fichepaie/fichepaie.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
   ],
   providers: [DatePipe],
 })
