@@ -12,7 +12,7 @@ export class SuperAdminGuard implements CanActivate {
   canActivate(): boolean {
     const userRole = this.authService.userRole;
     // Si le rôle de l'utilisateur est: SuperAdmin, il a accès
-    if (userRole! == 0) {
+    if (userRole! <= 1) {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
@@ -30,7 +30,7 @@ export class AdminGuard implements CanActivate {
   canActivate(): boolean {
     const userRole = this.authService.userRole;
     // Si le rôle de l'utilisateur est: Admin ou Supérieur, il a accès
-    if (userRole! <= 1) {
+    if (userRole! <= 2) {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
@@ -48,7 +48,7 @@ export class GRHGuard implements CanActivate {
   canActivate(): boolean {
     const userRole = this.authService.userRole;
     // Si le rôle de l'utilisateur est: GRH ou Supérieur, il a accès
-    if (userRole! <= 2) {
+    if (userRole! <= 3) {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
@@ -66,7 +66,7 @@ export class EmployeGuard implements CanActivate {
   canActivate(): boolean {
     const userRole = this.authService.userRole;
     // Si le rôle de l'utilisateur: Employee ou Superieurs, il a accès
-    if (userRole! <= 3) {
+    if (userRole! <= 4) {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
