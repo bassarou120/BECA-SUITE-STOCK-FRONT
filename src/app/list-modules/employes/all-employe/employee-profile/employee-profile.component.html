@@ -404,26 +404,27 @@
             <div class="card-body">
               <h3 class="card-title">
                 Educations ou Formations
-                <a
+                <!-- <a
                   class="edit-icon"
                   data-bs-toggle="modal"
                   data-bs-target="#education_info"
                   ><i class="fa-solid fa-pencil"></i
-                ></a>
+                ></a> -->
               </h3>
               <div class="experience-box">
                 <ul class="experience-list">
-                  <li *ngFor="let formation of curentEmploye.list_formation;">
+                  <li *ngFor="let formation of curentEmploye.list_formation">
                     <div class="experience-user">
                       <div class="before-circle"></div>
                     </div>
                     <div class="experience-content">
                       <div class="timeline-content">
-                        <a href="#/" class="name"
-                          >{{ formation.intitule }}</a
-                        >
+                        <a href="#/" class="name">{{ formation.intitule }}</a>
                         <div>{{ formation.domaine }}</div>
-                        <span class="time">{{ formation.date_debut | slice:0:4 }} - {{ formation.date_fin | slice:0:4 }}</span>
+                        <span class="time"
+                          >{{ formation.date_debut | slice : 0 : 4 }} -
+                          {{ formation.date_fin | slice : 0 : 4 }}</span
+                        >
                       </div>
                     </div>
                   </li>
@@ -437,24 +438,32 @@
             <div class="card-body">
               <h3 class="card-title">
                 Expériences
-                <a
+                <!-- <a
                   class="edit-icon"
                   data-bs-toggle="modal"
                   data-bs-target="#experience_info"
                   ><i class="fa-solid fa-pencil"></i
-                ></a>
+                ></a> -->
               </h3>
               <div class="experience-box">
                 <ul class="experience-list">
-                  <li *ngFor="let experience of curentEmploye.list_experience;">
+                  <li *ngFor="let experience of curentEmploye.list_experience">
                     <div class="experience-user">
                       <div class="before-circle"></div>
                     </div>
                     <div class="experience-content">
                       <div class="timeline-content">
-                        <a href="#/" class="name">{{ experience.posteOcupe }}</a>
-                        <span class="time">{{ getMonthName(experience.date_debut.split('-')[1]) }} {{ experience.date_debut.split('-')[0] }} -
-                                           {{ getMonthName(experience.date_fin.split('-')[1]) }} {{ experience.date_fin.split('-')[0] }}</span>
+                        <a href="#/" class="name">{{
+                          experience.posteOcupe
+                        }}</a>
+                        <span class="time"
+                          >{{
+                            getMonthName(experience.date_debut.split("-")[1])
+                          }}
+                          {{ experience.date_debut.split("-")[0] }} -
+                          {{ getMonthName(experience.date_fin.split("-")[1]) }}
+                          {{ experience.date_fin.split("-")[0] }}</span
+                        >
                       </div>
                     </div>
                   </li>
