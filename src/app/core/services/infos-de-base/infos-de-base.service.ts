@@ -18,36 +18,11 @@ export class InfosDeBaseService  {
   constructor(private http: HttpClient) {}
 
   saveInfoDeBase(data: any): Observable<any> {
-    return this.http.post(`${this.url}/parametres`, data);
+    return this.http.post(`${this.url}/parametres_de_base`, data);
   }
 
   getAllInfoDeBases(): Observable<any> {
     return this.http.get<any>(`${this.url}/parametres`);
   }
 
-  editInfoDeBase(data: any): Observable<any> {
-    return this.http.put<any>(`${this.url}/parametres/${data.id}`, data);
-  }
-
-  deleteInfoDeBase(data: any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/parametres/${data.id}`);
-  }
-
-
-
-
-
-
-
-
-  public getEmployees(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    );
-  }
-
-
-  listInfoDeBases = [];
 }

@@ -13,6 +13,10 @@
   border: 0.25px solid rgb(200, 200, 200);
 }
 
+#edit_parameter:hover #edit_parameter_icon {
+  background-color: rgb(233, 233, 233);
+}
+
 #edit_parameter_icon a {
   display: inline-block;
   vertical-align: middle;

@@ -32,7 +32,9 @@
               </small>
             </div>
             <div class="input-block mb-3 col-1">
-              <a (click)="switchReadOnlyValue(itemGroup.get('cle')?.value)"><i class="fa-solid fa-pencil" id="edit_parameter_icon"></i></a>
+              <a (click)="switchReadOnlyValue(itemGroup.get('cle')?.value)" id="edit_parameter">
+                <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
+              </a>
             </div>
           </div>
         </ng-container>

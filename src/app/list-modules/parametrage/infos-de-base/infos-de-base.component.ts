@@ -68,16 +68,15 @@ export class InfosDeBaseComponent implements OnInit {
   }
 
   setInfoDeBase() {
-    console.log(this.setInfoDeBaseForm.value);
 
-    // if (this.setInfoDeBaseForm.valid){
-    //   this.data.saveInfoDeBase(this.setInfoDeBaseForm.value).subscribe(response => {
-    //     console.log(response);
-    //     location.reload();
-    //   });
-    // } else {
-    //   console.log("Desolé le formulaire n'est pas bien renseigné");
-    // }
+    if (this.setInfoDeBaseForm.valid){
+      this.data.saveInfoDeBase(this.setInfoDeBaseForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    }
   }
 }
 
