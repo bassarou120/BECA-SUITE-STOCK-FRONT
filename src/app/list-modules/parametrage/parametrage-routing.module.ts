@@ -8,6 +8,7 @@ import { TypeContratComponent } from './typeContrat/typeContrat.component';
 import { TypePrimeComponent } from './typePrime/typePrime.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { PostesComponent } from './postes/postes.component';
+import { BanqueComponent } from './banque/banque.component';
 import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
 import { RoleComponent } from './role/role.component';
 import { ParametrageComponent } from './parametrage.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
     { path: "type-prime", component: TypePrimeComponent },
     { path: "departments", component: DepartmentsComponent },
     { path: "postes", component: PostesComponent },
+    { path: "banque", component: BanqueComponent },
     { path: "type-absence", component: TypeAbsenceComponent },
     { path: "role", component: RoleComponent },
     { path: "categorie", component: CategorieComponent },

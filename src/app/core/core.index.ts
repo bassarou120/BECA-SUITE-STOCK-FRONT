@@ -9,6 +9,7 @@ export * from './services/typeContrat/typeContrat.service';
 export * from './services/typePrime/typePrime.service';
 export * from './services/department/department.service';
 export * from './services/poste/poste.service';
+export * from './services/banque/banque.service';
 export * from './services/typeAbsence/typeAbsence.service';
 export * from './services/role/role.service';
 export * from './services/conges/conges.service';
