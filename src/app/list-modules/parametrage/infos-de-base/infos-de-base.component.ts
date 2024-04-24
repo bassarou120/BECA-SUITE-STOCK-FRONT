@@ -9,6 +9,11 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
+
+
+// Les parametres à ajouter sont: "LIMITE_JOURS_CONGE", "LIMITE_HEURES_SUPP".
+
+
 @Component({
   selector: 'app-infos-de-base',
   templateUrl: './infos-de-base.component.html',
@@ -92,15 +97,15 @@ export class InfosDeBaseComponent implements OnInit {
   }
 
   saveInfoDeBase() {
-
-    if (this.addInfoDeBaseForm.valid){
-      this.data.saveInfoDeBase(this.addInfoDeBaseForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Desolé le formulaire n'est pas bien renseigné");
-    }
+console.log(this.addInfoDeBaseForm.value);
+    // if (this.addInfoDeBaseForm.valid){
+    //   this.data.saveInfoDeBase(this.addInfoDeBaseForm.value).subscribe(response => {
+    //     console.log(response);
+    //     location.reload();
+    //   });
+    // } else {
+    //   console.log("Desolé le formulaire n'est pas bien renseigné");
+    // }
   }
 
   getEditInfoDeBase(row: any) {
