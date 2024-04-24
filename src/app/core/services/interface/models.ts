@@ -869,6 +869,11 @@ export interface getPost {
   nom_poste: string;
 }
 
+export interface getBanque {
+  id: number;
+  nom: string;
+}
+
 export interface getTypeAbsence {
   id: number;
   libelle: string;

@@ -212,6 +212,11 @@ export class DataService {
               base: 'poste',
             },
             {
+              menuValue: 'Banque',
+              route: routes.banque,
+              base: 'banque',
+            },
+            {
               menuValue: "Type d'Absence",
               route: routes.typeAbsence,
               base: 'type-absence',

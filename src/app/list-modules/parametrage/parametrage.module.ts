@@ -11,6 +11,7 @@ import { TypeContratComponent } from './typeContrat/typeContrat.component';
 import { TypePrimeComponent } from './typePrime/typePrime.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { PostesComponent } from './postes/postes.component';
+import { BanqueComponent } from './banque/banque.component';
 import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
 import { RoleComponent } from './role/role.component';
 import { ParametrageRoutingModule } from './parametrage-routing.module';
@@ -27,6 +28,7 @@ import { GradesComponent } from './grades/grades.component';
     TypePrimeComponent,
     DepartmentsComponent,
     PostesComponent,
+    BanqueComponent,
     TypeAbsenceComponent,
     RoleComponent,
     CategorieComponent,

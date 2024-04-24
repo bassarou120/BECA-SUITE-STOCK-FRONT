@@ -161,8 +161,8 @@ export class DepartEmployeComponent implements OnInit {
 
 
  exportToPDF() {
-
   this.pdfLoading = true;
+
   const content: HTMLElement | null = document.getElementById('to_export');
   const pdfname = "Les Départs des Employés.pdf"
 
@@ -195,6 +195,7 @@ export class DepartEmployeComponent implements OnInit {
 
       pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
       pdf.save(pdfname);
+      
       this.pdfLoading = false;
     });
   } else {
