@@ -187,6 +187,11 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
+              menuValue: 'Banque',
+              route: routes.banque,
+              base: 'banque',
+            },
+            {
               menuValue: 'Catégorie',
               route: routes.categorie,
               base: 'categorie',
@@ -210,11 +215,6 @@ export class DataService {
               menuValue: 'Poste',
               route: routes.poste,
               base: 'poste',
-            },
-            {
-              menuValue: 'Banque',
-              route: routes.banque,
-              base: 'banque',
             },
             {
               menuValue: "Type d'Absence",
@@ -340,7 +340,7 @@ export class DataService {
     },
   ];
 
-  public sideBar = (this.authService.userRole && this.authService.userRole < 3) ? this.grhSideBar : this.employeSideBar;
+  public sideBar = (this.authService.userRole && this.authService.userRole <= 3) ? this.grhSideBar : this.employeSideBar;
 
 
 
