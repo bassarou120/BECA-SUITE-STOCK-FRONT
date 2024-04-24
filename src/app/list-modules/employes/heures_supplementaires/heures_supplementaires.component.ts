@@ -83,25 +83,65 @@ export class HeuresSupplementairesComponent implements OnInit {
   }
 
   onClickSubmitAddHeureSupplementaire(){
-
-      console.log(this.addHeureSupplementaireForm.value)
+      // console.log(this.addHeureSupplementaireForm.value)
 
       if (this.addHeureSupplementaireForm.valid){
-
       this.addHeureSupplementaireForm.patchValue({ dateH: this.formatDateToString(this.addHeureSupplementaireForm.value.dateH) });
 
         console.log(this.addHeureSupplementaireForm.value);
         this.data.saveHeureSupplementaire(this.addHeureSupplementaireForm.value).subscribe(
           (data:any)=>{
             location.reload();
+          },
+          (error: string) => {
+            this.showModal(error);
           }
         )
-      }else {
-
+      } else {
         console.log("desole le formulaire n'est pas bien renseigné");
       }
 
   }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+    } else {
+      console.error("Modal element not found!");
+    }
+  }
+
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+  }
+
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
