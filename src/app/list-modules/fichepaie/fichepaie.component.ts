@@ -23,6 +23,8 @@ export class fichepaieComponent implements OnInit {
   selectedEmp: any;
   selectedFiche: any;
 
+  showloader = false;
+
   editMode = false;
 
   public addEmployeFichePaieForm!: FormGroup;
@@ -291,9 +293,11 @@ export class fichepaieComponent implements OnInit {
   }
 
   exportFichePaie(id: any) {
+    this.showloader = true;
     this.fichepaieService.exportFichepaie(id).subscribe(
       (response: any) => {
-        alert(response.data);
+        // alert(response.data);
+        this.showloader = false;
         window.open(response.data, '_blank');
         // alert(JSON.stringify(response));
         // if (response.success == true) {

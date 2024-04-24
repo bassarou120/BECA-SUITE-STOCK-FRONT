@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
   public Loginvalue = new BehaviorSubject<string | number | returndata>(0);
   public Toggledata = true;
+
+  showloader = false;
   form = new UntypedFormGroup({
     email: new UntypedFormControl('admin@admin.com', [Validators.required]),
     password: new UntypedFormControl('123456', [Validators.required]),
@@ -51,7 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    // alert(JSON.stringify(this.form.value));
+    this.showloader = true; // alert(JSON.stringify(this.form.value));
 
     this.authservice.login(this.form.value).subscribe(
       (data: any) => {
@@ -72,6 +74,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           localStorage.setItem('logintime', Date());
           setTimeout(() => {
             // this.router.navigateByUrl('/dashboard/admin');
+            this.showloader = false;
             this.router.navigate(['/dashboard/admin']);
           }, 100);
           // this.router.navigate(['/dashboard/admin']);
