@@ -1,5 +1,19 @@
 .info-form {
-  width: 70%;
+  width: 62%;
   margin-left: auto;
   margin-right: auto;
+}
+
+#edit_parameter_icon {
+  display: inline-block;
+  border-radius: 50%;
+  margin-top: 7px;
+  padding: 8px;
+  background-color: white;
+  border: 0.25px solid rgb(200, 200, 200);
+}
+
+#edit_parameter_icon a {
+  display: inline-block;
+  vertical-align: middle;
 }

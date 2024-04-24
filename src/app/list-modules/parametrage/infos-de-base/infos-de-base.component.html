@@ -1,48 +1,48 @@
 <!-- Page Content -->
 <div class="content container-fluid">
 
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Informations de base</h3>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de Bord</a></li>
-                    <li class="breadcrumb-item active">Informations de base</li>
-                </ul>
+  <!-- Page Header -->
+  <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Informations de base</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de Bord</a></li>
+              <li class="breadcrumb-item active">Informations de base</li>
+            </ul>
+        </div>
+      </div>
+  </div>
+  <!-- /Page Header -->
+
+  <div class="row info-form">
+    <form [formGroup]="setInfoDeBaseForm" (ngSubmit)="setInfoDeBase()" novalidate>
+
+      <div formArrayName="items">
+        <ng-container *ngIf="itemsFormArray">
+          <div *ngFor="let itemGroup of itemsFormArray.controls; let i = index" [formGroupName]="i" class="row">
+            <div class="input-block mb-3 col-5">
+              <input class="form-control" type="text" formControlName="cle" placeholder="Clé du paramètre" readonly>
             </div>
-        </div>
-    </div>
-    <!-- /Page Header -->
-
-    <div class="row info-form">
-      <form [formGroup]="addInfoDeBaseForm" (ngSubmit)="saveInfoDeBase()" novalidate>
-        <div class="row">
-          <div class="input-block mb-3 col-6">
-            <label class="col-form-label" for="cle">Clé de l'information <span class="text-danger">*</span></label>
-            <input class="form-control" type="text" formControlName="cle" placeholder="Clé du paramètre"
-              [class.invalid]="addInfoDeBaseForm.get('cle')?.invalid && addInfoDeBaseForm.get('cle')?.touched">
-              <small *ngIf="(addInfoDeBaseForm.get('cle')?.touched && addInfoDeBaseForm.get('cle')?.invalid) || (addInfoDeBaseForm.get('cle')?.touched && addInfoDeBaseForm.errors?.['cleInvalid'])" class="text-danger">
-                *La valeur entrée est invalide.
+            <div class="input-block mb-3 col-6">
+              <input class="form-control" type="number" formControlName="valeur" placeholder="Valeur du paramètre" [readonly]="lstReadonly[itemGroup.get('cle')?.value]"
+                [class.invalid]="itemGroup.get('valeur')?.invalid && itemGroup.get('valeur')?.touched">
+              <small *ngIf="itemGroup.get('valeur')?.touched && itemGroup.get('valeur')?.invalid" class="text-danger">
+                *La valeur entrée est invalide
               </small>
+            </div>
+            <div class="input-block mb-3 col-1">
+              <a (click)="switchReadOnlyValue(itemGroup.get('cle')?.value)"><i class="fa-solid fa-pencil" id="edit_parameter_icon"></i></a>
+            </div>
           </div>
+        </ng-container>
+      </div>
 
-          <div class="input-block mb-3 col-6">
-            <label class="col-form-label" for="valeur">Valeur de l'information <span class="text-danger">*</span></label>
-            <input class="form-control" type="number" formControlName="valeur" placeholder="Valeur du paramètre"
-              [class.invalid]="addInfoDeBaseForm.get('valeur')?.invalid && addInfoDeBaseForm.get('valeur')?.touched">
-              <div *ngIf="addInfoDeBaseForm.get('valeur')?.touched && addInfoDeBaseForm.get('valeur')?.invalid" class="text-danger">
-                <small *ngIf="addInfoDeBaseForm.get('valeur')?.touched && addInfoDeBaseForm.get('valeur')?.invalid" class="text-danger">
-                  *La valeur entrée est invalide
-                </small>
-              </div>
-          </div>
-        </div>
-
-        <div class="submit-section">
-            <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
-        </div>
+      <div class="submit-section">
+        <button type="submit" class="btn btn-primary submit-btn">Enregistrer</button>
+      </div>
     </form>
   </div>
+
 </div>
 <!-- /Page Content -->
