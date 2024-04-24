@@ -46,6 +46,9 @@ export class DepartEmployeComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
+  pdfLoading: boolean = false;
+  xlsxLoading: boolean = false;
+
   public addDepartEmployeForm!: FormGroup ;
   public editDepartEmployeForm!: FormGroup
   public deleteDepartEmployeForm!: FormGroup
@@ -158,6 +161,8 @@ export class DepartEmployeComponent implements OnInit {
 
 
  exportToPDF() {
+
+  this.pdfLoading = true;
   const content: HTMLElement | null = document.getElementById('to_export');
   const pdfname = "Les Départs des Employés.pdf"
 
@@ -190,6 +195,7 @@ export class DepartEmployeComponent implements OnInit {
 
       pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
       pdf.save(pdfname);
+      this.pdfLoading = false;
     });
   } else {
     console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
