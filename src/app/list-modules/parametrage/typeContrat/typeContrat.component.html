@@ -11,6 +11,16 @@
                     <li class="breadcrumb-item active">Types de Contrats</li>
                 </ul>
             </div>
+
+            <div class="col-auto row">
+              <div class="col-auto">
+                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF</a>
+              </div>
+              <div class="col-auto">
+                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+              </div>
+            </div>
+
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_holiday"><i class="fa-solid fa-plus"></i>
                     Ajouter un type de contrat</a>
@@ -160,18 +170,6 @@
                 </div>
               </div>
         </div>
-
-        <div class="col-sm-12 col-md-3"></div>
-        <div class="col-sm-12 col-md-6 row">
-          <div class="col-6">
-            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
-          </div>
-          <div class="col-6">
-            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
-          </div>
-        </div>
-        <div class="col-sm-12 col-md-3"></div>
-
     </div>
 </div>
 <!-- /Page Content -->
