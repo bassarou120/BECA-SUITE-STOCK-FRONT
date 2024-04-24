@@ -207,6 +207,7 @@ export class GradesComponent implements OnInit {
 
   }
   onClickSubmitDeleteGrade(){
+    console.log(this.deleteGradeForm.value)
 
       if (this.deleteGradeForm.valid){
         const id = this.deleteGradeForm.value.id;
@@ -215,6 +216,7 @@ export class GradesComponent implements OnInit {
             location.reload();
           }
         )
+        console.log("success")
       }else {
 
         alert("desole le formulaire n'est pas bien renseigné")
