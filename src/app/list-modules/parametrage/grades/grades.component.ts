@@ -124,12 +124,12 @@ export class GradesComponent implements OnInit {
         }
 
 
-        this.data.saveGrade(this.addGradeForm.value).subscribe(
-          (data:any)=>{
-            location.reload();
-          }
-        );
-      }if (this.addGradeForm.valid){
+      //   this.data.saveGrade(this.addGradeForm.value).subscribe(
+      //     (data:any)=>{
+      //       location.reload();
+      //     }
+      //   );
+      // //if (this.addGradeForm.valid){
           if (this.addGradeForm.value.employe == "Taux Impo en %") {
             this.addGradeForm.patchValue({valeur_retenu_its_employeur: ""});
           } else {
@@ -149,7 +149,7 @@ export class GradesComponent implements OnInit {
             }
           );
       }else {
-        //alert("desole le formulaire n'est pas bien renseigné")
+        alert("desole le formulaire n'est pas bien renseigné")
       }
 
 
@@ -175,12 +175,12 @@ export class GradesComponent implements OnInit {
         }
 
 
-        this.data.editGrade(this.editGradeForm.value).subscribe(
-          (data:any)=>{
-            location.reload();
-          }
-        );
-      }if (this.editGradeForm.valid){
+        // this.data.editGrade(this.editGradeForm.value).subscribe(
+        //   (data:any)=>{
+        //     location.reload();
+        //   }
+        // );
+      //if (this.editGradeForm.valid){
           if (this.editGradeForm.value.employeEdit == "Taux Impo en %") {
             this.editGradeForm.patchValue({valeur_retenu_its_employeur: ""});
           } else {
@@ -230,20 +230,27 @@ export class GradesComponent implements OnInit {
   getEditForm(row: any){
     this.editGradeForm.patchValue({
       id: row.id,
-      employe_id: row.employe_id,
-      intitule: row.intitule,
-      domaine: row.domaine,
-      diplome: row.diplome,
-      employe: row.employe,
+      // employe_id: row.employe_id,
+      // intitule: row.intitule,
+      // domaine: row.domaine,
+      // diplome: row.diplome,
+      // employe: row.employe,
 
       categorie_id: row.categorie_id,
       classe_id: row.classe_id,
       base_categorielle: row.base_categorielle,
       prime_enciennete: row.prime_enciennete,
-      taux_retenu_its_employe: row.taux_retenu_impo,
-      taux_retenu_cnss_employe: row.taux_retenu_cnss,
-      valeur_retenu_its_employe: row.valeur_retenu_impo,
-      valeur_retenu_cnss_employe: row.valeur_retenu_cnss,
+      tauxHoraireHeureSup: row.tauxHoraireHeureSup,
+
+      taux_retenu_its_employe: row.taux_retenu_impo_employe,
+      taux_retenu_cnss_employe: row.taux_retenu_cnss_employe,
+      valeur_retenu_its_employe: row.valeur_retenu_impo_employe,
+      valeur_retenu_cnss_employe: row.valeur_retenu_cnss_employe,
+      
+      taux_retenu_its_employeur: row.taux_retenu_impo_employeur,
+      taux_retenu_cnss_employeur: row.taux_retenu_cnss_employeur,
+      valeur_retenu_its_employeur: row.valeur_retenu_impo_employeur,
+      valeur_retenu_cnss_employeur: row.valeur_retenu_cnss_employeur,
     });
 
     this.editFormSelectedCategorieId = row.categorie_id;
