@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getFormation, routes, FormationsService,getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { getHeureSupplementaire, routes, HeureSupplementaireService, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,19 +13,27 @@ import * as XLSX from 'xlsx';
 
 
 @Component({
-  selector: 'app-formations',
-  templateUrl: './formations.component.html',
-  styleUrls: ['./formations.component.scss']
+  selector: 'app-mes-heures-supplementaires',
+  templateUrl: './mes-heures-supplementaires.component.html',
+  styleUrls: ['./mes-heures-supplementaires.component.scss']
 })
-export class FormationsComponent implements OnInit {
+export class MesHeuresSupplementairesComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstFormations: Array<getFormation> = [];
+  public lstDpt: Array<any>=[];
+  mon_dep: any;
+
+  public loggedUserId: number = 0;
+  public loggedEmployeId: number = 0;
+
+  public lstStatuts: Array<string> = ["Non Approuvé", "Approuvé"];
+  public lstHeureSupplementaire: Array<getHeureSupplementaire> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
-  public editFormSelectedEmployeId: number = 0;
+  public editFormSelectedEmployeId: Number = 0;
+  public editFormSelectedStatut: string = "";
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getFormation>;
+  dataSource!: MatTableDataSource<getHeureSupplementaire>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -40,34 +48,43 @@ export class FormationsComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addFormationForm!: FormGroup ;
-  public editFormationForm!: FormGroup
-  public deleteFormationForm!: FormGroup
+  public addHeureSupplementaireForm!: FormGroup ;
+  public editHeureSupplementaireForm!: FormGroup
+  public deleteHeureSupplementaireForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router,private data: FormationsService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router,private data: HeureSupplementaireService) {}
 
   ngOnInit(): void {
-     this.getTableData();
-     this.addFormationForm = this.formBuilder.group({
+    this.getLoggedUserId();
+    this.getTableData();
+     this.addHeureSupplementaireForm = this.formBuilder.group({
+      dateH: ["", [Validators.required]],
+      nombreHeure: [1, [Validators.required]],
+      autreInfo: ["Aucun", [Validators.required]],
       employe_id: [0, [Validators.required]],
-      intitule: ["", [Validators.required]],
-      domaine: ["", [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
-      diplome: ["", [Validators.required]],
+      status: ["Non Approuvé", [Validators.required]],
     });
-     this.editFormationForm = this.formBuilder.group({
+    this.editHeureSupplementaireForm = this.formBuilder.group({
       id: [0, [Validators.required]],
+      dateH: ["", [Validators.required]],
+      nombreHeure: [0, [Validators.required]],
+      autreInfo: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
-      intitule: ["", [Validators.required]],
-      domaine: ["", [Validators.required]],
-      date_debut: ["", [Validators.required]],
-      date_fin: ["", [Validators.required]],
-      diplome: ["", [Validators.required]],
+      status: ["Non Approuvé", [Validators.required]],
     });
-     this.deleteFormationForm = this.formBuilder.group({
+     this.deleteHeureSupplementaireForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
+  }
+
+  private getLoggedUserId() {
+    const userDataString = localStorage.getItem('userDataString');
+    if(userDataString) {
+      const userData = JSON.parse(userDataString)
+      this.loggedUserId = userData['id'];
+    } else {
+      console.log("erreur")
+    }
   }
 
   private formatDateToString(date: Date): string {
@@ -77,34 +94,91 @@ export class FormationsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  onClickSubmitAddHeureSupplementaire(){
+      // console.log(this.addHeureSupplementaireForm.value)
 
-  onClickSubmitAddFormation(){
+      if (this.addHeureSupplementaireForm.valid){
+      this.addHeureSupplementaireForm.patchValue({ dateH: this.formatDateToString(this.addHeureSupplementaireForm.value.dateH) });
 
-      console.log(this.addFormationForm.value)
-
-      if (this.addFormationForm.valid){
-        this.addFormationForm.patchValue({ date_debut: this.formatDateToString(this.addFormationForm.value.date_debut), date_fin: this.formatDateToString(this.addFormationForm.value.date_fin) });
-        this.data.saveFormation(this.addFormationForm.value).subscribe(
+        console.log(this.addHeureSupplementaireForm.value);
+        this.data.saveHeureSupplementaire(this.addHeureSupplementaireForm.value).subscribe(
           (data:any)=>{
             location.reload();
+          },
+          (error: string) => {
+            this.showModal(error);
           }
         )
-      }else {
-
-        alert("desole le formulaire n'est pas bien renseigné")
+      } else {
+        console.log("desole le formulaire n'est pas bien renseigné");
       }
-
-
   }
 
-  onClickSubmitEditFormation(){
-    console.log(this.editFormationForm.value)
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+    } else {
+      console.error("Modal element not found!");
+    }
+  }
 
-    this.editFormationForm.patchValue({ date_debut: this.formatDateToString(this.editFormationForm.value.date_debut), date_fin: this.formatDateToString(this.editFormationForm.value.date_fin)});
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+  }
 
-      if (this.editFormationForm.valid){
-        const id = this.editFormationForm.value.id;
-        this.data.editFormation(this.editFormationForm.value).subscribe(
+
+  private convertToDate(date: string): Date {
+    const d = date.split('-');
+    return new Date(Number(d[0]), Number(d[1])-1, Number(d[2]));
+  }
+
+  getEditForm(row: any){
+    this.editHeureSupplementaireForm.patchValue({
+      id: row.id,
+      employe_id: row.employe_id,
+      autreInfo: row.autreInfo,
+      nombreHeure: row.nombreHeure,
+      dateH: this.convertToDate(row.dateH),
+      status: row.status,
+    })
+    this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedStatut = row.status;
+  }
+
+  onClickSubmitEditHeureSupplementaire(){
+    console.log(this.editHeureSupplementaireForm.value)
+
+      if (this.editHeureSupplementaireForm.valid){
+        this.editHeureSupplementaireForm.patchValue({ dateH: this.formatDateToString(this.editHeureSupplementaireForm.value.dateH) });
+
+        this.data.editHeureSupplementaire(this.editHeureSupplementaireForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
@@ -116,15 +190,17 @@ export class FormationsComponent implements OnInit {
       }
 
   }
-  onClickSubmitDeleteFormation(){
+  onClickSubmitDeleteHeureSupplementaire(){
+    console.log(this.deleteHeureSupplementaireForm.value)
 
-      if (this.deleteFormationForm.valid){
-        const id = this.deleteFormationForm.value.id;
-        this.data.deleteFormation(this.deleteFormationForm.value).subscribe(
+      if (this.deleteHeureSupplementaireForm.valid){
+
+        this.data.deleteHeureSupplementaire(this.deleteHeureSupplementaireForm.value).subscribe(
           (data:any)=>{
             location.reload();
           }
         )
+        console.log("success")
       }else {
 
         alert("desole le formulaire n'est pas bien renseigné")
@@ -132,29 +208,8 @@ export class FormationsComponent implements OnInit {
 
   }
 
-  private convertToDate(date: string): Date {
-    const d = date.split('-');
-    return new Date(Number(d[0]), Number(d[1])-1, Number(d[2]));
-  }
-
-
-  getEditForm(row: any){
-    this.editFormationForm.patchValue({
-      id: row.id,
-      employe_id: row.employe_id,
-      intitule: row.intitule,
-      domaine: row.domaine,
-      date_debut: this.convertToDate(row.date_debut),
-      date_fin: this.convertToDate(row.date_fin),
-      diplome: row.diplome,
-      employe: row.employe,
-    });
-
-    this.editFormSelectedEmployeId = row.employe_id;
- }
-
   getDeleteForm(row: any){
-    this.deleteFormationForm.patchValue({
+    this.deleteHeureSupplementaireForm.patchValue({
      id:row.id,
     })
  }
@@ -163,47 +218,49 @@ export class FormationsComponent implements OnInit {
 
 
   private getTableData(): void {
-    this.lstFormations = [];
+    this.lstHeureSupplementaire = [];
     this.serialNumberArray = [];
 
-    this.data.getAllFormation().subscribe((res: any) => {
+    this.data.getAllUserHeureSupplementaire(this.loggedUserId).subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.map((res: getFormation, index: number) => {
+      res.data.map((res: getHeureSupplementaire, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstFormations.push(res);
+          this.lstHeureSupplementaire.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-
-      this.data.getAllEmployes().subscribe((res: any) => {
-        res.data.map((res: getMiniTemplateEmploye, index: number) => {
-          const serialNumber = index + 1;
-          if (index >= this.skip && serialNumber <= this.limit) {
-            res.id;// = serialNumber;
-            this.lstEmploye.push(res);
-            this.serialNumberArray.push(serialNumber);
-          }
-        });
-      });
-
-      this.dataSource = new MatTableDataSource<getFormation>(this.lstFormations);
+      this.dataSource = new MatTableDataSource<getHeureSupplementaire>(this.lstHeureSupplementaire);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
+    this.data.getConnectedEmployeID(this.loggedUserId).subscribe((res: any) => {
+      this.addHeureSupplementaireForm.patchValue({employe_id: res.data});
+      this.editHeureSupplementaireForm.patchValue({employe_id: res.data});
+      this.loggedEmployeId = res.data;
+    });
 
+    this.data.getAllEmployes().subscribe((res: any) => {
+      res.data.map((res: getMiniTemplateEmploye, index: number) => {
+        const serialNumber = index + 1;
+        if (index >= this.skip && serialNumber <= this.limit) {
+          res.id;// = serialNumber;
+          this.lstEmploye.push(res);
+          this.serialNumberArray.push(serialNumber);
+        }
+      });
+    });
   }
-
 
 
   exportToPDF() {
     const content: HTMLElement | null = document.getElementById('to_export');
-    const pdfname = "Les Formations.pdf"
+    const pdfname = "Mes Heures Supplémentaires.pdf"
 
     if (content) {
       const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-      const text = "Les Formations";
+      const text = "Mes Heures Supplémentaires";
       const fontSize = 12; // Taille de la police du texte
       const textWidth = pdf.getTextWidth(text); // Largeur du texte
       const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
@@ -238,7 +295,7 @@ export class FormationsComponent implements OnInit {
 
   exportToXLSX() {
     const table: HTMLElement | null = document.getElementById('to_export');
-    const filename = "Les Formations.xlsx";
+    const filename = "Mes Heures Supplémentaires.xlsx";
 
     if (table) {
       const wb = XLSX.utils.book_new();
@@ -259,7 +316,7 @@ export class FormationsComponent implements OnInit {
       });
 
       const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-      XLSX.utils.book_append_sheet(wb, ws1, "Les Formations");
+      XLSX.utils.book_append_sheet(wb, ws1, "Mes Heures Supplémentaires");
 
       XLSX.writeFile(wb, filename);
     } else {
@@ -273,18 +330,14 @@ export class FormationsComponent implements OnInit {
 
 
 
-
-
-
-
   public sortData(sort: Sort) {
-    const data = this.lstFormations.slice();
+    const data = this.lstHeureSupplementaire.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstFormations = data;
+      this.lstHeureSupplementaire = data;
     } else {
-      this.lstFormations = data.sort((a: any, b: any) => {
+      this.lstHeureSupplementaire = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -299,7 +352,7 @@ export class FormationsComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstFormations = this.dataSource.filteredData;
+    this.lstHeureSupplementaire = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

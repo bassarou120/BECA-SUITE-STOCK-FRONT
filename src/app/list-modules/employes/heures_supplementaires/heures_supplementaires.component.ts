@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getHeureSupplementaire, routes, HeureSupplementaireService, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { getHeureSupplementaire, routes, HeureSupplementaireService, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -22,9 +25,11 @@ export class HeuresSupplementairesComponent implements OnInit {
   mon_dep: any;
 
 
+  public lstStatuts: Array<string> = ["Non Approuvé", "Approuvé"];
   public lstHeureSupplementaire: Array<getHeureSupplementaire> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: Number = 0;
+  public editFormSelectedStatut: string = "";
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getHeureSupplementaire>;
   // pagination variables
@@ -54,13 +59,15 @@ export class HeuresSupplementairesComponent implements OnInit {
       nombreHeure: [1, [Validators.required]],
       autreInfo: ["Aucun", [Validators.required]],
       employe_id: [0, [Validators.required]],
+      status: ["Non Approuvé", [Validators.required]],
     });
-     this.editHeureSupplementaireForm = this.formBuilder.group({
+    this.editHeureSupplementaireForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       dateH: ["", [Validators.required]],
       nombreHeure: [0, [Validators.required]],
       autreInfo: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
+      status: ["Non Approuvé", [Validators.required]],
     });
      this.deleteHeureSupplementaireForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -76,25 +83,65 @@ export class HeuresSupplementairesComponent implements OnInit {
   }
 
   onClickSubmitAddHeureSupplementaire(){
-
-      console.log(this.addHeureSupplementaireForm.value)
+      // console.log(this.addHeureSupplementaireForm.value)
 
       if (this.addHeureSupplementaireForm.valid){
-
       this.addHeureSupplementaireForm.patchValue({ dateH: this.formatDateToString(this.addHeureSupplementaireForm.value.dateH) });
 
         console.log(this.addHeureSupplementaireForm.value);
         this.data.saveHeureSupplementaire(this.addHeureSupplementaireForm.value).subscribe(
           (data:any)=>{
             location.reload();
+          },
+          (error: string) => {
+            this.showModal(error);
           }
         )
-      }else {
-
+      } else {
         console.log("desole le formulaire n'est pas bien renseigné");
       }
 
   }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+    } else {
+      console.error("Modal element not found!");
+    }
+  }
+
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+  }
+
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
@@ -108,8 +155,10 @@ export class HeuresSupplementairesComponent implements OnInit {
       autreInfo: row.autreInfo,
       nombreHeure: row.nombreHeure,
       dateH: this.convertToDate(row.dateH),
+      status: row.status,
     })
     this.editFormSelectedEmployeId = row.employe_id;
+    this.editFormSelectedStatut = row.status;
   }
 
   onClickSubmitEditHeureSupplementaire(){
@@ -186,6 +235,83 @@ export class HeuresSupplementairesComponent implements OnInit {
       });
     });
   }
+
+
+  exportToPDF() {
+    const content: HTMLElement | null = document.getElementById('to_export');
+    const pdfname = "Les Heures Supplémentaires.pdf"
+
+    if (content) {
+      const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+      const text = "Les Heures Supplémentaires";
+      const fontSize = 12; // Taille de la police du texte
+      const textWidth = pdf.getTextWidth(text); // Largeur du texte
+      const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
+      const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
+      const textY = 25;
+      pdf.setFontSize(fontSize);
+      pdf.text(text, textX, textY);
+
+      html2canvas(content, {
+        ignoreElements: (element: Element) => {
+          const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+          return idsToExclude.includes(element.id);
+        },
+        scale: 1
+      }).then(canvas => {
+        const imageData = canvas.toDataURL('image/jpeg');
+        // max width is 210
+        const imageWidth = 180;
+        const imageHeight = canvas.height * imageWidth / canvas.width;
+
+        const scaleFactor = 1;
+        const scaledWidth = imageWidth * scaleFactor;
+        const scaledHeight = imageHeight * scaleFactor;
+
+        pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
+        pdf.save(pdfname);
+      });
+    } else {
+      console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
+    }
+  }
+
+  exportToXLSX() {
+    const table: HTMLElement | null = document.getElementById('to_export');
+    const filename = "Les Heures Supplémentaires.xlsx";
+
+    if (table) {
+      const wb = XLSX.utils.book_new();
+      const tableCopy = table.cloneNode(true) as HTMLElement;
+
+      const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+      idsToExclude.forEach(id => {
+        const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
+        elementsToRemove.forEach(element => {
+          const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
+          const rows = tableCopy.querySelectorAll('tr');
+          rows.forEach(row => {
+            if (row.children[columnIndex]) {
+              row.removeChild(row.children[columnIndex]);
+            }
+          });
+        });
+      });
+
+      const ws1 = XLSX.utils.table_to_sheet(tableCopy);
+      XLSX.utils.book_append_sheet(wb, ws1, "Les Heures Supplémentaires");
+
+      XLSX.writeFile(wb, filename);
+    } else {
+      console.error("L'Id spécifié n'a pas été trouvé.");
+    }
+  }
+
+
+
+
+
+
 
   public sortData(sort: Sort) {
     const data = this.lstHeureSupplementaire.slice();

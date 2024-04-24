@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div>
-                <table matSort (matSortChange)="sortData($event)"
+                <table matSort (matSortChange)="sortData($event)" id="to_export"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
@@ -48,8 +48,9 @@
                             <th mat-sort-header="employeeName">Nom de l'employé</th>
                             <th mat-sort-header="dateHeureSup">Date </th>
                             <th mat-sort-header="heuresSup">Nombre d'heures</th>
+                            <th mat-sort-header="status">Statut</th>
                             <th mat-sort-header="autreInfo">Autre Infos</th>
-                            <th class="text-end">Action</th>
+                            <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,8 +59,9 @@
                             <td>{{ item.employe }}</td>
                             <td>{{ item.dateH }}</td>
                             <td>{{ item.nombreHeure }}</td>
+                            <td>{{ item.status }}</td>
                             <td>{{ item.autreInfo }}</td>
-                            <td class="text-end">
+                            <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -148,9 +150,22 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-12 col-md-4"></div>
+        <div class="col-sm-12 col-md-4 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4"></div>
+
     </div>
 </div>
 <!-- /Page Content -->
+
 <!-- Add Department Modal -->
 <div id="add_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -280,7 +295,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="autreInfo">Autres Informations<span class="text-danger">*</span></label>
                                     <input class="form-control" type="text"
@@ -292,7 +307,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="nombreHeure">Nombre d'heures <span class="text-danger">*</span> </label>
                                     <input class="form-control" type="number"
@@ -302,6 +317,21 @@
                                             class="text-danger"> *La valeur entrée est invalide </small>
                                     </div>
                             </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="status">Statut<span class="text-danger">*</span></label>
+                            <mat-select class="select mat-cust-select form-control"
+                              [class.invalid]="editHeureSupplementaireForm.get('status')?.invalid && editHeureSupplementaireForm.get('status')?.touched"
+                              formControlName="status" placeholder="Selectionner le statut">
+                              <mat-option *ngFor="let item of lstStatuts" [value]="item"
+                                [class.mat-selected]="item === editFormSelectedStatut">{{ item }} </mat-option>
+                            </mat-select>
+                            <div *ngIf="editHeureSupplementaireForm.get('status')?.invalid && editHeureSupplementaireForm.get('status')?.touched">
+                              <small class="text-danger"> *Le statut est obligatoire</small>
+                            </div>
+                          </div>
                         </div>
                     </div>
 
@@ -314,6 +344,7 @@
     </div>
 </div>
 <!-- /Edit Department Modal -->
+
 <!-- Delete Department Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
@@ -342,3 +373,28 @@
     </div>
 </div>
 <!-- /Delete Department Modal -->
+
+
+<!-- Alert Modal -->
+<div class="modal custom-modal-overlay fade" id="alert_modal" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Alerte !</h3>
+          <p></p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+            <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Ok</a>
+            </div>
+            <div class="col-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Alert Modal -->

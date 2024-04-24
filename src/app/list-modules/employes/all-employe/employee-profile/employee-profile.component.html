@@ -413,31 +413,17 @@
               </h3>
               <div class="experience-box">
                 <ul class="experience-list">
-                  <li>
+                  <li *ngFor="let formation of curentEmploye.list_formation;">
                     <div class="experience-user">
                       <div class="before-circle"></div>
                     </div>
                     <div class="experience-content">
                       <div class="timeline-content">
                         <a href="#/" class="name"
-                          >International College of Arts and Science (UG)</a
+                          >{{ formation.intitule }}</a
                         >
-                        <div>Bsc Computer Science</div>
-                        <span class="time">2000 - 2003</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="experience-user">
-                      <div class="before-circle"></div>
-                    </div>
-                    <div class="experience-content">
-                      <div class="timeline-content">
-                        <a href="#/" class="name"
-                          >International College of Arts and Science (PG)</a
-                        >
-                        <div>Msc Computer Science</div>
-                        <span class="time">2000 - 2003</span>
+                        <div>{{ formation.domaine }}</div>
+                        <span class="time">{{ formation.date_debut | slice:0:4 }} - {{ formation.date_fin | slice:0:4 }}</span>
                       </div>
                     </div>
                   </li>
@@ -460,38 +446,15 @@
               </h3>
               <div class="experience-box">
                 <ul class="experience-list">
-                  <li>
+                  <li *ngFor="let experience of curentEmploye.list_experience;">
                     <div class="experience-user">
                       <div class="before-circle"></div>
                     </div>
                     <div class="experience-content">
                       <div class="timeline-content">
-                        <a href="#/" class="name">Analyste juridique</a>
-                        <span class="time">Janvier 2019 - Décembre 2020</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="experience-user">
-                      <div class="before-circle"></div>
-                    </div>
-                    <div class="experience-content">
-                      <div class="timeline-content">
-                        <a href="#/" class="name">Assistant en logistique</a>
-                        <span class="time">2010-2019</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="experience-user">
-                      <div class="before-circle"></div>
-                    </div>
-                    <div class="experience-content">
-                      <div class="timeline-content">
-                        <a href="#/" class="name"
-                          >Gestionnaire administrative</a
-                        >
-                        <span class="time">2001-2011</span>
+                        <a href="#/" class="name">{{ experience.posteOcupe }}</a>
+                        <span class="time">{{ getMonthName(experience.date_debut.split('-')[1]) }} {{ experience.date_debut.split('-')[0] }} -
+                                           {{ getMonthName(experience.date_fin.split('-')[1]) }} {{ experience.date_fin.split('-')[0] }}</span>
                       </div>
                     </div>
                   </li>

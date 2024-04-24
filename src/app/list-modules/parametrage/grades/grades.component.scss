@@ -1,10 +1,25 @@
 .custom-table {
   width: 100%;
-  table-layout: fixed;
+ //table-layout: fixed;
 }
 
+.custom-table td,
+.custom-table th {
+  /* Définit la largeur des colonnes de manière égale */
+  width: calc(100% / 13);
+  /* Ajoute une marge entre les colonnes */
+  margin-right: 10px;
+  /* Ajuste l'alignement du texte */
+  text-align: right;
+}
 
-
-
-
-
+.custom-table td:nth-child(2),
+.custom-table th:nth-child(2) {
+  width: 10%; // Largeur de 10.5%
+  max-width: 10%;
+}
+.custom-table td:nth-child(3),
+.custom-table th:nth-child(3) {
+  width: 12%; // Largeur de 10.5%
+  max-width: 12%;
+}

@@ -21,7 +21,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="table-responsive">
+            <div class="table-responsive" id="to_export">
                 <table  matSort
                 (matSortChange)="sortData($event)" class="table table-striped custom-table mb-0">
                     <thead>
@@ -30,7 +30,7 @@
                             <th mat-sort-header="title">Libellé </th>
                             <!-- <th mat-sort-header="holidaydate">Holiday Date</th>
                             <th mat-sort-header="day">Day</th> -->
-                            <th class="text-end">Action</th>
+                            <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +39,7 @@
                             <td>{{row.libelle}}</td>
                             <!-- <td>{{row.holidaydate}}</td>
                             <td>{{row.day}}</td> -->
-                            <td class="text-end">
+                            <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -69,7 +69,7 @@
                     {{ totalData }} entrées
                   </div>
                 </div>
-        
+
                 <div class="col-sm-12 col-md-7">
                   <div class="pagination_section">
                     <ul class="pagination">
@@ -87,7 +87,7 @@
                           >Prédédent</a
                         >
                       </li>
-        
+
                       <ng-container *ngFor="let item of pageNumberArray; let i = index">
                         <li
                           class="page-item"
@@ -138,7 +138,7 @@
                           <a class="page-link" href="javascript:void(0);"> ... </a>
                         </li>
                       </ng-container>
-        
+
                       <li
                         class="page-item"
                         [ngClass]="{
@@ -160,6 +160,18 @@
                 </div>
               </div>
         </div>
+
+        <div class="col-sm-12 col-md-3"></div>
+        <div class="col-sm-12 col-md-6 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-3"></div>
+
     </div>
 </div>
 <!-- /Page Content -->
@@ -248,7 +260,7 @@
                         <!-- <button type="submit" class="btn btn-primary continue-btn">Supprimer</button> -->
                         <a href="javascript:void(0);" (click)="deleteTypePrime()" class="btn btn-primary continue-btn">Supprimer</a>
                       </form>
-                      
+
                     </div>
                     <div class="col-6">
                       <a href="javascript:void(0);" data-bs-dismiss="modal"

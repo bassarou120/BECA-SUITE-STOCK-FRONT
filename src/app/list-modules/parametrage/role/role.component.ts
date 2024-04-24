@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { DataService,apiResultFormat, routes, roleService, getRole  } from 'src/app/core/core.index';
+import { FormBuilder } from "@angular/forms";
+import { routes, roleService, getRole  } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
 
 
 
@@ -37,93 +41,82 @@ export class RoleComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-
-  public addRoleForm!: FormGroup ;
-  public editRoleForm!: FormGroup
-  public deleteRoleForm!: FormGroup
-
   constructor(private formBuilder: FormBuilder,public router: Router, private data: roleService) {}
 
 
   ngOnInit(): void {
     this.getTableData();
-    this.addRoleForm = this.formBuilder.group({
-      lib: ["", [Validators.required]],
-   });
-   this.editRoleForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-    lib: ["", [Validators.required]],
-  });
-   this.deleteRoleForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
  }
 
- onClickSubmitAddRole(){
 
-  console.log(this.addRoleForm.value)
+exportToPDF() {
+  const content: HTMLElement | null = document.getElementById('to_export');
+  const pdfname = "Roles.pdf"
 
-  if (this.addRoleForm.valid){
-    this.data.saveRole(this.addRoleForm.value).subscribe(
-      (data:any)=>{
-        location.reload();
-      }
-    )
-  }else {
+  if (content) {
+    const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+    const text = "Les Rôles";
+    const fontSize = 12; // Taille de la police du texte
+    const textWidth = pdf.getTextWidth(text); // Largeur du texte
+    const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
+    const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
+    const textY = 25;
+    pdf.setFontSize(fontSize);
+    pdf.text(text, textX, textY);
 
-    alert("desole le formulaire n'est pas bien renseigné")
+    html2canvas(content, {
+      ignoreElements: (element: Element) => {
+        const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+        return idsToExclude.includes(element.id);
+      },
+      scale: 1
+    }).then(canvas => {
+      const imageData = canvas.toDataURL('image/jpeg');
+      // max width is 210
+      const imageWidth = 180;
+      const imageHeight = canvas.height * imageWidth / canvas.width;
+
+      const scaleFactor = 1;
+      const scaledWidth = imageWidth * scaleFactor;
+      const scaledHeight = imageHeight * scaleFactor;
+
+      pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
+      pdf.save(pdfname);
+    });
+  } else {
+    console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
   }
-
-
 }
 
-onClickSubmitEditRole(){
-  console.log(this.editRoleForm.value)
+exportToXLSX() {
+  const table: HTMLElement | null = document.getElementById('to_export');
+  const filename = "Roles.xlsx";
 
-    if (this.editRoleForm.valid){
-      const id = this.editRoleForm.value.id;
-      this.data.editRole(this.editRoleForm.value).subscribe(
-        (data:any)=>{
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
+  if (table) {
+    const wb = XLSX.utils.book_new();
+    const tableCopy = table.cloneNode(true) as HTMLElement;
 
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
+    const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+    idsToExclude.forEach(id => {
+      const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
+      elementsToRemove.forEach(element => {
+        const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
+        const rows = tableCopy.querySelectorAll('tr');
+        rows.forEach(row => {
+          if (row.children[columnIndex]) {
+            row.removeChild(row.children[columnIndex]);
+          }
+        });
+      });
+    });
 
-}
+    const ws1 = XLSX.utils.table_to_sheet(tableCopy);
+    XLSX.utils.book_append_sheet(wb, ws1, "Les Rôles");
 
-onClickSubmitDeleteRole(){
-  console.log(this.deleteRoleForm.value)
-
-    if (this.deleteRoleForm.valid){
-      const id = this.deleteRoleForm.value.id;
-      this.data.deleteRole(this.deleteRoleForm.value).subscribe(
-        (data:any)=>{
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-getEditForm(row: any){
-  this.editRoleForm.patchValue({
-   id:row.id,
-   lib:row.lib
-  })
-}
-
-getDeleteForm(row: any){
-  this.deleteRoleForm.patchValue({
-   id:row.id,
-  })
+    XLSX.writeFile(wb, filename);
+  } else {
+    console.error("L'Id spécifié n'a pas été trouvé.");
+  }
 }
 
 

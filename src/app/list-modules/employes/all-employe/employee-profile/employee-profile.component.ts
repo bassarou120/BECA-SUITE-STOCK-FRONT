@@ -102,6 +102,11 @@ export class EmployeeProfileComponent implements OnInit {
     this.getCurentEmploy();
   }
 
+  getMonthName(monthNumber: string): string {
+    const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    return months[parseInt(monthNumber, 10) - 1];
+  }
+
   get items() {
     return this.form.get('items') as FormArray;
   }

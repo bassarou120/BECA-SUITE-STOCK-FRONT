@@ -15,7 +15,8 @@ import { MatTableDataSource } from '@angular/material/table';
 export class EmployeeDashboardComponent  {
 
   public routes = routes;
-
+  public dashboard: any = [];
+  public loggedUserId: number = 0;
 
 
   // pagination variables
@@ -27,23 +28,27 @@ export class EmployeeDashboardComponent  {
   constructor(private formBuilder: FormBuilder, public router: Router, private data: EmployeeDashboardService) {}
 
   ngOnInit(): void {
+    this.getLoggedUserId();
      this.getTableData();
   }
 
-  
-  private getTableData(): void {
- 
-    // this.data.getAllAbsence().subscribe((res: any) => {
-    //   res.data.map((res: getAbsence, index: number) => {
-    //     const serialNumber = index + 1;
-    //     if (index >= this.skip && serialNumber <= this.limit) {
-    //       res.id;
-    //       this.lstAbsence.push(res);
-    //       this.serialNumberArray.push(serialNumber);
-    //     }
-    //   });
-    // });
+  private getLoggedUserId() {
+    const userDataString = localStorage.getItem('userDataString');
+    if(userDataString) {
+      const userData = JSON.parse(userDataString)
+      this.loggedUserId = userData['id'];
+    } else {
+      console.log("erreur")
+    }
+  }
 
+  private getTableData(): void {
+    this.data.getDataTableauBordEmploye(this.loggedUserId).subscribe(
+      (data: any) => {
+        this.dashboard = data.data;
+      },
+      (error: any) => {}
+    );
   }
 
 }

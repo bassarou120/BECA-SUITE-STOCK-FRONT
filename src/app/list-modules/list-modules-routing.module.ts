@@ -1,3 +1,4 @@
+import { GRHGuard } from './../core/services/auth/guards.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
@@ -37,14 +38,14 @@ const routes: Routes = [
 
       {
         path: 'parametrage',
-        canActivate: [AuthService],
+        canActivate: [AuthService, GRHGuard],
         loadChildren: () =>
           import('./parametrage/parametrage.module').then(
             (m) => m.ParametrageModule
           ),
       },
 
-      { path: 'fichepaie', component: fichepaieComponent },
+      { path: 'fichepaie', component: fichepaieComponent, canActivate: [GRHGuard] },
 
       /*
 

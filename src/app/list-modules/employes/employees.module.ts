@@ -1,3 +1,4 @@
+import { MesHeuresSupplementairesComponent } from './mes-heures-supplementaires/mes-heures-supplementaires.component';
 import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
@@ -57,6 +58,7 @@ import { ExperiencesComponent } from './experiences/experiences.component';
     DemandesComponent,
     FormationsComponent,
     HeuresSupplementairesComponent,
+    MesHeuresSupplementairesComponent,
     MesPlaintesComponent,
     ExperiencesComponent,
     DepartEmployeComponent,

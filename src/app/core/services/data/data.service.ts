@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/core/core.index';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import {
@@ -13,9 +14,9 @@ import { HttpClient } from '@angular/common/http';
 export class DataService {
   allAppliedCandidates!: Array<object>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  public sideBar: SideBar[] = [
+  public grhSideBar: SideBar[] = [
     {
       tittle: 'Menu principal',
       icon: 'airplay',
@@ -43,8 +44,6 @@ export class DataService {
             },
           ],
         },
-
-
       ],
     },
     {
@@ -64,6 +63,34 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
+              menuValue: 'Mes Demandes',
+              route: routes.demandes,
+              base: 'demandes',
+            },
+            {
+              menuValue: 'Mes Heures Supplémentaires',
+              route: routes.mes_heures_supplementaires,
+              base: 'mes-heures-supllémetaires',
+            },
+            {
+              menuValue: 'Mes Plaintes',
+              route: routes.plaintes,
+              base: 'mes-plaintes',
+            },
+
+          ],
+        },
+        {
+          menuValue: 'Employés (GRH)',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
               menuValue: 'Tous les employés',
               route: routes.employee_page,
 
@@ -71,39 +98,9 @@ export class DataService {
               base2: 'employee-list',
             },
             {
-              menuValue: 'Mes Demandes',
-              route: routes.demandes,
-              base: 'demandes',
-            },
-            {
-              menuValue: 'Mes Plaintes',
-              route: routes.plaintes,
-              base: 'mes-plaintes',
-            },
-            {
-              menuValue: 'Les Congés (GRH)',
-              route: routes.conges,
-              base: 'holidays',
-            },
-            {
-              menuValue: 'Les Absences (GRH)',
-              route: routes.absences,
-              base: 'absences',
-            },
-            {
-              menuValue: 'Les Plaintes (GRH)',
-              route: routes.plaintesGRH,
-              base: 'plaintes',
-            },
-            {
-              menuValue: 'Les Formations (GRH)',
-              route: routes.formationsGRH,
-              base: 'formations',
-            },
-            {
-              menuValue: 'Les Expériences',
-              route: routes.experiences,
-              base: 'experiences',
+              menuValue: 'Départ Employé',
+              route: routes.depart_employe,
+              base: 'depart-employe',
             },
             {
               menuValue: 'Heure supplémentaire',
@@ -111,9 +108,29 @@ export class DataService {
               base: 'heures-supllémetaires',
             },
             {
-              menuValue: 'Départ Employé',
-              route: routes.depart_employe,
-              base: 'depart-employe',
+              menuValue: 'Les Absences (GRH)',
+              route: routes.absences,
+              base: 'absences',
+            },
+            {
+              menuValue: 'Les Congés (GRH)',
+              route: routes.conges,
+              base: 'holidays',
+            },
+            {
+              menuValue: 'Les Expériences (GRH)',
+              route: routes.experiences,
+              base: 'experiences',
+            },
+            {
+              menuValue: 'Les Formations (GRH)',
+              route: routes.formationsGRH,
+              base: 'formations',
+            },
+            {
+              menuValue: 'Les Plaintes (GRH)',
+              route: routes.plaintesGRH,
+              base: 'plaintes',
             },
             {
               menuValue: 'Point des Congés',
@@ -125,10 +142,8 @@ export class DataService {
               route: routes.point_contrat,
               base: 'point-contrat',
             },
-
           ],
         },
-
       ],
     },
     {
@@ -137,7 +152,6 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
-
         {
           menuValue: 'Fiche de paie',
           route: routes.payroll,
@@ -152,14 +166,10 @@ export class DataService {
               route: routes.fichePaie,
               base: 'employee-salary',
             },
-
           ],
         },
-
-
       ],
     },
-
     {
       tittle: 'PARAMETRAGE',
       icon: 'set',
@@ -177,54 +187,9 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Type de Congé',
-              route: routes.type_conge,
-              base: 'type-contrat',
-            },
-            {
-              menuValue: 'Type de Contrat',
-              route: routes.type_contrat,
-              base: 'type-contrat',
-            },
-            {
-              menuValue: 'Type de Prime',
-              route: routes.type_prime,
-              base: 'type-prime',
-            },
-            {
-              menuValue: 'Département',
-              route: routes.departement,
-              base: 'departement',
-            },
-            {
-              menuValue: 'Poste',
-              route: routes.poste,
-              base: 'poste',
-            },
-            {
-              menuValue: "Type d'absence",
-              route: routes.typeAbsence,
-              base: 'type-absence',
-            },
-            {
-              menuValue: 'Rôle',
-              route: routes.role,
-              base: 'role',
-            },
-            {
               menuValue: 'Catégorie',
               route: routes.categorie,
               base: 'categorie',
-            },
-            {
-              menuValue: 'Informations de base',
-              route: routes.infos_de_base,
-              base: 'infos-de-base',
-            },
-            {
-              menuValue: 'Type Départ',
-              route: routes.type_depart,
-              base: 'type-depart',
             },
             {
               menuValue: 'Classes',
@@ -232,9 +197,54 @@ export class DataService {
               base: 'classes',
             },
             {
+              menuValue: 'Département',
+              route: routes.departement,
+              base: 'departement',
+            },
+            {
               menuValue: 'Grades',
               route: routes.grades,
               base: 'grades',
+            },
+            {
+              menuValue: 'Poste',
+              route: routes.poste,
+              base: 'poste',
+            },
+            {
+              menuValue: 'Rôle',
+              route: routes.role,
+              base: 'role',
+            },
+            {
+              menuValue: 'Type de Contrat',
+              route: routes.type_contrat,
+              base: 'type-contrat',
+            },
+            {
+              menuValue: "Type d'absence",
+              route: routes.typeAbsence,
+              base: 'type-absence',
+            },
+            {
+              menuValue: 'Type de Congé',
+              route: routes.type_conge,
+              base: 'type-contrat',
+            },
+            {
+              menuValue: 'Type Départ',
+              route: routes.type_depart,
+              base: 'type-depart',
+            },
+            {
+              menuValue: 'Type de Prime',
+              route: routes.type_prime,
+              base: 'type-prime',
+            },
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
             },
 
             // {
@@ -245,13 +255,77 @@ export class DataService {
 
           ],
         },
-
-
       ],
     },
-
-
   ];
+
+  public employeSideBar: SideBar[] = [
+    {
+      tittle: 'Menu principal',
+      icon: 'airplay',
+      showAsTab: true,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Tableau de bord',
+          route: routes.dashboard,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'dashboard',
+          base: 'dashboard',
+          materialicons: 'home',
+          subMenus: [
+            {
+              menuValue: 'Employé Dashboard',
+              route: routes.employee,
+              base: 'employee',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      tittle: 'Gestion des Employés',
+      icon: 'layers',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Employés',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Mes Demandes',
+              route: routes.demandes,
+              base: 'demandes',
+            },
+            {
+              menuValue: 'Mes Heures Supplémentaires',
+              route: routes.mes_heures_supplementaires,
+              base: 'mes-heures-supllémetaires',
+            },
+            {
+              menuValue: 'Mes Plaintes',
+              route: routes.plaintes,
+              base: 'mes-plaintes',
+            },
+
+          ],
+        },
+      ],
+    },
+  ];
+
+  public sideBar = (this.authService.userRole && this.authService.userRole < 3) ? this.grhSideBar : this.employeSideBar;
+
+
+
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<
     Array<SideBar>
   >(this.sideBar);

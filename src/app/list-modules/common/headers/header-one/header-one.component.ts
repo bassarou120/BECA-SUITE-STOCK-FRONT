@@ -11,6 +11,7 @@ import { routes } from 'src/app/core/helpers/routes/routes';
   styleUrls: ['./header-one.component.scss'],
 })
 export class HeaderOneComponent {
+  public loggedUserData = this.getLoggedUserData();
   public base = '';
   public page = '';
   public routes = routes;
@@ -53,6 +54,15 @@ export class HeaderOneComponent {
     }
   }
 
+  private getLoggedUserData() {
+    const userDataString = localStorage.getItem('userDataString');
+    if(userDataString) {
+      return JSON.parse(userDataString);
+    } else {
+      return null;
+    }
+  }
+
   public toggleSideBar(): void {
     this.sideBar.switchSideMenuPosition();
   }
@@ -64,8 +74,11 @@ export class HeaderOneComponent {
   logout() {
     localStorage.removeItem('LoginData');
     localStorage.removeItem('LoginToken');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
+
   navigation() {
     this.router.navigate([routes.search]);
   }

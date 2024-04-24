@@ -26,4 +26,13 @@ export class AuthService {
   login(data: any): Observable<Object> {
     return this.http.post(`${this.url}/login`, data);
   }
+
+  get userRole(): number | null {
+    const userDataString = localStorage.getItem('userDataString');
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      return userData.role.niveau;
+    }
+    return null;
+  }
 }

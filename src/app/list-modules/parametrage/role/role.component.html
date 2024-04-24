@@ -12,8 +12,8 @@
                 </ul>
             </div>
             <div class="col-auto float-end ms-auto">
-                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter un Rôle</a>
+                <!-- <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
+                        class="fa-solid fa-plus"></i> Ajouter un Rôle</a> -->
             </div>
         </div>
     </div>
@@ -39,21 +39,23 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div  id="to_export">
                 <table matSort (matSortChange)="sortData($event)"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="departmentName">Nom du Rôle</th>
-                            <th class="text-end">Action</th>
+                            <th mat-sort-header="departmentName">Niveau du rôle</th>
+                            <!--<th class="text-end" id="exclusion-1">Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of lstRole">
                             <td>{{item.id}}</td>
                             <td>{{item.lib}}</td>
-                            <td class="text-end">
+                            <td>{{item.niveau}}</td>
+                            <!-- <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -66,7 +68,7 @@
                                             Supprimer</a>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
                         </tr>
                         <tr *ngIf="lstRole.length === 0">
                             <td colspan="10">
@@ -142,103 +144,19 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="col-sm-12 col-md-3"></div>
+        <div class="col-sm-12 col-md-6 row">
+          <div class="col-6">
+            <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+          </div>
+          <div class="col-6">
+            <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-3"></div>
+
     </div>
 </div>
 <!-- /Page Content -->
-<!-- Add role Modal -->
-<div id="add_department" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Ajouter un rôle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-              <form [formGroup]="addRoleForm" (ngSubmit)="onClickSubmitAddRole()" novalidate>
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Nom du Rôle <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="addRoleForm.get('lib')?.invalid && addRoleForm.get('lib')?.touched"
-                      formControlName="lib">
-                  <div
-                      *ngIf="addRoleForm.get('lib')?.invalid && addRoleForm.get('lib')?.touched">
-                      <small
-                          *ngIf="addRoleForm.get('lib')?.invalid && addRoleForm.get('lib')?.touched"
-                          class="text-danger"> *le nom du Rôle est obligatoire</small>
-                  </div>
-              </div>
-                  <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
-                  </div>
-              </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Add role Modal -->
-
-<!-- Edit role Modal -->
-<div id="edit_department" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modifier le Rôle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-              <form [formGroup]="editRoleForm" (ngSubmit)="onClickSubmitEditRole()" novalidate>
-                <div class="input-block mb-3">
-                  <input type="hidden" formControlName="id">
-                  <label class="col-form-label" for="">Nom du Rôle <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="editRoleForm.get('lib')?.invalid && editRoleForm.get('lib')?.touched"
-                      formControlName="lib">
-                  <div
-                      *ngIf="editRoleForm.get('lib')?.invalid && editRoleForm.get('lib')?.touched">
-                      <small
-                          *ngIf="editRoleForm.get('lib')?.invalid && editRoleForm.get('lib')?.touched"
-                          class="text-danger"> *le nom du Rôle est obligatoire</small>
-                  </div>
-              </div>
-                  <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
-                  </div>
-              </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Edit role Modal -->
-
-<!-- Delete role Modal -->
-<div class="modal custom-modal fade" id="delete_department" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                  <h3>Supprimer le département</h3>
-                  <p>Êtes-vous sûr de vouloir supprimer ?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                          <form [formGroup]="deleteRoleForm" (ngSubmit)="onClickSubmitDeleteRole()">
-                            <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteRole()">Supprimer</a>
-                          </form>
-                        </div>
-                        <div class="col-6">
-                            <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Annuler</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Delete role Modal -->

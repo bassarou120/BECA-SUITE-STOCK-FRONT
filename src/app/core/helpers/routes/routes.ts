@@ -124,6 +124,10 @@ export class routes {
     return this.baseUrl + '/employes/heures-supplementaires';
   }
 
+  public static get mes_heures_supplementaires(): string {
+    return this.baseUrl + '/employes/mes-heures-supplementaires';
+  }
+
   public static get depart_employe(): string {
     return this.baseUrl + '/employes/depart-employe';
   }
