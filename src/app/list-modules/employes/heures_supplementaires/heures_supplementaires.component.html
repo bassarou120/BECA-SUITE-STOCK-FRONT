@@ -202,9 +202,14 @@
                             <div class="input-block mb-3 date-input1">
                                 <label class="col-form-label" for="dateH">Date <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
-                                        [class.invalid]="addHeureSupplementaireForm.get('dateH')?.invalid && addHeureSupplementaireForm.get('dateH')?.touched"
-                                        placeholder="Sélectionner la date des heures supplémentaires" formControlName="dateH">
+                                    <input class="form-control datetimepicker"
+                                      type="text"
+                                      container=".date-input1"
+                                      placeholder="Sélectionner la date des heures supplémentaires"
+                                      formControlName="dateH"
+                                      bsDatepicker
+                                      [class.invalid]="addHeureSupplementaireForm.get('dateH')?.invalid && addHeureSupplementaireForm.get('dateH')?.touched"
+                                    >
                                         <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
                                     <div> <small
                                             *ngIf="addHeureSupplementaireForm.get('dateH')?.invalid && addHeureSupplementaireForm.get('dateH')?.touched"
