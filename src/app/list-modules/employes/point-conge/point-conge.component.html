@@ -13,10 +13,14 @@
             </div>
             <div class="col-auto row">
               <div class="col-auto">
-                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF2()">Exporter PDF</a>
+                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF2()">Exporter PDF
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>
+                </a>
               </div>
               <div class="col-auto">
-                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX2()">Exporter EXCEL</a>
+                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX2()">Exporter EXCEL
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>
+                </a>
               </div>
             </div>
             <!-- <div class="col-auto float-end ms-auto">

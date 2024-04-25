@@ -14,13 +14,17 @@
 
             <div class="col-auto row">
               <div class="col-auto">
-                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF</a>
+                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>
+                </a>
               </div>
               <div class="col-auto">
-                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
+                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>
+                </a>
               </div>
             </div>
-            
+
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_absence"><i
                         class="fa-solid fa-plus"></i> Ajouter une absence</a>
