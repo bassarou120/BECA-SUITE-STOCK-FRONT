@@ -527,7 +527,7 @@
                 >
                   <td>{{ emp.matricule }}</td>
                   <td>{{ emp.nom }} {{ emp.prenom }}</td>
-                  <td>{{ emp.titre }}</td>
+                  <td>{{ emp.titre ?  emp.titre : "-" }}</td>
                   <td>{{ emp.email }}</td>
                   <td>{{ emp.date_arrivee | date : "dd/MM/YYYY" }}</td>
                 </tr>
