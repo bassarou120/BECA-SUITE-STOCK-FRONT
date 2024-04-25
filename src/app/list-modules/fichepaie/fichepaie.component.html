@@ -82,7 +82,7 @@
 
                 <th>Salaire base</th>
                 <th>Total Prime</th>
-                <th>Total retenue</th>
+                <!-- <th>Total retenue</th> -->
                 <th>Salaire net</th>
 
                 <th>Validation N.1</th>
@@ -135,7 +135,7 @@
                       )
                   }}
                 </td>
-                <td
+                <!-- <td
                   *ngIf="
                     employe.fichepaies[0].validation1 == 0 ||
                     employe.fichepaies[0].validation2 == 0
@@ -150,12 +150,12 @@
                       )) *
                       employe.grade.taux_retenu_cnss_employe) /
                       100 +
-                      employe.grade.valeur_retenu_its_employe +
-                      calculateTotalRetenue(
-                        employe.fichepaies[0].autre_retenues
-                      )
+                      (employe.grade.valeur_retenu_its_employe +
+                        calculateTotalRetenue(
+                          employe.fichepaies[0].autre_retenues
+                        ))
                   }}
-                </td>
+                </td> -->
                 <td
                   *ngIf="
                     employe.fichepaies[0].validation1 == 0 ||
@@ -342,7 +342,7 @@
 
                 <th>Salaire base</th>
                 <th>Total Prime</th>
-                <th>Total retenue</th>
+                <!-- <th>Total retenue</th> -->
                 <th>Salaire net</th>
 
                 <th>Validation N.1</th>
@@ -416,7 +416,7 @@
                       )
                   }}
                 </td>
-                <td
+                <!-- <td
                   *ngIf="
                     employe.fichepaies[0].validation1 == 1 &&
                     employe.fichepaies[0].validation2 == 1
@@ -442,7 +442,7 @@
                         employe.fichepaies[0].autre_retenues
                       )
                   }}
-                </td>
+                </td> -->
                 <td
                   *ngIf="
                     employe.fichepaies[0].validation1 == 1 &&
