@@ -845,25 +845,23 @@
             <table class="table custom-table mb-0">
               <thead>
                 <tr>
-                  <th>Employé</th>
-
+                  <th>Employés</th>
                   <th>Titre de la plainte</th>
-                  <th>Status</th>
-                  <th class="text-end">Date d'entrée</th>
+                  <th>Statut</th>
+                  <th class="text-end">Date Plainte</th>
                 </tr>
               </thead>
               <tbody>
                 <tr
                   *ngFor="
-                    let emp of dataTableauBord.top10_plaintes.data;
+                    let emp of dataTableauBord.top10_plaintes;
                     let i = index
                   "
                 >
-                  <td>{{ emp.matricule }}</td>
-                  <td>{{ emp.nom }} {{ emp.prenom }}</td>
-                  <td>{{ emp.titre }}</td>
-                  <td>{{ emp.email }}</td>
-                  <td>{{ emp.date_arrivee | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ emp.emplye.nom }} {{ emp.emplye.prenom }}</td>
+                  <td>{{ emp.plainte.titre }}</td>
+                  <td>{{ emp.plainte.status ? emp.plainte.status : "-" }}</td>
+                  <td>{{ emp.plainte.date_M | date : "dd/MM/YYYY" }}</td>
                 </tr>
               </tbody>
             </table>
