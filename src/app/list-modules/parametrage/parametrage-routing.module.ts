@@ -1,3 +1,4 @@
+import { AttributionRoleComponent } from './attribution-role/attribution-role.component';
 import { ClasseComponent } from './classes/classes.component';
 import { TypeDepartComponent } from './type-depart/type-depart.component';
 import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
@@ -35,6 +36,7 @@ const routes: Routes = [
     { path: "type-depart", component: TypeDepartComponent },
     { path: "classes", component: ClasseComponent },
     { path: "grades", component: GradesComponent },
+    { path: "attribution-role", component: AttributionRoleComponent },
   ],
  }];
 

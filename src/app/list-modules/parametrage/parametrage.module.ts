@@ -1,3 +1,4 @@
+import { AttributionRoleComponent } from './attribution-role/attribution-role.component';
 import { ClasseComponent } from './classes/classes.component';
 import { TypeDepartComponent } from './type-depart/type-depart.component';
 import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
@@ -37,6 +38,7 @@ import { GradesComponent } from './grades/grades.component';
     TypeDepartComponent,
     ClasseComponent,
     GradesComponent,
+    AttributionRoleComponent,
   ],
   imports: [
     CommonModule,

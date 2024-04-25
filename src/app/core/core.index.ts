@@ -29,3 +29,4 @@ export * from './services/classes/classes.service';
 export * from './services/point-conge/point-conge.service';
 export * from './services/grades/grades.service';
 export * from './services/point-contrat/point-contrat.service';
+export * from './services/attribution-role/attribution-role.service';

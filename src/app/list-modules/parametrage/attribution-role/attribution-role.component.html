@@ -1,0 +1,212 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Attribution des Rôles</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+                    <li class="breadcrumb-item active">Attribution des rôles</li>
+                </ul>
+            </div>
+
+            <div class="col-auto row">
+              <div class="col-auto">
+                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>
+                </a>
+              </div>
+              <div class="col-auto">
+                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>
+                </a>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table_header">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length">
+                            <label class="col-form-label" for="">
+                              Afficher
+                                <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
+                                    class="form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                Entrées
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="to_export" class="table-responsive">
+                <table matSort (matSortChange)="sortData($event)"
+                    class="table table-striped custom-table datatable mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th mat-sort-header="departmentName">Nom de l'employé</th>
+                            <th mat-sort-header="departmentFirstName">Prénom</th>
+                            <th mat-sort-header="departmentRole">Rôle</th>
+                            <th class="text-end" id="exclusion-1">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstEmployeRole">
+                            <td>{{item.id}}</td>
+                            <td>{{item.nom}}</td>
+                            <td>{{item.prenom}}</td>
+                            <td>{{item.role}}</td>
+                            <td class="text-end" id="exclusion-2">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
+                                            data-bs-target="#edit_attribution_role"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            Modifier le Rôle
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="lstEmployeRole.length === 0">
+                            <td colspan="10">
+                                <h5 style="text-align: center;">Aucun Résultat</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table_footer">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info">
+                      Affichage de {{ serialNumberArray[0] }} à
+                        {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                        {{ totalData }} Entrées
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7">
+                    <div class="pagination_section">
+                        <ul class="pagination">
+                            <li class="page-item" [ngClass]="{
+                          disabled: currentPage === 1
+                        }">
+                                <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                                    tabindex="-1">Précédent</a>
+                            </li>
+
+                            <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                                <li class="page-item" [class.active]="item === currentPage" [ngClass]="
+                            (pageNumberArray[currentPage - 2] > item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6) ||
+                            (pageNumberArray[currentPage] < item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6 &&
+                              pageNumberArray.length !== item)
+                              ? 'hide-page-no'
+                              : 'show-page-no'
+                          ">
+                                    <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                                        {{ item }}
+                                    </a>
+                                </li>
+                                <li class="page-item" *ngIf="
+                            i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                                <li *ngIf="
+                            i === pageNumberArray.length - 2 &&
+                            pageNumberArray.length > 6
+                          " [hidden]="
+                            currentPage >=
+                              pageNumberArray[pageNumberArray.length - 2] ||
+                            totalData < serialNumberArray[serialNumberArray.length - 1]
+                          " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                            </ng-container>
+
+                            <li class="page-item" [ngClass]="{
+                          disabled:
+                            currentPage ===
+                              pageNumberArray[pageNumberArray.length - 1] ||
+                            lstEmployeRole.length === 0
+                        }">
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Edit poste Modal -->
+<div id="edit_attribution_role" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier l'attribution du rôle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="editEmployeRoleForm" (ngSubmit)="onClickSubmitEditEmployeRole()" novalidate>
+                <div class="row">
+                  <input type="hidden" formControlName="id_employe">
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="nom">Nom</label>
+                    <input class="form-control" type="text" readonly
+                      [class.invalid]="editEmployeRoleForm.get('nom')?.invalid && editEmployeRoleForm.get('nom')?.touched"
+                      formControlName="nom">
+                  </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="prenom">Prénom</label>
+                    <input class="form-control" type="text" readonly
+                      [class.invalid]="editEmployeRoleForm.get('nom')?.invalid && editEmployeRoleForm.get('nom')?.touched"
+                      formControlName="prenom">
+                  </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="role_id">Rôle de l'employé<span class="text-danger">*</span></label>
+                    <mat-select class="select mat-cust-select form-control"
+                      [class.invalid]="editEmployeRoleForm.get('etat')?.invalid && editEmployeRoleForm.get('etat')?.touched"
+                      formControlName="role_id" placeholder="Selectionner le rôle désiré">
+                      <mat-option *ngFor="let item of lstRole" [value]="item.id"
+                        [class.mat-selected]="item.id === editFormSelectedRoleId">{{ item.lib }} </mat-option>
+                    </mat-select>
+                    <div *ngIf="editEmployeRoleForm.get('etat')?.invalid && editEmployeRoleForm.get('etat')?.touched">
+                      <small class="text-danger"> *Le rôle est obligatoire</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Department Modal -->
+

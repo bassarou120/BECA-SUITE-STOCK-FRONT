@@ -187,6 +187,11 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
+              menuValue: 'Attribution des rôles',
+              route: routes.attribution_roles,
+              base: 'attribution-role',
+            },
+            {
               menuValue: 'Banque',
               route: routes.banque,
               base: 'banque',
