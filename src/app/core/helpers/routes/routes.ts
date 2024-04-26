@@ -147,7 +147,9 @@ export class routes {
   public static get point_contrat(): string {
     return this.baseUrl + '/employes/point-contrat';
   }
-
+  public static get mes_contrats(): string {
+    return this.baseUrl + '/employes/mes-contrats';
+  }
 
   public static get type_contrat(): string {
     return this.baseUrl + '/parametrage/type-contrat';

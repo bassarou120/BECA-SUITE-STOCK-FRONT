@@ -28,7 +28,7 @@ import { PlaintesComponent } from './plaintes/plaintes.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
-
+import { MesContratsComponent } from './mes-contrats/mes-contrats.component';
 const routes: Routes = [
   {
     path: '',
@@ -47,7 +47,7 @@ const routes: Routes = [
       { path: "demandes", component: DemandesComponent, canActivate: [EmployeGuard] },
       { path: "mes-plaintes", component: MesPlaintesComponent, canActivate: [EmployeGuard] },
       { path: "mes-heures-supplementaires", component: MesHeuresSupplementairesComponent, canActivate: [EmployeGuard] },
-
+      { path: "mes-contrats", component: MesContratsComponent, canActivate: [EmployeGuard] },
       { path: 'employe-list', component: EmployeListComponent },
       { path: 'employe-page', component: EmployePageContentComponent, canActivate: [GRHGuard] },
       { path: 'employe-profile/:id', component: EmployeeProfileComponent, canActivate: [GRHGuard] },
@@ -60,6 +60,7 @@ const routes: Routes = [
       { path: "depart-employe", component: DepartEmployeComponent, canActivate: [GRHGuard] },
       { path: "point-conge", component: PointCongeComponent, canActivate: [GRHGuard] },
       { path: "point-contrat", component: PointContratComponent, canActivate: [GRHGuard] },
+      
     ],
   },
 ];

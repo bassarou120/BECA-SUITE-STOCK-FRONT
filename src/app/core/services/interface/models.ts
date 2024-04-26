@@ -788,7 +788,18 @@ export interface getPointContrat {
   libelleStatus: string;
   etat: string;
 }
-
+export interface getMesContrats {
+  id: number;
+ //id_employe: number;
+  //employe: string;
+  //type_contrat_id: number;
+  libelle: string;
+  date_signature: Date;
+  duree: number;
+  //status_id: number;
+  libelleStatus: string;
+  etat: string;
+}
 export interface getFormation {
   id: number;
   employe_id: number;

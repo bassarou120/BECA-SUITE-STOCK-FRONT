@@ -33,6 +33,7 @@ import { PlaintesComponent } from './plaintes/plaintes.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
+import { MesContratsComponent } from './mes-contrats/mes-contrats.component';
 
 // @ts-ignore
 @NgModule({
@@ -64,6 +65,7 @@ import { ExperiencesComponent } from './experiences/experiences.component';
     DepartEmployeComponent,
     PointCongeComponent,
     PointContratComponent,
+    MesContratsComponent,
   ],
   imports: [
     CommonModule,

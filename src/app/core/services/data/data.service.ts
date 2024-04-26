@@ -78,6 +78,13 @@ export class DataService {
               base: 'mes-plaintes',
             },
 
+            {
+              menuValue: 'Mes Contrats',
+              route: routes.mes_contrats,
+              base: 'mes-contrats',
+            },
+
+
           ],
         },
         {
