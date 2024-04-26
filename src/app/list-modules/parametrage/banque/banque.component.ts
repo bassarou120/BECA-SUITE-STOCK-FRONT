@@ -1,6 +1,8 @@
-import { Component, OnInit,AfterViewInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import { getPointContrat, routes, PointContratService } from 'src/app/core/core.index';
+import { DataService,apiResultFormat, routes, banqueService, getBanque } from 'src/app/core/core.index';
+
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -8,17 +10,23 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
-declare var $: any;
+
+
 @Component({
-  selector: 'app-point-contrat',
-  templateUrl: './point-contrat.component.html',
-  styleUrls: ['./point-contrat.component.scss']
+  selector: 'app-banque',
+  templateUrl: './banque.component.html',
+  styleUrls: ['./banque.component.scss']
 })
-export class PointContratComponent implements OnInit, AfterViewInit {
+export class BanqueComponent implements OnInit {
   public routes = routes;
-  public lstPointContrat: Array<getPointContrat> = [];
+  selected = 'option1';
+
+  public lstPst: Array<any>=[];
+
+
+  public lstBanque: Array<getBanque> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getPointContrat>;
+  dataSource!: MatTableDataSource<getBanque>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -33,32 +41,113 @@ export class PointContratComponent implements OnInit, AfterViewInit {
   public totalPages = 0;
   //** / pagination variables
 
+  public addBanqueForm!: FormGroup ;
+  public editBanqueForm!: FormGroup
+  public deleteBanqueForm!: FormGroup
 
-  constructor(public router: Router,private data: PointContratService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router, private data: banqueService) {}
 
   ngOnInit(): void {
-     this.getTableData();
+    this.getTableData();
+    this.addBanqueForm = this.formBuilder.group({
+      nom: ["", [Validators.required]],
+   });
+   this.editBanqueForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+    nom: ["", [Validators.required]],
+  });
+   this.deleteBanqueForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+  });
+ }
+
+ onClickSubmitAddBanque(){
+
+  console.log(this.addBanqueForm.value)
+
+  if (this.addBanqueForm.valid){
+    this.data.saveBanque(this.addBanqueForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+
+    alert("desole le formulaire n'est pas bien renseigné")
+  }
+
+
+}
+
+onClickSubmitEditBanque(){
+  console.log(this.editBanqueForm.value)
+
+    if (this.editBanqueForm.valid){
+      const id = this.editBanqueForm.value.id;
+      this.data.editBanque(this.editBanqueForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
     }
 
+}
 
-    private getTableData(): void {
-      this.serialNumberArray = [];
-      this.lstPointContrat = [];
+onClickSubmitDeleteBanque(){
+  console.log(this.deleteBanqueForm.value)
 
-      this.data.getAllPointsContrats().subscribe((res: any) => {
-        this.totalData = res.data.total;
-        res.data.map((res: getPointContrat, index: number) => {
-          const serialNumber = index + 1;
-          if (index >= this.skip && serialNumber <= this.limit) {
-            res.id;// = serialNumber;
-            this.lstPointContrat.push(res);
-            this.serialNumberArray.push(serialNumber);
-          }
-        });
+    if (this.deleteBanqueForm.valid){
+      const id = this.deleteBanqueForm.value.id;
+      this.data.deleteBanque(this.deleteBanqueForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
 
-        this.dataSource = new MatTableDataSource<getPointContrat>(this.lstPointContrat);
-        this.calculateTotalPages(this.totalData, this.pageSize);
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+getEditForm(row: any){
+  this.editBanqueForm.patchValue({
+   id:row.id,
+   nom:row.nom
+  })
+}
+
+getDeleteForm(row: any){
+  this.deleteBanqueForm.patchValue({
+   id:row.id,
+  })
+}
+
+
+  private getTableData(): void {
+    this.lstBanque = [];
+    this.serialNumberArray = [];
+
+    this.data.getAllBanque().subscribe((res: any) => {
+      this.totalData = res.data.total;
+      res.data.data.map((res: getBanque, index: number) => {
+        const serialNumber = index + 1;
+        if (index >= this.skip && serialNumber <= this.limit) {
+          res.id;// = serialNumber;
+          this.lstBanque.push(res);
+          this.serialNumberArray.push(serialNumber);
+        }
       });
+      this.dataSource = new MatTableDataSource<getBanque>(this.lstBanque);
+      this.calculateTotalPages(this.totalData, this.pageSize);
+    });
+
+
   }
 
 
@@ -67,11 +156,11 @@ export class PointContratComponent implements OnInit, AfterViewInit {
     $('#spinner_pdf').removeClass('d-none');
     setTimeout(() => {
       const content: HTMLElement | null = document.getElementById('to_export');
-      const pdfname = "Point des Contrats en cours.pdf"
+      const pdfname = "Les Banques.pdf"
 
       if (content) {
         const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-        const text = "Point des Contrats en cours";
+        const text = "Les Banques";
         const fontSize = 12; // Taille de la police du texte
         const textWidth = pdf.getTextWidth(text); // Largeur du texte
         const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
@@ -111,7 +200,7 @@ export class PointContratComponent implements OnInit, AfterViewInit {
     $('#spinner_xlsx').removeClass('d-none');
     setTimeout(() => {
       const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Point des Contrats en cours.xlsx";
+      const filename = "Les Banques.xlsx";
 
       if (table) {
         const wb = XLSX.utils.book_new();
@@ -132,7 +221,7 @@ export class PointContratComponent implements OnInit, AfterViewInit {
         });
 
         const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Point des Contrats en cours");
+        XLSX.utils.book_append_sheet(wb, ws1, "Les Banques");
 
         XLSX.writeFile(wb, filename);
         $('#spinner_xlsx').addClass('d-none');
@@ -143,20 +232,14 @@ export class PointContratComponent implements OnInit, AfterViewInit {
     }, 10);
   }
 
-
-
-
-
-
-
   public sortData(sort: Sort) {
-    const data = this.lstPointContrat.slice();
+    const data = this.lstBanque.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstPointContrat = data;
+      this.lstBanque = data;
     } else {
-      this.lstPointContrat = data.sort((a: any, b: any) => {
+      this.lstBanque = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -164,11 +247,9 @@ export class PointContratComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstPointContrat = this.dataSource.filteredData;
+    this.lstBanque = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {
@@ -220,18 +301,7 @@ export class PointContratComponent implements OnInit, AfterViewInit {
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
-
-  ngAfterViewInit(): void {
-    $(document).ready(function () {
-      $('#example').DataTable({
-        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-      });
-    });
-  }
-
 }
-
-
 export interface pageSelection {
   skip: number;
   limit: number;

@@ -178,7 +178,7 @@ export class DataService {
       menu: [
 
         {
-          menuValue: 'GENERALE',
+          menuValue: 'GRH',
           route: routes.payroll,
           hasSubRoute: true,
           showSubRoute: false,
@@ -186,6 +186,16 @@ export class DataService {
           base: 'payroll',
           materialicons: 'request_quote',
           subMenus: [
+            {
+              menuValue: 'Attribution des rôles',
+              route: routes.attribution_roles,
+              base: 'attribution-role',
+            },
+            {
+              menuValue: 'Banque',
+              route: routes.banque,
+              base: 'banque',
+            },
             {
               menuValue: 'Catégorie',
               route: routes.categorie,
@@ -212,23 +222,18 @@ export class DataService {
               base: 'poste',
             },
             {
-              menuValue: 'Rôle',
-              route: routes.role,
-              base: 'role',
-            },
-            {
-              menuValue: 'Type de Contrat',
-              route: routes.type_contrat,
-              base: 'type-contrat',
-            },
-            {
-              menuValue: "Type d'absence",
+              menuValue: "Type d'Absence",
               route: routes.typeAbsence,
               base: 'type-absence',
             },
             {
               menuValue: 'Type de Congé',
               route: routes.type_conge,
+              base: 'type-contrat',
+            },
+            {
+              menuValue: 'Type de Contrat',
+              route: routes.type_contrat,
               base: 'type-contrat',
             },
             {
@@ -241,11 +246,6 @@ export class DataService {
               route: routes.type_prime,
               base: 'type-prime',
             },
-            {
-              menuValue: 'Informations de base',
-              route: routes.infos_de_base,
-              base: 'infos-de-base',
-            },
 
             // {
             //   menuValue: 'Statut',
@@ -255,6 +255,29 @@ export class DataService {
 
           ],
         },
+
+        {
+          menuValue: 'GENERALE',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'tools',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
+            },
+            {
+              menuValue: 'Rôle',
+              route: routes.role,
+              base: 'role',
+            },
+          ],
+        },
+
       ],
     },
   ];
@@ -322,7 +345,7 @@ export class DataService {
     },
   ];
 
-  public sideBar = (this.authService.userRole && this.authService.userRole < 3) ? this.grhSideBar : this.employeSideBar;
+  public sideBar = (this.authService.userRole && this.authService.userRole <= 3) ? this.grhSideBar : this.employeSideBar;
 
 
 

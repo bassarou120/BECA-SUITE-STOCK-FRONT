@@ -11,18 +11,21 @@ import {environment} from "../../../../environments/environment";
 @Injectable({
   providedIn: 'root',
 })
-
-export class InfosDeBaseService  {
+export class AttributionRoleService  {
   allAppliedCandidates!: Array<object>;
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  saveInfoDeBase(data: any): Observable<any> {
-    return this.http.post(`${this.url}/parametres_de_base`, data);
+  getAllAttributionRole(): Observable<any> {
+    return this.http.get<any>(`${this.url}/set_role`);
   }
 
-  getAllInfoDeBases(): Observable<any> {
-    return this.http.get<any>(`${this.url}/parametres`);
+  getAllRole(): Observable<any> {
+    return this.http.get<any>(`${this.url}/role`);
+  }
+
+  editAttributionRole(data:any): Observable<any> {
+    return this.http.post<any>(`${this.url}/set_roles`, data);
   }
 
 }

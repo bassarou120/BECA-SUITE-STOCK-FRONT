@@ -1,3 +1,4 @@
+import { AttributionRoleComponent } from './attribution-role/attribution-role.component';
 import { ClasseComponent } from './classes/classes.component';
 import { TypeDepartComponent } from './type-depart/type-depart.component';
 import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
@@ -11,6 +12,7 @@ import { TypeContratComponent } from './typeContrat/typeContrat.component';
 import { TypePrimeComponent } from './typePrime/typePrime.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { PostesComponent } from './postes/postes.component';
+import { BanqueComponent } from './banque/banque.component';
 import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
 import { RoleComponent } from './role/role.component';
 import { ParametrageRoutingModule } from './parametrage-routing.module';
@@ -27,6 +29,7 @@ import { GradesComponent } from './grades/grades.component';
     TypePrimeComponent,
     DepartmentsComponent,
     PostesComponent,
+    BanqueComponent,
     TypeAbsenceComponent,
     RoleComponent,
     CategorieComponent,
@@ -35,6 +38,7 @@ import { GradesComponent } from './grades/grades.component';
     TypeDepartComponent,
     ClasseComponent,
     GradesComponent,
+    AttributionRoleComponent,
   ],
   imports: [
     CommonModule,

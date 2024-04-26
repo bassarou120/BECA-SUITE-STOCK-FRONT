@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Postes</h3>
+                <h3 class="page-title">Attribution des Rôles</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">postes</li>
+                    <li class="breadcrumb-item active">Attribution des rôles</li>
                 </ul>
             </div>
 
@@ -23,11 +23,6 @@
                   <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>
                 </a>
               </div>
-            </div>
-
-            <div class="col-auto float-end ms-auto">
-                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter un poste</a>
             </div>
         </div>
     </div>
@@ -53,36 +48,38 @@
                     </div>
                 </div>
             </div>
-            <div  id="to_export" class="table-responsive">
+            <div id="to_export" class="table-responsive">
                 <table matSort (matSortChange)="sortData($event)"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
-                            <th mat-sort-header="departmentName">Nom des Postes</th>
+                            <th mat-sort-header="departmentName">Nom de l'employé</th>
+                            <th mat-sort-header="departmentFirstName">Prénom</th>
+                            <th mat-sort-header="departmentRole">Rôle</th>
                             <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstPoste">
+                        <tr *ngFor="let item of lstEmployeRole">
                             <td>{{item.id}}</td>
-                            <td>{{item.nom_poste}}</td>
+                            <td>{{item.nom}}</td>
+                            <td>{{item.prenom}}</td>
+                            <td>{{item.role}}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                                            data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
-                                            Modifier</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                                            data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                            Supprimer</a>
+                                            data-bs-target="#edit_attribution_role"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            Modifier le Rôle
+                                        </a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstPoste.length === 0">
+                        <tr *ngIf="lstEmployeRole.length === 0">
                             <td colspan="10">
                                 <h5 style="text-align: center;">Aucun Résultat</h5>
                             </td>
@@ -146,7 +143,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                            lstPoste.length === 0
+                            lstEmployeRole.length === 0
                         }">
                                 <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
@@ -159,68 +156,53 @@
     </div>
 </div>
 <!-- /Page Content -->
-<!-- Add Poste Modal -->
-<div id="add_department" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Ajouter un poste</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-              <form [formGroup]="addPosteForm" (ngSubmit)="onClickSubmitAddPoste()" novalidate>
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Nom du Poste <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="addPosteForm.get('nom_poste')?.invalid && addPosteForm.get('nom_poste')?.touched"
-                      formControlName="nom_poste">
-                  <div
-                      *ngIf="addPosteForm.get('nom_poste')?.invalid && addPosteForm.get('nom_poste')?.touched">
-                      <small
-                          *ngIf="addPosteForm.get('nom_poste')?.invalid && addPosteForm.get('nom_poste')?.touched"
-                          class="text-danger"> *le nom du Poste est obligatoire</small>
-                  </div>
-              </div>
-                  <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
-                  </div>
-              </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Add Poste Modal -->
 
 <!-- Edit poste Modal -->
-<div id="edit_department" class="modal custom-modal fade" role="dialog">
+<div id="edit_attribution_role" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le Poste</h5>
+                <h5 class="modal-title">Modifier l'attribution du rôle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="editPosteForm" (ngSubmit)="onClickSubmitEditPoste()" novalidate>
-                <div class="input-block mb-3">
-                  <input type="hidden" formControlName="id">
-                  <label class="col-form-label" for="">Nom du Poste <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="editPosteForm.get('nom_poste')?.invalid && editPosteForm.get('nom_poste')?.touched"
-                      formControlName="nom_poste">
-                  <div
-                      *ngIf="editPosteForm.get('nom_poste')?.invalid && editPosteForm.get('nom_poste')?.touched">
-                      <small
-                          *ngIf="editPosteForm.get('nom_poste')?.invalid && editPosteForm.get('nom_poste')?.touched"
-                          class="text-danger"> *le nom du Poste est obligatoire</small>
+              <form [formGroup]="editEmployeRoleForm" (ngSubmit)="onClickSubmitEditEmployeRole()" novalidate>
+                <div class="row">
+                  <input type="hidden" formControlName="id_employe">
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="nom">Nom</label>
+                    <input class="form-control" type="text" readonly
+                      [class.invalid]="editEmployeRoleForm.get('nom')?.invalid && editEmployeRoleForm.get('nom')?.touched"
+                      formControlName="nom">
                   </div>
-              </div>
-                  <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="prenom">Prénom</label>
+                    <input class="form-control" type="text" readonly
+                      [class.invalid]="editEmployeRoleForm.get('nom')?.invalid && editEmployeRoleForm.get('nom')?.touched"
+                      formControlName="prenom">
                   </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="role_id">Rôle de l'employé<span class="text-danger">*</span></label>
+                    <mat-select class="select mat-cust-select form-control"
+                      [class.invalid]="editEmployeRoleForm.get('etat')?.invalid && editEmployeRoleForm.get('etat')?.touched"
+                      formControlName="role_id" placeholder="Selectionner le rôle désiré">
+                      <mat-option *ngFor="let item of lstRole" [value]="item.id"
+                        [class.mat-selected]="item.id === editFormSelectedRoleId">{{ item.lib }} </mat-option>
+                    </mat-select>
+                    <div *ngIf="editEmployeRoleForm.get('etat')?.invalid && editEmployeRoleForm.get('etat')?.touched">
+                      <small class="text-danger"> *Le rôle est obligatoire</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="submit-section">
+                  <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+                </div>
               </form>
             </div>
         </div>
@@ -228,31 +210,3 @@
 </div>
 <!-- /Edit Department Modal -->
 
-<!-- Delete Department Modal -->
-<div class="modal custom-modal fade" id="delete_department" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Supprimer le département</h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                          <form [formGroup]="deletePosteForm" (ngSubmit)="onClickSubmitDeletePoste()">
-                            <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeletePoste()">Supprimer</a>
-                          </form>
-                        </div>
-                        <div class="col-6">
-                            <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Annuler</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Delete Department Modal -->

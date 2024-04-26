@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService,apiResultFormat, getDemande, routes, DemandeService, getTypeConge, getTypeAbsence, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
+import { DataService, apiResultFormat, getDemande, routes, DemandeService, getTypeConge, getTypeAbsence, getEmployees, getMiniTemplateEmploye } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,7 +23,7 @@ export class DemandesComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstDpt: Array<any>=[];
+  public lstDpt: Array<any> = [];
   mon_dep: any;
 
 
@@ -53,17 +53,17 @@ export class DemandesComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addDemandeForm!: FormGroup ;
+  public addDemandeForm!: FormGroup;
   public editDemandeForm!: FormGroup
   public deleteDemandeForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router,private data: DemandeService) {}
+  constructor(private formBuilder: FormBuilder, public router: Router, private data: DemandeService) { }
 
   ngOnInit(): void {
-     this.getLoggedUserId();
-     this.getTableData();
+    this.getLoggedUserId();
+    this.getTableData();
 
-     this.addDemandeForm = this.formBuilder.group({
+    this.addDemandeForm = this.formBuilder.group({
       date_demande: [new Date(), [Validators.required]],
       objet: ["", [Validators.required]],
       employe_id: [0, [Validators.required]],
@@ -81,7 +81,7 @@ export class DemandesComponent implements OnInit {
 
     }, { validator: this.datesValidator });
 
-     this.editDemandeForm = this.formBuilder.group({
+    this.editDemandeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       date_demande: [new Date(), [Validators.required]],
       objet: ["", [Validators.required]],
@@ -100,7 +100,7 @@ export class DemandesComponent implements OnInit {
 
     }, /*{ validator: this.datesValidator }*/);
 
-     this.deleteDemandeForm = this.formBuilder.group({
+    this.deleteDemandeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       type_demande: ["", [Validators.required]],
     });
@@ -114,7 +114,7 @@ export class DemandesComponent implements OnInit {
 
   private getLoggedUserId() {
     const userDataString = localStorage.getItem('userDataString');
-    if(userDataString) {
+    if (userDataString) {
       const userData = JSON.parse(userDataString)
       this.loggedUserId = userData['id'];
     } else {
@@ -165,8 +165,8 @@ export class DemandesComponent implements OnInit {
       });
 
       this.data.getConnectedEmployeID(this.loggedUserId).subscribe((res: any) => {
-        this.addDemandeForm.patchValue({employe_id: res.data});
-        this.editDemandeForm.patchValue({employe_id: res.data});
+        this.addDemandeForm.patchValue({ employe_id: res.data });
+        this.editDemandeForm.patchValue({ employe_id: res.data });
         this.loggedEmployeId = res.data;
       });
 
@@ -216,15 +216,15 @@ export class DemandesComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  onClickSubmitAddDemande(){
+  onClickSubmitAddDemande() {
 
-    if(this.addDemandeForm.value.type_absence_id) {
-      this.addDemandeForm.patchValue({type_conges_id: "0"});
-    } else if(this.addDemandeForm.value.type_conges_id) {
-      this.addDemandeForm.patchValue({type_absence_id: "0"});
+    if (this.addDemandeForm.value.type_absence_id) {
+      this.addDemandeForm.patchValue({ type_conges_id: "0" });
+    } else if (this.addDemandeForm.value.type_conges_id) {
+      this.addDemandeForm.patchValue({ type_absence_id: "0" });
     }
 
-    if (this.addDemandeForm.valid){
+    if (this.addDemandeForm.valid) {
       this.addDemandeForm.patchValue({
         date_demande: this.formatDateToString(this.addDemandeForm.value.date_demande),
         date_M: this.formatDateToString(new Date()),
@@ -235,7 +235,7 @@ export class DemandesComponent implements OnInit {
       })
 
       this.data.saveDemande(this.addDemandeForm.value).subscribe(
-        (data:any)=>{
+        (data: any) => {
           location.reload();
         },
         (error: string) => {
@@ -277,9 +277,9 @@ export class DemandesComponent implements OnInit {
           this.hideModal(modal);
         }
       });
-  } else {
-    console.error("Modal element not found!");
-  }
+    } else {
+      console.error("Modal element not found!");
+    }
   }
 
   hideModal(modal: HTMLElement) {
@@ -291,10 +291,10 @@ export class DemandesComponent implements OnInit {
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
-    return new Date(Number(d[0]), Number(d[1])-1, Number(d[2]));
+    return new Date(Number(d[0]), Number(d[1]) - 1, Number(d[2]));
   }
 
-  getEditForm(row: any){
+  getEditForm(row: any) {
     this.editDemandeForm.patchValue({
       id: row.id,
       date_demande: this.convertToDate(row.date_demande),
@@ -307,20 +307,20 @@ export class DemandesComponent implements OnInit {
       date_M: this.convertToDate(row.date_demande),
     });
     this.selectedTypeDemande = row.type_demande;
-    if(row.type_demande === "absence") {
-      this.editDemandeForm.patchValue({date_debut: ""});
-      this.editDemandeForm.patchValue({date_fin: ""});
-    } else if(row.type_demande === "congé") {
-      this.editDemandeForm.patchValue({date_debut: new Date()});
-      this.editDemandeForm.patchValue({date_fin: this.tomorrowDate()});
-    } else if(row.type_demande === "plainte") {
-      this.editDemandeForm.patchValue({autre_info: ""});
+    if (row.type_demande === "absence") {
+      this.editDemandeForm.patchValue({ date_debut: "" });
+      this.editDemandeForm.patchValue({ date_fin: "" });
+    } else if (row.type_demande === "congé") {
+      this.editDemandeForm.patchValue({ date_debut: new Date() });
+      this.editDemandeForm.patchValue({ date_fin: this.tomorrowDate() });
+    } else if (row.type_demande === "plainte") {
+      this.editDemandeForm.patchValue({ autre_info: "" });
     }
   }
 
-  onClickSubmitEditDemande(){
+  onClickSubmitEditDemande() {
 
-    if (this.editDemandeForm.valid){
+    if (this.editDemandeForm.valid) {
       this.editDemandeForm.patchValue({
         date_demande: this.formatDateToString(this.editDemandeForm.value.date_demande),
         date_M: this.formatDateToString(this.editDemandeForm.value.date_M),
@@ -332,7 +332,7 @@ export class DemandesComponent implements OnInit {
 
       const id = this.editDemandeForm.value.id;
       this.data.editDemande(this.editDemandeForm.value).subscribe(
-        (data:any)=>{
+        (data: any) => {
           location.reload();
         }
       )
@@ -341,19 +341,19 @@ export class DemandesComponent implements OnInit {
     }
   }
 
-  getDeleteForm(row: any){
+  getDeleteForm(row: any) {
     this.deleteDemandeForm.patchValue({
       id: row.id,
       type_demande: row.type_demande,
     })
   }
 
-  onClickSubmitDeleteAbsence(){
+  onClickSubmitDeleteAbsence() {
 
-    if (this.deleteDemandeForm.valid){
+    if (this.deleteDemandeForm.valid) {
 
       this.data.deleteDemande(this.deleteDemandeForm.value).subscribe(
-        (data:any)=>{
+        (data: any) => {
           location.reload();
         }
       )
@@ -367,73 +367,83 @@ export class DemandesComponent implements OnInit {
 
 
   exportToPDF() {
-    const content: HTMLElement | null = document.getElementById('to_export');
-    const pdfname = "Mes Demandes.pdf"
+    $('#spinner_pdf').removeClass('d-none');
+    setTimeout(() => {
+      const content: HTMLElement | null = document.getElementById('to_export');
+      const pdfname = "Mes Demandes.pdf"
 
-    if (content) {
-      const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-      const text = "Mes Demandes";
-      const fontSize = 12; // Taille de la police du texte
-      const textWidth = pdf.getTextWidth(text); // Largeur du texte
-      const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
-      const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
-      const textY = 25;
-      pdf.setFontSize(fontSize);
-      pdf.text(text, textX, textY);
+      if (content) {
+        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+        const text = "Mes Demandes";
+        const fontSize = 12; // Taille de la police du texte
+        const textWidth = pdf.getTextWidth(text); // Largeur du texte
+        const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
+        const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
+        const textY = 25;
+        pdf.setFontSize(fontSize);
+        pdf.text(text, textX, textY);
 
-      html2canvas(content, {
-        ignoreElements: (element: Element) => {
-          const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-          return idsToExclude.includes(element.id);
-        },
-        scale: 1
-      }).then(canvas => {
-        const imageData = canvas.toDataURL('image/jpeg');
-        // max width is 210
-        const imageWidth = 180;
-        const imageHeight = canvas.height * imageWidth / canvas.width;
+        html2canvas(content, {
+          ignoreElements: (element: Element) => {
+            const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+            return idsToExclude.includes(element.id);
+          },
+          scale: 1
+        }).then(canvas => {
+          const imageData = canvas.toDataURL('image/jpeg');
+          // max width is 210
+          const imageWidth = 180;
+          const imageHeight = canvas.height * imageWidth / canvas.width;
 
-        const scaleFactor = 1;
-        const scaledWidth = imageWidth * scaleFactor;
-        const scaledHeight = imageHeight * scaleFactor;
+          const scaleFactor = 1;
+          const scaledWidth = imageWidth * scaleFactor;
+          const scaledHeight = imageHeight * scaleFactor;
 
-        pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
-        pdf.save(pdfname);
-      });
-    } else {
-      console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
-    }
+          pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
+          pdf.save(pdfname);
+          $('#spinner_pdf').addClass('d-none');
+        });
+      } else {
+        console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
+        $('#spinner_pdf').addClass('d-none');
+      }
+    }, 10);
   }
 
   exportToXLSX() {
-    const table: HTMLElement | null = document.getElementById('to_export');
-    const filename = "Mes Demandes.xlsx";
+    $('#spinner_xlsx').removeClass('d-none');
+    setTimeout(() => {
+      const table: HTMLElement | null = document.getElementById('to_export');
+      const filename = "Mes Demandes.xlsx";
 
-    if (table) {
-      const wb = XLSX.utils.book_new();
-      const tableCopy = table.cloneNode(true) as HTMLElement;
+      if (table) {
+        const wb = XLSX.utils.book_new();
+        const tableCopy = table.cloneNode(true) as HTMLElement;
 
-      const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-      idsToExclude.forEach(id => {
-        const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
-        elementsToRemove.forEach(element => {
-          const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
-          const rows = tableCopy.querySelectorAll('tr');
-          rows.forEach(row => {
-            if (row.children[columnIndex]) {
-              row.removeChild(row.children[columnIndex]);
-            }
+        const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+        idsToExclude.forEach(id => {
+          const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
+          elementsToRemove.forEach(element => {
+            const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
+            const rows = tableCopy.querySelectorAll('tr');
+            rows.forEach(row => {
+              if (row.children[columnIndex]) {
+                row.removeChild(row.children[columnIndex]);
+              }
+            });
           });
         });
-      });
 
-      const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-      XLSX.utils.book_append_sheet(wb, ws1, "Mes Demandes");
+        const ws1 = XLSX.utils.table_to_sheet(tableCopy);
+        XLSX.utils.book_append_sheet(wb, ws1, "Mes Demandes");
 
-      XLSX.writeFile(wb, filename);
-    } else {
-      console.error("L'Id spécifié n'a pas été trouvé.");
-    }
+        XLSX.writeFile(wb, filename);
+        $('#spinner_xlsx').addClass('d-none');
+      } else {
+        console.error("L'Id spécifié n'a pas été trouvé.");
+        $('#spinner_xlsx').addClass('d-none');
+      }
+    }, 10);
   }
 
 

@@ -11,18 +11,26 @@ import {environment} from "../../../../environments/environment";
 @Injectable({
   providedIn: 'root',
 })
-
-export class InfosDeBaseService  {
+export class banqueService  {
   allAppliedCandidates!: Array<object>;
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  saveInfoDeBase(data: any): Observable<any> {
-    return this.http.post(`${this.url}/parametres_de_base`, data);
+  saveBanque(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/banques`, data);
   }
 
-  getAllInfoDeBases(): Observable<any> {
-    return this.http.get<any>(`${this.url}/parametres`);
+  getAllBanque(): Observable<any> {
+    return this.http.get<any>(`${this.url}/banques`);
+  }
+
+
+  editBanque(data:any): Observable<any> {
+    return this.http.put<any>(`${this.url}/banques/${data.id}`, data);
+  }
+
+  deleteBanque(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/banques/${data.id}`);
   }
 
 }

@@ -92,6 +92,14 @@ export class routes {
     return this.baseUrl + '/parametrage/postes';
   }
 
+  public static get attribution_roles(): string {
+    return this.baseUrl + '/parametrage/attribution-role';
+  }
+
+  public static get banque(): string {
+    return this.baseUrl + '/parametrage/banque';
+  }
+
   public static get typeAbsence(): string {
     return this.baseUrl + '/parametrage/type-absence';
   }

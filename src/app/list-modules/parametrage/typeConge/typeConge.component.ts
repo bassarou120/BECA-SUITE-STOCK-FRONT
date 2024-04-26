@@ -127,73 +127,83 @@ export class TypeCongeComponent implements OnInit {
 
 
   exportToPDF() {
-    const content: HTMLElement | null = document.getElementById('to_export');
-    const pdfname = "Types De Congés.pdf"
+    $('#spinner_pdf').removeClass('d-none');
+    setTimeout(() => {
+      const content: HTMLElement | null = document.getElementById('to_export');
+      const pdfname = "Types De Congés.pdf"
 
-    if (content) {
-      const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-      const text = "Types De Congés";
-      const fontSize = 12; // Taille de la police du texte
-      const textWidth = pdf.getTextWidth(text); // Largeur du texte
-      const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
-      const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
-      const textY = 25;
-      pdf.setFontSize(fontSize);
-      pdf.text(text, textX, textY);
+      if (content) {
+        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+        const text = "Types De Congés";
+        const fontSize = 12; // Taille de la police du texte
+        const textWidth = pdf.getTextWidth(text); // Largeur du texte
+        const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
+        const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
+        const textY = 25;
+        pdf.setFontSize(fontSize);
+        pdf.text(text, textX, textY);
 
-      html2canvas(content, {
-        ignoreElements: (element: Element) => {
-          const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-          return idsToExclude.includes(element.id);
-        },
-        scale: 1
-      }).then(canvas => {
-        const imageData = canvas.toDataURL('image/jpeg');
-        // max width is 210
-        const imageWidth = 180;
-        const imageHeight = canvas.height * imageWidth / canvas.width;
+        html2canvas(content, {
+          ignoreElements: (element: Element) => {
+            const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+            return idsToExclude.includes(element.id);
+          },
+          scale: 1
+        }).then(canvas => {
+          const imageData = canvas.toDataURL('image/jpeg');
+          // max width is 210
+          const imageWidth = 180;
+          const imageHeight = canvas.height * imageWidth / canvas.width;
 
-        const scaleFactor = 1;
-        const scaledWidth = imageWidth * scaleFactor;
-        const scaledHeight = imageHeight * scaleFactor;
+          const scaleFactor = 1;
+          const scaledWidth = imageWidth * scaleFactor;
+          const scaledHeight = imageHeight * scaleFactor;
 
-        pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
-        pdf.save(pdfname);
-      });
-    } else {
-      console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
-    }
+          pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
+          pdf.save(pdfname);
+          $('#spinner_pdf').addClass('d-none');
+        });
+      } else {
+        console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
+        $('#spinner_pdf').addClass('d-none');
+      }
+    }, 10);
   }
 
   exportToXLSX() {
-    const table: HTMLElement | null = document.getElementById('to_export');
-    const filename = "Types De Congés.xlsx";
+    $('#spinner_xlsx').removeClass('d-none');
+    setTimeout(() => {
+      const table: HTMLElement | null = document.getElementById('to_export');
+      const filename = "Types De Congés.xlsx";
 
-    if (table) {
-      const wb = XLSX.utils.book_new();
-      const tableCopy = table.cloneNode(true) as HTMLElement;
+      if (table) {
+        const wb = XLSX.utils.book_new();
+        const tableCopy = table.cloneNode(true) as HTMLElement;
 
-      const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-      idsToExclude.forEach(id => {
-        const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
-        elementsToRemove.forEach(element => {
-          const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
-          const rows = tableCopy.querySelectorAll('tr');
-          rows.forEach(row => {
-            if (row.children[columnIndex]) {
-              row.removeChild(row.children[columnIndex]);
-            }
+        const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
+        idsToExclude.forEach(id => {
+          const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
+          elementsToRemove.forEach(element => {
+            const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
+            const rows = tableCopy.querySelectorAll('tr');
+            rows.forEach(row => {
+              if (row.children[columnIndex]) {
+                row.removeChild(row.children[columnIndex]);
+              }
+            });
           });
         });
-      });
 
-      const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-      XLSX.utils.book_append_sheet(wb, ws1, "Types De Congés");
+        const ws1 = XLSX.utils.table_to_sheet(tableCopy);
+        XLSX.utils.book_append_sheet(wb, ws1, "Types De Congés");
 
-      XLSX.writeFile(wb, filename);
-    } else {
-      console.error("L'Id spécifié n'a pas été trouvé.");
-    }
+        XLSX.writeFile(wb, filename);
+        $('#spinner_xlsx').addClass('d-none');
+      } else {
+        console.error("L'Id spécifié n'a pas été trouvé.");
+        $('#spinner_xlsx').addClass('d-none');
+      }
+    }, 10);
   }
 
 

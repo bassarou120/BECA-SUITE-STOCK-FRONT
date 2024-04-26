@@ -1,3 +1,4 @@
+import { AttributionRoleComponent } from './attribution-role/attribution-role.component';
 import { ClasseComponent } from './classes/classes.component';
 import { TypeDepartComponent } from './type-depart/type-depart.component';
 import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
@@ -8,6 +9,7 @@ import { TypeContratComponent } from './typeContrat/typeContrat.component';
 import { TypePrimeComponent } from './typePrime/typePrime.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { PostesComponent } from './postes/postes.component';
+import { BanqueComponent } from './banque/banque.component';
 import { TypeAbsenceComponent } from './typeAbsence/typeAbsence.component';
 import { RoleComponent } from './role/role.component';
 import { ParametrageComponent } from './parametrage.component';
@@ -25,6 +27,7 @@ const routes: Routes = [
     { path: "type-prime", component: TypePrimeComponent },
     { path: "departments", component: DepartmentsComponent },
     { path: "postes", component: PostesComponent },
+    { path: "banque", component: BanqueComponent },
     { path: "type-absence", component: TypeAbsenceComponent },
     { path: "role", component: RoleComponent },
     { path: "categorie", component: CategorieComponent },
@@ -33,6 +36,7 @@ const routes: Routes = [
     { path: "type-depart", component: TypeDepartComponent },
     { path: "classes", component: ClasseComponent },
     { path: "grades", component: GradesComponent },
+    { path: "attribution-role", component: AttributionRoleComponent },
   ],
  }];
 
