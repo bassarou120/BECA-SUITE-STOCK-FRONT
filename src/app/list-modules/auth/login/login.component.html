@@ -60,11 +60,7 @@
                   <div class="col">
                     <label class="col-form-label" for="">Mot de passe</label>
                   </div>
-                  <div class="col-auto">
-                    <a class="text-muted" [routerLink]="'/forgot-password'">
-                      Mot de passe oubilié ?
-                    </a>
-                  </div>
+
                 </div>
                 <div class="position-relative login-page">
                   <input
@@ -107,13 +103,20 @@
                   [disabled]="form.invalid"
                   type="submit"
                 >
-                  Login
+                  Se Connecter
                 </button>
               </div>
               <!--              <div class="account-footer">-->
               <!--                <p>Don't have an account yet? <a [routerLink]="'/register'">Register</a></p>-->
               <!--              </div>-->
             </form>
+
+            <div class="col-auto d-flex justify-content-center" id="forgot-password-button">
+              <a class="custom-link" [routerLink]="'/forgot-password'">
+                Mot de passe oubilié ?
+              </a>
+            </div>
+
             <!-- /Account Form -->
           </div>
         </div>

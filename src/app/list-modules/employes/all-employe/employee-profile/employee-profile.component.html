@@ -1023,8 +1023,8 @@
                   <td>{{ i + 1 }}</td>
                   <td>{{ contrat.num_contrat }}</td>
                   <td>CDD</td>
-                  <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td>
-                  <td>{{ contrat.date_fin | date : "dd/mm/YYYY" }}</td>
+                  <td>{{ contrat.date_debut | date : "dd/MM/YYYY" }}</td>
+                  <td>{{ contrat.date_fin | date : "dd/MM/YYYY" }}</td>
                   <td>
                     {{ contrat.etat === null ? "Non Valider" : contrat.etat }}
                   </td>
