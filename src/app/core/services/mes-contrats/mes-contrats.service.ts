@@ -16,8 +16,8 @@ export class MesContratsService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  getAllMesContrats(): Observable<any> {
-    return this.http.get<any>(`${this.url}//contrats/{user_id}/mes_contrats`);
+  getAllMesContrats(id: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/contrats/mes_contrats/${id}`);
   }
 
   getConnectedEmployeID(data: any): Observable<any> {

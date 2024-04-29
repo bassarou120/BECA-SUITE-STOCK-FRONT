@@ -9,7 +9,7 @@ import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
 declare var $: any;
-@Component({ 
+@Component({
   selector: 'app-point-contrat',
   templateUrl: './mes-contrats.component.html',
   styleUrls: ['./mes-contrats.component.scss']
@@ -41,10 +41,10 @@ export class MesContratsComponent implements OnInit {
   ngOnInit(): void {
     this.getLoggedUserId();
      this.getTableData();
-     
+
     }
 
-     
+
     private getLoggedUserId() {
       const userDataString = localStorage.getItem('userDataString');
       if(userDataString) {
@@ -58,7 +58,7 @@ export class MesContratsComponent implements OnInit {
       this.serialNumberArray = [];
       this.lstMesContrats = [];
 
-      this.data.getAllMesContrats().subscribe((res: any) => {
+      this.data.getAllMesContrats(this.loggedUserId).subscribe((res: any) => {
         this.totalData = res.data.total;
         res.data.map((res: getMesContrats, index: number) => {
           const serialNumber = index + 1;
@@ -68,7 +68,7 @@ export class MesContratsComponent implements OnInit {
             this.serialNumberArray.push(serialNumber);
           }
         });
-           
+
         this.data.getConnectedEmployeID(this.loggedUserId).subscribe((res: any) => {
           //this.addPlainteForm.patchValue({employe_id: res.data});
          // this.editPlainteForm.patchValue({employe_id: res.data});
