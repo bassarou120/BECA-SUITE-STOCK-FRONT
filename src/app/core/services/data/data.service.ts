@@ -63,6 +63,11 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
+              menuValue: 'Mes Contrats',
+              route: routes.mes_contrats,
+              base: 'mes-contrats',
+            },
+            {
               menuValue: 'Mes Demandes',
               route: routes.demandes,
               base: 'demandes',
@@ -77,13 +82,6 @@ export class DataService {
               route: routes.plaintes,
               base: 'mes-plaintes',
             },
-
-            {
-              menuValue: 'Mes Contrats',
-              route: routes.mes_contrats,
-              base: 'mes-contrats',
-            },
-
 
           ],
         },
@@ -289,6 +287,8 @@ export class DataService {
     },
   ];
 
+
+
   public employeSideBar: SideBar[] = [
     {
       tittle: 'Menu principal',
@@ -330,6 +330,11 @@ export class DataService {
           dot: true,
           materialicons: 'people',
           subMenus: [
+            {
+              menuValue: 'Mes Contrats',
+              route: routes.mes_contrats,
+              base: 'mes-contrats',
+            },
             {
               menuValue: 'Mes Demandes',
               route: routes.demandes,

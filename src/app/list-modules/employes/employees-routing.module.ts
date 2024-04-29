@@ -44,10 +44,12 @@ const routes: Routes = [
       // { path: 'overtime', component: OvertimeComponent },
       // { path: 'shift-schedule', component: ShiftScheduleComponent },
       // { path: 'shift-list', component: ShiftListComponent },
+
       { path: "demandes", component: DemandesComponent, canActivate: [EmployeGuard] },
       { path: "mes-plaintes", component: MesPlaintesComponent, canActivate: [EmployeGuard] },
       { path: "mes-heures-supplementaires", component: MesHeuresSupplementairesComponent, canActivate: [EmployeGuard] },
       { path: "mes-contrats", component: MesContratsComponent, canActivate: [EmployeGuard] },
+
       { path: 'employe-list', component: EmployeListComponent },
       { path: 'employe-page', component: EmployePageContentComponent, canActivate: [GRHGuard] },
       { path: 'employe-profile/:id', component: EmployeeProfileComponent, canActivate: [GRHGuard] },
@@ -60,7 +62,7 @@ const routes: Routes = [
       { path: "depart-employe", component: DepartEmployeComponent, canActivate: [GRHGuard] },
       { path: "point-conge", component: PointCongeComponent, canActivate: [GRHGuard] },
       { path: "point-contrat", component: PointContratComponent, canActivate: [GRHGuard] },
-      
+
     ],
   },
 ];
