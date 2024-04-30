@@ -48,8 +48,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="holiday-completed" *ngFor="let row of lstClasses">
-                            <td>{{row.id}}</td>
+                        <tr class="holiday-completed" *ngFor="let row of lstClasses; let i = index;">
+                            <td>{{i+1}}</td>
                             <td>{{row.lib}}</td>
                             <td>{{row.borneInf}}</td>
                             <td>{{row.borneSup}}</td>

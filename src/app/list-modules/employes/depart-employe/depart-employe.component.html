@@ -69,8 +69,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstDepartEmploye">
-                            <td>{{ item.id }}</td>
+                        <tr *ngFor="let item of lstDepartEmploye; let i = index;">
+                            <td>{{ i+1 }}</td>
                             <td>{{ item.employe }}</td>
                             <td>{{ item.typeDepart }}</td>
                             <td>{{ item.motif }}</td>

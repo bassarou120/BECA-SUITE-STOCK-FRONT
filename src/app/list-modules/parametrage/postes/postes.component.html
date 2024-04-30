@@ -64,8 +64,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstPoste">
-                            <td>{{item.id}}</td>
+                        <tr *ngFor="let item of lstPoste; let i = index;">
+                            <td>{{i+1}}</td>
                             <td>{{item.nom_poste}}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">

@@ -46,8 +46,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="holiday-completed" *ngFor="let row of lstTypeContrats">
-                            <td>{{row.id}}</td>
+                        <tr class="holiday-completed" *ngFor="let row of lstTypeContrats; let i = index;">
+                            <td>{{i+1}}</td>
                             <td>{{row.libelle}}</td>
                             <!-- <td>{{row.holidaydate}}</td>
                             <td>{{row.day}}</td> -->

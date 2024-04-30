@@ -65,8 +65,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstRole">
-                            <td>{{item.id}}</td>
+                        <tr *ngFor="let item of lstRole; let i = index;">
+                            <td>{{i+1}}</td>
                             <td>{{item.lib}}</td>
                             <td>{{item.niveau}}</td>
                             <!-- <td class="text-end" id="exclusion-2">

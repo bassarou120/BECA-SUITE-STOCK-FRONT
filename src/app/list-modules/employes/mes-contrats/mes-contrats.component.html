@@ -69,8 +69,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstMesContrats">
-                            <td>{{item.id}}</td>
+                        <tr *ngFor="let item of lstMesContrats; let i = index;">
+                            <td>{{i+1}}</td>
                             <!-- <td>{{item.employe}}</td> -->
                             <td>{{item.libelle}}</td>
                             <td>{{item.date_signature}}</td>
