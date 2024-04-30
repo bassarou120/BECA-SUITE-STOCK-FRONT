@@ -62,7 +62,9 @@
                             <th mat-sort-header="employeId">Nom de l'Employé</th>
                             <th mat-sort-header="typeContrat">Type de contrat</th>
                             <th mat-sort-header="dateSignature">Date de signature</th>
-                            <th mat-sort-header="dureeContrat">Durée (en années)</th>
+                            <th mat-sort-header="dureeContrat">Durée (Semaines)</th>
+                            <th mat-sort-header="dateDebut">Date début</th>
+                            <th mat-sort-header="dateFin">Date fin</th>
                             <th mat-sort-header="etatContrat">Etat du contrat</th>
                             <th mat-sort-header="statutContrat">Statut du contrat</th>
                             <!-- <th class="text-end">Action</th> -->
@@ -70,13 +72,15 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of lstPointContrat; let i = index;">
-                            <td>{{i+1}}</td>
-                            <td>{{item.employe}}</td>
-                            <td>{{item.libelle}}</td>
-                            <td>{{item.date_signature}}</td>
-                            <td>{{item.duree}}</td>
-                            <td>{{item.etat}}</td>
-                            <td>{{item.libelleStatus}}</td>
+                            <td>{{ i+1 }}</td>
+                            <td>{{ item.employe }}</td>
+                            <td>{{ item.libelle }}</td>
+                            <td>{{ item.date_signature | date : "dd/MM/YYYY" }}</td>
+                            <td>{{ toWeek(item.duree) }}</td>
+                            <td>{{ item.date_debut | date : "dd/MM/YYYY" }}</td>
+                            <td>{{ item.date_fin | date : "dd/MM/YYYY" }}</td>
+                            <td>{{ item.etat }}</td>
+                            <td>{{ item.libelleStatus }}</td>
                             <!-- <td class="text-end">ibles) <
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
