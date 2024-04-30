@@ -21,10 +21,11 @@
       <div formArrayName="items">
         <ng-container *ngIf="itemsFormArray">
           <div *ngFor="let itemGroup of itemsFormArray.controls; let i = index" [formGroupName]="i" class="row">
-            <div class="input-block mb-3 col-5">
-              <input class="form-control" type="text" formControlName="cle" placeholder="Clé du paramètre" readonly>
+            <div class="input-block mb-3">
+              <input class="form-control" type="hidden" formControlName="cle" placeholder="Clé du paramètre" readonly>
             </div>
-            <div class="input-block mb-3 col-6">
+            <div class="input-block mb-3 col-11">
+              <label class="col-form-label" for="valeur"> {{ itemGroup.get('cle')?.value }} </label>
               <input class="form-control" type="number" formControlName="valeur" placeholder="Valeur du paramètre" [readonly]="lstReadonly[itemGroup.get('cle')?.value]"
                 [class.invalid]="itemGroup.get('valeur')?.invalid && itemGroup.get('valeur')?.touched">
               <small *ngIf="itemGroup.get('valeur')?.touched && itemGroup.get('valeur')?.invalid" class="text-danger">
