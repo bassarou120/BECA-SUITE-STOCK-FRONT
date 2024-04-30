@@ -61,8 +61,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstEmployeRole">
-                            <td>{{item.id}}</td>
+                        <tr *ngFor="let item of lstEmployeRole; let i = index;">
+                            <td>{{i+1}}</td>
                             <td>{{item.nom}}</td>
                             <td>{{item.prenom}}</td>
                             <td>{{item.role}}</td>

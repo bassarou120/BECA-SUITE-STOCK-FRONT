@@ -67,8 +67,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstDemande">
-                            <td>{{item.id}}</td>
+                        <tr *ngFor="let item of lstDemande; let i = index;">
+                            <td>{{i+1}}</td>
                             <td>{{item.objet}}</td>
                             <td>{{item.contenue}}</td>
                             <td>{{ item.status ? item.status : "-" }}</td>

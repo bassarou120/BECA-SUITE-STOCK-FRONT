@@ -74,8 +74,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of lstGrades">
-              <td>{{ item.id }}</td>
+            <tr *ngFor="let item of lstGrades; let i = index;">
+              <td>{{ i+1 }}</td>
               <td>{{ item.lib }}</td>
 
               <td>{{ item.ClasseLib }}</td>
