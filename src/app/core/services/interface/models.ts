@@ -850,6 +850,8 @@ export interface getMiniTemplateEmploye {
   prenom: string;
   role: string;
   role_id: number;
+  titre: string;
+  departement: string;
 }
 
 export interface getDepartment {
