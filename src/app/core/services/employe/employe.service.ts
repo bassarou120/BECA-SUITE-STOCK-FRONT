@@ -28,6 +28,10 @@ export class EmployeService {
   });
   constructor(private http: HttpClient) {}
 
+  updateEmploye(data: any, id: any): Observable<Object> {
+    return this.http.post(`${this.url}/employeUpdate/${id}`, data);
+  }
+
   saveEmploye(data: any): Observable<Object> {
     return this.http.post(`${this.url}/employe`, data);
   }

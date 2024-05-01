@@ -103,7 +103,20 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   getMonthName(monthNumber: string): string {
-    const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    const months = [
+      'Janvier',
+      'Février',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Août',
+      'Septembre',
+      'Octobre',
+      'Novembre',
+      'Décembre',
+    ];
     return months[parseInt(monthNumber, 10) - 1];
   }
 
@@ -230,6 +243,10 @@ export class EmployeeProfileComponent implements OnInit {
       },
       (error: any) => {}
     );
+  }
+
+  changeDuree() {
+    alert('elet');
   }
 
   onClickSubmitaddEmployeContrat() {
