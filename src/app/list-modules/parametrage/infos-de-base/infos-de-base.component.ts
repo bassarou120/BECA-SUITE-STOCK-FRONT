@@ -5,7 +5,10 @@ import { getInfoDeBase, routes, InfosDeBaseService } from 'src/app/core/core.ind
 
 
 
-// Les parametres à ajouter sont: "LIMITE_JOURS_CONGE", "LIMITE_HEURES_SUPP".
+// Les parametres à ajouter sont:
+//  "LIMITE_JOURS_CONGE", "LIMITE_HEURES_SUPP", "PREFIXE_MATRICULE", "PREFIXE_CONTRAT",
+//  "NOM_ENTREPRISE", "NOM_SIGNATAIRE_1", "NOM_SIGNATAIRE_2",
+//  "BANQUE_1" à "BANQUE_5", "NUMERO_DE_COMPTE_1" à "NUMERO_DE_COMPTE_5".
 
 
 @Component({
@@ -49,7 +52,8 @@ export class InfosDeBaseComponent implements OnInit {
     lst.forEach(item => {
       const group = this.formBuilder.group({
         cle: [item.cle, [Validators.required]],
-        valeur: [item.valeur, [Validators.required]],
+        valeur: [(item.valeur && (item.valeur != 0)) ? item.valeur : 0, [Validators.required]],
+        valeur_txt: [(item.valeur_txt && (item.valeur_txt != " ")) ? item.valeur_txt : " ", [Validators.required]],
       });
       this.setInfoDeBaseFormArray.push(group);
     });

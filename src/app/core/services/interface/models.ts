@@ -681,6 +681,7 @@ export interface getInfoDeBase {
   id: number;
   cle: string;
   valeur: number;
+  valeur_txt: string;
 }
 
 export interface getStatut {
