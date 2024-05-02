@@ -4,12 +4,12 @@
   <div class="page-header">
     <div class="row">
       <div class="col-sm-12">
-        <h3 class="page-title">La fiche Employé</h3>
+        <h3 class="page-title">Profil Employé</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
             <a [routerLink]="routes.adminDashboard">Tableau de bord </a>
           </li>
-          <li class="breadcrumb-item active">La fiche Employé</li>
+          <li class="breadcrumb-item active">Profil de l'employé</li>
         </ul>
       </div>
     </div>
@@ -58,13 +58,13 @@
 
                     <div class="staff-msg">
                       <!--                      [routerLink]="routes.chat"-->
-                      <a
+                      <!-- <a
                         class="btn btn-custom"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
                         Enregister un mouvement</a
-                      >
+                      > -->
                       <div class="dropdown-menu dropdown-menu-left">
                         <!-- <a
                           class="dropdown-item"
@@ -74,15 +74,15 @@
                         >
                           (click)="getIDForm(emp.id)"
                         -->
-                        <a
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#new_contract_modal"
                           (click)="initAddContrat()"
                         >
-                          <!--                          <i class="fa-regular fa-trash-can m-r-5"></i>-->
-                          Nouveau contrat</a
-                        >
+                                                   <i class="fa-regular fa-trash-can m-r-5"></i>-->
+                          <!-- Nouveau contrat</a
+                        > -->
 
                         <!--                        <a class="dropdown-item"-->
                         <!--                           data-bs-toggle="modal"-->
@@ -90,33 +90,33 @@
                         <!--                          &lt;!&ndash;                          <i class="fa-regular fa-trash-can m-r-5"></i>&ndash;&gt;-->
                         <!--                          Renouveler le contract</a>-->
 
-                        <a
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                         >
                           Renouveler le contrat</a
-                        >
+                        > -->
 
-                        <a
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                           >Affectation</a
-                        >
-
+                        > -->
+<!-- 
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                           >Nomination</a
-                        >
-                        <a
+                        > -->
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                           >Avancement</a
-                        >
+                        > -->
                       </div>
                     </div>
                   </div>
@@ -205,17 +205,17 @@
             >
           </li>
           <!--                    <li class="nav-item"><a href="#emp_projects" data-bs-toggle="tab" class="nav-link">Projects</a></li>-->
-          <li class="nav-item">
-            <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
-              >Autre info
-              <small class="text-danger">(Gestion des contrats)</small></a
+          <!-- <li class="nav-item"> -->
+            <!-- <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
+                >  Autre info  -->
+              <!-- <small class="text-danger">(Gestion des contrats)</small></a
             >
           </li>
           <li class="nav-item">
             <a href="#emp_assets" data-bs-toggle="tab" class="nav-link"
-              >Matériels (logistique)</a
-            >
-          </li>
+              >Matériels (logistique)</a -->
+            <!-- >  -->
+          <!-- </li> -->
         </ul>
       </div>
     </div>
@@ -1558,7 +1558,7 @@
                             />
                           </div>
                         </div>
-                        <div class="col-md-1" style="">
+                        <div class="col-md-1" >
                           <br />
                           <br />
                           <a
