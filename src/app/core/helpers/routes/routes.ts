@@ -75,6 +75,9 @@ export class routes {
   public static get fichePaie(): string {
     return this.baseUrl + '/fichepaie';
   }
+  public static get ordreVirement(): string {
+    return this.baseUrl + '/ordreVirement';
+  }
 
   public static get type_conge(): string {
     return this.baseUrl + '/parametrage/type-conge';
