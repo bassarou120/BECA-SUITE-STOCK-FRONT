@@ -627,9 +627,9 @@
                 <div>Project Leader :</div>
                 <ul class="team-members">
                   <li>
-                    <a data-bs-toggle="tooltip" title="Micard hentry"
+                    <!-- <a data-bs-toggle="tooltip" title="Micard hentry"
                       ><img alt="" src="assets/img/profiles/avatar-8.jpg"
-                    /></a>
+                    /></a> -->
                   </li>
                 </ul>
               </div>
@@ -988,7 +988,7 @@
                 {{
                   curentEmploye?.last_contat?.base_categorielle +
                     curentEmploye?.last_contat?.prime_anciennete +
-                    convertStringToInt(curentEmploye.last_contat?.total_prime)
+                    convertStringToInt(curentEmploye?.last_contat?.total_prime)
                 }}
                 FCFA
               </u>
@@ -1399,8 +1399,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          Nouveau Contrat pour {{ curentEmploye.employe.nom }}
-          {{ curentEmploye.employe.prenom }}
+          Nouveau Contrat pour {{ curentEmploye?.employe.nom }}
+          {{ curentEmploye?.employe.prenom }}
         </h5>
         <button
           type="button"
@@ -1431,6 +1431,12 @@
 
             <div class="col-md-6">
               <div class="input-block mb-3">
+                <input
+                  hidden="true"
+                  type="text"
+                  formControlName="type_contrat_id"
+                />
+
                 <label class="col-form-label" for=""
                   >Type de contrat<span class="text-danger">*</span></label
                 >
@@ -1438,9 +1444,9 @@
                 <mat-select
                   class="user-assets select form-control"
                   placeholder="-"
-                  formControlName="type_contrat_id"
                   [(ngModel)]="typeContrat"
                   (ngModelChange)="changeType()"
+                  formControlName="type_contrat"
                 >
                   <mat-option
                     *ngFor="let data of listTypeContrat"
@@ -1451,6 +1457,27 @@
                 </mat-select>
               </div>
             </div>
+
+            <!-- <div class="col-md-6">
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Type de contrat<span class="text-danger">*</span></label
+                >
+
+                <mat-select
+                  class="user-assets select form-control"
+                  placeholder="-"
+                  formControlName="type_contrat_id"
+                >
+                  <mat-option
+                    *ngFor="let data of listTypeContrat"
+                    [value]="data"
+                  >
+                    {{ data.libelle }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div> -->
 
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
@@ -1962,7 +1989,7 @@
                 <input
                   type="text"
                   formControlName="banque"
-                  value="{{ curentEmploye.banque }}"
+                  value="{{ curentEmploye?.banque }}"
                   class="form-control"
                 />
               </div>
@@ -1974,7 +2001,7 @@
                   <input
                     type="number"
                     formControlName="rib"
-                    value="{{ curentEmploye.rib }}"
+                    value="{{ curentEmploye?.rib }}"
                     class="form-control"
                   />
                 </div>

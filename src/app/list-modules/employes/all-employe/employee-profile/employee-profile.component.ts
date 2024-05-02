@@ -86,6 +86,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.addEmployeContratForm = this.formBuilder.group({
       num_contrat: ['', [Validators.required]],
       type_contrat_id: ['', [Validators.required]],
+      type_contrat: ['', [Validators.required]],
       employe_id: [this.idEmploye, []],
       base_categorielle: ['', [Validators.required]],
       prime_anciennete: ['', [Validators.required]],
@@ -250,7 +251,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   changeType() {
-    if (this.typeContrat.libelle == 'CDI') {
+    if (this.typeContrat?.libelle == 'CDI') {
       // alert(this.typeContrat.libelle);
       this.addEmployeContratForm.get('date_debut')?.disable();
       this.addEmployeContratForm.get('duree')?.disable();
@@ -258,6 +259,11 @@ export class EmployeeProfileComponent implements OnInit {
       this.addEmployeContratForm.get('date_debut')?.enable();
       this.addEmployeContratForm.get('duree')?.enable();
     }
+
+    // alert(this.typeContrat?.id);
+    this.addEmployeContratForm
+      .get('type_contrat_id')
+      ?.setValue(this.typeContrat?.id);
   }
   changeDuree() {
     // alert(this.dureeContrat);
