@@ -58,7 +58,7 @@ export class InfosDeBaseComponent implements OnInit {
       this.lstInfosDeBaseBANQUE = this.lstInfosDeBase.filter(info => info.cle.startsWith('BANQUE'));
       this.lstInfosDeBaseNUMERO_DE_COMPTE = this.lstInfosDeBase.filter(info => info.cle.startsWith('NUMERO_DE_COMPTE'));
 
-      this.initValidator([...this.lstInfosDeBaseLIMITE, ...this.lstInfosDeBasePREFIXE, ...this.lstInfosDeBaseNOM_SIGNATAIRE, ...this.lstInfosDeBaseBANQUE, ...this.lstInfosDeBaseNUMERO_DE_COMPTE]);
+      this.initValidator(this.lstInfosDeBase);
     });
 
     this.data.getAllEmployes().subscribe((res: any) => {
@@ -69,6 +69,7 @@ export class InfosDeBaseComponent implements OnInit {
   }
 
   private initValidator(lst: Array<getInfoDeBase>) {
+    this.setInfoDeBaseFormArray = [];
     lst.forEach(item => {
       const group = this.formBuilder.group({
         cle: [item.cle, [Validators.required]],
