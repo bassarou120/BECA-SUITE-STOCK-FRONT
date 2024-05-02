@@ -74,20 +74,48 @@ export class EmployeModalComponent implements OnInit {
     });
 
     // edit form validation
+
     this.editEmployeeForm = this.formBuilder.group({
-      FirstName: ['', [Validators.required]],
-      LastName: ['', [Validators.required]],
-      UserName: ['', [Validators.required]],
-      Password: ['123456', [Validators.required]],
-      ConfirmPassword: ['123456', [Validators.required]],
-      DepartmentName: ['', [Validators.required]],
-      Designation: ['', [Validators.required]],
-      Email: ['', [Validators.required]],
-      PhoneNumber: ['', [Validators.required]],
-      JoinDate: ['', [Validators.required]],
-      CompanyName: ['', [Validators.required]],
-      EmployeeID: ['', [Validators.required]],
+      nom: ['', [Validators.required]],
+      prenom: ['', [Validators.required]],
+      username: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      // password: ['123456', [Validators.required]],
+      // c_password: ['123456', [Validators.required]],
+      departement_id: ['', [Validators.required]],
+      poste_id: ['', [Validators.required]],
+
+      telephone: ['', [Validators.required]],
+      date_arrivee: ['', [Validators.required]],
+
+      matricule: ['', []],
+      rib: ['', []],
+      sexe: ['', []],
+      affiliation: ['', []],
+      titre: ['', []],
+      anciennete: ['', []],
+      grade_id: ['', []],
+
+      date_naisance: ['', []],
+      lieu_naisance: ['', []],
+      address: ['', []],
+
+      // EmployeeID: ["", [Validators.required]],
     });
+    // this.editEmployeeForm = this.formBuilder.group({
+    //   FirstName: ['', [Validators.required]],
+    //   LastName: ['', [Validators.required]],
+    //   UserName: ['', [Validators.required]],
+    //   Password: ['123456', [Validators.required]],
+    //   ConfirmPassword: ['123456', [Validators.required]],
+    //   DepartmentName: ['', [Validators.required]],
+    //   Designation: ['', [Validators.required]],
+    //   Email: ['', [Validators.required]],
+    //   PhoneNumber: ['', [Validators.required]],
+    //   JoinDate: ['', [Validators.required]],
+    //   CompanyName: ['', [Validators.required]],
+    //   EmployeeID: ['', [Validators.required]],
+    // });
   }
 
   onClickSubmitAddEmployee() {
@@ -112,7 +140,7 @@ export class EmployeModalComponent implements OnInit {
       this.employeservice.saveEmploye(this.addEmployeeForm.value).subscribe(
         (data: any) => {
           $('#spinner').addClass('d-none');
-          // location.reload();
+          location.reload();
           // this.router.navigate(['/employees/employee-page']);
         },
         (error: any) => {

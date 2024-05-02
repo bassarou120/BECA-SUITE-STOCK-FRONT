@@ -1464,6 +1464,22 @@
 
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for="">Durée</label>
+                <div class="cal-icon_">
+                  <input
+                    (change)="changeDuree()"
+                    [
+                    (model)]="duree"
+                    formControlName="date_debut"
+                    class="form-control"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Date de fin</label>
                 <div class="cal-icon">
                   <input
@@ -1559,7 +1575,7 @@
 
                 <div class="add-more">
                   <a href="javascript:void(0); " (click)="addPrime()"
-                    ><i class="fa-solid fa-plus-circle"></i> ajouter prime</a
+                    ><i class="fa-solid fa-plus-circle"></i> Ajouter prime</a
                   >
                 </div>
 
