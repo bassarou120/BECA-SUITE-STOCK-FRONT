@@ -25,4 +25,8 @@ export class InfosDeBaseService  {
     return this.http.get<any>(`${this.url}/parametres`);
   }
 
+  getAllEmployes(): Observable<any> {
+    return this.http.get<any>(`${this.url}/employe`);
+  }
+
 }

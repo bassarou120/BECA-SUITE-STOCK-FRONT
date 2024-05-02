@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 
-import { getInfoDeBase, routes, InfosDeBaseService } from 'src/app/core/core.index';
+import { getInfoDeBase, getMiniTemplateEmploye, routes, InfosDeBaseService } from 'src/app/core/core.index';
 
 
 
@@ -19,7 +19,15 @@ import { getInfoDeBase, routes, InfosDeBaseService } from 'src/app/core/core.ind
 export class InfosDeBaseComponent implements OnInit {
   title = 'pagination';
   public routes = routes;
+
+  public lstEmploye: Array<string> = [];
   public lstInfosDeBase: Array<getInfoDeBase> = [];
+  public lstInfosDeBaseLIMITE: Array<getInfoDeBase> = [];
+  public lstInfosDeBasePREFIXE: Array<getInfoDeBase> = [];
+  public lstInfosDeBaseNOM_SIGNATAIRE: Array<getInfoDeBase> = [];
+  public lstInfosDeBaseBANQUE: Array<getInfoDeBase> = [];
+  public lstInfosDeBaseNUMERO_DE_COMPTE: Array<getInfoDeBase> = [];
+
   public lstReadonly: { [key: string]: boolean } = {};
   public searchDataValue = '';
   public setInfoDeBaseForm!: FormGroup;
@@ -44,7 +52,19 @@ export class InfosDeBaseComponent implements OnInit {
         this.lstReadonly[res.cle] = true;
       });
 
-      this.initValidator(this.lstInfosDeBase);
+      this.lstInfosDeBaseLIMITE = this.lstInfosDeBase.filter(info => info.cle.startsWith('LIMITE'));
+      this.lstInfosDeBasePREFIXE = this.lstInfosDeBase.filter(info => info.cle.startsWith('PREFIXE'));
+      this.lstInfosDeBaseNOM_SIGNATAIRE = this.lstInfosDeBase.filter(info => info.cle.startsWith('NOM_SIGNATAIRE'));
+      this.lstInfosDeBaseBANQUE = this.lstInfosDeBase.filter(info => info.cle.startsWith('BANQUE'));
+      this.lstInfosDeBaseNUMERO_DE_COMPTE = this.lstInfosDeBase.filter(info => info.cle.startsWith('NUMERO_DE_COMPTE'));
+
+      this.initValidator([...this.lstInfosDeBaseLIMITE, ...this.lstInfosDeBasePREFIXE, ...this.lstInfosDeBaseNOM_SIGNATAIRE, ...this.lstInfosDeBaseBANQUE, ...this.lstInfosDeBaseNUMERO_DE_COMPTE]);
+    });
+
+    this.data.getAllEmployes().subscribe((res: any) => {
+      res.data.map((res: getMiniTemplateEmploye, index: number) => {
+        this.lstEmploye.push(res.nom + " " + res.prenom);
+      });
     });
   }
 
