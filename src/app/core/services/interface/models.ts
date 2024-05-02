@@ -800,6 +800,12 @@ export interface getMesContrats {
   etat: string;
   status: string;
 }
+
+export interface getMonprofile {
+  id: number;
+ nom: string;
+ prenom: string
+}
 export interface getFormation {
   id: number;
   employe_id: number;

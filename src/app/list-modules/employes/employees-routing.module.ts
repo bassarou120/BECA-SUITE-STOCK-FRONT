@@ -29,6 +29,7 @@ import { OvertimeComponent } from './overtime/overtime.component';
 import { ShiftListComponent } from './shift-list/shift-list.component';
 import { ShiftScheduleComponent } from './shift-schedule/shift-schedule.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
+import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,7 @@ const routes: Routes = [
       { path: "mes-plaintes", component: MesPlaintesComponent, canActivate: [EmployeGuard] },
       { path: "mes-heures-supplementaires", component: MesHeuresSupplementairesComponent, canActivate: [EmployeGuard] },
       { path: "mes-contrats", component: MesContratsComponent, canActivate: [EmployeGuard] },
+      { path: "mon-profil", component: MonProfilComponent, canActivate: [EmployeGuard] },
 
       { path: 'employe-list', component: EmployeListComponent },
       { path: 'employe-page', component: EmployePageContentComponent, canActivate: [GRHGuard] },
