@@ -1,5 +1,5 @@
 .info-form {
-  width: 50%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -8,6 +8,7 @@
   display: inline-block;
   border-radius: 50%;
   margin-top: 42px;
+  margin-left: -15px;
   padding: 8px;
   background-color: white;
   border: 0.25px solid rgb(200, 200, 200);
