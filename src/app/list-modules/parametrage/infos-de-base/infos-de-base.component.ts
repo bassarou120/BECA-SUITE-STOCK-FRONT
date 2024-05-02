@@ -21,7 +21,7 @@ export class InfosDeBaseComponent implements OnInit {
   public routes = routes;
 
   public lstEmploye: Array<string> = [];
-  public lstInfosDeBase: Array<getInfoDeBase> = [];
+  public lstInfosDeBase: any = {};
   public lstInfosDeBaseLIMITE: Array<getInfoDeBase> = [];
   public lstInfosDeBasePREFIXE: Array<getInfoDeBase> = [];
   public lstInfosDeBaseNOM_SIGNATAIRE: Array<getInfoDeBase> = [];
@@ -31,16 +31,26 @@ export class InfosDeBaseComponent implements OnInit {
   public lstReadonly: { [key: string]: boolean } = {};
   public searchDataValue = '';
   public setInfoDeBaseForm!: FormGroup;
-  public setInfoDeBaseFormArray: FormGroup[] = [];
 
-  constructor(private data: InfosDeBaseService, private formBuilder: FormBuilder) {
-    this.setInfoDeBaseForm = this.formBuilder.group({
-      items: this.formBuilder.array([])
-    });
-  }
+  constructor(private data: InfosDeBaseService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.getTableData();
+    this.setInfoDeBaseForm = this.formBuilder.group({
+      items: this.formBuilder.array([
+        this.createItem("LIMITE_JOURS_CONGE"),
+      ])
+    });
+  }
+
+  createItem(cle: string): FormGroup {
+    const info = this.lstInfosDeBase[cle];
+    console.log(this.lstInfosDeBase, "\n", info, "\n", this.lstInfosDeBase[cle])
+    return this.formBuilder.group({
+      cle: [info!.cle, Validators.required],
+      valeur: [(info!.valeur && (info!.valeur!=0)) ? info!.valeur : 0, Validators.required],
+      valeur_txt: [(info!.valeur_txt && (info!.valeur_txt!=" ")) ? info!.valeur_txt : " ", Validators.required]
+    });
   }
 
   private getTableData(): void {
@@ -48,17 +58,9 @@ export class InfosDeBaseComponent implements OnInit {
 
     this.data.getAllInfoDeBases().subscribe((res: any) => {
       res.data.data.map((res: getInfoDeBase, index: number) => {
-        this.lstInfosDeBase.push(res);
+        this.lstInfosDeBase[res.cle] = (res);
         this.lstReadonly[res.cle] = true;
       });
-
-      this.lstInfosDeBaseLIMITE = this.lstInfosDeBase.filter(info => info.cle.startsWith('LIMITE'));
-      this.lstInfosDeBasePREFIXE = this.lstInfosDeBase.filter(info => info.cle.startsWith('PREFIXE'));
-      this.lstInfosDeBaseNOM_SIGNATAIRE = this.lstInfosDeBase.filter(info => info.cle.startsWith('NOM_SIGNATAIRE'));
-      this.lstInfosDeBaseBANQUE = this.lstInfosDeBase.filter(info => info.cle.startsWith('BANQUE'));
-      this.lstInfosDeBaseNUMERO_DE_COMPTE = this.lstInfosDeBase.filter(info => info.cle.startsWith('NUMERO_DE_COMPTE'));
-
-      this.initValidator(this.lstInfosDeBase);
     });
 
     this.data.getAllEmployes().subscribe((res: any) => {
@@ -68,40 +70,21 @@ export class InfosDeBaseComponent implements OnInit {
     });
   }
 
-  private initValidator(lst: Array<getInfoDeBase>) {
-    this.setInfoDeBaseFormArray = [];
-    lst.forEach(item => {
-      const group = this.formBuilder.group({
-        cle: [item.cle, [Validators.required]],
-        valeur: [(item.valeur && (item.valeur != 0)) ? item.valeur : 0, [Validators.required]],
-        valeur_txt: [(item.valeur_txt && (item.valeur_txt != " ")) ? item.valeur_txt : " ", [Validators.required]],
-      });
-      this.setInfoDeBaseFormArray.push(group);
-    });
-
-    this.setInfoDeBaseForm = this.formBuilder.group({
-      items: this.formBuilder.array(this.setInfoDeBaseFormArray)
-    });
-  }
-
-  get itemsFormArray() {
-    return this.setInfoDeBaseForm.get('items') as FormArray;
-  }
-
   switchReadOnlyValue(val: string) {
     this.lstReadonly[val] = !this.lstReadonly[val];
   }
 
   setInfoDeBase() {
+    console.log(this.setInfoDeBaseForm.value)
 
-    if (this.setInfoDeBaseForm.valid){
-      this.data.saveInfoDeBase(this.setInfoDeBaseForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Desolé le formulaire n'est pas bien renseigné");
-    }
+    // if (this.setInfoDeBaseForm.valid){
+    //   this.data.saveInfoDeBase(this.setInfoDeBaseForm.value).subscribe(response => {
+    //     console.log(response);
+    //     location.reload();
+    //   });
+    // } else {
+    //   console.log("Desolé le formulaire n'est pas bien renseigné");
+    // }
   }
 }
 

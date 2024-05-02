@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
 import { AuthService } from '../core/services/auth/auth.service';
 import { fichepaieComponent } from './fichepaie/fichepaie.component';
-import { motdepasseComponent } from './auth/motdepasse/motdepasse.component';
 
 const routes: Routes = [
   {
@@ -47,7 +46,6 @@ const routes: Routes = [
       },
 
       { path: 'fichepaie', component: fichepaieComponent, canActivate: [GRHGuard] },
-      { path: 'motdepasse', component: motdepasseComponent},
 
       /*
 
