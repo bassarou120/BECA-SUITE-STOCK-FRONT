@@ -25,12 +25,12 @@
         <div class="account-box">
           <div class="account-wrapper">
             <h3 class="account-title">BECA-SUITE-GRH</h3>
-            <p class="account-subtitle">Accès à notre tableau de bord</p>
+            <p class="account-subtitle">Recupérer le mot de passe</p>
 
             <!-- Account Form -->
             <form [formGroup]="form" (ngSubmit)="submit()">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="">Email </label>
+                <label class="col-form-label" for="">Entrez votre adresse email </label>
                 <input
                   class="form-control"
                   type="text"
@@ -55,7 +55,7 @@
                   </div>
                 </div>
               </div>
-              <div class="input-block mb-3">
+              <!-- <div class="input-block mb-3">
                 <div class="row">
                   <div class="col">
                     <label class="col-form-label" for="">Mot de passe</label>
@@ -96,26 +96,26 @@
                     Password is required.
                   </div>
                 </div>
-              </div>
-              <div class="input-block mb-3 text-center">
+              </div> -->
+               <div class="input-block mb-3 text-center">
                 <button
                   class="btn btn-primary account-btn"
                   [disabled]="form.invalid"
                   type="submit"
                 >
-                  Se Connecter
+                  Soumettre
                 </button>
               </div>
-              <!--              <div class="account-footer">-->
-              <!--                <p>Don't have an account yet? <a [routerLink]="'/register'">Register</a></p>-->
-              <!--              </div>-->
+                           <!-- <div class="account-footer">
+                              <p>Don't have an account yet? <a [routerLink]="'/register'">Register</a></p> -->
+              <!--              </div> -->
             </form>
 
-            <div class="col-auto d-flex justify-content-center" id="forgot-password-button">
-              <a class="custom-link" [routerLink]="'/motdepasse'">
+             <!-- <div class="col-auto d-flex justify-content-center" id="forgot-password-button">
+              <a class="custom-link" [routerLink]="'/forgot-password'">
                 Mot de passe oubilié ?
               </a>
-            </div>
+            </div> -->
 
             <!-- /Account Form -->
           </div>

@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { fichepaieComponent } from './fichepaie/fichepaie.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { motdepasseComponent } from './auth/motdepasse/motdepasse.component';
 
 // @ts-ignore
 @NgModule({
@@ -28,6 +29,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     HeaderTwoComponent,
     HeaderThreeComponent,
     fichepaieComponent,
+    motdepasseComponent,
   ],
   imports: [
     CommonModule,

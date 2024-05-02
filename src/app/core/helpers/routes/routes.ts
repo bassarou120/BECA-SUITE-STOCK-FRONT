@@ -14,6 +14,9 @@ export class routes {
   public static get login(): string {
     return this.baseUrl + '/login';
   }
+  public static get motdepasse(): string {
+    return this.baseUrl + '/motdepasse';
+  }
   public static get forgot_password(): string {
     return this.baseUrl + '/forgot-password';
   }
