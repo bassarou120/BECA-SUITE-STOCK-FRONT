@@ -1,7 +1,7 @@
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { routes, TypeContratService } from 'src/app/core/core.index';
+import { getMonprofile, routes, TypeContratService } from 'src/app/core/core.index';
 import { ContratService } from 'src/app/core/services/contrat/contrat.service';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
 interface data {
@@ -30,6 +30,8 @@ export class MonProfilComponent implements OnInit {
   public selectedValue14 = '';
   public selectedValue15 = '';
   public routes = routes;
+
+
   bsValue = new Date();
   public addEmployeeForm!: FormGroup;
 
