@@ -18,6 +18,11 @@ const routes: Routes = [
       import('./auth/login/login.module').then((m) => m.LoginModule),
   },
   {
+    path: 'passwordMail',
+    loadChildren: () =>
+      import('./auth/passwordMail/passwordMail.module').then((m) => m.PasswordMailModule),
+  },
+  {
     path: '',
 
     component: ListModulesComponent,

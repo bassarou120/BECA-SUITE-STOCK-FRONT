@@ -19,50 +19,18 @@
     <form [formGroup]="setInfoDeBaseForm" (ngSubmit)="setInfoDeBase()" novalidate>
 
       <div formArrayName="items">
-        <ng-container *ngIf="itemsFormArray">
-          <div class="row">
-            <div *ngFor="let itemGroup of itemsFormArray.controls; let i = index" [formGroupName]="i" class="input-block mb-3 col-4 row">
-              <div class="input-block mb-3">
-                <input class="form-control" type="hidden" formControlName="cle" placeholder="Clé du paramètre" readonly>
-              </div>
 
-              <ng-container *ngIf="itemGroup.get('valeur')?.value; else is_valeur_txt;">
-                <div class="input-block mb-3 col-11">
-                  <label class="col-form-label" for="valeur"> {{ itemGroup.get('cle')?.value }} </label>
-                  <input class="form-control" type="number" formControlName="valeur" placeholder="Valeur du paramètre" [readonly]="lstReadonly[itemGroup.get('cle')?.value]"
-                    [class.invalid]="itemGroup.get('valeur')?.invalid && itemGroup.get('valeur')?.touched">
-                  <small *ngIf="itemGroup.get('valeur')?.touched && itemGroup.get('valeur')?.invalid" class="text-danger">
-                    *La valeur entrée est invalide
-                  </small>
-                </div>
-
-                <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue(itemGroup.get('cle')?.value)" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-              </ng-container>
-
-              <ng-template #is_valeur_txt>
-                <div class="input-block mb-3 col-11">
-                  <label class="col-form-label" for="valeur_txt"> {{ itemGroup.get('cle')?.value }} </label>
-                  <input class="form-control" type="text" formControlName="valeur_txt" placeholder="Valeur du paramètre" [readonly]="lstReadonly[itemGroup.get('cle')?.value]"
-                    [class.invalid]="itemGroup.get('valeur_txt')?.invalid && itemGroup.get('valeur_txt')?.touched">
-                  <small *ngIf="itemGroup.get('valeur_txt')?.touched && itemGroup.get('valeur_txt')?.invalid" class="text-danger">
-                    *La valeur entrée est invalide
-                  </small>
-                </div>
-
-                <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue(itemGroup.get('cle')?.value)" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-              </ng-template>
-
+        <div class="row">
+          <div formGroupName="0" class="col-4 row">
+            <div class="col-10">
+              <label class="col-form-label" for="valeur">Nom de la catégorie</label>
+              <input class="form-control" type="text" formControlName="valeur" placeholder="Valeur">
+            </div>
+            <div class="col-2">
             </div>
           </div>
-        </ng-container>
+        </div>
+
       </div>
 
       <div class="submit-section">
