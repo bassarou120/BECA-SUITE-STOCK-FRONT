@@ -11,22 +11,17 @@ import {environment} from "../../../../environments/environment";
 @Injectable({
   providedIn: 'root',
 })
-
-export class InfosDeBaseService  {
+export class MonprofileService  {
   allAppliedCandidates!: Array<object>;
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
-  saveInfoDeBase(data: any): Observable<any> {
-    return this.http.post(`${this.url}/parametres_de_base`, data);
-  }
+  // getAllMesContrats(id: number): Observable<any> {
+  //   return this.http.get<any>(`${this.url}/contrats/mes_contrats/${id}`);
+  // }
 
-  getAllInfoDeBases(): Observable<any> {
-    return this.http.get<any>(`${this.url}/parametres`);
-  }
-
-  getAllEmployes(): Observable<any> {
-    return this.http.get<any>(`${this.url}/employe`);
+  getConnectedEmployeID(data: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/getemployeid/${data}`);
   }
 
 }

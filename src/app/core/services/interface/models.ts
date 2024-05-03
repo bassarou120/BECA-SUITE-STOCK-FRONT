@@ -681,6 +681,7 @@ export interface getInfoDeBase {
   id: number;
   cle: string;
   valeur: number;
+  valeur_txt: string;
 }
 
 export interface getStatut {
@@ -798,6 +799,12 @@ export interface getMesContrats {
   libelleStatus: string;
   etat: string;
   status: string;
+}
+
+export interface getMonprofile {
+  id: number;
+ nom: string;
+ prenom: string
 }
 export interface getFormation {
   id: number;

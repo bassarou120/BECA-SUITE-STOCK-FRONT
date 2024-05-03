@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit  } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { getPointContrat, routes, PointContratService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
@@ -16,6 +16,8 @@ declare var $: any;
 })
 export class PointContratComponent implements OnInit, AfterViewInit {
   public routes = routes;
+  public shownEmploye: string = "";
+  public shownContrats: any = [];
   public lstPointContrat: any = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getPointContrat>;
@@ -54,12 +56,17 @@ export class PointContratComponent implements OnInit, AfterViewInit {
   }
 
 
-
-
   toWeek(num: number): number {
     var ans = Math.floor(num / 7);
     return ans === 0 ? 1 : ans;
   }
+
+  setShownDetails(row: any, emp: string) {
+    this.shownContrats = row;
+    this.shownEmploye = emp;
+  }
+
+
 
   exportToPDF() {
     $('#spinner_pdf').removeClass('d-none');

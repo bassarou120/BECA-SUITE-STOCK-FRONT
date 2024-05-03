@@ -4,12 +4,12 @@
   <div class="page-header">
     <div class="row">
       <div class="col-sm-12">
-        <h3 class="page-title">La fiche Employé</h3>
+        <h3 class="page-title">Profil Employé</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
             <a [routerLink]="routes.adminDashboard">Tableau de bord </a>
           </li>
-          <li class="breadcrumb-item active">La fiche Employé</li>
+          <li class="breadcrumb-item active">Profil de l'employé</li>
         </ul>
       </div>
     </div>
@@ -32,40 +32,39 @@
                 <div class="col-md-5">
                   <div class="profile-info-left">
                     <h3 class="user-name m-t-0 mb-0">
-                      {{ curentEmploye?.employe.nom }}
-                      {{ curentEmploye?.employe.prenom }}
+                      {{ curentEmploye.employe.nom }}
+                      {{ curentEmploye.employe.prenom }}
                     </h3>
                     <h6 class="text-muted">
-                      {{ curentEmploye?.departement.nom_dep }}
+                      {{ curentEmploye.departement.nom_dep }}
                     </h6>
                     <small class="text-muted">
-                      {{ curentEmploye?.poste.nom_poste }}</small
+                      {{ curentEmploye.poste.nom_poste }}</small
                     >
                     <div class="staff-id">
-                      Matricule: {{ curentEmploye?.employe.matricule }}
+                      Matricule: {{ curentEmploye.employe.matricule }}
                     </div>
 
                     <div class="staff-id">
-                      Grade: {{ curentEmploye?.grade.lib }}
+                      Grade: {{ curentEmploye.grade.lib }}
                     </div>
 
                     <div class="small doj text-muted">
                       Date d'entrée dans l'entreprise :
                       {{
-                        curentEmploye?.employe.date_arrivee
-                          | date : "dd-MM-YYYY"
+                        curentEmploye.employe.date_arrivee | date : "dd-MM-YYYY"
                       }}
                     </div>
 
                     <div class="staff-msg">
                       <!--                      [routerLink]="routes.chat"-->
-                      <a
+                      <!-- <a
                         class="btn btn-custom"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
                         Enregister un mouvement</a
-                      >
+                      > -->
                       <div class="dropdown-menu dropdown-menu-left">
                         <!-- <a
                           class="dropdown-item"
@@ -75,15 +74,15 @@
                         >
                           (click)="getIDForm(emp.id)"
                         -->
-                        <a
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#new_contract_modal"
                           (click)="initAddContrat()"
                         >
-                          <!--                          <i class="fa-regular fa-trash-can m-r-5"></i>-->
-                          Nouveau contrat</a
-                        >
+                                                   <i class="fa-regular fa-trash-can m-r-5"></i>-->
+                          <!-- Nouveau contrat</a
+                        > -->
 
                         <!--                        <a class="dropdown-item"-->
                         <!--                           data-bs-toggle="modal"-->
@@ -91,33 +90,33 @@
                         <!--                          &lt;!&ndash;                          <i class="fa-regular fa-trash-can m-r-5"></i>&ndash;&gt;-->
                         <!--                          Renouveler le contract</a>-->
 
-                        <a
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                         >
                           Renouveler le contrat</a
-                        >
+                        > -->
 
-                        <a
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                           >Affectation</a
-                        >
-
+                        > -->
+<!-- 
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                           >Nomination</a
-                        >
-                        <a
+                        > -->
+                        <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#delete_employe"
                           >Avancement</a
-                        >
+                        > -->
                       </div>
                     </div>
                   </div>
@@ -127,20 +126,20 @@
                     <li>
                       <div class="title">Téléphone:</div>
                       <div class="text">
-                        <a href="">{{ curentEmploye?.employe.telephone }}</a>
+                        <a href="">{{ curentEmploye.employe.telephone }}</a>
                       </div>
                     </li>
                     <li>
                       <div class="title">Email:</div>
                       <div class="text">
-                        <a href="">{{ curentEmploye?.employe.email }}</a>
+                        <a href="">{{ curentEmploye.employe.email }}</a>
                       </div>
                     </li>
                     <li>
                       <div class="title">Date de naissance:</div>
                       <div class="text">
                         {{
-                          curentEmploye?.employe.date_naissance
+                          curentEmploye.employe.date_naissance
                             | date : "dd-MM-YYYY"
                         }}
                       </div>
@@ -148,13 +147,13 @@
                     <li>
                       <div class="title">Lieu de naissance:</div>
                       <div class="text">
-                        {{ curentEmploye?.employe.lieu_naissance }}
+                        {{ curentEmploye.employe.lieu_naissance }}
                       </div>
                     </li>
                     <li>
                       <div class="title">Addresse:</div>
                       <div class="text">
-                        {{ curentEmploye?.employe.adresse }}
+                        {{ curentEmploye.employe.adresse }}
                       </div>
                     </li>
                     <li>
@@ -183,14 +182,12 @@
               </div>
             </div>
             <div class="pro-edit">
-              <!-- <a
+              <a
                 data-bs-target="#profile_info"
                 data-bs-toggle="modal"
                 class="edit-icon"
-              >
-                <i class="fa-solid fa-pencil"></i
-              >
-              </a> -->
+                ><i class="fa-solid fa-pencil"></i
+              ></a>
             </div>
           </div>
         </div>
@@ -208,17 +205,17 @@
             >
           </li>
           <!--                    <li class="nav-item"><a href="#emp_projects" data-bs-toggle="tab" class="nav-link">Projects</a></li>-->
-          <li class="nav-item">
-            <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
-              >Autre info
-              <small class="text-danger">(Gestion des contrats)</small></a
+          <!-- <li class="nav-item"> -->
+            <!-- <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
+                >  Autre info  -->
+              <!-- <small class="text-danger">(Gestion des contrats)</small></a
             >
           </li>
           <li class="nav-item">
             <a href="#emp_assets" data-bs-toggle="tab" class="nav-link"
-              >Matériels (logistique)</a
-            >
-          </li>
+              >Matériels (logistique)</a -->
+            <!-- >  -->
+          <!-- </li> -->
         </ul>
       </div>
     </div>
@@ -244,25 +241,25 @@
               <ul class="personal-info">
                 <li>
                   <div class="title">No. CIN/Passport</div>
-                  <div class="text">{{ curentEmploye?.employe.passport }}</div>
+                  <div class="text">{{ curentEmploye.employe.passport }}</div>
                 </li>
                 <li>
                   <div class="title">Exp Date.</div>
                   <div class="text">
-                    {{ curentEmploye?.employe.passport_exp }}
+                    {{ curentEmploye.employe.passport_exp }}
                   </div>
                 </li>
                 <li>
                   <div class="title">Téléphone</div>
                   <div class="text">
-                    <a href="">{{ curentEmploye?.employe.telephone }}</a>
+                    <a href="">{{ curentEmploye.employe.telephone }}</a>
                   </div>
                 </li>
 
                 <li>
                   <div class="title">Situation matrimoniale</div>
                   <div class="text">
-                    {{ curentEmploye?.employe.matrimoniale }}
+                    {{ curentEmploye.employe.matrimoniale }}
                   </div>
                 </li>
               </ul>
@@ -276,17 +273,17 @@
               <ul class="personal-info">
                 <li>
                   <div class="title">Nom Banque:</div>
-                  <div class="text">{{ curentEmploye?.employe.banque }}</div>
+                  <div class="text">{{ curentEmploye.employe.banque }}</div>
                 </li>
                 <li>
                   <div class="title">Banque RIB:</div>
-                  <div class="text">{{ curentEmploye?.employe.rib }}</div>
+                  <div class="text">{{ curentEmploye.employe.rib }}</div>
                 </li>
 
                 <li>
                   <div class="title">Affiliation (CNSS-FNRB)</div>
                   <div class="text">
-                    {{ curentEmploye?.employe?.affiliation }}
+                    {{ curentEmploye.employe.affiliation }}
                   </div>
                 </li>
               </ul>
@@ -416,7 +413,7 @@
               </h3>
               <div class="experience-box">
                 <ul class="experience-list">
-                  <li *ngFor="let formation of curentEmploye?.list_formation">
+                  <li *ngFor="let formation of curentEmploye.list_formation">
                     <div class="experience-user">
                       <div class="before-circle"></div>
                     </div>
@@ -450,7 +447,7 @@
               </h3>
               <div class="experience-box">
                 <ul class="experience-list">
-                  <li *ngFor="let experience of curentEmploye?.list_experience">
+                  <li *ngFor="let experience of curentEmploye.list_experience">
                     <div class="experience-user">
                       <div class="before-circle"></div>
                     </div>
@@ -527,17 +524,17 @@
               </div>
               <div class="project-members m-b-15">
                 <div>Project Leader :</div>
-                <!-- <ul class="team-members">
+                <ul class="team-members">
                   <li>
-                    <a data-bs-toggle="tooltip" title="Danniel david">
-                      <img alt="" src="assets/img/profiles/avatar-19.jpg" />
-                    </a>
+                    <a data-bs-toggle="tooltip" title="Danniel david"
+                      ><img alt="" src="assets/img/profiles/avatar-19.jpg"
+                    /></a>
                   </li>
-                </ul> -->
+                </ul>
               </div>
               <div class="project-members m-b-15">
                 <div>Team :</div>
-                <!-- <ul class="team-members">
+                <ul class="team-members">
                   <li>
                     <a data-bs-toggle="tooltip" title="John Doe"
                       ><img alt="" src="assets/img/profiles/avatar-2.jpg"
@@ -561,7 +558,7 @@
                   <li>
                     <a class="all-users">+15</a>
                   </li>
-                </ul> -->
+                </ul>
               </div>
               <p class="m-b-5">
                 Progress <span class="text-success float-end">40%</span>
@@ -590,7 +587,7 @@
                   class="action-icon dropdown-toggle"
                   ><i class="material-icons material-color">more_vert</i></a
                 >
-                <!-- <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-menu dropdown-menu-right">
                   <a
                     data-bs-target="#edit_project"
                     data-bs-toggle="modal"
@@ -603,7 +600,7 @@
                     class="dropdown-item"
                     ><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a
                   >
-                </div> -->
+                </div>
               </div>
               <h4 class="project-title">
                 <a [routerLink]="routes.projectView">Project Management</a>
@@ -627,13 +624,13 @@
                 <div>Project Leader :</div>
                 <ul class="team-members">
                   <li>
-                    <!-- <a data-bs-toggle="tooltip" title="Micard hentry"
+                    <a data-bs-toggle="tooltip" title="Micard hentry"
                       ><img alt="" src="assets/img/profiles/avatar-8.jpg"
-                    /></a> -->
+                    /></a>
                   </li>
                 </ul>
               </div>
-              <!-- <div class="project-members m-b-15">
+              <div class="project-members m-b-15">
                 <div>Team :</div>
                 <ul class="team-members">
                   <li>
@@ -660,7 +657,7 @@
                     <a class="all-users">+15</a>
                   </li>
                 </ul>
-              </div> -->
+              </div>
               <p class="m-b-5">
                 Progress <span class="text-success float-end">40%</span>
               </p>
@@ -721,7 +718,7 @@
                 <div class="sub-title">Deadline:</div>
                 <div class="text-muted">17 Apr 2023</div>
               </div>
-              <!-- <div class="project-members m-b-15">
+              <div class="project-members m-b-15">
                 <div>Project Leader :</div>
                 <ul class="team-members">
                   <li>
@@ -730,8 +727,8 @@
                     /></a>
                   </li>
                 </ul>
-              </div> -->
-              <!-- <div class="project-members m-b-15">
+              </div>
+              <div class="project-members m-b-15">
                 <div>Team :</div>
                 <ul class="team-members">
                   <li>
@@ -758,11 +755,11 @@
                     <a class="all-users">+15</a>
                   </li>
                 </ul>
-              </div> -->
+              </div>
               <p class="m-b-5">
                 Progress <span class="text-success float-end">40%</span>
               </p>
-              <!-- <div class="progress progress-xs mb-0">
+              <div class="progress progress-xs mb-0">
                 <div
                   style="width: 40%"
                   title=""
@@ -771,7 +768,7 @@
                   class="progress-bar bg-success"
                   data-original-title="40%"
                 ></div>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -779,7 +776,7 @@
         <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
           <div class="card">
             <div class="card-body">
-              <!-- <div class="dropdown profile-action">
+              <div class="dropdown profile-action">
                 <a
                   aria-expanded="false"
                   data-bs-toggle="dropdown"
@@ -800,7 +797,7 @@
                     ><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a
                   >
                 </div>
-              </div> -->
+              </div>
               <h4 class="project-title">
                 <a [routerLink]="routes.projectView">Hospital Administration</a>
               </h4>
@@ -819,7 +816,7 @@
                 <div class="sub-title">Deadline:</div>
                 <div class="text-muted">17 Apr 2023</div>
               </div>
-              <!-- <div class="project-members m-b-15">
+              <div class="project-members m-b-15">
                 <div>Project Leader :</div>
                 <ul class="team-members">
                   <li>
@@ -856,7 +853,7 @@
                     <a class="all-users">+15</a>
                   </li>
                 </ul>
-              </div> -->
+              </div>
               <p class="m-b-5">
                 Progress <span class="text-success float-end">40%</span>
               </p>
@@ -891,21 +888,21 @@
                 <div class="col-md-5">
                   <div class="profile-info-left_bassarou">
                     <h3 class="user-name m-t-0 mb-0">
-                      Reféférence: {{ curentEmploye?.last_contat?.num_contrat }}
+                      Reféférence: {{ curentEmploye.last_contat?.num_contrat }}
                     </h3>
                     <br />
                     <ul class="personal-info">
                       <li>
                         <div class="title">Type contrat :</div>
                         <div class="text">
-                          {{ curentEmploye?.last_contat?.type_contrat.libelle }}
+                          {{ curentEmploye.last_contat?.type_contrat.libelle }}
                         </div>
                       </li>
 
                       <li>
                         <div class="title">Durée :</div>
                         <div class="text">
-                          {{ curentEmploye?.last_contat?.duree / 365 }} ans
+                          {{ curentEmploye.last_contat?.duree / 365 }} ans
                         </div>
                       </li>
 
@@ -913,7 +910,7 @@
                         <div class="title">Date de début :</div>
                         <div class="text">
                           {{
-                            curentEmploye?.last_contat?.date_debut
+                            curentEmploye.last_contat?.date_debut
                               | date : "dd/MM/YYYY"
                           }}
                         </div>
@@ -923,7 +920,7 @@
                         <div class="title">Date de Fin :</div>
                         <div class="text">
                           {{
-                            curentEmploye?.last_contat?.date_fin
+                            curentEmploye.last_contat?.date_fin
                               | date : "dd/MM/YYYY"
                           }}
                         </div>
@@ -932,14 +929,14 @@
                       <li>
                         <div class="title">Etat :</div>
                         <div class="text">
-                          <b> {{ curentEmploye?.last_contat?.etat }}</b>
+                          <b> {{ curentEmploye.last_contat?.etat }}</b>
                         </div>
                       </li>
 
                       <li>
                         <div class="title">Status :</div>
                         <div class="text">
-                          <b> {{ curentEmploye?.last_contat?.status }}</b>
+                          <b> {{ curentEmploye.last_contat?.status }}</b>
                         </div>
                       </li>
                     </ul>
@@ -950,13 +947,13 @@
                     <li>
                       <div class="title">Base catégorielle:</div>
                       <div class="text">
-                        {{ curentEmploye?.last_contat?.base_categorielle }} FCFA
+                        {{ curentEmploye.last_contat?.base_categorielle }} FCFA
                       </div>
                     </li>
                     <li>
                       <div class="title">Prime d'ancienneté:</div>
                       <div class="text">
-                        {{ curentEmploye?.last_contat?.prime_anciennete }} FCFA
+                        {{ curentEmploye.last_contat?.prime_anciennete }} FCFA
                       </div>
                     </li>
                   </ul>
@@ -969,7 +966,7 @@
                       </tr>
 
                       <tr
-                        *ngFor="let prime of curentEmploye?.last_contat?.prime"
+                        *ngFor="let prime of curentEmploye.last_contat?.prime"
                       >
                         <td>{{ prime.indenmite }}</td>
                         <td>{{ prime.montant_indenmite }}</td>
@@ -986,9 +983,9 @@
               <u>
                 Salaire Bruite :
                 {{
-                  curentEmploye?.last_contat?.base_categorielle +
-                    curentEmploye?.last_contat?.prime_anciennete +
-                    convertStringToInt(curentEmploye?.last_contat?.total_prime)
+                  curentEmploye.last_contat?.base_categorielle +
+                    curentEmploye.last_contat?.prime_anciennete +
+                    convertStringToInt(curentEmploye.last_contat?.total_prime)
                 }}
                 FCFA
               </u>
@@ -1019,7 +1016,7 @@
               <tbody>
                 <tr
                   *ngFor="
-                    let contrat of curentEmploye?.list_contrat;
+                    let contrat of curentEmploye.list_contrat;
                     let i = index
                   "
                 >
@@ -1399,8 +1396,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          Nouveau Contrat pour {{ curentEmploye?.employe.nom }}
-          {{ curentEmploye?.employe.prenom }}
+          Nouveau Contrat pour {{ curentEmploye.employe.nom }}
+          {{ curentEmploye.employe.prenom }}
         </h5>
         <button
           type="button"
@@ -1431,12 +1428,6 @@
 
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <input
-                  hidden="true"
-                  type="text"
-                  formControlName="type_contrat_id"
-                />
-
                 <label class="col-form-label" for=""
                   >Type de contrat<span class="text-danger">*</span></label
                 >
@@ -1444,13 +1435,11 @@
                 <mat-select
                   class="user-assets select form-control"
                   placeholder="-"
-                  [(ngModel)]="typeContrat"
-                  (ngModelChange)="changeType()"
-                  formControlName="type_contrat"
+                  formControlName="type_contrat_id"
                 >
                   <mat-option
                     *ngFor="let data of listTypeContrat"
-                    [value]="data"
+                    [value]="data.id"
                   >
                     {{ data.libelle }}
                   </mat-option>
@@ -1458,35 +1447,30 @@
               </div>
             </div>
 
-            <!-- <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for=""
-                  >Type de contrat<span class="text-danger">*</span></label
-                >
-
-                <mat-select
-                  class="user-assets select form-control"
-                  placeholder="-"
-                  formControlName="type_contrat_id"
-                >
-                  <mat-option
-                    *ngFor="let data of listTypeContrat"
-                    [value]="data"
-                  >
-                    {{ data.libelle }}
-                  </mat-option>
-                </mat-select>
+            <div class="col-md-6">
+              <div class="input-block mb-3 date-input2">
+                <label class="col-form-label" for="">Date de début</label>
+                <div class="cal-icon">
+                  <input
+                    formControlName="date_debut"
+                    class="form-control datetimepicker"
+                    type="text"
+                    bsDatepicker
+                    container=".date-input2"
+                  />
+                </div>
               </div>
-            </div> -->
+            </div>
 
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
-                <label class="col-form-label" for="">Durée (mois)</label>
-                <div class="cal-icon-">
+                <label class="col-form-label" for="">Durée</label>
+                <div class="cal-icon_">
                   <input
-                    [(ngModel)]="dureeContrat"
                     (change)="changeDuree()"
-                    formControlName="duree"
+                    [
+                    (model)]="duree"
+                    formControlName="date_debut"
                     class="form-control"
                     type="number"
                   />
@@ -1496,28 +1480,13 @@
 
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
-                <label class="col-form-label" for="">Date de début</label>
-                <div class="cal-icon-">
-                  <input
-                    (change)="changeDateDebut()"
-                    formControlName="date_debut"
-                    class="form-control datetimepicker"
-                    type="date"
-                    container=".date-input2"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Date de fin</label>
-                <div class="cal-icon-">
+                <div class="cal-icon">
                   <input
-                    readonly
                     formControlName="date_fin"
                     class="form-control datetimepicker"
-                    type="date"
+                    type="text"
+                    bsDatepicker
                     container=".date-input2"
                   />
                 </div>
@@ -1589,7 +1558,7 @@
                             />
                           </div>
                         </div>
-                        <div class="col-md-1" style="">
+                        <div class="col-md-1" >
                           <br />
                           <br />
                           <a
@@ -1935,11 +1904,12 @@
                 <label class="col-form-label" for=""
                   >date d'expiration du passeport</label
                 >
-                <div class="cal-icon-">
+                <div class="cal-icon">
                   <input
                     formControlName="passport_exp"
                     class="form-control datetimepicker"
-                    type="date"
+                    type="text"
+                    bsDatepicker
                     container=".date-input2"
                   />
                 </div>
@@ -1989,7 +1959,7 @@
                 <input
                   type="text"
                   formControlName="banque"
-                  value="{{ curentEmploye?.banque }}"
+                  value="{{ curentEmploye.banque }}"
                   class="form-control"
                 />
               </div>
@@ -2001,7 +1971,7 @@
                   <input
                     type="number"
                     formControlName="rib"
-                    value="{{ curentEmploye?.rib }}"
+                    value="{{ curentEmploye.rib }}"
                     class="form-control"
                   />
                 </div>

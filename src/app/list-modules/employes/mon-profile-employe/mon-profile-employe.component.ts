@@ -1,20 +1,19 @@
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { routes, TypeContratService } from 'src/app/core/core.index';
+import { getMonprofile, routes, TypeContratService } from 'src/app/core/core.index';
 import { ContratService } from 'src/app/core/services/contrat/contrat.service';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
 interface data {
   value: string;
 }
-import { formatDate } from '@angular/common';
 
 @Component({
-  selector: 'app-employee-profile',
-  templateUrl: './employee-profile.component.html',
-  styleUrls: ['./employee-profile.component.scss'],
+  selector: 'app-mon-profile-employe',
+  templateUrl: './mon-profile-employe.component.html',
+  styleUrls: ['./mon-profile-employe.component.scss'],
 })
-export class EmployeeProfileComponent implements OnInit {
+export class MonProfilComponent implements OnInit {
   public selectedValue1 = '';
   public selectedValue2 = '';
   public selectedValue3 = '';
@@ -31,6 +30,8 @@ export class EmployeeProfileComponent implements OnInit {
   public selectedValue14 = '';
   public selectedValue15 = '';
   public routes = routes;
+
+
   bsValue = new Date();
   public addEmployeeForm!: FormGroup;
 
@@ -43,8 +44,6 @@ export class EmployeeProfileComponent implements OnInit {
 
   listTypeContrat: any = [];
   lastContrat: any;
-  dureeContrat: any;
-  typeContrat: any;
 
   public editEmployeInfoPersoForm!: FormGroup;
   public addEmployeContratForm!: FormGroup;
@@ -86,14 +85,12 @@ export class EmployeeProfileComponent implements OnInit {
     this.addEmployeContratForm = this.formBuilder.group({
       num_contrat: ['', [Validators.required]],
       type_contrat_id: ['', [Validators.required]],
-      type_contrat: ['', [Validators.required]],
       employe_id: [this.idEmploye, []],
       base_categorielle: ['', [Validators.required]],
       prime_anciennete: ['', [Validators.required]],
       date_debut: ['', [Validators.required]],
       date_fin: ['', [Validators.required]],
       total_prime: ['', []],
-      duree: ['', []],
       // duree: [this.idEmploye, [Validators.required]],
       // num_contrat: ['', [Validators.required]],
     });
@@ -250,47 +247,8 @@ export class EmployeeProfileComponent implements OnInit {
     );
   }
 
-  changeType() {
-    if (this.typeContrat?.libelle == 'CDI') {
-      // alert(this.typeContrat.libelle);
-      this.addEmployeContratForm.get('date_debut')?.disable();
-      this.addEmployeContratForm.get('duree')?.disable();
-    } else {
-      this.addEmployeContratForm.get('date_debut')?.enable();
-      this.addEmployeContratForm.get('duree')?.enable();
-    }
-
-    // alert(this.typeContrat?.id);
-    this.addEmployeContratForm
-      .get('type_contrat_id')
-      ?.setValue(this.typeContrat?.id);
-  }
   changeDuree() {
-    // alert(this.dureeContrat);
-
-    if (this.addEmployeContratForm.get('date_debut')?.value != null) {
-      var myDate = new Date(
-        this.addEmployeContratForm.get('date_debut')?.value
-      );
-      myDate.setMonth(myDate.getMonth() + this.dureeContrat);
-
-      this.addEmployeContratForm
-        .get('date_fin')
-        ?.setValue(formatDate(myDate, 'yyyy-MM-dd', 'en'));
-    }
-  }
-
-  changeDateDebut() {
-    var myDate = new Date(this.addEmployeContratForm.get('date_debut')?.value);
-    if (this.dureeContrat != null) {
-      myDate.setMonth(myDate.getMonth() + this.dureeContrat);
-
-      this.addEmployeContratForm
-        .get('date_fin')
-        ?.setValue(formatDate(myDate, 'yyyy-MM-dd', 'en'));
-    }
-
-    // alert(myDate.toDateString());
+    alert('elet');
   }
 
   onClickSubmitaddEmployeContrat() {
@@ -364,18 +322,7 @@ export class EmployeeProfileComponent implements OnInit {
           // alert(JSON.stringify(data.data));
           location.reload();
         },
-        (error: any) => {
-          if (
-            error.error.message ==
-            'SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`beca_suite_grh_db`.`fichepaies`, CONSTRAINT `fichepaies_contrat_id_foreign` FOREIGN KEY (`contrat_id`) REFERENCES `contrats` (`id`) ON DELETE NO ACTION) (Connection: mysql, SQL: delete from `contrats` where `id` = 13)'
-          ) {
-            alert(
-              'Desolé nous ne pouvons supprimer ce contrat car il est en relation avec plusieur Fiches de Paie'
-            );
-          }
-
-          // alert(JSON.stringify(error.error.message));
-        }
+        (error: any) => {}
       );
   }
 
