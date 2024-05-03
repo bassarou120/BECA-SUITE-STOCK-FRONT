@@ -25,6 +25,10 @@ export class PasswordMailComponent implements OnInit, OnDestroy {
   public Loginvalue = new BehaviorSubject<string | number | returndata>(0);
   public Toggledata = true;
 
+successMessage: string | null = null;
+errorMessage: string | null = null;
+
+
   showloader = false;
   form = new UntypedFormGroup({
     email: new UntypedFormControl('', [Validators.required]),
@@ -52,17 +56,30 @@ export class PasswordMailComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.showloader = true; // alert(JSON.stringify(this.form.value));
+    this.showloader = true;
 
-    if (this.form.valid){
-      this.passwordMailService.savePasswordMail(this.form.value).subscribe(
-        (data: any) => {
-          location.reload();
+    if (this.form.valid) {
+      this.passwordMailService.savePasswordMail(this.form.value)
+        .subscribe((response: any) => {
+          if (response.message) {
+            this.showloader = false;
+            this.successMessage = response.message;
+            this.errorMessage = null;
+          } else {
+            this.showloader = false;
+            this.errorMessage = response.error;
+            this.successMessage = null;
+          }
+        }, error => {
+          this.showloader = false;
+          this.errorMessage = "Une erreur s'est produite vérifier si le mail Entré est bien correcte";
+          this.successMessage = null;
         });
-      } else {
-        console.log("Desolé le formulaire n'est pas bien renseigné");
-      }
+    } else {
+      console.log("Désolé, le formulaire n'est pas bien renseigné");
+    }
   }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
