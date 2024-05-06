@@ -681,6 +681,7 @@ export interface getInfoDeBase {
   id: number;
   cle: string;
   valeur: number;
+  cle_txt: string;
   valeur_txt: string;
 }
 
