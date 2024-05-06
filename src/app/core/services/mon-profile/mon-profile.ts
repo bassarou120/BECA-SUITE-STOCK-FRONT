@@ -24,4 +24,11 @@ export class MonprofileService  {
     return this.http.get<any>(`${this.url}/getemployeid/${data}`);
   }
 
+  getConnectedEmployeWithID(data: any): Observable<any> {
+    return this.http.get<any>(`${this.url}/employe/${data}`);
+  }
+  saveMotdepasse(data: any): Observable<Object> {
+    return this.http.post(`${this.url}/modifier_mot_de_passe`, data);
+  }
+
 }
