@@ -5,11 +5,13 @@ import { getInfoDeBase, getMiniTemplateEmploye, routes, InfosDeBaseService } fro
 
 
 
-// Les parametres à ajouter sont:
+//  Les parametres à ajouter sont:
+//  "NOM_ENTREPRISE"
 //  "LIMITE_JOURS_CONGE", "LIMITE_HEURES_SUPP",
 //  "PREFIXE_MATRICULE", "PREFIXE_CONTRAT",
-//  "NOM_ENTREPRISE", "NOM_SIGNATAIRE_1", "NOM_SIGNATAIRE_2",
+//  "NOM_SIGNATAIRE_1", "NOM_SIGNATAIRE_2",
 //  "BANQUE_1" à "BANQUE_5", "NUMERO_DE_COMPTE_1" à "NUMERO_DE_COMPTE_5".
+
 
 
 @Component({
@@ -54,6 +56,27 @@ export class InfosDeBaseComponent implements OnInit {
       NOM_SIGNATAIRE_1_TXT: ["", [Validators.required]],
       NOM_SIGNATAIRE_2: ["", [Validators.required]],
       NOM_SIGNATAIRE_2_TXT: ["", [Validators.required]],
+      // Les banques et numéros de compte
+      BANQUE_1: ["", [Validators.required]],
+      BANQUE_1_TXT: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_1: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_1_TXT: ["", [Validators.required]],
+      BANQUE_2: ["", [Validators.required]],
+      BANQUE_2_TXT: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_2: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_2_TXT: ["", [Validators.required]],
+      BANQUE_3: ["", [Validators.required]],
+      BANQUE_3_TXT: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_3: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_3_TXT: ["", [Validators.required]],
+      BANQUE_4: ["", [Validators.required]],
+      BANQUE_4_TXT: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_4: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_4_TXT: ["", [Validators.required]],
+      BANQUE_5: ["", [Validators.required]],
+      BANQUE_5_TXT: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_5: ["", [Validators.required]],
+      NUMERO_DE_COMPTE_5_TXT: ["", [Validators.required]],
     });
   }
 
@@ -91,16 +114,16 @@ export class InfosDeBaseComponent implements OnInit {
   }
 
   setInfoDeBase() {
-    console.log(this.setInfoDeBaseForm.value, this.setInfoDeBaseForm.valid)
+    // console.log(this.setInfoDeBaseForm.value, this.setInfoDeBaseForm.valid)
 
-    // if (this.setInfoDeBaseForm.valid){
-    //   this.data.saveInfoDeBase(this.setInfoDeBaseForm.value).subscribe(response => {
-    //     console.log(response);
-    //     location.reload();
-    //   });
-    // } else {
-    //   console.log("Desolé le formulaire n'est pas bien renseigné");
-    // }
+    if (this.setInfoDeBaseForm.valid){
+      this.data.saveInfoDeBase(this.setInfoDeBaseForm.value).subscribe(response => {
+        // console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    }
   }
 }
 
