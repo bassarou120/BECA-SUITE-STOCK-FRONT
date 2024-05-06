@@ -82,7 +82,6 @@ export class DataService {
               route: routes.plaintes,
               base: 'mes-plaintes',
             },
-
           ],
         },
         {
@@ -171,6 +170,11 @@ export class DataService {
               route: routes.fichePaie,
               base: 'employee-salary',
             },
+            {
+              menuValue: 'Ordre de virement',
+              route: routes.ordreVirement,
+              base: 'employee-salary',
+            },
           ],
         },
       ],
@@ -181,7 +185,6 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
-
         {
           menuValue: 'GRH',
           route: routes.payroll,
@@ -257,7 +260,6 @@ export class DataService {
             //   route: routes.statut,
             //   base: 'statut',
             // },
-
           ],
         },
 
@@ -282,12 +284,9 @@ export class DataService {
             },
           ],
         },
-
       ],
     },
   ];
-
-
 
   public employeSideBar: SideBar[] = [
     {
@@ -350,16 +349,16 @@ export class DataService {
               route: routes.plaintes,
               base: 'mes-plaintes',
             },
-
           ],
         },
       ],
     },
   ];
 
-  public sideBar = (this.authService.userRole && this.authService.userRole <= 3) ? this.grhSideBar : this.employeSideBar;
-
-
+  public sideBar =
+    this.authService.userRole && this.authService.userRole <= 3
+      ? this.grhSideBar
+      : this.employeSideBar;
 
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<
     Array<SideBar>

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
 import { AuthService } from '../core/services/auth/auth.service';
 import { fichepaieComponent } from './fichepaie/fichepaie.component';
+import { ordrevirementComponent } from './ordrevirement/ordrevirement.component';
 
 const routes: Routes = [
   {
@@ -50,7 +51,16 @@ const routes: Routes = [
           ),
       },
 
-      { path: 'fichepaie', component: fichepaieComponent, canActivate: [GRHGuard] },
+      {
+        path: 'fichepaie',
+        component: fichepaieComponent,
+        canActivate: [GRHGuard],
+      },
+      {
+        path: 'ordreVirement',
+        component: ordrevirementComponent,
+        canActivate: [GRHGuard],
+      },
 
       /*
 
