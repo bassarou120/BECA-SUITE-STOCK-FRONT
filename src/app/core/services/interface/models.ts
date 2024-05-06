@@ -790,15 +790,14 @@ export interface getPointContrat {
 }
 export interface getMesContrats {
   id: number;
- //id_employe: number;
-  //employe: string;
-  //type_contrat_id: number;
   libelle: string;
   date_signature: Date;
+  date_debut: Date;
+  date_fin: Date;
   duree: number;
-  //status_id: number;
   libelleStatus: string;
   etat: string;
+  status: string;
 }
 export interface getFormation {
   id: number;
@@ -850,6 +849,8 @@ export interface getMiniTemplateEmploye {
   prenom: string;
   role: string;
   role_id: number;
+  titre: string;
+  departement: string;
 }
 
 export interface getDepartment {

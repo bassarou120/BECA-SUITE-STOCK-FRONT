@@ -81,6 +81,11 @@ export class MesContratsComponent implements OnInit {
 
 
 
+  toWeek(num: number): number {
+    var ans = Math.floor(num / 7);
+    return ans === 0 ? 1 : ans;
+  }
+
   exportToPDF() {
     $('#spinner_pdf').removeClass('d-none');
     setTimeout(() => {

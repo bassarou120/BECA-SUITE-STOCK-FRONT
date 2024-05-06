@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class PointContratComponent implements OnInit, AfterViewInit {
   public routes = routes;
-  public lstPointContrat: Array<getPointContrat> = [];
+  public lstPointContrat: any = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getPointContrat>;
   // pagination variables
@@ -46,15 +46,7 @@ export class PointContratComponent implements OnInit, AfterViewInit {
       this.lstPointContrat = [];
 
       this.data.getAllPointsContrats().subscribe((res: any) => {
-        this.totalData = res.data.total;
-        res.data.map((res: getPointContrat, index: number) => {
-          const serialNumber = index + 1;
-          if (index >= this.skip && serialNumber <= this.limit) {
-            res.id;// = serialNumber;
-            this.lstPointContrat.push(res);
-            this.serialNumberArray.push(serialNumber);
-          }
-        });
+        this.lstPointContrat = res.data;
 
         this.dataSource = new MatTableDataSource<getPointContrat>(this.lstPointContrat);
         this.calculateTotalPages(this.totalData, this.pageSize);
@@ -62,6 +54,12 @@ export class PointContratComponent implements OnInit, AfterViewInit {
   }
 
 
+
+
+  toWeek(num: number): number {
+    var ans = Math.floor(num / 7);
+    return ans === 0 ? 1 : ans;
+  }
 
   exportToPDF() {
     $('#spinner_pdf').removeClass('d-none');
