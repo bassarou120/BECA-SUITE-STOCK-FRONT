@@ -681,6 +681,7 @@ export interface getInfoDeBase {
   id: number;
   cle: string;
   valeur: number;
+  cle_txt: string;
   valeur_txt: string;
 }
 
@@ -802,9 +803,22 @@ export interface getMesContrats {
 }
 
 export interface getMonprofile {
+  firstname: string;
+  lastname: string;
+  username: string;
+  password: string;
+  confirmpassword: string;
+  department: string;
+  designation: string;
+  phone: string;
+  email: string;
+  mobile: string;
+  joindate: string;
+  role: string;
+  employeeId: string;
+  company: string;
   id: number;
- nom: string;
- prenom: string
+  img?: string;
 }
 export interface getFormation {
   id: number;
