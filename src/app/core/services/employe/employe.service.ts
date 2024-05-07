@@ -48,6 +48,10 @@ export class EmployeService {
     return this.http.get<any>(`${this.url}/employe/${id}`);
   }
 
+  getlisteBanque(): Observable<any> {
+    return this.http.get<any>(`${this.url}/banques`);
+  }
+
   saveContatEmploye(data: any): Observable<Object> {
     return this.http.post(`${this.url}/contrats`, data);
   }
