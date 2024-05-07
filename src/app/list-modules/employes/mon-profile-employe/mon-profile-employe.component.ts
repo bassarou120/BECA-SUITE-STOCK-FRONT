@@ -16,27 +16,42 @@ interface data {
 export class MonProfilComponent implements OnInit {
   public loggedUserId: number = 0
   public loggedEmployeId: number = 0;
-  public addMotdepasseForm!: FormGroup ;
+  public editPasswordForm!: FormGroup ;
   public routes = routes;
   public curentEmploye: any;
-  employeeId: any; 
+  employeeId: any;
 
   constructor(private monprofileservice: MonprofileService, private formBuilder: FormBuilder) { }
-  
+
 
   ngOnInit(): void {
     this.getLoggedUserId();
     this.getCurentEmploy();
 
-    this.addMotdepasseForm = this.formBuilder.group({
+    this.editPasswordForm = this.formBuilder.group({
       current_password: ['', Validators.required],
       new_password: ['', Validators.required],
       confirm_password: ['', Validators.required],
-      
-  })
-   
-    //this.employeeId = this.monprofileservice.getConnectedEmployeID();
+    }, { validator: this.newPasswordValidator });
   }
+
+  private newPasswordValidator(group: FormGroup) {
+    const newPasswordControl = group.get('new_password');
+    const confirmNewPasswordControl = group.get('confirm_password');
+    if (!newPasswordControl || !confirmNewPasswordControl) {
+      return null;
+    }
+    const newPassword = newPasswordControl.value;
+    if (newPassword && (newPassword.length < 6)) {
+      return { passwordTooShort: true };
+    }
+    const confirmNewPassword = confirmNewPasswordControl.value;
+    if (newPassword && confirmNewPassword && (newPassword != confirmNewPassword)) {
+      return { unmatchedPasswords: true };
+    }
+    return null;
+  }
+
   private getLoggedUserId() {
     const userDataString = localStorage.getItem('userDataString');
     if(userDataString) {
@@ -50,30 +65,71 @@ export class MonProfilComponent implements OnInit {
   getCurentEmploy() {
     this.monprofileservice.getConnectedEmployeID(this.loggedUserId).subscribe((res: any) => {
       this.loggedEmployeId = res.data;
-      
+
         this.monprofileservice.getConnectedEmployeWithID(this.loggedEmployeId).subscribe((res: any) => {
           this.curentEmploye = res.data;
-          console.log(this.curentEmploye)
         },
         (error: any) => {}
         );
-      
+
       },
       (error: any) => {}
-    );    
+    );
   }
 
 
   saveMotdepasse() {
     // console.log(this.addTypeCongeForm.value, this.addTypeCongeForm.valid);
-    if (this.addMotdepasseForm.valid){
-      var data = this.addMotdepasseForm.value;
+    if (this.editPasswordForm.valid){
+      var data = this.editPasswordForm.value;
       data["id_user"] = this.loggedUserId;
       this.monprofileservice.saveMotdepasse(data).subscribe(response => {
-        console.log(response);
+        alert("Mot de passe modifié avec succes");
         location.reload();
+      },
+      (error: string) => {
+        this.showModal(error);
       });
-    } 
+    }
+  }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+  } else {
+    console.error("Modal element not found!");
+  }
+  }
+
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
   }
 
 
@@ -95,6 +151,6 @@ export class MonProfilComponent implements OnInit {
     return months[parseInt(monthNumber, 10) - 1];
   }
 
-  
+
 
 }

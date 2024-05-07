@@ -14,14 +14,14 @@
         </ul>
       </div>
       <div class="col-auto float-end ms-auto">
-        <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#mofifierMotdepasse"><i
-                class="fa-solid fa-plus"></i> Modifier le mot de passe</a>
+        <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#edit_password"><i
+                class="fa-solid fa-pencil"></i> Modifier le mot de passe</a>
     </div>
     </div>
     </div>
   </div>
 
-  <div class="modal custom-modal fade" id="mofifierMotdepasse" role="dialog">
+  <div class="modal custom-modal fade" id="edit_password" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -31,41 +31,41 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addMotdepasseForm" (ngSubmit)="saveMotdepasse()" novalidate>
+                <form [formGroup]="editPasswordForm" (ngSubmit)="saveMotdepasse()" novalidate>
                     <div class="input-block mb-3">
-                      <label class="col-form-label" for="current_password">Ancien mot de passe <span class="text-danger">*</span></label>
+                      <label class="col-form-label" for="current_password">Mot de passe actuel<span class="text-danger">*</span></label>
                       <input class="form-control" type="text" formControlName="current_password"
-                      [class.invalid]="addMotdepasseForm.get('current_password')?.invalid && addMotdepasseForm.get('current_password')?.touched">
-
-                      <div *ngIf="addMotdepasseForm.get('current_password')?.touched && addMotdepasseForm.get('current_password')?.invalid" class="text-danger">
-                        <small *ngIf="addMotdepasseForm.get('current_password')?.touched && addMotdepasseForm.get('current_password')?.invalid" class="text-danger">
-                          
-                        </small>
-                      </div>
+                      [class.invalid]="editPasswordForm.get('current_password')?.invalid && editPasswordForm.get('current_password')?.touched">
+                      <small *ngIf="editPasswordForm.get('current_password')?.touched && editPasswordForm.get('current_password')?.invalid" class="text-danger">
+                        Le mot de passe actuel est obligatoire
+                      </small>
                     </div>
 
                     <div class="input-block mb-3">
                       <label class="col-form-label" for="new_password">Nouveau mot de passe <span class="text-danger">*</span></label>
                       <input class="form-control" type="text" formControlName="new_password"
-                      [class.invalid]="addMotdepasseForm.get('new_password')?.invalid && addMotdepasseForm.get('new_password')?.touched">
-
-                      <div *ngIf="addMotdepasseForm.get('new_password')?.touched && addMotdepasseForm.get('new_password')?.invalid" class="text-danger">
-                        <small *ngIf="addMotdepasseForm.get('new_password')?.touched && addMotdepasseForm.get('new_password')?.invalid" class="text-danger">
-                          
-                        </small>
-                      </div>
+                      [class.invalid]="editPasswordForm.get('new_password')?.invalid && editPasswordForm.get('new_password')?.touched">
+                      <small *ngIf="editPasswordForm.get('new_password')?.touched && editPasswordForm.get('new_password')?.invalid" class="text-danger">
+                        Le nouveau mot de passe est obligatoire
+                      </small>
+                      <small *ngIf="editPasswordForm.errors?.['unmatchedPasswords']" class="text-danger">
+                        Les valeurs ne correspondent pas.
+                      </small>
+                      <small *ngIf="editPasswordForm.errors?.['passwordTooShort']" class="text-danger">
+                        Doit comporter 6 caractères au moins.
+                      </small>
                     </div>
 
                     <div class="input-block mb-3">
                       <label class="col-form-label" for="confirm_password">Confirmer le nouveau mot de passe <span class="text-danger">*</span></label>
                       <input class="form-control" type="text" formControlName="confirm_password"
-                      [class.invalid]="addMotdepasseForm.get('confirm_password')?.invalid && addMotdepasseForm.get('confirm_password')?.touched">
-
-                      <div *ngIf="addMotdepasseForm.get('confirm_password')?.touched && addMotdepasseForm.get('confirm_password')?.invalid" class="text-danger">
-                        <small *ngIf="addMotdepasseForm.get('confirm_password')?.touched && addMotdepasseForm.get('confirm_password')?.invalid" class="text-danger">
-                          
-                        </small>
-                      </div>
+                      [class.invalid]="editPasswordForm.get('confirm_password')?.invalid && editPasswordForm.get('confirm_password')?.touched">
+                      <small *ngIf="editPasswordForm.get('confirm_password')?.touched && editPasswordForm.get('confirm_password')?.invalid" class="text-danger">
+                        Confirmer nouveau mot de passe est obligatoire
+                      </small>
+                      <small *ngIf="editPasswordForm.errors?.['unmatchedPasswords']" class="text-danger">
+                        Les valeurs ne correspondent pas.
+                      </small>
                     </div>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn">Modifier</button>
@@ -76,7 +76,33 @@
     </div>
 </div>
 
- 
+<!-- Alert Modal -->
+<div class="modal custom-modal-overlay fade" id="alert_modal" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Alerte !</h3>
+          <p></p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+            <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Ok</a>
+            </div>
+            <div class="col-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Alert Modal -->
+
+
+
+
   <!-- /Page Header -->
 
   <div class="card mb-0">
@@ -128,9 +154,9 @@
                         aria-expanded="false"
                       >
                       </a>
-                    </div> 
+                    </div>
                       <a>   Enregister un mouvement</a >
-                      
+
                        <div class="dropdown-menu dropdown-menu-left">  -->
                         <!-- <a
                           class="dropdown-item"
@@ -183,9 +209,9 @@
                           data-bs-target="#delete_employe"
                           >Avancement</a
                         > -->
-                    
-                    
-                 
+
+
+
                 </div>
                 <div class="col-md-6">
                   <ul class="personal-info">
@@ -333,7 +359,7 @@
           </div>
         </div>
 
-     
+
 
         <div class="row">
           <div class="col-md-6 d-flex">
@@ -1054,7 +1080,7 @@
           <br /><br />
         </div>
       </div>
-    </div> --> 
+    </div> -->
     <!-- /Bank Statutory Tab -->
 
     <!-- Assets -->
@@ -1546,14 +1572,14 @@
 
                 <!--                {{ form.value.items | json}}-->
                 <!--               {{totalPrime}}-->
-              
-            
+
+
 
             <!-- <div class="submit-section">
               <button class="btn btn-primary submit-btn">Enregister</button>
             </div> -->
-          
-        
+
+
         <!--
         <form>
           <div class="row">
@@ -1639,9 +1665,9 @@
         </form>
 
     -->
-      
-    
-  
+
+
+
 
 <!-- /Personal Info Modal -->
 
@@ -1915,8 +1941,8 @@
                   type="number"
                 />
               </div>
-            </div> --> 
-<!-- 
+            </div> -->
+<!--
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Banque </label>
@@ -1945,7 +1971,7 @@
             <div class="submit-section">
               <button class="btn btn-primary submit-btn">Enregister</button>
             </div>
-          
+
         </form> -->
         <!--
         <form>
@@ -2032,8 +2058,8 @@
         </form>
 
     -->
-    
-  
+
+
 
 <!-- /Personal Info Modal -->
 
@@ -2610,5 +2636,5 @@
               >
             </div>
             -->
- 
+
 <!-- /Delete role Modal -->
