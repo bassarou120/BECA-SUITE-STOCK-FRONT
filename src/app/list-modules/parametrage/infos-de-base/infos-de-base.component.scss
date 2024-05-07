@@ -1,5 +1,5 @@
 .info-form {
-  width: 62%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -7,7 +7,8 @@
 #edit_parameter_icon {
   display: inline-block;
   border-radius: 50%;
-  margin-top: 7px;
+  margin-top: 42px;
+  margin-left: -15px;
   padding: 8px;
   background-color: white;
   border: 0.25px solid rgb(200, 200, 200);
@@ -20,4 +21,23 @@
 #edit_parameter_icon a {
   display: inline-block;
   vertical-align: middle;
+}
+
+
+
+
+.arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 13px solid black;
+  margin-right: 3px;
+  position: relative;
+  top: 2px;
+}
+
+.stick-to-a-bank {
+  margin-top: -25px;
 }

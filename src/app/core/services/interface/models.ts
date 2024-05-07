@@ -681,6 +681,8 @@ export interface getInfoDeBase {
   id: number;
   cle: string;
   valeur: number;
+  cle_txt: string;
+  valeur_txt: string;
 }
 
 export interface getStatut {
@@ -790,15 +792,33 @@ export interface getPointContrat {
 }
 export interface getMesContrats {
   id: number;
- //id_employe: number;
-  //employe: string;
-  //type_contrat_id: number;
   libelle: string;
   date_signature: Date;
+  date_debut: Date;
+  date_fin: Date;
   duree: number;
-  //status_id: number;
   libelleStatus: string;
   etat: string;
+  status: string;
+}
+
+export interface getMonprofile {
+  firstname: string;
+  lastname: string;
+  username: string;
+  password: string;
+  confirmpassword: string;
+  department: string;
+  designation: string;
+  phone: string;
+  email: string;
+  mobile: string;
+  joindate: string;
+  role: string;
+  employeeId: string;
+  company: string;
+  id: number;
+  img?: string;
 }
 export interface getFormation {
   id: number;
@@ -850,6 +870,8 @@ export interface getMiniTemplateEmploye {
   prenom: string;
   role: string;
   role_id: number;
+  titre: string;
+  departement: string;
 }
 
 export interface getDepartment {

@@ -62,32 +62,49 @@
                             <th mat-sort-header="employeId">Nom de l'Employé</th>
                             <th mat-sort-header="typeContrat">Type de contrat</th>
                             <th mat-sort-header="dateSignature">Date de signature</th>
-                            <th mat-sort-header="dureeContrat">Durée (en années)</th>
+                            <th mat-sort-header="dureeContrat">Durée (Semaines)</th>
+                            <th mat-sort-header="dateDebut">Date début</th>
+                            <th mat-sort-header="dateFin">Date fin</th>
                             <th mat-sort-header="etatContrat">Etat du contrat</th>
                             <th mat-sort-header="statutContrat">Statut du contrat</th>
-                            <!-- <th class="text-end">Action</th> -->
+                            <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstPointContrat">
-                            <td>{{item.id}}</td>
-                            <td>{{item.employe}}</td>
-                            <td>{{item.libelle}}</td>
-                            <td>{{item.date_signature}}</td>
-                            <td>{{item.duree}}</td>
-                            <td>{{item.etat}}</td>
-                            <td>{{item.libelleStatus}}</td>
-                            <!-- <td class="text-end">ibles) <
+                        <tr *ngFor="let item of lstPointContrat; let i = index;">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ item.employe }}</td>
+
+                            <ng-container *ngIf="item.contrats && item.contrats.length > 0; else none;">
+                              <td>{{ item.contrats[0].libelle }}</td>
+                              <td>{{ item.contrats[0].date_signature | date : "dd/MM/YYYY" }}</td>
+                              <td>{{ toWeek(item.contrats[0].duree) }}</td>
+                              <td>{{ item.contrats[0].date_debut | date : "dd/MM/YYYY" }}</td>
+                              <td>{{ item.contrats[0].date_fin | date : "dd/MM/YYYY" }}</td>
+                              <td>{{ item.contrats[0].etat }}</td>
+                              <td>{{ item.contrats[0].status }}</td>
+                            </ng-container>
+                            <ng-template #none>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                            </ng-template>
+
+                            <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="setShownDetails(item.contrats, item.employe)"
                                             data-bs-target="#show_details"><i class="fa-solid fa-pencil m-r-5"></i>
-                                            Détails</a>
+                                            Voir tout</a>
                                     </div>
                                 </div>
-                            </td> -->
+                            </td>
                         </tr>
                         <tr *ngIf="lstPointContrat.length === 0">
                             <td colspan="10">
@@ -166,3 +183,62 @@
     </div>
 </div>
 <!-- /Page Content -->
+
+
+<!-- Details Modal -->
+<div id="show_details" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Liste des contrats de {{ shownEmploye }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="exclusion-1">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <h4>CONTRATS</h4>
+            <div class="col-sm-12">
+              <div class="mb-3">
+                <table matSort (matSortChange)="sortData($event)" id="table_conges_to_xlsx" style="width: 100%;"
+                       class="table table-striped custom-table datatable mb-0 table-responsive">
+                  <thead>
+                    <tr>
+                      <th style="width: 30px;">#</th>
+                      <th mat-sort-header="typeContrat">Type de contrat</th>
+                      <th mat-sort-header="dateSignature">Date de signature</th>
+                      <th mat-sort-header="dureeContrat">Durée (Semaines)</th>
+                      <th mat-sort-header="dateDebut">Date début</th>
+                      <th mat-sort-header="dateFin">Date fin</th>
+                      <th mat-sort-header="etatContrat">Etat du contrat</th>
+                      <th mat-sort-header="statutContrat">Statut du contrat</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of shownContrats; let i=index;">
+                      <td>{{ i+1 }}</td>
+                      <td>{{ item.libelle }}</td>
+                      <td>{{ item.date_signature | date : "dd/MM/YYYY" }}</td>
+                      <td>{{ toWeek(item.duree) }}</td>
+                      <td>{{ item.date_debut | date : "dd/MM/YYYY" }}</td>
+                      <td>{{ item.date_fin | date : "dd/MM/YYYY" }}</td>
+                      <td>{{ item.etat }}</td>
+                      <td>{{ item.status }}</td>
+                    </tr>
+                    <tr *ngIf="shownContrats.lenght === 0">
+                      <td colspan="10">
+                        <h5 style="text-align: center;">Aucun résultat</h5>
+                      </td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+            <br/>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Details Modal -->

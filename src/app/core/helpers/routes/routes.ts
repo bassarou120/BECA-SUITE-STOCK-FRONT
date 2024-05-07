@@ -14,9 +14,12 @@ export class routes {
   public static get login(): string {
     return this.baseUrl + '/login';
   }
-  public static get forgot_password(): string {
-    return this.baseUrl + '/forgot-password';
-  }
+  // public static get motdepasse(): string {
+  //   return this.baseUrl + '/motdepasse';
+  // }
+  // public static get forgot_password(): string {
+  //   return this.baseUrl + '/forgot-password';
+  // }
   public static get register(): string {
     return this.baseUrl + '/register';
   }
@@ -43,6 +46,10 @@ export class routes {
 
   public static get employeProfile(): string {
     return this.baseUrl + '/employes/employe-profile';
+  }
+
+  public static get mon_profil(): string {
+    return this.baseUrl + '/employes/mon-profil';
   }
 
   public static get conges(): string {

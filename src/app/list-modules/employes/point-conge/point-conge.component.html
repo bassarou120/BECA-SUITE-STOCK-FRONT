@@ -64,8 +64,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstPointConge">
-                            <td>{{item.id_employe}}</td>
+                        <tr *ngFor="let item of lstPointConge; let i = index;">
+                            <td>{{i+1}}</td>
                             <td>{{item.employe}}</td>
                             <td>{{item.total_jours_conges_joui + item.total_jours_absences_deductibles}}</td>
                             <td>{{((totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles) <= 0 ) ? 0 : totalJoursConges - item.total_jours_conges_joui - item.total_jours_absences_deductibles}}</td>
