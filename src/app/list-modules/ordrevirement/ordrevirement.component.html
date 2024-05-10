@@ -25,57 +25,69 @@
         <div class="card-body">
           <h3 class="card-title">générer un Ordre de virement</h3>
 
-          <div class="row">
-            <div class="col-md-4">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for=""> Banque </label>
+          <form
+            [formGroup]="ordreVirementForm"
+            (ngSubmit)="onClickSubmitordreVirement()"
+          >
+            <div class="row">
+              <div class="col-md-4">
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for=""> Banque </label>
 
-                <mat-select
-                  class="user-assets select form-control"
-                  placeholder="-"
-                  [compareWith]="compareEmployeObjects"
-                  [(value)]="selectedEmp"
-                >
-                  <mat-option [value]="selectedEmp"> </mat-option>
-                </mat-select>
+                  <mat-select
+                    class="user-assets select form-control"
+                    placeholder="-"
+                    [compareWith]="compareObjects"
+                    formControlName="banque_id"
+                  >
+                    <mat-option
+                      *ngFor="let data of list_banque"
+                      [value]="data.id"
+                    >
+                      {{ data.nom }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for=""> Année </label>
+
+                  <mat-select
+                    class="user-assets select form-control"
+                    placeholder="-"
+                    [compareWith]="compareEmployeObjects"
+                    formControlName="annee"
+                  >
+                    <mat-option *ngFor="let data of listAnnee" [value]="data">
+                      {{ data }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for=""> Mois </label>
+
+                  <mat-select
+                    class="user-assets select form-control"
+                    placeholder="-"
+                    [compareWith]="compareEmployeObjects"
+                    formControlName="mois"
+                  >
+                    <mat-option *ngFor="let data of listMois" [value]="data.id">
+                      {{ data.name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button class="btn btn-primary submit-btn">Valider</button>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for=""> Année </label>
-
-                <mat-select
-                  class="user-assets select form-control"
-                  placeholder="-"
-                  [compareWith]="compareEmployeObjects"
-                >
-                  <mat-option *ngFor="let data of listAnnee" [value]="data">
-                    {{ data }}
-                  </mat-option>
-                </mat-select>
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for=""> Mois </label>
-
-                <mat-select
-                  class="user-assets select form-control"
-                  placeholder="-"
-                  [compareWith]="compareEmployeObjects"
-                >
-                  <mat-option *ngFor="let data of listMois" [value]="data">
-                    {{ data }}
-                  </mat-option>
-                </mat-select>
-              </div>
-            </div>
-
-            <div class="submit-section">
-              <button class="btn btn-primary submit-btn">Enregister</button>
-            </div>
-          </div>
+          </form>
 
           <br /><br /><br />
           <br /><br /><br />
