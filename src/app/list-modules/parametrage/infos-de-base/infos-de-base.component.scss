@@ -24,7 +24,10 @@
 }
 
 
-
+.mat-select-disabled {
+  background-color: #e9ecef;
+  pointer-events: none;
+}
 
 .arrow {
   display: inline-block;

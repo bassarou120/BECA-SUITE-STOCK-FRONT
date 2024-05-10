@@ -17,3 +17,9 @@
     }
   }
 }
+
+// Hover et Focus sur le bouton de login
+.account-box .account-btn:hover, .account-box .account-btn:focus {
+  border: 0;
+  opacity: 0.8;
+}

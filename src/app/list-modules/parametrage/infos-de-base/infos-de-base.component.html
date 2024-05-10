@@ -119,7 +119,7 @@
           <div class="input-block mb-3 col-4 row">
             <div class="input-block mb-3 col-11">
               <label class="col-form-label" for="NOM_SIGNATAIRE_1_TXT">Signataire n°1 </label>
-              <mat-select class="select mat-cust-select form-control"
+              <mat-select class="select mat-cust-select form-control" [ngClass]="{'mat-select-disabled': lstReadonly['NOM_SIGNATAIRE_1']}"
                 [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
                   formControlName="NOM_SIGNATAIRE_1_TXT" placeholder="-">
                   <mat-option *ngFor="let item of lstEmploye" [value]="item" [disabled]="lstReadonly['NOM_SIGNATAIRE_1']"
@@ -138,7 +138,7 @@
           <div class="input-block mb-3 col-4 row">
             <div class="input-block mb-3 col-11">
               <label class="col-form-label" for="NOM_SIGNATAIRE_2_TXT">Signataire n°2 </label>
-              <mat-select class="select mat-cust-select form-control"
+              <mat-select class="select mat-cust-select form-control" [ngClass]="{'mat-select-disabled': lstReadonly['NOM_SIGNATAIRE_2']}"
                 [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
                   formControlName="NOM_SIGNATAIRE_2_TXT" placeholder="-">
                   <mat-option *ngFor="let item of lstEmploye" [value]="item" [disabled]="lstReadonly['NOM_SIGNATAIRE_2']"
