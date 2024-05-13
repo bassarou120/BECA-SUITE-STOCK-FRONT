@@ -83,6 +83,10 @@ export class EmployeService {
     return this.http.get<any>(`${this.url}/mon-profile/${id}`);
   }
 
+  getRechercheEmploye(data: any): Observable<any> {
+    return this.http.post(`${this.url}/rechercherEmploye`, data);
+  }
+
   /*
   public getEmployees(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/JSON/employee.json').pipe(
