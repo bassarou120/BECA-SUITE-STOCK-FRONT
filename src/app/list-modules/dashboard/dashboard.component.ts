@@ -24,6 +24,14 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Ne redirige pas automatiquement
+  }
+
+  navigateToAdminDashboard() {
     this.router.navigateByUrl('/dashboard/admin');
+  }
+
+  navigateToEmployeeDashboard() {
+    this.router.navigateByUrl('/dashboard/employee');
   }
 }

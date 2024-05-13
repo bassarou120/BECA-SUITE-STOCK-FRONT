@@ -51,7 +51,7 @@ export class GradesComponent implements OnInit {
   public totalPages = 0;
 
   public editFormSelectedCategorieId: number = 0;
-  public editFormSelectedClasseId: number = 0;
+  public editFormSelectedClasseId: number = 0;   
   //** / pagination variables
 
   public addGradeForm!: FormGroup ;
