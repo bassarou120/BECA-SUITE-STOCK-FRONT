@@ -38,41 +38,56 @@
   <!-- /Page Header -->
 
   <!-- Search Filter -->
-  <div class="row filter-row">
-    <div class="col-sm-6 col-md-3">
-      <div class="input-block mb-3 form-focus inputs">
-        <mat-form-field class="example-full-width">
-          <mat-label>N º matricule </mat-label>
-          <input type="text" matInput />
-        </mat-form-field>
+  <form
+    [formGroup]="recherceheEmployeForm"
+    (ngSubmit)="onClickSubmitRechercheEmployee()"
+  >
+    <div class="row filter-row">
+      <!-- -->
+      <div class="col-sm-6 col-md-3">
+        <div class="input-block mb-3 form-focus inputs">
+          <mat-form-field class="example-full-width">
+            <mat-label>Nº matricule</mat-label>
+            <input type="text" formControlName="matricule" matInput />
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-6 col-md-3">
-      <div class="input-block mb-3 form-focus inputs">
-        <mat-form-field class="example-full-width">
-          <mat-label>Nom Employé </mat-label>
-          <input type="text" matInput />
-        </mat-form-field>
+      <div class="col-sm-6 col-md-3">
+        <div class="input-block mb-3 form-focus inputs">
+          <mat-form-field class="example-full-width">
+            <mat-label>Nom employé</mat-label>
+            <input type="text" formControlName="nom" matInput />
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-6 col-md-3">
-      <div class="input-block mb-3 form-focus select-focus select">
-        <mat-form-field appearance="fill">
-          <mat-label>Poste</mat-label>
-          <mat-select [(value)]="selected">
-            <mat-option value="option1">Selectionnez le poste</mat-option>
+      <div class="col-sm-6 col-md-3">
+        <div class="input-block mb-3 form-focus select-focus select">
+          <mat-form-field appearance="fill">
+            <mat-label>Poste</mat-label>
+            <mat-select formControlName="poste">
+              <mat-option
+                *ngFor="let poste of listPoste"
+                value="{{ poste.id }}"
+                >{{ poste.nom_poste }}</mat-option
+              >
+              <!-- <mat-option value="1">Web Designer</mat-option>
+          <mat-option value="1">Web Developer</mat-option>
+          <mat-option value="1">Android Developer</mat-option> -->
+            </mat-select>
+            <!-- <mat-option value="option1">Selectionnez le poste</mat-option>
             <mat-option value="option2">Web Developer</mat-option>
             <mat-option value="option3">Web Designer</mat-option>
-            <mat-option value="option4">Android Developer</mat-option>
-          </mat-select>
-        </mat-form-field>
+            <mat-option value="option4">Android Developer</mat-option> -->
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <input type="submit" class="btn btn-success w-100" value="Recherche" />
+        <!-- <a type="submit" >  </a> -->
       </div>
     </div>
-    <div class="col-sm-6 col-md-3">
-      <a class="btn btn-success w-100"> Recherche </a>
-    </div>
-  </div>
-  <!-- Search Filter -->
+  </form>
+  <!-- /Search Filter -->
 
   <div class="row staff-grid-row">
     <div

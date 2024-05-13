@@ -100,14 +100,14 @@ export class EmployeListComponent implements OnInit {
   }
 
   onClickSubmitRechercheEmployee() {
-    alert(JSON.stringify(this.recherceheEmployeForm.value));
+    // alert(JSON.stringify(this.recherceheEmployeForm.value));
 
     this.employeservice
       .getRechercheEmploye(this.recherceheEmployeForm.value)
       .subscribe((data: any) => {
         // alert(JSON.stringify(data));
         console.log(data['data']);
-        // this.lstEmployee = data['data'];
+        this.lstEmployee = data['data'];
       });
   }
 

@@ -22,6 +22,7 @@ export class EmployePageContentComponent implements OnInit {
   public deleteEmployeForm!: FormGroup;
 
   public editEmployeeForm!: FormGroup;
+  public recherceheEmployeForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,8 +38,15 @@ export class EmployePageContentComponent implements OnInit {
   employeForEdit: any;
   ngOnInit(): void {
     this.getEnmpl();
+    this.getDataForListe();
     this.deleteEmployeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
+    });
+
+    this.recherceheEmployeForm = this.formBuilder.group({
+      matricule: ['', []],
+      poste: ['', []],
+      nom: ['', []],
     });
 
     this.editEmployeeForm = this.formBuilder.group({
@@ -81,6 +89,19 @@ export class EmployePageContentComponent implements OnInit {
     this.deleteEmployeForm.patchValue({
       id: id,
     });
+  }
+
+  onClickSubmitRechercheEmployee() {
+    // this.
+    // alert(JSON.stringify(this.recherceheEmployeForm.value));
+
+    this.employeservice
+      .getRechercheEmploye(this.recherceheEmployeForm.value)
+      .subscribe((data: any) => {
+        // alert(JSON.stringify(data));
+        console.log(data['data']);
+        this.lstEmployee = data['data'];
+      });
   }
   onClickSubmitDeleteEmplye() {
     console.log(this.deleteEmployeForm.value);
