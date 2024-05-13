@@ -311,6 +311,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   onClickSubmitaddEmployeContrat() {
+    $('#spinner').removeClass('d-none');
     if (this.addEmployeContratForm.valid) {
       this.addEmployeContratForm.get('total_prime')?.setValue(this.totalPrime);
       this.addEmployeContratForm
@@ -343,10 +344,12 @@ export class EmployeeProfileComponent implements OnInit {
 
       this.contraService.saveContatEmploye(obj).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
           // alert(JSON.stringify(data.data));
           location.reload();
         },
         (error: any) => {
+          $('#spinner').addClass('d-none');
           alert(JSON.stringify(error));
         }
       );
