@@ -25,6 +25,17 @@
         <div class="card-body">
           <h3 class="card-title">générer un Ordre de virement</h3>
 
+          <div id="loader-wrapper_bassarou" *ngIf="showloader == true">
+            <div id="loader">
+              <div class="loader-ellips">
+                <span class="loader-ellips__dot"></span>
+                <span class="loader-ellips__dot"></span>
+                <span class="loader-ellips__dot"></span>
+                <span class="loader-ellips__dot"></span>
+              </div>
+            </div>
+          </div>
+
           <form
             [formGroup]="ordreVirementForm"
             (ngSubmit)="onClickSubmitordreVirement()"
@@ -89,10 +100,41 @@
             </div>
           </form>
 
-          <br /><br /><br />
-          <br /><br /><br />
-          <br /><br /><br />
-          <br /><br /><br />
+          <br />
+
+          <div
+            *ngIf="ordreVierementData.length != 0"
+            class="table-responsive table-newdatatable"
+          >
+            <div class="row">
+              <a
+                (click)="telechargerOrdreVirement()"
+                class="btn btn-success w-2"
+              >
+                Télécharger
+              </a>
+            </div>
+
+            <table class="table table-new custom-table mb-0 datatable">
+              <thead>
+                <tr>
+                  <th class="tg-i68j">Nº</th>
+                  <th class="tg-nxfp">Nom et prénoms</th>
+                  <th class="tg-nxfp">Nº compte</th>
+                  <th class="tg-gljr">Monstant</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let c of ordreVierementData; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ c.employe }}</td>
+                  <td>{{ c.rib }}</td>
+                  <td>{{ c.salaire_net | number }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <br /><br /><br />
+          </div>
         </div>
       </div>
     </div>

@@ -28,6 +28,9 @@ export class ordrevirementComponent implements OnInit {
 
   editMode = false;
 
+  ordreVierementData: any = [];
+  urlOrdrevirement: any;
+
   public addEmployeFichePaieForm!: FormGroup;
   public valideFichepaieForm!: FormGroup;
   public ordreVirementForm!: FormGroup;
@@ -114,84 +117,10 @@ export class ordrevirementComponent implements OnInit {
     itemsAutrePrimes: this.formBuilder.array([]),
   });
 
-  get itemsAutrePrimes() {
-    return this.formAutrePrime.get('itemsAutrePrimes') as FormArray;
-  }
-
-  addAutrePrime() {
-    this.itemsAutrePrimes.push(
-      this.formBuilder.group({
-        indenmite: [''],
-        montant_indenmite: [''],
-      })
-    );
-    this.calucleTotalAutrePrime();
-
-    console.log(this.items.length);
-  }
-
-  removeAutrePrime(i: number) {
-    // alert(JSON.stringify(i))
-    this.itemsAutrePrimes.removeAt(i);
-    // this.list_prime.splice(i.id-1 ,1);
-    this.calucleTotalAutrePrime();
-  }
-
   totalAutreRetenue = 0;
   formAutreRetenue = this.formBuilder.group({
     itemsAutreRetenues: this.formBuilder.array([]),
   });
-
-  get itemsAutreRetenues() {
-    return this.formAutreRetenue.get('itemsAutreRetenues') as FormArray;
-  }
-
-  addAutreRetenue() {
-    this.itemsAutreRetenues.push(
-      this.formBuilder.group({
-        retenue: [''],
-        montant: [''],
-      })
-    );
-    this.calucleTotalAutreRetenue();
-
-    // console.log(this.items.length);
-  }
-
-  removeAutreRetenue(i: number) {
-    // alert(JSON.stringify(i))
-    this.itemsAutreRetenues.removeAt(i);
-    // this.list_prime.splice(i.id-1 ,1);
-    this.calucleTotalAutreRetenue();
-  }
-
-  calucleTotalAutreRetenue() {
-    var traveler: any = this.formAutreRetenue.value.itemsAutreRetenues;
-
-    function montant(item: any) {
-      return item.montant;
-    }
-
-    function sum(prev: any, next: any) {
-      return prev + next;
-    }
-
-    this.totalAutreRetenue = traveler.map(montant).reduce(sum);
-  }
-
-  calucleTotalAutrePrime() {
-    var traveler: any = this.formAutrePrime.value.itemsAutrePrimes;
-
-    function montant_indenmite(item: any) {
-      return item.montant_indenmite;
-    }
-
-    function sum(prev: any, next: any) {
-      return prev + next;
-    }
-
-    this.totalAutrePrime = traveler.map(montant_indenmite).reduce(sum);
-  }
 
   form = this.formBuilder.group({
     items: this.formBuilder.array([]),
@@ -220,94 +149,15 @@ export class ordrevirementComponent implements OnInit {
     return object1 && object2 && object1.id == object2.id;
   }
 
-  initEditeFiche(id: any) {
-    // alert(id);
-    this.editMode = true;
-    this.fichepaieService.getFichepaie(id).subscribe(
-      (response: any) => {
-        // alert(JSON.stringify(response.data[0].employe));
-
-        this.selectedEmp = response.data[0].employe;
-        this.selectedFiche = response.data[0];
-
-        this.addEmployeFichePaieForm.get('edite_fiche_mode')?.setValue(true);
-
-        this.addEmployeFichePaieForm
-          .get('fiche_id')
-          ?.setValue(this.selectedFiche.id);
-
-        this.addEmployeFichePaieForm
-          .get('base_categorielle')
-          ?.setValue(this.selectedFiche.employe.contrats[0].base_categorielle);
-
-        this.addEmployeFichePaieForm
-          .get('grade')
-          ?.setValue(this.selectedFiche.employe.grade.lib);
-        this.addEmployeFichePaieForm
-          .get('grade_id')
-          ?.setValue(this.selectedFiche.employe.grade.id);
-
-        // this.addEmployeFichePaieForm
-        // .get('grade_id')
-        // ?.setValue(this.selectedFiche.employe.grade.id);
-
-        this.addEmployeFichePaieForm
-          .get('employe')
-          ?.setValue(this.selectedFiche.employe);
-
-        this.addEmployeFichePaieForm.get('employe')?.disable();
-
-        this.addEmployeFichePaieForm
-          .get('prime_anciennete')
-          ?.setValue(this.selectedFiche.employe.contrats[0].prime_anciennete);
-
-        this.addEmployeFichePaieForm
-          .get('contrat_id')
-          ?.setValue(this.selectedFiche.employe.contrats[0].id);
-
-        this.addEmployeFichePaieForm
-          .get('employe_id')
-          ?.setValue(this.selectedFiche.employe.id);
-
-        this.addEmployeFichePaieForm
-          .get('rappel_emp')
-          ?.setValue(
-            this.selectedFiche.employe.nom +
-              ' ' +
-              this.selectedFiche.employe.prenom
-          );
-
-        this.selectedFiche.autre_primes.map((prime: any) => {
-          this.itemsAutrePrimes.push(
-            this.formBuilder.group({
-              indenmite: [prime.lib],
-              montant_indenmite: [prime.montant],
-            })
-          );
-        });
-
-        this.calucleTotalAutrePrime();
-
-        this.selectedFiche.autre_retenues.map((retenue: any) => {
-          this.itemsAutreRetenues.push(
-            this.formBuilder.group({
-              retenue: [retenue.lib],
-              montant: [retenue.montant],
-            })
-          );
-        });
-
-        this.calucleTotalAutreRetenue();
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+  telechargerOrdreVirement() {
+    alert(this.urlOrdrevirement);
+    window.open(this.urlOrdrevirement, '_blank');
   }
 
   onClickSubmitordreVirement() {
     // alert(JSON.stringify(this.ordreVirementForm.value));
 
+    this.showloader = true;
     if (this.ordreVirementForm.valid) {
       this.fichepaieService
         .getOrdreVirement(this.ordreVirementForm.value)
@@ -315,47 +165,24 @@ export class ordrevirementComponent implements OnInit {
           (res: any) => {
             // alert(JSON.stringify(res.data));
             if (res.success == true) {
-              console.log(res.data);
+              console.log(res.data.data);
+              this.ordreVierementData = res.data.data.ordre;
+              this.urlOrdrevirement = res.data.url;
               this.showloader = false;
-              window.open(res.data, '_blank');
+
+              // window.open(res.data, '_blank');
+              // window.open(this.urlOrdrevirement, '_blank');
             } else {
+              this.showloader = false;
               alert(res.message);
             }
           },
           (error: any) => {}
         );
     } else {
+      this.showloader = false;
       alert('Veuillez bien remplire le formulaire');
     }
-  }
-
-  onClickSubmitaddEmployeFiche() {
-    if (this.addEmployeFichePaieForm.valid) {
-      this.addEmployeFichePaieForm
-        .get('autre_primes')
-        ?.setValue(this.itemsAutrePrimes.value);
-
-      this.addEmployeFichePaieForm
-        .get('autre_retenues')
-        ?.setValue(this.itemsAutreRetenues.value);
-
-      // alert(JSON.stringify(this.addEmployeFichePaieForm.value));
-
-      this.fichepaieService
-        .saveFichePaieEmploye(this.addEmployeFichePaieForm.value)
-        .subscribe((response: any) => {
-          if (response.success == true) {
-            // alert(JSON.stringify(response.data));
-            location.reload();
-          } else {
-            alert(response.message);
-          }
-        });
-    } else {
-      alert("Désolé la saisie n'est pas  correct veuilez revoir vos entrées");
-    }
-
-    console.log(this.addEmployeFichePaieForm.value);
   }
 
   formatDate(date: any) {
