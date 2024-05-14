@@ -80,10 +80,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           // this.router.navigate(['/dashboard/admin']);
           this.Loginvalue.next(0);
         } else {
+          this.showloader = false;
           alert(alert(JSON.stringify(data.message)));
         }
       },
       (error: any) => {
+        this.showloader = false;
         if (error.error.message == 'Unauthorised.') {
           // this.router.navigate(['/dashboard/admin']);
           alert('E-mail ou mot de passe incorrect !  ');

@@ -27,7 +27,7 @@
             ><i class="fa fa-th"></i
           ></a>
           <a
-            [routerLink]="'/employees/employee-list'"
+            [routerLink]="'/employes/employe-list'"
             class="list-view btn btn-link"
             ><i class="fa-solid fa-bars"></i
           ></a>
@@ -79,6 +79,8 @@
       class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
       *ngFor="let emp of lstEmployee; let i = index"
     >
+      <!-- <div>{{ emp.user_id | json }}</div> -->
+
       <div class="profile-widget">
         <div class="profile-img">
           <a

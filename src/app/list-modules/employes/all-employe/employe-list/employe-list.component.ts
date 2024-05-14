@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService, apiResultFormat, getEmployees, routes } from 'src/app/core/core.index';
+import { DataService, apiResultFormat, getEmployees, routes, lstEmployee } from 'src/app/core/core.index';
 
 @Component({
   selector: 'app-employee-list',
@@ -9,11 +9,15 @@ import { DataService, apiResultFormat, getEmployees, routes } from 'src/app/core
   styleUrls: ['./employe-list.component.scss'],
 })
 export class EmployeListComponent implements OnInit {
+  public routes = routes;
   selected = 'option1';
-  public lstEmployee: Array<getEmployees> = [];
+
+  // public lstEmployee: Array<lstEmployee>;
+  public lstEmployee: Array<any> = [];
+
+
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getEmployees>;
-  public routes = routes;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;

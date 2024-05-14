@@ -37,6 +37,7 @@ export class EmployeeProfileComponent implements OnInit {
   nbr_prime = 2;
 
   list_prime: any;
+  list_banque: any;
 
   curentEmploye: any;
   idEmploye: any;
@@ -79,7 +80,8 @@ export class EmployeeProfileComponent implements OnInit {
       passport: ['', [Validators.required]],
       matrimoniale: ['', [Validators.required]],
       nbr_enfant: ['', [Validators.required]],
-      banque: ['', [Validators.required]],
+      banque: ['', []],
+      banque_id: ['', [Validators.required]],
       rib: ['', [Validators.required]],
     });
 
@@ -105,6 +107,7 @@ export class EmployeeProfileComponent implements OnInit {
 
     // alert(this.idEmploye);
     this.getCurentEmploy();
+    this.getListeBanque();
   }
 
   getMonthName(monthNumber: string): string {
@@ -218,6 +221,7 @@ export class EmployeeProfileComponent implements OnInit {
       matrimoniale: this.curentEmploye.employe.matrimoniale,
       nbr_enfant: this.curentEmploye.employe.nbr_enfant,
       banque: this.curentEmploye.employe.banque,
+      banque_id: this.curentEmploye.employe.bank_id,
       rib: this.curentEmploye.employe.rib,
     });
   }
@@ -245,6 +249,19 @@ export class EmployeeProfileComponent implements OnInit {
         this.curentEmploye = data.data;
 
         console.log(this.curentEmploye);
+      },
+      (error: any) => {}
+    );
+  }
+  compareObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
+  getListeBanque() {
+    this.employeservice.getlisteBanque().subscribe(
+      (data: any) => {
+        // alert(JSON.stringify(data.data.data));
+        this.list_banque = data.data.data;
       },
       (error: any) => {}
     );
@@ -294,6 +311,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   onClickSubmitaddEmployeContrat() {
+    $('#spinner').removeClass('d-none');
     if (this.addEmployeContratForm.valid) {
       this.addEmployeContratForm.get('total_prime')?.setValue(this.totalPrime);
       this.addEmployeContratForm
@@ -326,10 +344,12 @@ export class EmployeeProfileComponent implements OnInit {
 
       this.contraService.saveContatEmploye(obj).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
           // alert(JSON.stringify(data.data));
           location.reload();
         },
         (error: any) => {
+          $('#spinner').addClass('d-none');
           alert(JSON.stringify(error));
         }
       );

@@ -40,6 +40,10 @@ export class FichepaieService {
     return this.http.post(`${this.url}/fiche_paies/valider/${id}`, data);
   }
 
+  getOrdreVirement(data: any): Observable<Object> {
+    return this.http.post(`${this.url}/getOrdreVirement`, data);
+  }
+
   getFichepaie(id: any): Observable<any> {
     return this.http.get<any>(`${this.url}/fiche_paie/${id}`);
   }
