@@ -81,6 +81,8 @@ export class GradesComponent implements OnInit {
       employe: ["Taux Impo en %", [Validators.required]],
       selection: ["Taux CNSS en %", [Validators.required]],
     });
+
+    
      this.editGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       categorie_id: [0, [Validators.required]],
@@ -246,7 +248,7 @@ export class GradesComponent implements OnInit {
       taux_retenu_cnss_employe: row.taux_retenu_cnss_employe,
       valeur_retenu_its_employe: row.valeur_retenu_impo_employe,
       valeur_retenu_cnss_employe: row.valeur_retenu_cnss_employe,
-      
+
       taux_retenu_its_employeur: row.taux_retenu_impo_employeur,
       taux_retenu_cnss_employeur: row.taux_retenu_cnss_employeur,
       valeur_retenu_its_employeur: row.valeur_retenu_impo_employeur,
