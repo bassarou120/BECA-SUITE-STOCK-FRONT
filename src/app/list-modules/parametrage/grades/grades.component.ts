@@ -157,8 +157,8 @@ export class GradesComponent implements OnInit {
 
   onClickSubmitEditGrade(){
    console.log(this.editGradeForm.value)
-    //   if (this.editGradeForm.valid){
-    //     const id = this.editGradeForm.value.id;
+    //   +if (this.editGradeForm.valid){
+      const id = this.editGradeForm.value.id;
     //     this.data.editGrade(this.editGradeForm.value).subscribe(
     //       (data:any)=>{
       if (this.editGradeForm.valid){
@@ -263,7 +263,7 @@ export class GradesComponent implements OnInit {
     })
  }
 
-
+    
 
 
   private getTableData(): void {

@@ -32,19 +32,39 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="editPasswordForm" (ngSubmit)="saveMotdepasse()" novalidate>
-                    <div class="input-block mb-3">
-                      <label class="col-form-label" for="current_password">Mot de passe actuel<span class="text-danger">*</span></label>
+                    <div class="input-block mb-3 position-relative login-page">
+                      <label class="col-form-label " for="current_password">Mot de passe actuel<span class="text-danger">*</span></label>
                       <input class="form-control" type="password" formControlName="current_password"
                       [class.invalid]="editPasswordForm.get('current_password')?.invalid && editPasswordForm.get('current_password')?.touched">
+                      <span
+                    [ngClass]="
+                      Toggledata === true
+                        ? 'fa toggle-password fa-eye-slash'
+                        : 'fa toggle-password fa-eye'
+                    "
+                    (click)="iconLogle()"
+                    (keydown.enter)="iconLogle()"
+                    tabindex="0"
+                  ></span>
                       <small *ngIf="editPasswordForm.get('current_password')?.touched && editPasswordForm.get('current_password')?.invalid" class="text-danger">
                         Le mot de passe actuel est obligatoire
                       </small>
                     </div>
 
-                    <div class="input-block mb-3">
+                    <div class="input-block mb-3 position-relative login-page" >
                       <label class="col-form-label" for="new_password">Nouveau mot de passe <span class="text-danger">*</span></label>
                       <input class="form-control" type="password" formControlName="new_password"
                       [class.invalid]="editPasswordForm.get('new_password')?.invalid && editPasswordForm.get('new_password')?.touched">
+                      <span
+                      [ngClass]="
+                        Toggledata === true
+                          ? 'fa toggle-password fa-eye-slash'
+                          : 'fa toggle-password fa-eye'
+                      "
+                      (click)="iconLogle()"
+                      (keydown.enter)="iconLogle()"
+                      tabindex="0"
+                    ></span>
                       <small *ngIf="editPasswordForm.get('new_password')?.touched && editPasswordForm.get('new_password')?.invalid" class="text-danger">
                         Le nouveau mot de passe est obligatoire
                       </small>
@@ -56,10 +76,20 @@
                       </small>
                     </div>
 
-                    <div class="input-block mb-3">
+                    <div class="input-block mb-3 position-relative login-page">
                       <label class="col-form-label" for="confirm_password">Confirmer le nouveau mot de passe <span class="text-danger">*</span></label>
                       <input class="form-control" type="password" formControlName="confirm_password"
                       [class.invalid]="editPasswordForm.get('confirm_password')?.invalid && editPasswordForm.get('confirm_password')?.touched">
+                      <span
+                      [ngClass]="
+                        Toggledata === true
+                          ? 'fa toggle-password fa-eye-slash'
+                          : 'fa toggle-password fa-eye'
+                      "
+                      (click)="iconLogle()"
+                      (keydown.enter)="iconLogle()"
+                      tabindex="0"
+                    ></span>
                       <small *ngIf="editPasswordForm.get('confirm_password')?.touched && editPasswordForm.get('confirm_password')?.invalid" class="text-danger">
                         Confirmer nouveau mot de passe est obligatoire
                       </small>
