@@ -51,7 +51,7 @@ export class GradesComponent implements OnInit {
   public totalPages = 0;
 
   public editFormSelectedCategorieId: number = 0;
-  public editFormSelectedClasseId: number = 0;
+  public editFormSelectedClasseId: number = 0;   
   //** / pagination variables
 
   public addGradeForm!: FormGroup ;
@@ -63,7 +63,7 @@ export class GradesComponent implements OnInit {
   ngOnInit(): void {
      this.getTableData();
      this.addGradeForm = this.formBuilder.group({
-      categorie_id: [0, [Validators.required]],
+      categorie_id: [0, [Validators.required]], 
       classe_id: [0, [Validators.required]],
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
@@ -110,7 +110,7 @@ export class GradesComponent implements OnInit {
   }
 
 
-  onClickSubmitAddGrade(){
+  onClickSubmitAddGrade(){ 
 
       if (this.addGradeForm.valid){
         if (this.addGradeForm.value.selected == "Taux Impo en %") {
@@ -158,7 +158,7 @@ export class GradesComponent implements OnInit {
   }
 
   onClickSubmitEditGrade(){
-    // console.log(this.editGradeForm.value)
+   console.log(this.editGradeForm.value)
     //   if (this.editGradeForm.valid){
     //     const id = this.editGradeForm.value.id;
     //     this.data.editGrade(this.editGradeForm.value).subscribe(
@@ -198,11 +198,11 @@ export class GradesComponent implements OnInit {
 
           this.data.editGrade(this.editGradeForm.value).subscribe(
             (data:any)=>{
-            location.reload();
+            location.reload(); 
           }
-        );
-        //console.log("success")
-      }else {
+        )
+        console.log("success")
+      } else {
 
         alert("desole le formulaire n'est pas bien renseigné")
       }

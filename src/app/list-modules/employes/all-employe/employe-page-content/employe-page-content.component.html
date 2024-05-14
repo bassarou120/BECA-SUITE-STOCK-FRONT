@@ -22,12 +22,12 @@
         >
         <div class="view-icons">
           <a
-            [routerLink]="'/employees/employee-page'"
+            [routerLink]="'/employes/employe-page'"
             class="grid-view btn btn-link active"
             ><i class="fa fa-th"></i
           ></a>
           <a
-            [routerLink]="'/employees/employee-list'"
+            [routerLink]="'/employes/employe-list'"
             class="list-view btn btn-link"
             ><i class="fa-solid fa-bars"></i
           ></a>
@@ -42,7 +42,7 @@
     <div class="col-sm-6 col-md-3">
       <div class="input-block mb-3 form-focus inputs">
         <mat-form-field class="example-full-width">
-          <mat-label>ID Employé </mat-label>
+          <mat-label>N º matricule </mat-label>
           <input type="text" matInput />
         </mat-form-field>
       </div>
@@ -79,6 +79,8 @@
       class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
       *ngFor="let emp of lstEmployee; let i = index"
     >
+      <!-- <div>{{ emp.user_id | json }}</div> -->
+
       <div class="profile-widget">
         <div class="profile-img">
           <a

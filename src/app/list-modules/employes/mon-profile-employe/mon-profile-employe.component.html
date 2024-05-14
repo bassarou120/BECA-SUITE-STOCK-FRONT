@@ -5,12 +5,12 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="col-md-6 col">
-        <h3 class="page-title">La fiche Employé</h3>
+        <h3 class="page-title">Mon profil</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
             <a [routerLink]="routes.adminDashboard">Tableau de bord </a>
           </li>
-          <li class="breadcrumb-item active">La fiche Employé</li>
+          <li class="breadcrumb-item active">Mon profil</li>
         </ul>
       </div>
       <div class="col-auto float-end ms-auto">
@@ -34,7 +34,7 @@
                 <form [formGroup]="editPasswordForm" (ngSubmit)="saveMotdepasse()" novalidate>
                     <div class="input-block mb-3">
                       <label class="col-form-label" for="current_password">Mot de passe actuel<span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" formControlName="current_password"
+                      <input class="form-control" type="password" formControlName="current_password"
                       [class.invalid]="editPasswordForm.get('current_password')?.invalid && editPasswordForm.get('current_password')?.touched">
                       <small *ngIf="editPasswordForm.get('current_password')?.touched && editPasswordForm.get('current_password')?.invalid" class="text-danger">
                         Le mot de passe actuel est obligatoire
@@ -43,7 +43,7 @@
 
                     <div class="input-block mb-3">
                       <label class="col-form-label" for="new_password">Nouveau mot de passe <span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" formControlName="new_password"
+                      <input class="form-control" type="password" formControlName="new_password"
                       [class.invalid]="editPasswordForm.get('new_password')?.invalid && editPasswordForm.get('new_password')?.touched">
                       <small *ngIf="editPasswordForm.get('new_password')?.touched && editPasswordForm.get('new_password')?.invalid" class="text-danger">
                         Le nouveau mot de passe est obligatoire
@@ -58,7 +58,7 @@
 
                     <div class="input-block mb-3">
                       <label class="col-form-label" for="confirm_password">Confirmer le nouveau mot de passe <span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" formControlName="confirm_password"
+                      <input class="form-control" type="password" formControlName="confirm_password"
                       [class.invalid]="editPasswordForm.get('confirm_password')?.invalid && editPasswordForm.get('confirm_password')?.touched">
                       <small *ngIf="editPasswordForm.get('confirm_password')?.touched && editPasswordForm.get('confirm_password')?.invalid" class="text-danger">
                         Confirmer nouveau mot de passe est obligatoire
