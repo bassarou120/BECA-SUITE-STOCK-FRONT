@@ -756,13 +756,15 @@ export interface getGrade {
   base_categorielle: number;
   prime_enciennete: number;
   taux_retenu_its_employe: number;
-  valeur_retenu_cnss_employe: number;
-  valeur_retenu_its_employe: number;
+  taux_retenu_ipts_employe: number;
+  //valeur_retenu_cnss_employe: number;
+ // valeur_retenu_its_employe: number;
   taux_retenu_cnss_employe: number;
   taux_retenu_its_employeur: number;
-  valeur_retenu_its_employeur: number;
+  taux_retenu_ipts_employeur: number;
+  //valeur_retenu_its_employeur: number;
   taux_retenu_cnss_employeur: number;
-  valeur_retenu_cnss_employeur: number;
+ // valeur_retenu_cnss_employeur: number;
   ClasseLib: string;
   tauxHoraireHeureSup: number;
 }

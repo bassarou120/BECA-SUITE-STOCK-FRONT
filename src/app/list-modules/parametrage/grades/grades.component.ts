@@ -17,22 +17,22 @@ import { MatTableDataSource } from '@angular/material/table';
 export class GradesComponent implements OnInit {
   public routes = routes;
 
-  public selected: string = "Taux Impo en %";
-  public select: string = "Taux CNSS en %";
-  public  employe: string ="Valeur Impo";
-  public selection: string ="Valeur CNSS"
+  // public selected: string = "Taux Impo en %";
+  // public select: string = "Taux CNSS en %";
+  // public  employe: string ="Valeur Impo";
+  // public selection: string ="Valeur CNSS"
 
-  public selectedEdit: string = "Taux Impo en %";
-  public selectEdit: string = "Taux CNSS en %";
-  public  employeEdit: string ="Valeur Impo";
-  public selectionEdit: string ="Valeur CNSS"
+  // public selectedEdit: string = "Taux Impo en %";
+  // public selectEdit: string = "Taux CNSS en %";
+  // public  employeEdit: string ="Valeur Impo";
+  // public selectionEdit: string ="Valeur CNSS"
 
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
-  public lstImpo: Array<string> = ["Taux Impo en %", "Valeur Impo"];
-  public lstCNSS: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
-  public lstIts: Array<string> = ["Taux Impo en %", "Valeur Impo"];
-  public lstcnss: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
+ // public lstImpo: Array<string> = ["Taux Impo en %", "Valeur Impo"];
+  //public lstCNSS: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
+  //public lstIts: Array<string> = ["Taux Impo en %", "Valeur Impo"];
+  //public lstcnss: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
   public lstCategorie: Array<getCategorie> = [];
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
@@ -70,17 +70,33 @@ export class GradesComponent implements OnInit {
       tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: [" ", [Validators.required]],
       taux_retenu_cnss_employe: [" ", [Validators.required]],
-      valeur_retenu_its_employe: [" ", [Validators.required]],
-      valeur_retenu_cnss_employe: [" ", [Validators.required]],
+      //valeur_retenu_its_employe: [" ", [Validators.required]],
+      //valeur_retenu_cnss_employe: [" ", [Validators.required]],
       taux_retenu_its_employeur: [" ", [Validators.required]],
       taux_retenu_cnss_employeur: [" ", [Validators.required]],
-      valeur_retenu_its_employeur: [" ", [Validators.required]],
-      valeur_retenu_cnss_employeur: [" ", [Validators.required]],
-      selected: ["Taux Impo en %", [Validators.required]],
-      select: ["Taux CNSS en %", [Validators.required]],
-      employe: ["Taux Impo en %", [Validators.required]],
-      selection: ["Taux CNSS en %", [Validators.required]],
+      //valeur_retenu_its_employeur: [" ", [Validators.required]],
+      //valeur_retenu_cnss_employeur: [" ", [Validators.required]],
+      //selected: ["Taux Impo en %", [Validators.required]],
+      //select: ["Taux CNSS en %", [Validators.required]],
+      //employe: ["Taux Impo en %", [Validators.required]],
+      //selection: ["Taux CNSS en %", [Validators.required]],
+    
     });
+    this.addGradeForm.get('prime_enciennete')?.valueChanges.subscribe(() => {
+      this.calculateITSPercent();
+      this.calculateIPTSPercent();
+    });
+      
+  
+      this.addGradeForm.get('base_categorielle')?.valueChanges.subscribe(() => {
+        this.calculateITSPercent();
+        this.calculateIPTSPercent();
+      });
+  
+
+     
+      
+  
      this.editGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
       categorie_id: [0, [Validators.required]],
@@ -90,17 +106,19 @@ export class GradesComponent implements OnInit {
       tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: [" ", [Validators.required]],
       taux_retenu_cnss_employe: [" ", [Validators.required]],
-      valeur_retenu_its_employe: [" ", [Validators.required]],
-      valeur_retenu_cnss_employe: [" ", [Validators.required]],
+      taux_retenu_ipts_employe: [" ", [Validators.required]],
+      //valeur_retenu_its_employe: [" ", [Validators.required]],
+      //valeur_retenu_cnss_employe: [" ", [Validators.required]],
       taux_retenu_its_employeur: [" ", [Validators.required]],
       taux_retenu_cnss_employeur: [" ", [Validators.required]],
-      valeur_retenu_its_employeur: [" ", [Validators.required]],
-      valeur_retenu_cnss_employeur: [" ", [Validators.required]],
+      taux_retenu_ipts_employeur: [" ", [Validators.required]],
+      //valeur_retenu_its_employeur: [" ", [Validators.required]],
+      //valeur_retenu_cnss_employeur: [" ", [Validators.required]],
 
-      selectedEdit: ["Taux Impo en %", [Validators.required]],
-      selectEdit: ["Taux CNSS en %", [Validators.required]],
-      employeEdit: ["Taux Impo en %", [Validators.required]],
-      selectionEdit: ["Taux CNSS en %", [Validators.required]],
+      //selectedEdit: ["Taux Impo en %", [Validators.required]],
+      //selectEdit: ["Taux CNSS en %", [Validators.required]],
+      //employeEdit: ["Taux Impo en %", [Validators.required]],
+      //selectionEdit: ["Taux CNSS en %", [Validators.required]],
     });
      this.deleteGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -111,48 +129,80 @@ export class GradesComponent implements OnInit {
   onClickSubmitAddGrade(){ 
 
       if (this.addGradeForm.valid){
-        if (this.addGradeForm.value.selected == "Taux Impo en %") {
-          this.addGradeForm.patchValue({valeur_retenu_its_employe: ""});
-        } else {
-          this.addGradeForm.patchValue({taux_retenu_its_employe: ""});
-        }
-
-        if (this.addGradeForm.value.select == "Taux CNSS en %") {
-          this.addGradeForm.patchValue({valeur_retenu_cnss_employe: ""});
-        } else {
-          this.addGradeForm.patchValue({taux_retenu_cnss_employe: ""});
-        }
-
-
-      //   this.data.saveGrade(this.addGradeForm.value).subscribe(
-      //     (data:any)=>{
-      //       location.reload();
-      //     }
-      //   );
-      // //if (this.addGradeForm.valid){
-          if (this.addGradeForm.value.employe == "Taux Impo en %") {
-            this.addGradeForm.patchValue({valeur_retenu_its_employeur: ""});
-          } else {
-            this.addGradeForm.patchValue({taux_retenu_its_employeur: ""});
-          }
-
-          if (this.addGradeForm.value.selection == "Taux CNSS en %") {
-            this.addGradeForm.patchValue({valeur_retenu_cnss_employeur: ""});
-          } else {
-            this.addGradeForm.patchValue({taux_retenu_cnss_employeur: ""});
-          }
-
-
-          this.data.saveGrade(this.addGradeForm.value).subscribe(
-            (data:any)=>{
-              location.reload();
-            }
-          );
-      }else {
-        alert("desole le formulaire n'est pas bien renseigné")
+        this.data.saveGrade(this.addGradeForm.value).subscribe(response => {
+          console.log(response);
+          location.reload();
+        });
+      } else {
+        console.log("Desolé le formulaire n'est pas bien renseigné");
       }
 
+  }
 
+  calculateITSPercent() {
+    const baseCategorielle = this.addGradeForm.get('base_categorielle')?.value;
+    const primeAnciennete = this.addGradeForm.get('prime_enciennete')?.value;
+
+    // Calculer la somme de la base catégorielle et de la prime d'ancienneté
+    const total = baseCategorielle + primeAnciennete;
+
+    // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
+    let tauxITS = 0;
+    if (total >= 0 && total < 60000) {
+      tauxITS = 0;
+    } else if (total >= 60000 && total < 150000) {
+      tauxITS = 10;
+    } else if (total >= 150000 && total < 250000) {
+      tauxITS = 15;
+    } else if (total >= 250000 && total < 500000) {
+      tauxITS = 19;
+    } else if (total >= 500000 && total < 1990000) {
+      tauxITS = 30;
+    } else {
+      // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
+      tauxITS = 30;
+    }
+
+    // Mettre à jour la valeur du champ taux_retenu_its_employe dans le formulaire
+    this.addGradeForm.patchValue({
+      taux_retenu_its_employe: tauxITS
+    });
+  }
+
+
+  calculateIPTSPercent() {
+    const baseCategorielle = this.addGradeForm.get('base_categorielle')?.value;
+    const primeAnciennete = this.addGradeForm.get('prime_enciennete')?.value;
+      
+    console.log("Base Categorielle:", baseCategorielle);
+    console.log("Prime Anciennete:", primeAnciennete);
+    // Calculer la somme de la base catégorielle et de la prime d'ancienneté
+    const totalpts = baseCategorielle + primeAnciennete;
+    console.log("Total:", totalpts);
+
+    // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
+    let tauxIPTS = 0;
+    if (totalpts >= 0 && totalpts < 60000) {
+      tauxIPTS = 0;
+    } else if (totalpts >= 60000 && totalpts < 130000) {
+      tauxIPTS = 10;
+    } else if (totalpts >= 130000 && totalpts < 280000) {
+      tauxIPTS = 15;
+    } else if (totalpts >= 280000 && totalpts < 530000) {
+      tauxIPTS = 20;
+    } else if (totalpts >= 530000 && totalpts < 1990000) {
+      tauxIPTS = 30;
+    } else {
+      // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
+      tauxIPTS = 30;
+    }
+
+    console.log("Taux IPTS:", tauxIPTS);
+
+    // Mettre à jour la valeur du champ taux_retenu_its_employe dans le formulaire
+    this.addGradeForm.patchValue({
+      taux_retenu_ipts_employe: tauxIPTS
+    });
   }
 
   onClickSubmitEditGrade(){
