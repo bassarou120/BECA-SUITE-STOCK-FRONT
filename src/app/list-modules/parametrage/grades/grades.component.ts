@@ -110,7 +110,7 @@ export class GradesComponent implements OnInit {
 
   onClickSubmitAddGrade(){
 
-      if (this.addGradeForm.valid){
+    if (this.addGradeForm.valid){
         this.data.saveGrade(this.addGradeForm.value).subscribe(response => {
           console.log(response);
           location.reload();
