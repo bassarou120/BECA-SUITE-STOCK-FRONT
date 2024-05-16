@@ -33,3 +33,4 @@ export * from './services/attribution-role/attribution-role.service';
 export * from './services/mes-contrats/mes-contrats.service';
 export * from './services/passwordMail/passwordMail.service';
 export * from './services/mon-profile/mon-profile';
+export * from './services/exports/exports.service';

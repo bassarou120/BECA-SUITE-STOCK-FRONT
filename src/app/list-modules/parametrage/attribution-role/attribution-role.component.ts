@@ -121,11 +121,11 @@ getEditForm(row: any){
     $('#spinner_pdf').removeClass('d-none');
     setTimeout(() => {
       const content: HTMLElement | null = document.getElementById('to_export');
-      const pdfname = "Les Banques.pdf"
+      const pdfname = "Attribution des rôles.pdf"
 
       if (content) {
         const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-        const text = "Les Banques";
+        const text = "Attribution des rôles";
         const fontSize = 12; // Taille de la police du texte
         const textWidth = pdf.getTextWidth(text); // Largeur du texte
         const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
@@ -165,7 +165,7 @@ getEditForm(row: any){
     $('#spinner_xlsx').removeClass('d-none');
     setTimeout(() => {
       const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Les Banques.xlsx";
+      const filename = "Attribution des rôles.xlsx";
 
       if (table) {
         const wb = XLSX.utils.book_new();
@@ -186,7 +186,7 @@ getEditForm(row: any){
         });
 
         const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Les Banques");
+        XLSX.utils.book_append_sheet(wb, ws1, "Attribution des rôles");
 
         XLSX.writeFile(wb, filename);
         $('#spinner_xlsx').addClass('d-none');
