@@ -19,6 +19,8 @@ export class MonProfilComponent implements OnInit {
   public editPasswordForm!: FormGroup ;
   public routes = routes;
   public curentEmploye: any;
+  public Toggledata = [true, true, true];
+  //Toggledata: boolean = false;
   employeeId: any;
 
   constructor(private monprofileservice: MonprofileService, private formBuilder: FormBuilder) { }
@@ -151,6 +153,8 @@ export class MonProfilComponent implements OnInit {
     return months[parseInt(monthNumber, 10) - 1];
   }
 
-
+  iconLogle(index: number) {
+    this.Toggledata[index] = !this.Toggledata[index];
+  }
 
 }
