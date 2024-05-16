@@ -17,22 +17,10 @@ import { MatTableDataSource } from '@angular/material/table';
 export class GradesComponent implements OnInit {
   public routes = routes;
 
-  // public selected: string = "Taux Impo en %";
-  // public select: string = "Taux CNSS en %";
-  // public  employe: string ="Valeur Impo";
-  // public selection: string ="Valeur CNSS"
-
-  // public selectedEdit: string = "Taux Impo en %";
-  // public selectEdit: string = "Taux CNSS en %";
-  // public  employeEdit: string ="Valeur Impo";
-  // public selectionEdit: string ="Valeur CNSS"
-
+ 
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
- // public lstImpo: Array<string> = ["Taux Impo en %", "Valeur Impo"];
-  //public lstCNSS: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
-  //public lstIts: Array<string> = ["Taux Impo en %", "Valeur Impo"];
-  //public lstcnss: Array<string> = ["Taux CNSS en %", "Valeur CNSS"];
+ 
   public lstCategorie: Array<getCategorie> = [];
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
@@ -97,11 +85,25 @@ export class GradesComponent implements OnInit {
       tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: ["", [Validators.required]],
       taux_retenu_cnss_employe: ["", [Validators.required]],
+
       taux_retenu_ipts_employe: ["", [Validators.required]],
+
       taux_retenu_its_employeur: ["", [Validators.required]],
       taux_retenu_cnss_employeur: ["", [Validators.required]],
+
       taux_retenu_ipts_employeur: ["", [Validators.required]],
     });
+
+    this.editGradeForm.get('prime_enciennete')?.valueChanges.subscribe(() => {
+      this.calculateITSPercentEdit();
+      this.calculateIPTSPercentEdit();
+    });
+
+    this.editGradeForm.get('base_categorielle')?.valueChanges.subscribe(() => {
+      this.calculateITSPercentEdit();
+      this.calculateIPTSPercentEdit();
+    });
+
      this.deleteGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
@@ -110,7 +112,7 @@ export class GradesComponent implements OnInit {
 
   onClickSubmitAddGrade(){
 
-      if (this.addGradeForm.valid){
+    if (this.addGradeForm.valid){
         this.data.saveGrade(this.addGradeForm.value).subscribe(response => {
           console.log(response);
           location.reload();
@@ -188,56 +190,83 @@ export class GradesComponent implements OnInit {
   }
 
   onClickSubmitEditGrade(){
-   console.log(this.editGradeForm.value)
-    //   +if (this.editGradeForm.valid){
-      const id = this.editGradeForm.value.id;
-    //     this.data.editGrade(this.editGradeForm.value).subscribe(
-    //       (data:any)=>{
-      if (this.editGradeForm.valid){
-        if (this.editGradeForm.value.selectedEdit == "Taux Impo en %") {
-          this.editGradeForm.patchValue({valeur_retenu_its_employe: ""});
-        } else {
-          this.editGradeForm.patchValue({taux_retenu_its_employe: ""});
-        }
-
-        if (this.editGradeForm.value.selectEdit == "Taux CNSS en %") {
-          this.editGradeForm.patchValue({valeur_retenu_cnss_employe: ""});
-        } else {
-          this.editGradeForm.patchValue({taux_retenu_cnss_employe: ""});
-        }
-
-
-        // this.data.editGrade(this.editGradeForm.value).subscribe(
-        //   (data:any)=>{
-        //     location.reload();
-        //   }
-        // );
-      //if (this.editGradeForm.valid){
-          if (this.editGradeForm.value.employeEdit == "Taux Impo en %") {
-            this.editGradeForm.patchValue({valeur_retenu_its_employeur: ""});
-          } else {
-            this.editGradeForm.patchValue({taux_retenu_its_employeur: ""});
-          }
-
-          if (this.editGradeForm.value.selectionEdit == "Taux CNSS en %") {
-            this.editGradeForm.patchValue({valeur_retenu_cnss_employeur: ""});
-          } else {
-            this.editGradeForm.patchValue({taux_retenu_cnss_employeur: ""});
-          }
-
-
-          this.data.editGrade(this.editGradeForm.value).subscribe(
-            (data:any)=>{
-            location.reload();
-          }
-        )
-        console.log("success")
-      } else {
-
-        alert("desole le formulaire n'est pas bien renseigné")
+    if (this.editGradeForm.valid){
+      this.data.editGrade(this.editGradeForm.value).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Desolé le formulaire n'est pas bien renseigné");
+    }
+  
       }
 
-  }
+      calculateITSPercentEdit() {
+        const baseCategorielle = this.editGradeForm.get('base_categorielle')?.value;
+        const primeAnciennete = this.editGradeForm.get('prime_enciennete')?.value;
+    
+        // Calculer la somme de la base catégorielle et de la prime d'ancienneté
+        const total = baseCategorielle + primeAnciennete;
+    
+        // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
+        let tauxITS = 0;
+        if (total >= 0 && total < 60000) {
+          tauxITS = 0;
+        } else if (total >= 60000 && total < 150000) {
+          tauxITS = 10;
+        } else if (total >= 150000 && total < 250000) {
+          tauxITS = 15;
+        } else if (total >= 250000 && total < 500000) {
+          tauxITS = 19;
+        } else if (total >= 500000 && total < 1990000) {
+          tauxITS = 30;
+        } else {
+          // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
+          tauxITS = 30;
+        }
+    
+        // Mettre à jour la valeur du champ taux_retenu_its_employe dans le formulaire
+        this.editGradeForm.patchValue({
+          taux_retenu_its_employe: tauxITS
+        });
+      }
+
+      calculateIPTSPercentEdit() {
+        const baseCategorielle = this.editGradeForm.get('base_categorielle')?.value;
+        const primeAnciennete = this.editGradeForm.get('prime_enciennete')?.value;
+    
+        console.log("Base Categorielle:", baseCategorielle);
+        console.log("Prime Anciennete:", primeAnciennete);
+        // Calculer la somme de la base catégorielle et de la prime d'ancienneté
+        const totalpts = baseCategorielle + primeAnciennete;
+        console.log("Total:", totalpts);
+    
+        // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
+        let tauxIPTS = 0;
+        if (totalpts >= 0 && totalpts < 60000) {
+          tauxIPTS = 0;
+        } else if (totalpts >= 60000 && totalpts < 130000) {
+          tauxIPTS = 10;
+        } else if (totalpts >= 130000 && totalpts < 280000) {
+          tauxIPTS = 15;
+        } else if (totalpts >= 280000 && totalpts < 530000) {
+          tauxIPTS = 20;
+        } else if (totalpts >= 530000 && totalpts < 1990000) {
+          tauxIPTS = 30;
+        } else {
+          // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
+          tauxIPTS = 30;
+        }
+    
+        console.log("Taux IPTS:", tauxIPTS);
+    
+        // Mettre à jour la valeur du champ taux_retenu_its_employe dans le formulaire
+        this.editGradeForm.patchValue({
+          taux_retenu_ipts_employe: tauxIPTS
+        });
+      }
+
+  
   onClickSubmitDeleteGrade(){
     console.log(this.deleteGradeForm.value)
 
@@ -274,15 +303,13 @@ export class GradesComponent implements OnInit {
       prime_enciennete: row.prime_enciennete,
       tauxHoraireHeureSup: row.tauxHoraireHeureSup,
 
-      taux_retenu_its_employe: row.taux_retenu_impo_employe,
+      taux_retenu_its_employe: row.taux_retenu_its_employe,
       taux_retenu_cnss_employe: row.taux_retenu_cnss_employe,
-      valeur_retenu_its_employe: row.valeur_retenu_impo_employe,
-      valeur_retenu_cnss_employe: row.valeur_retenu_cnss_employe,
+      taux_retenu_ipts_employe: row.taux_retenu_ipts_employe,
 
-      taux_retenu_its_employeur: row.taux_retenu_impo_employeur,
+      taux_retenu_its_employeur: row.taux_retenu_its_employeur,
       taux_retenu_cnss_employeur: row.taux_retenu_cnss_employeur,
-      valeur_retenu_its_employeur: row.valeur_retenu_impo_employeur,
-      valeur_retenu_cnss_employeur: row.valeur_retenu_cnss_employeur,
+      taux_retenu_ipts_employeur: row.taux_retenu_ipts_employeur,
     });
 
     this.editFormSelectedCategorieId = row.categorie_id;
