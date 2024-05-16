@@ -22,3 +22,22 @@
   display: inline-block;
   vertical-align: middle;
 }
+
+
+
+
+.arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 13px solid black;
+  margin-right: 3px;
+  position: relative;
+  top: 2px;
+}
+
+.stick-to-a-bank {
+  margin-top: -25px;
+}

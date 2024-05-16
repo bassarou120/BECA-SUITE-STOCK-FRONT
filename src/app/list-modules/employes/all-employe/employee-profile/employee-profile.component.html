@@ -17,6 +17,7 @@
   <!-- /Page Header -->
 
   <div class="card mb-0">
+    <!-- {{ curentEmploye | json }} -->
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
@@ -49,7 +50,7 @@
                       Grade: {{ curentEmploye?.grade.lib }}
                     </div>
 
-                    <div class="small doj text-muted">
+                    <div class="staff-id">
                       Date d'entrée dans l'entreprise :
                       {{
                         curentEmploye?.employe.date_arrivee
@@ -276,7 +277,9 @@
               <ul class="personal-info">
                 <li>
                   <div class="title">Nom Banque:</div>
-                  <div class="text">{{ curentEmploye?.employe.banque }}</div>
+                  <div class="text">
+                    {{ curentEmploye?.employe?.sa_banque?.nom }}
+                  </div>
                 </li>
                 <li>
                   <div class="title">Banque RIB:</div>
@@ -1986,12 +1989,26 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Banque </label>
-                <input
+
+                <mat-select
+                  class="user-assets select form-control"
+                  placeholder="-"
+                  [compareWith]="compareObjects"
+                  formControlName="banque_id"
+                >
+                  <mat-option
+                    *ngFor="let data of list_banque"
+                    [value]="data.id"
+                  >
+                    {{ data.nom }}
+                  </mat-option>
+                </mat-select>
+                <!-- <input
                   type="text"
                   formControlName="banque"
                   value="{{ curentEmploye?.banque }}"
                   class="form-control"
-                />
+                /> -->
               </div>
             </div>
             <div class="col-md-6">
