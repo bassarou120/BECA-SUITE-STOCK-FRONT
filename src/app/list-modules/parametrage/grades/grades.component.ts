@@ -70,31 +70,22 @@ export class GradesComponent implements OnInit {
       tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: [" ", [Validators.required]],
       taux_retenu_cnss_employe: [" ", [Validators.required]],
-      //valeur_retenu_its_employe: [" ", [Validators.required]],
-      //valeur_retenu_cnss_employe: [" ", [Validators.required]],
       taux_retenu_its_employeur: [" ", [Validators.required]],
       taux_retenu_cnss_employeur: [" ", [Validators.required]],
-      //valeur_retenu_its_employeur: [" ", [Validators.required]],
-      //valeur_retenu_cnss_employeur: [" ", [Validators.required]],
-      //selected: ["Taux Impo en %", [Validators.required]],
-      //select: ["Taux CNSS en %", [Validators.required]],
-      //employe: ["Taux Impo en %", [Validators.required]],
-      //selection: ["Taux CNSS en %", [Validators.required]],
-
+      taux_retenu_ipts_employe: ["", [Validators.required]],
+      taux_retenu_ipts_employeur: ["", [Validators.required]],
     });
+
+
     this.addGradeForm.get('prime_enciennete')?.valueChanges.subscribe(() => {
       this.calculateITSPercent();
       this.calculateIPTSPercent();
     });
 
-
-      this.addGradeForm.get('base_categorielle')?.valueChanges.subscribe(() => {
-        this.calculateITSPercent();
-        this.calculateIPTSPercent();
-      });
-
-
-
+    this.addGradeForm.get('base_categorielle')?.valueChanges.subscribe(() => {
+      this.calculateITSPercent();
+      this.calculateIPTSPercent();
+    });
 
 
      this.editGradeForm = this.formBuilder.group({
@@ -104,21 +95,12 @@ export class GradesComponent implements OnInit {
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
       tauxHoraireHeureSup: ["", [Validators.required]],
-      taux_retenu_its_employe: [" ", [Validators.required]],
-      taux_retenu_cnss_employe: [" ", [Validators.required]],
-      taux_retenu_ipts_employe: [" ", [Validators.required]],
-      //valeur_retenu_its_employe: [" ", [Validators.required]],
-      //valeur_retenu_cnss_employe: [" ", [Validators.required]],
-      taux_retenu_its_employeur: [" ", [Validators.required]],
-      taux_retenu_cnss_employeur: [" ", [Validators.required]],
-      taux_retenu_ipts_employeur: [" ", [Validators.required]],
-      //valeur_retenu_its_employeur: [" ", [Validators.required]],
-      //valeur_retenu_cnss_employeur: [" ", [Validators.required]],
-
-      //selectedEdit: ["Taux Impo en %", [Validators.required]],
-      //selectEdit: ["Taux CNSS en %", [Validators.required]],
-      //employeEdit: ["Taux Impo en %", [Validators.required]],
-      //selectionEdit: ["Taux CNSS en %", [Validators.required]],
+      taux_retenu_its_employe: ["", [Validators.required]],
+      taux_retenu_cnss_employe: ["", [Validators.required]],
+      taux_retenu_ipts_employe: ["", [Validators.required]],
+      taux_retenu_its_employeur: ["", [Validators.required]],
+      taux_retenu_cnss_employeur: ["", [Validators.required]],
+      taux_retenu_ipts_employeur: ["", [Validators.required]],
     });
      this.deleteGradeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
