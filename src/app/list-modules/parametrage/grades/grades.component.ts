@@ -245,7 +245,7 @@ export class GradesComponent implements OnInit {
         let tauxIPTS = 0;
         if (totalpts >= 0 && totalpts < 60000) {
           tauxIPTS = 0;
-        } else if (totalpts >= 60000 && totalpts < 130000) {
+        } else if (totalpts >= 60000 && totalpts < 130000) { 
           tauxIPTS = 10;
         } else if (totalpts >= 130000 && totalpts < 280000) {
           tauxIPTS = 15;
