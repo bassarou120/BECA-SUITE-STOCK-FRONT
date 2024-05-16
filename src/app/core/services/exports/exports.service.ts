@@ -28,7 +28,7 @@ export class ExportsService {
   });
   constructor(private http: HttpClient) {}
 
-  exportAttributionRoles(id: any): Observable<any> {
+  exportAttributionRoles(): Observable<any> {
     return this.http.get<any>(`${this.url}/exports/attr_roles`);
   }
 }
