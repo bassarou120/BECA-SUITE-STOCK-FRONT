@@ -76,13 +76,13 @@
                             <td>{{ item.employe }}</td>
 
                             <ng-container *ngIf="item.contrats && item.contrats.length > 0; else none;">
-                              <td>{{ item.contrats[0].libelle }}</td>
-                              <td>{{ item.contrats[0].date_signature | date : "dd/MM/YYYY" }}</td>
-                              <td>{{ toWeek(item.contrats[0].duree) }}</td>
-                              <td>{{ item.contrats[0].date_debut | date : "dd/MM/YYYY" }}</td>
-                              <td>{{ item.contrats[0].date_fin | date : "dd/MM/YYYY" }}</td>
-                              <td>{{ item.contrats[0].etat }}</td>
-                              <td>{{ item.contrats[0].status }}</td>
+                              <td>{{ item.current_contrat.libelle }}</td>
+                              <td>{{ item.current_contrat.date_signature | date : "dd/MM/YYYY" }}</td>
+                              <td>{{ toWeek(item.current_contrat.duree) }}</td>
+                              <td>{{ item.current_contrat.date_debut | date : "dd/MM/YYYY" }}</td>
+                              <td>{{ item.current_contrat.date_fin | date : "dd/MM/YYYY" }}</td>
+                              <td>{{ item.current_contrat.etat }}</td>
+                              <td>{{ item.current_contrat.status }}</td>
                             </ng-container>
                             <ng-template #none>
                               <td>-</td>

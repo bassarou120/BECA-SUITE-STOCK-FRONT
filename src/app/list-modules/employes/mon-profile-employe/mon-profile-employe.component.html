@@ -5,12 +5,12 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="col-md-6 col">
-        <h3 class="page-title">La fiche Employé</h3>
+        <h3 class="page-title">Mon profil</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
             <a [routerLink]="routes.adminDashboard">Tableau de bord </a>
           </li>
-          <li class="breadcrumb-item active">La fiche Employé</li>
+          <li class="breadcrumb-item active">Mon profil</li>
         </ul>
       </div>
       <div class="col-auto float-end ms-auto">
@@ -32,19 +32,43 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="editPasswordForm" (ngSubmit)="saveMotdepasse()" novalidate>
-                    <div class="input-block mb-3">
-                      <label class="col-form-label" for="current_password">Mot de passe actuel<span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" formControlName="current_password"
-                      [class.invalid]="editPasswordForm.get('current_password')?.invalid && editPasswordForm.get('current_password')?.touched">
+                    <div class="input-block mb-3 position-relative login-page">
+                      <label class="col-form-label " for="current_password">Mot de passe actuel</label>
+                      <div class="position-relative">
+                        <input class="form-control" formControlName="current_password" [type]="Toggledata[0] ? 'password' : 'text'"
+                        [class.invalid]="editPasswordForm.get('current_password')?.invalid && editPasswordForm.get('current_password')?.touched">
+                        <span
+                          [ngClass]="
+                            Toggledata[0] === true
+                              ? 'fa toggle-password fa-eye-slash'
+                              : 'fa toggle-password fa-eye'
+                          "
+                          (click)="iconLogle(0)"
+                          (keydown.enter)="iconLogle(0)"
+                          tabindex="0"
+                        ></span>
+                      </div>
                       <small *ngIf="editPasswordForm.get('current_password')?.touched && editPasswordForm.get('current_password')?.invalid" class="text-danger">
                         Le mot de passe actuel est obligatoire
                       </small>
                     </div>
 
-                    <div class="input-block mb-3">
-                      <label class="col-form-label" for="new_password">Nouveau mot de passe <span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" formControlName="new_password"
-                      [class.invalid]="editPasswordForm.get('new_password')?.invalid && editPasswordForm.get('new_password')?.touched">
+                    <div class="input-block mb-3 position-relative login-page" >
+                      <label class="col-form-label" for="new_password">Nouveau mot de passe</label>
+                      <div class="position-relative">
+                        <input class="form-control" formControlName="new_password" [type]="Toggledata[1] ? 'password' : 'text'"
+                        [class.invalid]="editPasswordForm.get('new_password')?.invalid && editPasswordForm.get('new_password')?.touched">
+                        <span
+                          [ngClass]="
+                            Toggledata[1] === true
+                              ? 'fa toggle-password fa-eye-slash'
+                              : 'fa toggle-password fa-eye'
+                          "
+                          (click)="iconLogle(1)"
+                          (keydown.enter)="iconLogle(1)"
+                          tabindex="0"
+                        ></span>
+                      </div>
                       <small *ngIf="editPasswordForm.get('new_password')?.touched && editPasswordForm.get('new_password')?.invalid" class="text-danger">
                         Le nouveau mot de passe est obligatoire
                       </small>
@@ -56,10 +80,22 @@
                       </small>
                     </div>
 
-                    <div class="input-block mb-3">
-                      <label class="col-form-label" for="confirm_password">Confirmer le nouveau mot de passe <span class="text-danger">*</span></label>
-                      <input class="form-control" type="text" formControlName="confirm_password"
-                      [class.invalid]="editPasswordForm.get('confirm_password')?.invalid && editPasswordForm.get('confirm_password')?.touched">
+                    <div class="input-block mb-3 position-relative login-page">
+                      <label class="col-form-label" for="confirm_password">Confirmer le nouveau mot de passe </label>
+                      <div class="position-relative">
+                        <input class="form-control" formControlName="confirm_password" [type]="Toggledata[2] ? 'password' : 'text'"
+                        [class.invalid]="editPasswordForm.get('confirm_password')?.invalid && editPasswordForm.get('confirm_password')?.touched">
+                        <span
+                          [ngClass]="
+                            Toggledata[2] === true
+                              ? 'fa toggle-password fa-eye-slash'
+                              : 'fa toggle-password fa-eye'
+                          "
+                          (click)="iconLogle(2)"
+                          (keydown.enter)="iconLogle(2)"
+                          tabindex="0"
+                        ></span>
+                      </div>
                       <small *ngIf="editPasswordForm.get('confirm_password')?.touched && editPasswordForm.get('confirm_password')?.invalid" class="text-danger">
                         Confirmer nouveau mot de passe est obligatoire
                       </small>
@@ -145,6 +181,7 @@
                           | date : "dd-MM-YYYY"
                       }}
                     </div>
+                    <div class="staff-id">&nbsp;</div>
 
                     <!-- <div class="staff-msg">
                        [routerLink]="routes.chat"

@@ -56,9 +56,9 @@
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="departmentName">Nom de l'employé</th>
                             <th mat-sort-header="departmentFirstName">Prénom</th>
+                            <th mat-sort-header="departmentRole">Rôle</th>
                             <th mat-sort-header="tittle">Titre</th>
                             <th mat-sort-header="deoartment">Département</th>
-                            <th mat-sort-header="departmentRole">Rôle</th>
                             <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
@@ -67,9 +67,9 @@
                             <td>{{ i+1 }}</td>
                             <td>{{ item.nom ? item.nom : "-"}}</td>
                             <td>{{ item.prenom ? item.prenom : "-"}}</td>
+                            <td>{{ item.role ? item.role : "-"}}</td>
                             <td>{{ item.titre ? item.titre : "-"}}</td>
                             <td>{{ item.departement ? item.departement : "-"}}</td>
-                            <td>{{ item.role ? item.role : "-"}}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"

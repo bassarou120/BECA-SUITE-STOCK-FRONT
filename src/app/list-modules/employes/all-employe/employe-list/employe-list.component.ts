@@ -2,12 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import {
-  DataService,
-  apiResultFormat,
-  getEmployees,
-  routes,
-} from 'src/app/core/core.index';
+import { DataService, apiResultFormat, getEmployees, routes, lstEmployee } from 'src/app/core/core.index';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
 
 @Component({
@@ -16,11 +11,16 @@ import { EmployeService } from 'src/app/core/services/employe/employe.service';
   styleUrls: ['./employe-list.component.scss'],
 })
 export class EmployeListComponent implements OnInit {
+  public routes = routes;
   selected = 'option1';
+
+  // public lstEmployee: Array<lstEmployee>;
+  public lstEmployee: Array<any> = [];
+
+
   // public lstEmployee: Array<getEmployees> = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getEmployees>;
-  public routes = routes;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -35,7 +35,6 @@ export class EmployeListComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public lstEmployee: Array<any> = [];
   public deleteEmployeForm!: FormGroup;
   public recherceheEmployeForm!: FormGroup;
 

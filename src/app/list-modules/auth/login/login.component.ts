@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
   public Loginvalue = new BehaviorSubject<string | number | returndata>(0);
   public Toggledata = true;
+  errorMessage: string | null = null;
 
   showloader = false;
   form = new UntypedFormGroup({
@@ -80,13 +81,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           // this.router.navigate(['/dashboard/admin']);
           this.Loginvalue.next(0);
         } else {
+          this.showloader = false;
           alert(alert(JSON.stringify(data.message)));
         }
       },
       (error: any) => {
+        this.showloader = false;
         if (error.error.message == 'Unauthorised.') {
           // this.router.navigate(['/dashboard/admin']);
-          alert('E-mail ou mot de passe incorrect !  ');
+          this.errorMessage ="E-mail ou mot de passe incorrect !";
+
         }
         // alert(JSON.stringify(error.error.message));
       }

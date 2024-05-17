@@ -32,9 +32,9 @@
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
       <div class="card dash-widget">
         <div class="card-body">
-          <span class="dash-widget-icon"
-            ><i class="fa-solid fa-cubes"></i
-          ></span>
+          <span class="dash-widget-icon">
+            <i class="fa-solid fa-user-minus"></i>
+          </span>
           <div class="dash-widget-info">
             <h3>{{ dataTableauBord?.total_absence }}</h3>
             <span>Total Absents</span>
@@ -45,9 +45,9 @@
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
       <div class="card dash-widget">
         <div class="card-body">
-          <span class="dash-widget-icon"
-            ><i class="fa-solid fa-dollar-sign"></i
-          ></span>
+          <span class="dash-widget-icon">
+            <i class="fa-solid fa-comment-dots"></i>
+          </span>
           <div class="dash-widget-info">
             <h3>{{ dataTableauBord?.total_demande }}</h3>
             <span>Total Demandes</span>
@@ -58,9 +58,9 @@
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
       <div class="card dash-widget">
         <div class="card-body">
-          <span class="dash-widget-icon"
-            ><i class="fa-regular fa-gem"></i
-          ></span>
+          <span class="dash-widget-icon">
+            <i class="fa-regular fa-face-frown"></i>
+          </span>
           <div class="dash-widget-info">
             <h3>{{ dataTableauBord?.total_painte }}</h3>
             <span>Plaintes</span>
@@ -239,7 +239,7 @@
         <div class="col-md-12 col-lg-12 col-xl-4 d-flex">
             <div class="card flex-fill dash-statistics">
                 <div class="card-body">
-                    <h5 class="card-title">Statistics</h5>
+                    <h5 class="card-title">Statistiques</h5>
                     <div class="stats-list">
                         <div class="stats-info">
                             <p>Today Leave <strong>4 <small>/ 65</small></strong></p>
@@ -332,7 +332,7 @@
         <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
             <div class="card flex-fill">
                 <div class="card-body">
-                    <h4 class="card-title">Today Absent <span class="badge bg-inverse-danger ms-2">5</span></h4>
+                    <h4 class="card-title">Absence du jour <span class="badge bg-inverse-danger ms-2">5</span></h4>
                     <div class="leave-info-box">
                         <div class="media align-items-center d-flex">
                             <a [routerLink] = "routes.employeProfile" class="avatar"><img alt=""
@@ -344,10 +344,10 @@
                         <div class="row align-items-center mt-3">
                             <div class="col-6">
                                 <h6 class="mb-0">4 Sep 2023</h6>
-                                <span class="text-sm text-muted">Leave Date</span>
+                                <span class="text-sm text-muted">Date</span>
                             </div>
                             <div class="col-6 text-end">
-                                <span class="badge bg-inverse-danger">Pending</span>
+                                <span class="badge bg-inverse-danger">En attente</span>
                             </div>
                         </div>
                     </div>
@@ -362,15 +362,15 @@
                         <div class="row align-items-center mt-3">
                             <div class="col-6">
                                 <h6 class="mb-0">4 Sep 2023</h6>
-                                <span class="text-sm text-muted">Leave Date</span>
+                                <span class="text-sm text-muted">Date</span>
                             </div>
                             <div class="col-6 text-end">
-                                <span class="badge bg-inverse-success">Approved</span>
+                                <span class="badge bg-inverse-success">Approuvé</span>
                             </div>
                         </div>
                     </div>
                     <div class="load-more text-center">
-                        <a class="text-dark">Load More</a>
+                        <a class="text-dark">Voir tout</a>
                     </div>
                 </div>
             </div>
@@ -503,7 +503,7 @@
     <div class="col-md-6 d-flex">
       <div class="card card-table flex-fill">
         <div class="card-header">
-          <h3 class="card-title mb-0">Les Employés</h3>
+          <h3 class="card-title mb-0">Employés</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -661,7 +661,7 @@
     <div class="col-md-6 d-flex">
       <div class="card card-table flex-fill">
         <div class="card-header">
-          <h3 class="card-title mb-0">Les Congés</h3>
+          <h3 class="card-title mb-0">Congés</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -838,7 +838,7 @@
     <div class="col-md-6 d-flex">
       <div class="card card-table flex-fill">
         <div class="card-header">
-          <h3 class="card-title mb-0">Les Plaintes</h3>
+          <h3 class="card-title mb-0">Plaintes</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -875,7 +875,7 @@
     <div class="col-md-6 d-flex">
       <div class="card card-table flex-fill">
         <div class="card-header">
-          <h3 class="card-title mb-0">Les Absences</h3>
+          <h3 class="card-title mb-0">Absences</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">

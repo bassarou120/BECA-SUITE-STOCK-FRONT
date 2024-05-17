@@ -72,7 +72,7 @@ errorMessage: string | null = null;
           }
         }, error => {
           this.showloader = false;
-          this.errorMessage = "Une erreur s'est produite vérifier si le mail Entré est bien correcte";
+          this.errorMessage = "Une erreur s'est produite ! \n vérifier si le mail Entré est bien correcte";
           this.successMessage = null;
         });
     } else {

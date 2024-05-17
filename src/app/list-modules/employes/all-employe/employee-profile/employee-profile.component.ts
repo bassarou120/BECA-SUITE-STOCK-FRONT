@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { routes, TypeContratService } from 'src/app/core/core.index';
 import { ContratService } from 'src/app/core/services/contrat/contrat.service';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
+import { HttpClient } from '@angular/common/http';
+
 interface data {
   value: string;
 }
@@ -311,6 +313,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   onClickSubmitaddEmployeContrat() {
+    $('#spinner').removeClass('d-none');
     if (this.addEmployeContratForm.valid) {
       this.addEmployeContratForm.get('total_prime')?.setValue(this.totalPrime);
       this.addEmployeContratForm
@@ -343,14 +346,19 @@ export class EmployeeProfileComponent implements OnInit {
 
       this.contraService.saveContatEmploye(obj).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
           // alert(JSON.stringify(data.data));
+          $('#spinner').addClass('d-none');
           location.reload();
         },
         (error: any) => {
+          $('#spinner').addClass('d-none');
           alert(JSON.stringify(error));
         }
       );
     }
+
+
 
     // this.addEmployeContratForm.get('date_debut')?.setValue( (new Date(this.addEmployeContratForm.get('date_debut')?.value)).toISOString().slice(0, 10).replace('T', ' '))
     // this.addEmployeContratForm.get('date_fin')?.setValue( (new Date(this.addEmployeContratForm.get('date_fin')?.value)).toISOString().slice(0, 10).replace('T', ' '))
