@@ -31,4 +31,8 @@ export class ExportsService {
   exportAttributionRoles(): Observable<any> {
     return this.http.get<any>(`${this.url}/exports/attr_roles`);
   }
+
+  exportDepartEmploye(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/depart_employes`);
+  }
 }
