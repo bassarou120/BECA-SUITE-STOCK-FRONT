@@ -89,7 +89,7 @@ export class DataService {
           route: routes.employees,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'user',
+          icon: 'users',
           base: 'employees',
           dot: true,
           materialicons: 'people',
@@ -127,12 +127,7 @@ export class DataService {
               base: 'experiences',
             },
             {
-              menuValue: 'Les Formations (GRH)',
-              route: routes.formationsGRH,
-              base: 'formations',
-            },
-            {
-              menuValue: 'Les Plaintes (GRH)',
+              menuValue: 'Plaintes et Satisfaction (GRH)',
               route: routes.plaintesGRH,
               base: 'plaintes',
             },
@@ -151,13 +146,13 @@ export class DataService {
       ],
     },
     {
-      tittle: 'GRH',
+      tittle: 'Gestion Administrative',
       icon: 'file',
       showAsTab: false,
       separateRoute: false,
       menu: [
         {
-          menuValue: 'Fiche de paie',
+          menuValue: 'Gestion de la paie',
           route: routes.payroll,
           hasSubRoute: true,
           showSubRoute: false,
@@ -166,7 +161,7 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Gestion de paie',
+              menuValue: 'Fiche de paie',
               route: routes.fichePaie,
               base: 'employee-salary',
             },
@@ -174,6 +169,44 @@ export class DataService {
               menuValue: 'Ordre de virement',
               route: routes.ordreVirement,
               base: 'employee-salary',
+            },
+          ],
+        },
+        {
+          menuValue: 'Congés et Absences',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user-minus',
+          base: 'employees',
+          materialicons: '',
+          subMenus: [
+            {
+              menuValue: 'Congés',
+              route: routes.conges,
+              base: 'holidays',
+            },
+            {
+              menuValue: 'Absences',
+              route: routes.absences,
+              base: 'absences',
+            },
+          ],
+        },
+        {
+          menuValue: 'Formation',
+          route: routes.formationsGRH,
+          base: 'formations',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'graduation-cap',
+          dot: true,
+          materialicons: '',
+          subMenus: [
+            {
+              menuValue: 'Formation',
+              route: routes.formationsGRH,
+              base: 'formations',
             },
           ],
         },
@@ -268,7 +301,7 @@ export class DataService {
           route: routes.payroll,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'gear',
+          icon: 'cog',
           base: 'payroll',
           materialicons: 'request_quote',
           subMenus: [
