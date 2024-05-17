@@ -132,15 +132,15 @@ export class GradesComponent implements OnInit {
 
     // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
     let tauxITS = 0;
-    if (total >= 0 && total < 60000) {
+    if (total >= 0 && total <= 60000) {
       tauxITS = 0;
-    } else if (total >= 60000 && total < 150000) {
+    } else if (total > 60000 && total <= 150000) {
       tauxITS = 10;
-    } else if (total >= 150000 && total < 250000) {
+    } else if (total > 150000 && total <= 250000) {
       tauxITS = 15;
-    } else if (total >= 250000 && total < 500000) {
+    } else if (total > 250000 && total <= 500000) {
       tauxITS = 19;
-    } else if (total >= 500000 && total < 1990000) {
+    } else if (total > 500000 && total <= 1990000) {
       tauxITS = 30;
     } else {
       // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
@@ -166,15 +166,15 @@ export class GradesComponent implements OnInit {
 
     // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
     let tauxIPTS = 0;
-    if (totalpts >= 0 && totalpts < 60000) {
+    if (totalpts >= 0 && totalpts <= 50000) {
       tauxIPTS = 0;
-    } else if (totalpts >= 60000 && totalpts < 130000) {
+    } else if (totalpts > 50000 && totalpts <= 130000) {
       tauxIPTS = 10;
-    } else if (totalpts >= 130000 && totalpts < 280000) {
+    } else if (totalpts > 130000 && totalpts <= 280000) {
       tauxIPTS = 15;
-    } else if (totalpts >= 280000 && totalpts < 530000) {
+    } else if (totalpts > 280000 && totalpts <= 530000) {
       tauxIPTS = 20;
-    } else if (totalpts >= 530000 && totalpts < 1990000) {
+    } else if (totalpts > 530000 && totalpts <= 1990000) {
       tauxIPTS = 30;
     } else {
       // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
@@ -210,15 +210,15 @@ export class GradesComponent implements OnInit {
     
         // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
         let tauxITS = 0;
-        if (total >= 0 && total < 60000) {
+        if (total >= 0 && total <= 60000) {
           tauxITS = 0;
-        } else if (total >= 60000 && total < 150000) {
+        } else if (total > 60000 && total <= 150000) {
           tauxITS = 10;
-        } else if (total >= 150000 && total < 250000) {
+        } else if (total > 150000 && total <= 250000) {
           tauxITS = 15;
-        } else if (total >= 250000 && total < 500000) {
+        } else if (total > 250000 && total <= 500000) {
           tauxITS = 19;
-        } else if (total >= 500000 && total < 1990000) {
+        } else if (total > 500000 && total <= 1990000) {
           tauxITS = 30;
         } else {
           // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
@@ -245,7 +245,7 @@ export class GradesComponent implements OnInit {
         let tauxIPTS = 0;
         if (totalpts >= 0 && totalpts < 60000) {
           tauxIPTS = 0;
-        } else if (totalpts >= 60000 && totalpts < 130000) {
+        } else if (totalpts >= 60000 && totalpts < 130000) { 
           tauxIPTS = 10;
         } else if (totalpts >= 130000 && totalpts < 280000) {
           tauxIPTS = 15;
