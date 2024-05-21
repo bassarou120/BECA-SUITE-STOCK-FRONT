@@ -28,11 +28,56 @@ export class ExportsService {
   });
   constructor(private http: HttpClient) {}
 
+  exportDepartEmploye(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/depart_employes`);
+  }
+  
+
   exportAttributionRoles(): Observable<any> {
     return this.http.get<any>(`${this.url}/exports/attr_roles`);
   }
 
-  exportDepartEmploye(): Observable<any> {
-    return this.http.get<any>(`${this.url}/exports/depart_employes`);
+  exportBanques(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/banques`);
+  }
+
+  exportCategories(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/categories`);
+  }
+
+  exportClasses(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/classes`);
+  }
+
+  exportDepartements(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/departements`);
+  }
+
+  exportPostes(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/postes`);
+  }
+
+  exportTypesAbsence(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/types_absence`);
+  }
+
+  exportTypesConge(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/types_conge`);
+  }
+
+  exportTypesContrat(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/types_contrat`);
+  }
+
+  exportTypesDepart(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/types_depart`);
+  }
+
+  exportTypesPrime(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/types_prime`);
+  }
+
+  exportRoles(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/roles`);
   }
 }
