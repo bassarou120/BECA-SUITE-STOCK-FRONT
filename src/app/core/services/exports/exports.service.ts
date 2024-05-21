@@ -28,10 +28,28 @@ export class ExportsService {
   });
   constructor(private http: HttpClient) {}
 
+  exportMesContrats(user_id: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/mes_contrats/${user_id}`);
+  }
+
+  exportMesDemandes(user_id: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/mes_demandes/${user_id}`);
+  }
+
+  exportMesHeuresSupp(user_id: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/mes_heures_supp/${user_id}`);
+  }
+
+  exportMesPlaintes(user_id: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/mes_plaintes/${user_id}`);
+  }
+
+
+
   exportDepartEmploye(): Observable<any> {
     return this.http.get<any>(`${this.url}/exports/depart_employes`);
   }
-  
+
 
   exportAttributionRoles(): Observable<any> {
     return this.http.get<any>(`${this.url}/exports/attr_roles`);
