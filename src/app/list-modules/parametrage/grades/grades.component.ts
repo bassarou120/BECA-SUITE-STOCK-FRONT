@@ -243,20 +243,21 @@ export class GradesComponent implements OnInit {
     
         // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
         let tauxIPTS = 0;
-        if (totalpts >= 0 && totalpts < 60000) {
-          tauxIPTS = 0;
-        } else if (totalpts >= 60000 && totalpts < 130000) { 
-          tauxIPTS = 10;
-        } else if (totalpts >= 130000 && totalpts < 280000) {
-          tauxIPTS = 15;
-        } else if (totalpts >= 280000 && totalpts < 530000) {
-          tauxIPTS = 20;
-        } else if (totalpts >= 530000 && totalpts < 1990000) {
-          tauxIPTS = 30;
-        } else {
-          // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
-          tauxIPTS = 30;
-        }
+    if (totalpts >= 0 && totalpts <= 50000) {
+      tauxIPTS = 0;
+    } else if (totalpts > 50000 && totalpts <= 130000) {
+      tauxIPTS = 10;
+    } else if (totalpts > 130000 && totalpts <= 280000) {
+      tauxIPTS = 15;
+    } else if (totalpts > 280000 && totalpts <= 530000) {
+      tauxIPTS = 20;
+    } else if (totalpts > 530000 && totalpts <= 1990000) {
+      tauxIPTS = 30;
+    } else {
+      // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
+      tauxIPTS = 30;
+    }
+
     
         console.log("Taux IPTS:", tauxIPTS);
     
