@@ -89,7 +89,7 @@ export class DataService {
           route: routes.employees,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'users',
+          icon: 'la la-users-cog',
           base: 'employees',
           dot: true,
           materialicons: 'people',
