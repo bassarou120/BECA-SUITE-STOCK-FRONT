@@ -112,16 +112,6 @@ export class DataService {
               base: 'heures-supllémetaires',
             },
             {
-              menuValue: 'Les Absences (GRH)',
-              route: routes.absences,
-              base: 'absences',
-            },
-            {
-              menuValue: 'Les Congés (GRH)',
-              route: routes.conges,
-              base: 'holidays',
-            },
-            {
               menuValue: 'Les Expériences (GRH)',
               route: routes.experiences,
               base: 'experiences',

@@ -46,9 +46,48 @@ export class ExportsService {
 
 
 
+  exportHeuresSupp(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/heures_supp`);
+  }
+
+  exportAbsences(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/absences`);
+  }
+
+  exportConges(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/conges`);
+  }
+
+  exportExperiences(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/experience`);
+  }
+
+  exportPlaintes(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/plaintes`);
+  }
+
+  exportFormations(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/formations`);
+  }
+
   exportDepartEmploye(): Observable<any> {
     return this.http.get<any>(`${this.url}/exports/depart_employes`);
   }
+
+
+
+  exportPointConges(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/point_conges`);
+  }
+
+  exportPointCongeDetails(id_employe: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/point_conges_details/${id_employe}`);
+  }
+
+  exportPointContrat(): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/point_contrat`);
+  }
+
 
 
   exportAttributionRoles(): Observable<any> {
