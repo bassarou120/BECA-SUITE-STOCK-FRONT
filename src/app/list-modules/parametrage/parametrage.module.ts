@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TypeCongeComponent } from './typeConge/typeConge.component';
 import { TypeContratComponent } from './typeContrat/typeContrat.component';
 import { TypePrimeComponent } from './typePrime/typePrime.component';
+import { TypeLicenciementComponent } from './typeLicenciement/typeLicenciement.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { PostesComponent } from './postes/postes.component';
 import { BanqueComponent } from './banque/banque.component';
@@ -27,6 +28,7 @@ import { GradesComponent } from './grades/grades.component';
     TypeCongeComponent,
     TypeContratComponent,
     TypePrimeComponent,
+    TypeLicenciementComponent,
     DepartmentsComponent,
     PostesComponent,
     BanqueComponent,

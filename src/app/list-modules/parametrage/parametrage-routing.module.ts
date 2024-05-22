@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TypeCongeComponent } from './typeConge/typeConge.component';
 import { TypeContratComponent } from './typeContrat/typeContrat.component';
 import { TypePrimeComponent } from './typePrime/typePrime.component';
+import { TypeLicenciementComponent } from './typeLicenciement/typeLicenciement.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { PostesComponent } from './postes/postes.component';
 import { BanqueComponent } from './banque/banque.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
     { path: "type-conge", component: TypeCongeComponent },
     { path: "type-contrat", component: TypeContratComponent },
     { path: "type-prime", component: TypePrimeComponent },
+    { path: "type-licenciement", component: TypeLicenciementComponent },
     { path: "departments", component: DepartmentsComponent },
     { path: "postes", component: PostesComponent },
     { path: "banque", component: BanqueComponent },

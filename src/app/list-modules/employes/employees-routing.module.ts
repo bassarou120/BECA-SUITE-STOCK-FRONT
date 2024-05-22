@@ -14,6 +14,7 @@ import { EmployeesComponent } from './employees.component';
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
+import { PreavisComponent } from './preavis/preavis.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
@@ -59,6 +60,7 @@ const routes: Routes = [
       { path: 'conges', component: CongesComponent, canActivate: [GRHGuard] },
       { path: 'absences', component: AbsencesComponent, canActivate: [GRHGuard] },
       { path: "plaintes", component: PlaintesComponent, canActivate: [GRHGuard] },
+      { path: "preavis", component: PreavisComponent, canActivate: [GRHGuard] },
       { path: "formations", component: FormationsComponent, canActivate: [GRHGuard] },
       { path: "heures-supplementaires", component: HeuresSupplementairesComponent, canActivate: [GRHGuard] },
       { path: "experiences", component: ExperiencesComponent, canActivate: [GRHGuard] },
