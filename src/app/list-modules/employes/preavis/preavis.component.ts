@@ -54,21 +54,15 @@ export class PreavisComponent implements OnInit {
      this.getTableData();
 
      this.addPreavisForm = this.formBuilder.group({
-      //date_M: [new Date(), [Validators.required]],
       employe_id: [0, [Validators.required]],
       duree: ["", [Validators.required]],
-      //autre_info: ["Aucun", [Validators.required]],
-      //description: ["", [Validators.required]],
       statut: ["", [Validators.required]],
     });
 
      this.editPreavisForm = this.formBuilder.group({
       id: [0, [Validators.required]],
-      //date_M: [new Date(), [Validators.required]],
       employe_id: [0, [Validators.required]],
       duree: ["", [Validators.required]],
-      //autre_info: ["", [Validators.required]],
-      //description: ["", [Validators.required]],
       statut: ["", [Validators.required]],
     });
 
@@ -109,19 +103,9 @@ export class PreavisComponent implements OnInit {
     });
   }
 
-
-  private formatDateToString(date: Date): string {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
   onClickSubmitAddPreavis(){
 
     if (this.addPreavisForm.valid){
-      this.addPreavisForm.patchValue({ date_M: this.formatDateToString(this.addPreavisForm.value.date_M) });
-
       this.data.savePreavis(this.addPreavisForm.value).subscribe(
         (data: any) => {
           location.reload();
@@ -141,19 +125,13 @@ export class PreavisComponent implements OnInit {
     this.editPreavisForm.patchValue({
       id: row.id,
       employe_id: row.employe_id,
-      //date_M: this.convertToDate(row.date_M),
       duree: row.duree,
-      //autre_info: row.autre_info,
-      //description: row.description,
       statut: row.statut,
     })
     this.editFormSelectedEmployeId = row.employe_id;
   }
 
   onClickSubmitEditPreavis(){
-
-    this.editPreavisForm.patchValue({ date_M: this.formatDateToString(this.editPreavisForm.value.date_M) });
-
     if (this.editPreavisForm.valid){
       const id = this.editPreavisForm.value.id;
       this.data.editPreavis(this.editPreavisForm.value).subscribe(

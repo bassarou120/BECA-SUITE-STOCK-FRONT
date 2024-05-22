@@ -20,7 +20,7 @@ export class TypeLicenciementComponent implements OnInit {
   public lstTypeLicenciement: Array<getTypeLicenciement> = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getTypeLicenciement>;
-  public addTypeLicenciementForm!: FormGroup ;
+  public addTypeLicenciementForm!: FormGroup;
   public editTypeLicenciementForm!: FormGroup;
   public deleteTypeLicenciementForm!: FormGroup;
 
@@ -42,7 +42,7 @@ export class TypeLicenciementComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTableData();
-    this.editTypeLicenciementForm = this.formBuilder.group({
+    this.addTypeLicenciementForm = this.formBuilder.group({
       libelle: ['', Validators.required]
     });
     this.editTypeLicenciementForm = this.formBuilder.group({
