@@ -30,6 +30,7 @@ import { ShiftListComponent } from './shift-list/shift-list.component';
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
+import { PreavisComponent } from './preavis/preavis.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
@@ -57,6 +58,7 @@ import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.co
     CongesComponent,
     AbsencesComponent,
     PlaintesComponent,
+    PreavisComponent,
     DemandesComponent,
     FormationsComponent,
     HeuresSupplementairesComponent,

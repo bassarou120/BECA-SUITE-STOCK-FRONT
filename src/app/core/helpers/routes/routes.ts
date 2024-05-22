@@ -72,6 +72,10 @@ export class routes {
     return this.baseUrl + '/employes/plaintes';
   }
 
+  public static get preavisGRH(): string {
+    return this.baseUrl + '/employes/preavis';
+  }
+
   public static get formationsGRH(): string {
     return this.baseUrl + '/employes/formations';
   }
@@ -124,6 +128,10 @@ export class routes {
 
   public static get type_depart(): string {
     return this.baseUrl + '/parametrage/type-depart';
+  }
+  
+  public static get type_licenciement(): string {
+    return this.baseUrl + '/parametrage/type-licenciement';
   }
 
   public static get classes(): string {

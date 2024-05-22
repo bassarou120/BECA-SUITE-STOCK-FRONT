@@ -121,6 +121,12 @@ export class DataService {
               route: routes.plaintesGRH,
               base: 'plaintes',
             },
+
+            {
+              menuValue: 'Les Préavis (GRH)',
+              route: routes.preavisGRH,
+              base: 'preavis',
+            },
             {
               menuValue: 'Point des Congés',
               route: routes.point_conge,
@@ -276,6 +282,12 @@ export class DataService {
               menuValue: 'Type de Prime',
               route: routes.type_prime,
               base: 'type-prime',
+            },
+
+            {
+              menuValue: 'Type de Licenciement',
+              route: routes.type_licenciement,
+              base: 'type-licenciement',
             },
 
             // {

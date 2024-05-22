@@ -1,0 +1,348 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Préavis</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+                    <li class="breadcrumb-item active">Préavis</li>
+                </ul>
+            </div>
+
+            <div class="col-auto row">
+              <div class="col-auto">
+                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>
+                </a>
+              </div>
+              <div class="col-auto">
+                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-auto float-end ms-auto">
+                <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_absence"><i
+                        class="fa-solid fa-plus"></i> Ajouter un préavis</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table_header">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="dataTables_length">
+                            <label class="col-form-label" for="">
+                                Afficher
+                                <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
+                                    class="form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                Entrées
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table matSort (matSortChange)="sortData($event)" id="to_export"
+                    class="table table-striped custom-table datatable mb-0 custom-table">
+                    <thead>
+                        <tr>
+                            <th > &nbsp; #</th>
+                            <th mat-sort-header="employeName"> &nbsp; Employé</th>
+                            <th mat-sort-header="congeName"> &nbsp; Durée</th>
+                            <th mat-sort-header="autresInfos"> &nbsp; Statut</th>
+                            <th class="text-end" id="exclusion-1">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstPreavis; let i = index;">
+                            <td>{{i+1}}</td>
+                            <td>{{item.employe}}</td>
+                            <td>{{item.duree}}</td>
+                            <td>{{item.statut}}</td>
+                            <td class="text-end" id="exclusion-2">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
+                                            data-bs-target="#edit_preavis"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            Modifier</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
+                                            data-bs-target="#delete_preavis"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            Supprimer</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="lstPreavis.length === 0">
+                            <td colspan="10">
+                                <h5 style="text-align: center;">Aucun résultat</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table_footer">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info">
+                        Affichage de {{ serialNumberArray[0] }} à
+                        {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                        {{ totalData }} Entrées
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7">
+                    <div class="pagination_section">
+                        <ul class="pagination">
+                            <li class="page-item" [ngClass]="{
+                          disabled: currentPage === 1
+                        }">
+                                <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                                    tabindex="-1">Précédent</a>
+                            </li>
+
+                            <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                                <li class="page-item" [class.active]="item === currentPage" [ngClass]="
+                            (pageNumberArray[currentPage - 2] > item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6) ||
+                            (pageNumberArray[currentPage] < item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6 &&
+                              pageNumberArray.length !== item)
+                              ? 'hide-page-no'
+                              : 'show-page-no'
+                          ">
+                                    <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                                        {{ item }}
+                                    </a>
+                                </li>
+                                <li class="page-item" *ngIf="
+                            i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                                <li *ngIf="
+                            i === pageNumberArray.length - 2 &&
+                            pageNumberArray.length > 6
+                          " [hidden]="
+                            currentPage >=
+                              pageNumberArray[pageNumberArray.length - 2] ||
+                            totalData < serialNumberArray[serialNumberArray.length - 1]
+                          " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                                </li>
+                            </ng-container>
+
+                            <li class="page-item" [ngClass]="{
+                          disabled:
+                            currentPage ===
+                              pageNumberArray[pageNumberArray.length - 1] ||
+                            lstPreavis.length === 0
+                        }">
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Congé Modal -->
+  <div id="add_absence" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter un Préavis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addPreavisForm" (ngSubmit)="onClickSubmitAddPreavis()" novalidate>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addPreavisForm.get('employe_id')?.invalid && addPreavisForm.get('employe_id')?.touched"
+                                    formControlName="employe_id" placeholder="Selectionner l'employé concerné">
+                                    <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="addPreavisForm.get('employe_id')?.invalid && addPreavisForm.get('employe_id')?.touched">
+                                    <small
+                                        *ngIf="addPreavisForm.get('employe_id')?.invalid && addPreavisForm.get('employe_id')?.touched"
+                                        class="text-danger"> *L'employé est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="duree">Durée <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addPreavisForm.get('duree')?.invalid && addPreavisForm.get('duree')?.touched"
+                                    placeholder="Entrer la durée du préavis" formControlName="duree">
+                                <div
+                                    *ngIf="addPreavisForm.get('duree')?.invalid && addPreavisForm.get('duree')?.touched">
+                                    <small
+                                        *ngIf="addPreavisForm.get('duree')?.invalid && addPreavisForm.get('duree')?.touched"
+                                        class="text-danger"> *La durée est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="statut">Statut <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched"
+                                    placeholder="Statut du préavis" formControlName="statut">
+                                <div
+                                    *ngIf="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched">
+                                    <small
+                                        *ngIf="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched"
+                                        class="text-danger"> *Statut est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                 
+
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Congé Modal -->
+
+
+<div id="edit_preavis" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier un Préavis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editPreavisForm" (ngSubmit)="onClickSubmitEditPreavis()" novalidate>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editPreavisForm.get('employe_id')?.invalid && editPreavisForm.get('employe_id')?.touched"
+                                    formControlName="employe_id" placeholder="Selectionner l'employé concerné">
+                                    <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
+                                </mat-select>
+                                <div
+                                    *ngIf="editPreavisForm.get('employe_id')?.invalid && editPreavisForm.get('employe_id')?.touched">
+                                    <small
+                                        *ngIf="editPreavisForm.get('employe_id')?.invalid && editPreavisForm.get('employe_id')?.touched"
+                                        class="text-danger"> *L'employé est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="duree">Durée <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editPreavisForm.get('duree')?.invalid && editPreavisForm.get('duree')?.touched"
+                                    placeholder="Entrer la durée du préavis" formControlName="duree">
+                                <div
+                                    *ngIf="editPreavisForm.get('duree')?.invalid && editPreavisForm.get('duree')?.touched">
+                                    <small
+                                        *ngIf="editPreavisForm.get('duree')?.invalid && editPreavisForm.get('duree')?.touched"
+                                        class="text-danger"> *La durée est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="statut">Statut <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched"
+                                    placeholder="Statut du préavis" formControlName="statut">
+                                <div
+                                    *ngIf="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched">
+                                    <small
+                                        *ngIf="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched"
+                                        class="text-danger"> *Statut est obligatoire</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                 
+
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Congé Modal -->
+
+<!-- /Edit Congé Modal -->
+
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_preavis" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Supprimer la préavis</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer ce préavis?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                          <form [formGroup]="deletePreavisForm" (ngSubmit)="onClickSubmitDeletePreavis()">
+                            <input type="hidden" formControlName="id">
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeletePreavis()">Supprimer</a>
+                          </form>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Annuler</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Department Modal -->
