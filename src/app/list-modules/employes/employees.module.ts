@@ -37,6 +37,8 @@ import { FormationsComponent } from './formations/formations.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
 import { MesContratsComponent } from './mes-contrats/mes-contrats.component';
 import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.component';
+import { RetraiteComponent } from './retraite/retraite.component';
+
 
 // @ts-ignore
 @NgModule({
@@ -71,6 +73,7 @@ import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.co
     PointContratComponent,
     MesContratsComponent,
     MonProfilComponent,
+    RetraiteComponent,
     LicenciementComponent,
   ],
   imports: [

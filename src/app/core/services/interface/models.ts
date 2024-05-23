@@ -914,6 +914,7 @@ export interface getDepartEmploye {
   typeDepart: string;
 }
 
+
 export interface getPost {
   id: number;
   nom_poste: string;

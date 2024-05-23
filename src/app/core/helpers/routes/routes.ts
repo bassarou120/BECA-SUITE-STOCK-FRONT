@@ -129,7 +129,7 @@ export class routes {
   public static get type_depart(): string {
     return this.baseUrl + '/parametrage/type-depart';
   }
-  
+
   public static get type_licenciement(): string {
     return this.baseUrl + '/parametrage/type-licenciement';
   }
@@ -156,6 +156,11 @@ export class routes {
 
   public static get depart_employe(): string {
     return this.baseUrl + '/employes/depart-employe';
+  }
+
+
+  public static get retraite(): string {
+    return this.baseUrl + '/employes/retraite';
   }
 
   public static get licenciement(): string {
