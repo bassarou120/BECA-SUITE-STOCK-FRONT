@@ -118,6 +118,11 @@ export class DataService {
               base: 'licenciement',
             },
             {
+              menuValue: 'Echéance du CDD',
+              route: routes.echeance_cdd,
+              base: 'echeance-cdd',
+            },
+            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',

@@ -157,6 +157,9 @@ export class routes {
   public static get depart_employe(): string {
     return this.baseUrl + '/employes/depart-employe';
   }
+  public static get echeance_cdd(): string {
+    return this.baseUrl + '/employes/echeance-cdd';
+  }
 
 
   public static get retraite(): string {
