@@ -107,6 +107,11 @@ export class DataService {
               base: 'depart-employe',
             },
             {
+              menuValue: 'Echéance du CDD',
+              route: routes.echeance_cdd,
+              base: 'echeance-cdd',
+            },
+            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
