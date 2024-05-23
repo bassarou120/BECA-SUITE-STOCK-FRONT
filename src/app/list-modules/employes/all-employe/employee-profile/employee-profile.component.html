@@ -1179,7 +1179,9 @@
                     <div class="experience-content">
                       <div class="timeline-content">
                         <a href="#/" class="name">{{ mouv.type }}</a>
-                        <div>{{ mouv.poste?.nom_poste }}</div>
+                        <div>
+                          {{ mouv.poste?.nom_poste }} | {{ mouv.grade?.lib }}
+                        </div>
                         <span class="time"
                           >{{ mouv.created_at | date : "dd/MM/YYYY" }}
                         </span>
