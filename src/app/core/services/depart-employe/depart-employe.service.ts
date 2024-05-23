@@ -28,6 +28,10 @@ export class DepartEmployeService  {
     return this.http.get<any>(`${this.url}/employe`);
   }
 
+  getAllTypeLicenciement(): Observable<any> {
+    return this.http.get<any>(`${this.url}/Type_Licenciement`);
+  }
+
   getAllTypeDepart(): Observable<any> {
     return this.http.get<any>(`${this.url}/Type_depart`);
   }

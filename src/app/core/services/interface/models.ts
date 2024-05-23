@@ -912,6 +912,8 @@ export interface getDepartEmploye {
   employe: string;
   typeDepart_id: number;
   typeDepart: string;
+  type_licenciement_id: number;
+  type_licenciement: string;
 }
 
 

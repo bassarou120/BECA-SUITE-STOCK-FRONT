@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Autres Départs</h3>
+                <h3 class="page-title">Licenciement</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Autres Départs</li>
+                    <li class="breadcrumb-item active">Licenciement</li>
                 </ul>
             </div>
 
@@ -29,7 +29,7 @@
 
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_depart_employe"><i
-                        class="fa-solid fa-plus"></i> Ajouter un autre départ</a>
+                        class="fa-solid fa-plus"></i> Ajouter un licenciement</a>
             </div>
         </div>
     </div>
@@ -62,9 +62,9 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="employeeName">Nom de l'employé</th>
-                            <th mat-sort-header="typeDepart">Type Départ </th>
+                            <th mat-sort-header="typeLicenciement">Motif du licenciement</th>
+                            <th mat-sort-header="dateDepart">Date du licenciement</th>
                             <th mat-sort-header="motif">Observation</th>
-                            <th mat-sort-header="dateDepart">Date départ</th>
                             <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
                     </thead>
@@ -72,9 +72,9 @@
                         <tr *ngFor="let item of lstDepartEmploye; let i = index;">
                             <td>{{ i+1 }}</td>
                             <td>{{ item.employe }}</td>
-                            <td>{{ item.typeDepart }}</td>
-                            <td>{{ item.motif }}</td>
+                            <td>{{ item.type_licenciement }}</td>
                             <td>{{ item.datedepart }}</td>
+                            <td>{{ item.motif }}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -173,7 +173,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter un départ</h5>
+                <h5 class="modal-title">Ajouter un licenciement</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -181,7 +181,7 @@
             <div class="modal-body">
             <form [formGroup]="addDepartEmployeForm" (ngSubmit)="onClickSubmitAddDepartEmploye()" novalidate>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -198,13 +198,14 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched"
                                     formControlName="typeDepart_id" placeholder="Selectionner le type de départ">
-                                    <mat-option *ngFor="let item of lstTypeDepart" value={{item.id}}>{{ item.lib }} </mat-option>
+                                    <mat-option *ngFor="let item of lstTypeDepart" [value]="item.id"
+                                    [class.mat-selected] ="item.id === typeSelected"> {{ item.lib }} </mat-option>
                                 </mat-select>
                                 <div
                                     *ngIf="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched">
@@ -215,7 +216,21 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_licenciement_id">Type de licenciement <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="addDepartEmployeForm.get('type_licenciement_id')?.invalid && addDepartEmployeForm.get('type_licenciement_id')?.touched"
+                                    formControlName="type_licenciement_id" placeholder="Selectionner le type de licenciement">
+                                    <mat-option *ngFor="let item of lstTypeLicenciement" [value]="item.id">{{ item.libelle }} </mat-option>
+                                </mat-select>
+                                <small *ngIf="addDepartEmployeForm.get('type_licenciement_id')?.invalid && addDepartEmployeForm.get('type_licenciement_id')?.touched" class="text-danger">
+                                  *Le type de licenciement est obligatoire
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
                             <div class="input-block mb-3 date-input1">
                                 <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -260,7 +275,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le départ</h5>
+                <h5 class="modal-title">Modifier licenciement</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -287,7 +302,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -305,7 +320,22 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label" for="type_licenciement_id">Type de licenciement <span class="text-danger">*</span></label>
+                                <mat-select  class="select mat-cust-select form-control"
+                                    [class.invalid]="editDepartEmployeForm.get('type_licenciement_id')?.invalid && editDepartEmployeForm.get('type_licenciement_id')?.touched"
+                                    formControlName="type_licenciement_id" placeholder="Selectionner le type de licenciement">
+                                    <mat-option *ngFor="let item of lstTypeLicenciement" [value]="item.id"
+                                    [class.mat-selected] ="item.id === editFormSelectedTypeLicenciementId">{{ item.libelle }} </mat-option>
+                                </mat-select>
+                                <small *ngIf="editDepartEmployeForm.get('type_licenciement_id')?.invalid && editDepartEmployeForm.get('type_licenciement_id')?.touched" class="text-danger">
+                                  *Le type de licenciement est obligatoire
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
                             <div class="input-block mb-3 date-input2">
                                 <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">

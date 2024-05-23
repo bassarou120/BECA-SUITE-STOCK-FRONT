@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 import { Router } from '@angular/router';
-import { getDepartEmploye, getTypeDepart, routes, DepartEmployeService, getMiniTemplateEmploye, ExportsService } from 'src/app/core/core.index';
+import { getDepartEmploye, getTypeDepart, routes, DepartEmployeService, getMiniTemplateEmploye, getTypeLicenciement, ExportsService } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,8 +25,10 @@ export class LicenciementComponent implements OnInit {
 
   public lstDepartEmploye: Array<getDepartEmploye> = [];
   public lstTypeDepart: Array<getTypeDepart> = [];
-  public lstTypeDepartNotToShow: string[] = ["Retraite", "Licenciement", "Démission", "Echéance de CDD"];
+  public lstTypeLicenciement: Array<getTypeLicenciement> = [];
+  public typeSelected: number = 0;
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
+  public editFormSelectedTypeLicenciementId: Number = 0;
   public editFormSelectedEmployeId: Number = 0;
   public editFormSelectedTypeDepartId: Number = 0;
   public searchDataValue = '';
@@ -58,6 +60,7 @@ export class LicenciementComponent implements OnInit {
       employe_id: ["", [Validators.required]],
       motif: ["Néant", [Validators.required]],
       datedepart: ["", [Validators.required]],
+      type_licenciement_id: ["", [Validators.required]],
     });
      this.editDepartEmployeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -65,6 +68,7 @@ export class LicenciementComponent implements OnInit {
       employe_id: ["", [Validators.required]],
       motif: ["Néant", [Validators.required]],
       datedepart: ["", [Validators.required]],
+      type_licenciement_id: ["", [Validators.required]],
     });
      this.deleteDepartEmployeForm = this.formBuilder.group({
       id: [0, [Validators.required]],
@@ -107,11 +111,13 @@ export class LicenciementComponent implements OnInit {
       id: row.id,
       employe_id: row.employe_id,
       typeDepart_id: row.typeDepart_id,
+      type_licenciement_id: row.type_licenciement_id,
       motif: row.motif,
       datedepart: this.convertToDate(row.datedepart),
     })
     this.editFormSelectedEmployeId = row.employe_id;
     this.editFormSelectedTypeDepartId = row.typeDepart_id;
+    this.editFormSelectedTypeLicenciementId = row.type_licenciement_id;
   }
 
   onClickSubmitEditDepartEmploye(){
@@ -225,9 +231,10 @@ exportToXLSX() {
       res.data.map((res: getDepartEmploye, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.lstDepartEmploye.push(res);
-          this.serialNumberArray.push(serialNumber);
+          if(res.typeDepart.trim().toLowerCase() == "licenciement") {
+            this.lstDepartEmploye.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
         }
       });
       this.dataSource = new MatTableDataSource<getDepartEmploye>(this.lstDepartEmploye);
@@ -249,10 +256,22 @@ exportToXLSX() {
       res.data.data.map((res: getTypeDepart, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          if (!this.lstTypeDepartNotToShow.some(val => val.trim().toLowerCase() === res.lib.trim().toLowerCase())) {
+          if(res.lib.trim().toLowerCase() == "licenciement") {
+            this.typeSelected = res.id;
+            this.addDepartEmployeForm.patchValue({typeDepart_id: res.id});
             this.lstTypeDepart.push(res);
             this.serialNumberArray.push(serialNumber);
           }
+        }
+      });
+    });
+
+    this.data.getAllTypeLicenciement().subscribe((res: any) => {
+      res.data.data.map((res: getTypeLicenciement, index: number) => {
+        const serialNumber = index + 1;
+        if (index >= this.skip && serialNumber <= this.limit) {
+          this.lstTypeLicenciement.push(res);
+          this.serialNumberArray.push(serialNumber);
         }
       });
     });
