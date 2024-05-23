@@ -196,11 +196,11 @@ export class DemandesComponent implements OnInit {
         res.data.map((res: getMiniTemplateEmploye, index: number) => {
           const serialNumber = index + 1;
           if (index >= this.skip && serialNumber <= this.limit) {
-            res.id;// = serialNumber;
             this.lstEmploye.push(res);
             this.serialNumberArray.push(serialNumber);
           }
         });
+        console.log(this.lstEmploye)
       });
 
       this.dataSource = new MatTableDataSource<getDemande>(this.lstDemande);

@@ -107,6 +107,11 @@ export class DataService {
               base: 'depart-employe',
             },
             {
+              menuValue: 'Licenciement',
+              route: routes.licenciement,
+              base: 'licenciement',
+            },
+            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',

@@ -11,11 +11,11 @@ import * as XLSX from 'xlsx';
 
 
 @Component({
-  selector: 'app-depart-employe',
-  templateUrl: './depart-employe.component.html',
-  styleUrls: ['./depart-employe.component.scss']
+  selector: 'app-licenciement',
+  templateUrl: './licenciement.component.html',
+  styleUrls: ['./licenciement.component.scss']
 })
-export class DepartEmployeComponent implements OnInit {
+export class LicenciementComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 

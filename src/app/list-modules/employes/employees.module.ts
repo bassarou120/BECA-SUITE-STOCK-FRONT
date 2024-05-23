@@ -1,3 +1,4 @@
+import { LicenciementComponent } from './licenciement/licenciement.component';
 import { MesHeuresSupplementairesComponent } from './mes-heures-supplementaires/mes-heures-supplementaires.component';
 import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
@@ -70,6 +71,7 @@ import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.co
     PointContratComponent,
     MesContratsComponent,
     MonProfilComponent,
+    LicenciementComponent,
   ],
   imports: [
     CommonModule,

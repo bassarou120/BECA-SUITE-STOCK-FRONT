@@ -158,6 +158,10 @@ export class routes {
     return this.baseUrl + '/employes/depart-employe';
   }
 
+  public static get licenciement(): string {
+    return this.baseUrl + '/employes/licenciement';
+  }
+
   public static get point_conge(): string {
     return this.baseUrl + '/employes/point-conge';
   }
