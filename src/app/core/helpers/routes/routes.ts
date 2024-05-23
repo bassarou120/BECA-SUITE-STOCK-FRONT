@@ -161,6 +161,10 @@ export class routes {
     return this.baseUrl + '/employes/echeance-cdd';
   }
 
+  public static get demission(): string {
+    return this.baseUrl + '/employes/demission';
+  }
+
 
   public static get retraite(): string {
     return this.baseUrl + '/employes/retraite';

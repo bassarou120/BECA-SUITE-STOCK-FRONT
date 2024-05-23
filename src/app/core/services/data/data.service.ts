@@ -122,6 +122,11 @@ export class DataService {
               route: routes.echeance_cdd,
               base: 'echeance-cdd',
             },
+            // {
+            //   menuValue: 'Démission',
+            //   route: routes.demission,
+            //   base: 'demission',
+            // },
             {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
