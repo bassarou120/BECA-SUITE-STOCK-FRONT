@@ -26,13 +26,7 @@ export class EcheanceCDDComponent implements OnInit {
 
 
   public lstDepartEmploye: Array<getDepartEmploye> = [];
-  //public lstTypeDepart: Array<getTypeDepart> = [];
-  public lstTypeDepart: any[] = [
-    { id: 1, lib: 'Echéance du CDD' },
-    { id: 2, lib: 'Démission' },
-    { id: 3, lib: 'Licenciement' }
-    // Ajoutez d'autres types ici
-  ];
+  public lstTypeDepart: Array<getTypeDepart> = [];
 
   public filteredLstTypeDepart!: any[];
 
@@ -41,6 +35,7 @@ export class EcheanceCDDComponent implements OnInit {
   public editFormSelectedEmployeId: Number = 0;
   public editFormSelectedTypeDepartId: Number = 0;
   public searchDataValue = '';
+  public typeSelected: number = 0;
   dataSource!: MatTableDataSource<getDepartEmploye>;
   // pagination variables
   public lastIndex = 0;
@@ -64,7 +59,6 @@ export class EcheanceCDDComponent implements OnInit {
 
   ngOnInit(): void {
      this.getTableData();
-     this.filterDepartTypes();
      this.addDepartEmployeForm = this.formBuilder.group({
       typeDepart_id: ["", [Validators.required]],
       employe_id: ["", [Validators.required]],
@@ -82,11 +76,6 @@ export class EcheanceCDDComponent implements OnInit {
       id: [0, [Validators.required]],
     });
   }
-
-  filterDepartTypes(): void {
-    this.filteredLstTypeDepart = this.lstTypeDepart.filter(item => item.lib === 'Echéance du CDD');
-  }
-
 
   private formatDateToString(date: Date): string {
     const year = date.getFullYear();
@@ -186,49 +175,6 @@ export class EcheanceCDDComponent implements OnInit {
         alert(JSON.stringify(error));
       }
     );
-  // $('#spinner_pdf').removeClass('d-none');
-
-  // setTimeout(() => {
-  //   const content: HTMLElement | null = document.getElementById('to_export');
-  //   const pdfname = "Les Départs des Employés.pdf"
-
-  //   if (content) {
-  //     const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-  //     const text = "Les Départs des Employés";
-  //     const fontSize = 12; // Taille de la police du texte
-  //     const textWidth = pdf.getTextWidth(text); // Largeur du texte
-  //     const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
-  //     const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
-  //     const textY = 25;
-  //     pdf.setFontSize(fontSize);
-  //     pdf.text(text, textX, textY);
-
-  //     html2canvas(content, {
-  //       ignoreElements: (element: Element) => {
-  //         const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-  //         return idsToExclude.includes(element.id);
-  //       },
-  //       scale: 1
-  //     }).then(canvas => {
-  //       const imageData = canvas.toDataURL('image/jpeg');
-  //       // max width is 210
-  //       const imageWidth = 180;
-  //       const imageHeight = canvas.height * imageWidth / canvas.width;
-
-  //       const scaleFactor = 1;
-  //       const scaledWidth = imageWidth * scaleFactor;
-  //       const scaledHeight = imageHeight * scaleFactor;
-
-  //       pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
-  //       pdf.save(pdfname);
-
-  //       $('#spinner_pdf').addClass('d-none');
-  //     });
-  //   } else {
-  //     console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
-  //     $('#spinner_pdf').addClass('d-none');
-  //   }
-  // }, 10);
 }
 
 exportToXLSX() {
@@ -284,9 +230,10 @@ exportToXLSX() {
       res.data.map((res: getDepartEmploye, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.lstDepartEmploye.push(res);
-          this.serialNumberArray.push(serialNumber);
+          if((res.typeDepart.trim().toLowerCase() == "echéance de cdd") || (res.typeDepart.trim().toLowerCase() == "echeance de cdd")) {
+            this.lstDepartEmploye.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
         }
       });
       this.dataSource = new MatTableDataSource<getDepartEmploye>(this.lstDepartEmploye);
@@ -308,9 +255,12 @@ exportToXLSX() {
       res.data.data.map((res: getTypeDepart, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.lstTypeDepart.push(res);
-          this.serialNumberArray.push(serialNumber);
+          if(res.lib.trim().toLowerCase() == "echéance de cdd") {
+            this.typeSelected = res.id;
+            this.addDepartEmployeForm.patchValue({typeDepart_id: res.id});
+            this.lstTypeDepart.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
         }
       });
     });

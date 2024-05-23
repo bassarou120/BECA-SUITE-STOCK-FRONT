@@ -206,8 +206,8 @@
                               [class.invalid]="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched"
                               formControlName="typeDepart_id"
                               placeholder="Selectionner le type de départ">
-                              <mat-option *ngFor="let item of filteredLstTypeDepart" [value]="item.id">
-                                {{ item.lib }}
+                              <mat-option *ngFor="let item of lstTypeDepart" [value]="item.id"
+                              [class.mat-selected] ="item.id === typeSelected"> {{ item.lib }}
                               </mat-option>
                             </mat-select>
                             <div *ngIf="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched">
@@ -269,7 +269,7 @@
             <div class="modal-body">
             <form [formGroup]="editDepartEmployeForm" (ngSubmit)="onClickSubmitEditDepartEmploye()" novalidate>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <input type="hidden" formControlName="id">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
