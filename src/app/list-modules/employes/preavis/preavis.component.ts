@@ -116,8 +116,6 @@ export class PreavisComponent implements OnInit {
 
   onClickSubmitAddPreavis(){
 
-    console.log(this.addPreavisForm.value)
-    console.log(this.addPreavisForm.valid)
       this.addPreavisForm.patchValue({ date_preavis: this.formatDateToString(this.addPreavisForm.value.date_preavis) });
 
     if (this.addPreavisForm.valid){
@@ -151,7 +149,8 @@ export class PreavisComponent implements OnInit {
 
   onClickSubmitEditPreavis(){
 
-    //if (this.addPreavisForm.valid){
+    console.log(this.addPreavisForm.value)
+    console.log(this.addPreavisForm.valid)
       this.editPreavisForm.patchValue({ date_preavis: this.formatDateToString(this.editPreavisForm.value.date_preavis) });
     if (this.editPreavisForm.valid){
       const id = this.editPreavisForm.value.id;
