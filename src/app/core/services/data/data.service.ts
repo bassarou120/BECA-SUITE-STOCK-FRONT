@@ -198,6 +198,11 @@ export class DataService {
               route: routes.depart_employe,
               base: 'depart-employe',
             },
+            // {
+            //   menuValue: 'Démission',
+            //   route: routes.demission,
+            //   base: 'demission',
+            // },
             {
               menuValue: 'Echéance du CDD',
               route: routes.echeance_cdd,
