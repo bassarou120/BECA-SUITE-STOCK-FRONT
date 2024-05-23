@@ -189,7 +189,7 @@ export class DataService {
           route: routes.employees,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'user-minus',
+          icon: 'la la-user-times',
           base: 'employees',
           materialicons: '',
           subMenus: [
