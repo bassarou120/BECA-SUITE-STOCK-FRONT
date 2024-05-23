@@ -106,6 +106,12 @@ export class DataService {
               route: routes.depart_employe,
               base: 'depart-employe',
             },
+
+            {
+              menuValue: 'Retraite',
+              route: routes.retraite,
+              base: 'retraite',
+            },
             {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
