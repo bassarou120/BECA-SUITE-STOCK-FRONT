@@ -689,11 +689,24 @@ export interface getStatut {
   id: number;
   libelle: string;
 }
+
+export interface getPreavis {
+  employe_id: number;
+  employe: string;
+  duree: number;
+  statut: string;
+  id: string;
+}
 export interface getTypeContrat {
   id: number;
   libelle: string;
 }
 export interface getTypePrime {
+  id: number;
+  libelle: string;
+}
+
+export interface getTypeLicenciement {
   id: number;
   libelle: string;
 }
@@ -900,6 +913,7 @@ export interface getDepartEmploye {
   typeDepart_id: number;
   typeDepart: string;
 }
+
 
 export interface getPost {
   id: number;

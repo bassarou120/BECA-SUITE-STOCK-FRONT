@@ -89,7 +89,7 @@ export class DataService {
           route: routes.employees,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'users',
+          icon: 'la la-users-cog',
           base: 'employees',
           dot: true,
           materialicons: 'people',
@@ -102,24 +102,30 @@ export class DataService {
               base2: 'employee-list',
             },
             {
-              menuValue: 'Départ Employé',
+              menuValue: 'Autres Départs',
               route: routes.depart_employe,
               base: 'depart-employe',
+            },
+
+            {
+              menuValue: 'Retraite',
+              route: routes.retraite,
+              base: 'retraite',
+            },
+            {
+              menuValue: 'Licenciement',
+              route: routes.licenciement,
+              base: 'licenciement',
+            },
+            {
+              menuValue: 'Echéance du CDD',
+              route: routes.echeance_cdd,
+              base: 'echeance-cdd',
             },
             {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
-            },
-            {
-              menuValue: 'Les Absences (GRH)',
-              route: routes.absences,
-              base: 'absences',
-            },
-            {
-              menuValue: 'Les Congés (GRH)',
-              route: routes.conges,
-              base: 'holidays',
             },
             {
               menuValue: 'Les Expériences (GRH)',
@@ -130,6 +136,12 @@ export class DataService {
               menuValue: 'Plaintes et Satisfaction (GRH)',
               route: routes.plaintesGRH,
               base: 'plaintes',
+            },
+
+            {
+              menuValue: 'Les Préavis (GRH)',
+              route: routes.preavisGRH,
+              base: 'preavis',
             },
             {
               menuValue: 'Point des Congés',
@@ -286,6 +298,12 @@ export class DataService {
               menuValue: 'Type de Prime',
               route: routes.type_prime,
               base: 'type-prime',
+            },
+
+            {
+              menuValue: 'Type de Licenciement',
+              route: routes.type_licenciement,
+              base: 'type-licenciement',
             },
 
             // {

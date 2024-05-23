@@ -72,6 +72,10 @@ export class routes {
     return this.baseUrl + '/employes/plaintes';
   }
 
+  public static get preavisGRH(): string {
+    return this.baseUrl + '/employes/preavis';
+  }
+
   public static get formationsGRH(): string {
     return this.baseUrl + '/employes/formations';
   }
@@ -126,6 +130,10 @@ export class routes {
     return this.baseUrl + '/parametrage/type-depart';
   }
 
+  public static get type_licenciement(): string {
+    return this.baseUrl + '/parametrage/type-licenciement';
+  }
+
   public static get classes(): string {
     return this.baseUrl + '/parametrage/classes';
   }
@@ -148,6 +156,18 @@ export class routes {
 
   public static get depart_employe(): string {
     return this.baseUrl + '/employes/depart-employe';
+  }
+  public static get echeance_cdd(): string {
+    return this.baseUrl + '/employes/echeance-cdd';
+  }
+
+
+  public static get retraite(): string {
+    return this.baseUrl + '/employes/retraite';
+  }
+
+  public static get licenciement(): string {
+    return this.baseUrl + '/employes/licenciement';
   }
 
   public static get point_conge(): string {

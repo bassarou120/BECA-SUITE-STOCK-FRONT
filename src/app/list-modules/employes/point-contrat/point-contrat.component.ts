@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { getPointContrat, routes, PointContratService } from 'src/app/core/core.index';
+import { ExportsService, getPointContrat, routes, PointContratService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -36,7 +36,7 @@ export class PointContratComponent implements OnInit, AfterViewInit {
   //** / pagination variables
 
 
-  constructor(public router: Router,private data: PointContratService) {}
+  constructor(public router: Router,private data: PointContratService, private exp: ExportsService) {}
 
   ngOnInit(): void {
      this.getTableData();
@@ -70,46 +70,16 @@ export class PointContratComponent implements OnInit, AfterViewInit {
 
   exportToPDF() {
     $('#spinner_pdf').removeClass('d-none');
-    setTimeout(() => {
-      const content: HTMLElement | null = document.getElementById('to_export');
-      const pdfname = "Point des Contrats en cours.pdf"
-
-      if (content) {
-        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-        const text = "Point des Contrats en cours";
-        const fontSize = 12; // Taille de la police du texte
-        const textWidth = pdf.getTextWidth(text); // Largeur du texte
-        const pageWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page
-        const textX = (pageWidth - textWidth) / 2; // Position x pour centrer le texte
-        const textY = 25;
-        pdf.setFontSize(fontSize);
-        pdf.text(text, textX, textY);
-
-        html2canvas(content, {
-          ignoreElements: (element: Element) => {
-            const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-            return idsToExclude.includes(element.id);
-          },
-          scale: 1
-        }).then(canvas => {
-          const imageData = canvas.toDataURL('image/jpeg');
-          // max width is 210
-          const imageWidth = 180;
-          const imageHeight = canvas.height * imageWidth / canvas.width;
-
-          const scaleFactor = 1;
-          const scaledWidth = imageWidth * scaleFactor;
-          const scaledHeight = imageHeight * scaleFactor;
-
-          pdf.addImage(imageData, 'JPEG', 15, 35, scaledWidth, scaledHeight);
-          pdf.save(pdfname);
-          $('#spinner_pdf').addClass('d-none');
-        });
-      } else {
-        console.error("L'élément avec l'ID spécifié n'a pas été trouvé.");
+    this.exp.exportPointContrat().subscribe(
+      (response: any) => {
         $('#spinner_pdf').addClass('d-none');
+        window.open(response.data, '_blank');
+      },
+      (error: any) => {
+        $('#spinner_pdf').addClass('d-none');
+        alert(JSON.stringify(error));
       }
-    }, 10);
+    );
   }
 
   exportToXLSX() {

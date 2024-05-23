@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Départ Employé</h3>
+                <h3 class="page-title">Autres Départs</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Départ Employé</li>
+                    <li class="breadcrumb-item active">Autres Départs</li>
                 </ul>
             </div>
 
@@ -29,7 +29,7 @@
 
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_depart_employe"><i
-                        class="fa-solid fa-plus"></i> Ajouter un départ pour un employé</a>
+                        class="fa-solid fa-plus"></i> Ajouter un autre départ</a>
             </div>
         </div>
     </div>
@@ -268,7 +268,7 @@
             <div class="modal-body">
             <form [formGroup]="editDepartEmployeForm" (ngSubmit)="onClickSubmitEditDepartEmploye()" novalidate>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <input type="hidden" formControlName="id">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>

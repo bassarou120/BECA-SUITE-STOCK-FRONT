@@ -1,7 +1,9 @@
+import { LicenciementComponent } from './licenciement/licenciement.component';
 import { MesHeuresSupplementairesComponent } from './mes-heures-supplementaires/mes-heures-supplementaires.component';
 import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
+import { EcheanceCDDComponent } from './echeance-cdd/echeance-cdd.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
 import { NgModule } from '@angular/core';
@@ -30,11 +32,14 @@ import { ShiftListComponent } from './shift-list/shift-list.component';
 import { CongesComponent } from './conges/conges.component';
 import { AbsencesComponent } from './absences/absences.component';
 import { PlaintesComponent } from './plaintes/plaintes.component';
+import { PreavisComponent } from './preavis/preavis.component';
 import { DemandesComponent } from './demandes/demandes.component';
 import { FormationsComponent } from './formations/formations.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
 import { MesContratsComponent } from './mes-contrats/mes-contrats.component';
 import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.component';
+import { RetraiteComponent } from './retraite/retraite.component';
+
 
 // @ts-ignore
 @NgModule({
@@ -57,6 +62,7 @@ import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.co
     CongesComponent,
     AbsencesComponent,
     PlaintesComponent,
+    PreavisComponent,
     DemandesComponent,
     FormationsComponent,
     HeuresSupplementairesComponent,
@@ -64,10 +70,13 @@ import { MonProfilComponent } from './mon-profile-employe/mon-profile-employe.co
     MesPlaintesComponent,
     ExperiencesComponent,
     DepartEmployeComponent,
+    EcheanceCDDComponent,
     PointCongeComponent,
     PointContratComponent,
     MesContratsComponent,
     MonProfilComponent,
+    RetraiteComponent,
+    LicenciementComponent,
   ],
   imports: [
     CommonModule,

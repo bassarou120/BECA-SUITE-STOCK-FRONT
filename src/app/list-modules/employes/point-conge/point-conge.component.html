@@ -237,7 +237,10 @@
                     </div>
 
                     <div class="col-6" id="exclusion-2">
-                    <a class="btn btn-primary continue-btn" (click)="exportToPDF()">Exporter PDF</a>
+                    <a class="btn btn-primary continue-btn" (click)="exportToPDF()">
+                      Exporter PDF
+                      <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf_details"></span>
+                    </a>
                     </div>
                     <div class="col-6" id="exclusion-3">
                     <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn" (click)="exportToXLSX()">Exporter EXCEL</a>
