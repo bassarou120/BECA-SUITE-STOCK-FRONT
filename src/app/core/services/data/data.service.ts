@@ -102,7 +102,7 @@ export class DataService {
               base2: 'employee-list',
             },
             {
-              menuValue: 'Départ Employé',
+              menuValue: 'Autres Départs',
               route: routes.depart_employe,
               base: 'depart-employe',
             },
