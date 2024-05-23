@@ -696,6 +696,7 @@ export interface getPreavis {
   duree: number;
   statut: string;
   id: string;
+  date_preavis: Date;
 }
 export interface getTypeContrat {
   id: number;
