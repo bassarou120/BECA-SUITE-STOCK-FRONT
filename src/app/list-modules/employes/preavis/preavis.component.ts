@@ -24,7 +24,7 @@ export class PreavisComponent implements OnInit {
 
 
   //public default_status: string = environment.default_statut_for_demands;
-
+  public lstStatut: Array<string> = ["Non effectué", "Effectué"];
   public lstPreavis: Array<getPreavis> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: number = 0;
@@ -46,6 +46,8 @@ export class PreavisComponent implements OnInit {
 
   public addPreavisForm!: FormGroup ;
   public editPreavisForm!: FormGroup
+  public addFormSelectedStatut: string = "Non effectué";
+  public editFormSelectedStatut: string = "";
   public deletePreavisForm!: FormGroup
 
   constructor(private formBuilder: FormBuilder,public router: Router,private data: PreavisService) {}
@@ -56,7 +58,8 @@ export class PreavisComponent implements OnInit {
      this.addPreavisForm = this.formBuilder.group({
       employe_id: [0, [Validators.required]],
       duree: ["", [Validators.required]],
-      statut: ["", [Validators.required]],
+      statut: ["Non effectué", [Validators.required]],
+      date_preavis: ["", [Validators.required]],
     });
 
      this.editPreavisForm = this.formBuilder.group({
@@ -64,11 +67,19 @@ export class PreavisComponent implements OnInit {
       employe_id: [0, [Validators.required]],
       duree: ["", [Validators.required]],
       statut: ["", [Validators.required]],
+      date_preavis: ["", [Validators.required]],
     });
 
      this.deletePreavisForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
+  }
+
+  private formatDateToString(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
 
@@ -105,6 +116,10 @@ export class PreavisComponent implements OnInit {
 
   onClickSubmitAddPreavis(){
 
+    console.log(this.addPreavisForm.value)
+    console.log(this.addPreavisForm.valid)
+      this.addPreavisForm.patchValue({ date_preavis: this.formatDateToString(this.addPreavisForm.value.date_preavis) });
+
     if (this.addPreavisForm.valid){
       this.data.savePreavis(this.addPreavisForm.value).subscribe(
         (data: any) => {
@@ -127,11 +142,17 @@ export class PreavisComponent implements OnInit {
       employe_id: row.employe_id,
       duree: row.duree,
       statut: row.statut,
+      date_preavis: this.convertToDate(row.date_preavis),
     })
+    this.editFormSelectedStatut = row.statut;
+    //this.addFormSelectedStatut = row.statut;
     this.editFormSelectedEmployeId = row.employe_id;
   }
 
   onClickSubmitEditPreavis(){
+
+    //if (this.addPreavisForm.valid){
+      this.editPreavisForm.patchValue({ date_preavis: this.formatDateToString(this.editPreavisForm.value.date_preavis) });
     if (this.editPreavisForm.valid){
       const id = this.editPreavisForm.value.id;
       this.data.editPreavis(this.editPreavisForm.value).subscribe(
