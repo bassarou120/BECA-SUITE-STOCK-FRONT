@@ -225,9 +225,10 @@ exportToXLSX() {
       res.data.map((res: getDepartEmploye, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.lstDepartEmploye.push(res);
-          this.serialNumberArray.push(serialNumber);
+          if (!this.lstTypeDepartNotToShow.some(val => val.trim().toLowerCase() === res.typeDepart.trim().toLowerCase())) {
+            this.lstDepartEmploye.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
         }
       });
       this.dataSource = new MatTableDataSource<getDepartEmploye>(this.lstDepartEmploye);
