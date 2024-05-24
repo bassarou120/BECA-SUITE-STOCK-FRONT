@@ -1,4 +1,11 @@
-import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Pipe,
+  PipeTransform,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { routes, TypeContratService } from 'src/app/core/core.index';
@@ -10,6 +17,7 @@ interface data {
   value: string;
 }
 import { formatDate } from '@angular/common';
+import { MouvementService } from 'src/app/core/services/mouvement/mouvement.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -36,6 +44,8 @@ export class EmployeeProfileComponent implements OnInit {
   bsValue = new Date();
   public addEmployeeForm!: FormGroup;
 
+  @ViewChild('btnNomination') btnNomination: ElementRef | undefined;
+
   nbr_prime = 2;
 
   list_prime: any;
@@ -49,7 +59,16 @@ export class EmployeeProfileComponent implements OnInit {
   dureeContrat: any;
   typeContrat: any;
 
+  listDepartement: any;
+  listPoste: any;
+  listCategorie: any;
+  listClasse: any;
+  listGrade: any;
+  listMouvement: any;
+
   public editEmployeInfoPersoForm!: FormGroup;
+  public affectationForm!: FormGroup;
+  public nominationForm!: FormGroup;
   public addEmployeContratForm!: FormGroup;
 
   public valideContratForm!: FormGroup;
@@ -57,6 +76,7 @@ export class EmployeeProfileComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private employeservice: EmployeService,
+    private mouvementservice: MouvementService,
     private contraService: ContratService,
     private activatedRoute: ActivatedRoute,
     private typeContratService: TypeContratService
@@ -110,6 +130,57 @@ export class EmployeeProfileComponent implements OnInit {
     // alert(this.idEmploye);
     this.getCurentEmploy();
     this.getListeBanque();
+    this.getDataForListe();
+    this.getEmpMeouvemt();
+
+    // console.log(this.curentEmploye);
+
+    this.affectationForm = this.formBuilder.group({
+      employe_id: ['', [Validators.required]],
+      poste_id: ['', [Validators.required]],
+      old_poste_id: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+      observation: ['', [Validators.required]],
+    });
+
+    this.nominationForm = this.formBuilder.group({
+      employe_id: ['', [Validators.required]],
+      poste_id: ['', [Validators.required]],
+      grade_id: ['', [Validators.required]],
+      old_poste_id: ['', [Validators.required]],
+      old_grade_id: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+      last_contrat_id: ['', [Validators.required]],
+      observation: ['', [Validators.required]],
+    });
+  }
+
+  getDataForListe() {
+    this.employeservice.getDepartementPoste().subscribe(
+      (date: any) => {
+        console.log(date);
+
+        this.listDepartement = date.data.departement;
+        this.listPoste = date.data.poste;
+        this.listGrade = date.data.grade;
+        // this.listCategorie = date.data.categorie;
+        // this.listClasse = date.data.classe;
+      },
+      (error: any) => {}
+    );
+  }
+
+  getEmpMeouvemt() {
+    // alert(this.idEmploye);
+    this.mouvementservice
+      .getMouvementByEmploye({ id: this.idEmploye })
+      .subscribe(
+        (res: any) => {
+          // alert(JSON.stringify(res.data[0].mouvements));
+          this.listMouvement = res.data[0].mouvements;
+        },
+        (eror: any) => {}
+      );
   }
 
   getMonthName(monthNumber: string): string {
@@ -152,7 +223,7 @@ export class EmployeeProfileComponent implements OnInit {
   showAddContratForm = true;
 
   initAddContrat() {
-    // alert("init create contrat")
+    // alert('init create contrat');
     this.typeContratService.getAllTypeContrat().subscribe(
       (data: any) => {
         // alert(JSON.stringify(data.data.data));
@@ -244,7 +315,82 @@ export class EmployeeProfileComponent implements OnInit {
         (error: any) => {}
       );
   }
-  getCurentEmploy() {
+
+  onClickSubmitAfectationEmployee() {
+    this.affectationForm
+      .get('employe_id')
+      ?.setValue(this.curentEmploye.employe.id);
+    this.nominationForm
+      .get('old_poste_id')
+      ?.setValue(this.curentEmploye.poste.id);
+    this.affectationForm.get('type')?.setValue('Affectation');
+
+    this.mouvementservice.saveMouvement(this.affectationForm.value).subscribe(
+      (res: any) => {
+        if (res.success == true) {
+          document.location.reload();
+        } else {
+          alert(
+            "Erreur serveur ! \n veuillez contactez l'administarteur du serveur"
+          );
+        }
+        // alert(JSON.stringify(res));
+      },
+      (error: any) => {}
+    );
+  }
+
+  onClickSubmitNominationEmployee() {
+    this.nominationForm
+      .get('employe_id')
+      ?.setValue(this.curentEmploye.employe.id);
+    this.nominationForm.get('type')?.setValue('Nomination');
+    this.nominationForm
+      .get('old_poste_id')
+      ?.setValue(this.curentEmploye.poste.id);
+
+    this.nominationForm
+      .get('old_grade_id')
+      ?.setValue(this.curentEmploye.grade.id);
+
+    this.nominationForm
+      .get('last_contrat_id')
+      ?.setValue(this.curentEmploye?.last_contat.id);
+
+    // alert(JSON.stringify(this.nominationForm.value));
+
+    this.mouvementservice.saveMouvement(this.nominationForm.value).subscribe(
+      async (res: any) => {
+        if (res.success == true) {
+          this.employeservice.getEmploye(this.idEmploye).subscribe(
+            (data: any) => {
+              // alert(JSON.stringify(data));
+              this.curentEmploye = data.data;
+
+              console.log(this.curentEmploye);
+
+              let el: HTMLElement = document.getElementById(
+                'btnNewContrat'
+              ) as HTMLElement;
+              el.click();
+            },
+            (error: any) => {}
+          );
+
+          // this.subContent.nativeElement.click();
+          // document.location.reload();
+        } else {
+          alert(
+            "Erreur serveur ! \n veuillez contactez l'administarteur du serveur"
+          );
+        }
+        // alert(JSON.stringify(res));
+      },
+      (error: any) => {}
+    );
+  }
+
+  async getCurentEmploy() {
     this.employeservice.getEmploye(this.idEmploye).subscribe(
       (data: any) => {
         // alert(JSON.stringify(data));
@@ -357,8 +503,6 @@ export class EmployeeProfileComponent implements OnInit {
         }
       );
     }
-
-
 
     // this.addEmployeContratForm.get('date_debut')?.setValue( (new Date(this.addEmployeContratForm.get('date_debut')?.value)).toISOString().slice(0, 10).replace('T', ' '))
     // this.addEmployeContratForm.get('date_fin')?.setValue( (new Date(this.addEmployeContratForm.get('date_fin')?.value)).toISOString().slice(0, 10).replace('T', ' '))
