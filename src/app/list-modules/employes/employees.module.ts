@@ -3,7 +3,7 @@ import { MesHeuresSupplementairesComponent } from './mes-heures-supplementaires/
 import { PointContratComponent } from './point-contrat/point-contrat.component';
 import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
-// import { DemissionEmployeComponent } from './demission/demission-employe.component';
+import { DemissionEmployeComponent } from './demission/demission-employe.component';
 import { EcheanceCDDComponent } from './echeance-cdd/echeance-cdd.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
@@ -71,7 +71,7 @@ import { RetraiteComponent } from './retraite/retraite.component';
     MesPlaintesComponent,
     ExperiencesComponent,
     DepartEmployeComponent,
-    // DemissionEmployeComponent,
+    DemissionEmployeComponent,
     EcheanceCDDComponent,
     PointCongeComponent,
     PointContratComponent,
