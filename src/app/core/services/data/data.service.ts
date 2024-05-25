@@ -180,6 +180,7 @@ export class DataService {
       showAsTab: true,
       separateRoute: true,
       menu: [
+        /*
         {
           menuValue: 'Régistre du personnel',
           route: routes.dashboard,
@@ -281,6 +282,7 @@ export class DataService {
             },
           ],
         },
+        */
 
         {
           menuValue: 'Gestion de l’embauche',
