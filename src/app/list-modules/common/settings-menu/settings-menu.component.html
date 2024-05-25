@@ -25,7 +25,7 @@
   <div class="offcanvas-body p-0">
     <div data-simplebar class="h-100">
       <div class="settings-mains">
-        <div class="layout-head">
+        <!-- <div class="layout-head">
           <h5>Mise en page</h5>
           <h6>Choisissez votre mise en page</h6>
         </div>
@@ -100,7 +100,7 @@
             </div>
             <h5 class="fs-13 text-center mt-2">Deux colonnes</h5>
           </div>
-        </div>
+        </div> -->
         <div class="layout-head pt-3">
           <h5>couleur</h5>
           <h6>Choisissez une couleur clair ou sombre.</h6>
@@ -112,7 +112,8 @@
                 class="form-check card-radio p-0"
                 (click)="sideBar.changeColors('1')"
                 [ngClass]="{ active: layoutColor === '1' }"
-                (keydown.enter)="sideBar.changeColors('1')" tabindex="0"
+                (keydown.enter)="sideBar.changeColors('1')"
+                tabindex="0"
               >
                 <input
                   class="form-check-input"
@@ -135,7 +136,8 @@
               <div
                 class="form-check card-radio p-0"
                 (click)="sideBar.changeColors('2')"
-                (keydown.enter)="sideBar.changeColors('2')" tabindex="0"
+                (keydown.enter)="sideBar.changeColors('2')"
+                tabindex="0"
                 [class.active]="layoutColor === '2'"
               >
                 <input
@@ -159,7 +161,8 @@
               <div
                 class="form-check card-radio p-0"
                 (click)="sideBar.changeColors('3')"
-                (keydown.enter)="sideBar.changeColors('3')" tabindex="0"
+                (keydown.enter)="sideBar.changeColors('3')"
+                tabindex="0"
                 [class.active]="layoutColor === '3'"
               >
                 <input
@@ -183,7 +186,8 @@
               <div
                 class="form-check card-radio blue p-0"
                 (click)="sideBar.changeColors('4')"
-                (keydown.enter)="sideBar.changeColors('4')" tabindex="0"
+                (keydown.enter)="sideBar.changeColors('4')"
+                tabindex="0"
                 [class.active]="layoutColor === '4'"
               >
                 <input
@@ -207,7 +211,8 @@
               <div
                 class="form-check card-radio maroon p-0"
                 (click)="sideBar.changeColors('5')"
-                (keydown.enter)="sideBar.changeColors('5')" tabindex="0"
+                (keydown.enter)="sideBar.changeColors('5')"
+                tabindex="0"
                 [class.active]="layoutColor === '5'"
               >
                 <input
@@ -231,7 +236,8 @@
               <div
                 class="form-check card-radio purple p-0"
                 (click)="sideBar.changeColors('6')"
-                (keydown.enter)="sideBar.changeColors('6')" tabindex="0"
+                (keydown.enter)="sideBar.changeColors('6')"
+                tabindex="0"
                 [class.active]="layoutColor === '6'"
               >
                 <input
@@ -264,7 +270,8 @@
               <div
                 class="form-check card-radio p-0"
                 (click)="sideBar.changeWidth('1')"
-                (keydown.enter)="sideBar.changeWidth('1')" tabindex="0"
+                (keydown.enter)="sideBar.changeWidth('1')"
+                tabindex="0"
                 [ngClass]="{ active: layoutWidth === '1' }"
               >
                 <input
@@ -288,7 +295,8 @@
               <div
                 class="form-check card-radio p-0"
                 (click)="boxedLayout()"
-                (keydown.enter)="boxedLayout()" tabindex="0"
+                (keydown.enter)="boxedLayout()"
+                tabindex="0"
                 [class.active]="layoutWidth === '2'"
               >
                 <input
@@ -312,42 +320,53 @@
         </div>
         <div id="layout-position">
           <div class="layout-head pt-3">
-              <h5>Position de mise en page</h5>
-              <h6>Choisissez une position de mise en page fixe ou défilante.</h6>
+            <h5>Position de mise en page</h5>
+            <h6>Choisissez une position de mise en page fixe ou défilante.</h6>
           </div>
-          <div
-          class="btn-group bor-rad-50 overflow-hidden radio" role="group">
-              <input type="radio"
-                class="btn-check" name="data-layout-position"
-                id="layout-position-fixed" value="fixed"
-                (click)="sideBar.changepositionscroll('1')"
-                [ngClass]="{active:layoutPositionScroll === '1'}">
-              <label
-                class="btn btn-light w-sm"
-                for="layout-position-fixed"
-                [class.active]="layoutPositionScroll === '1'">Fixe</label>
-              <input type="radio"
-                class="btn-check"
-                name="data-layout-position"
-                id="layout-position-scrollable" value="scrollable"
-                (click)="sideBar.changepositionscroll('2')"
-                [class.active]="layoutPositionScroll === '2'">
-              <label
-                class="btn btn-light w-sm ms-0"
-                for="layout-position-scrollable"
-                [class.active]="layoutPositionScroll === '2'">défilante</label>
+          <div class="btn-group bor-rad-50 overflow-hidden radio" role="group">
+            <input
+              type="radio"
+              class="btn-check"
+              name="data-layout-position"
+              id="layout-position-fixed"
+              value="fixed"
+              (click)="sideBar.changepositionscroll('1')"
+              [ngClass]="{ active: layoutPositionScroll === '1' }"
+            />
+            <label
+              class="btn btn-light w-sm"
+              for="layout-position-fixed"
+              [class.active]="layoutPositionScroll === '1'"
+              >Fixe</label
+            >
+            <input
+              type="radio"
+              class="btn-check"
+              name="data-layout-position"
+              id="layout-position-scrollable"
+              value="scrollable"
+              (click)="sideBar.changepositionscroll('2')"
+              [class.active]="layoutPositionScroll === '2'"
+            />
+            <label
+              class="btn btn-light w-sm ms-0"
+              for="layout-position-scrollable"
+              [class.active]="layoutPositionScroll === '2'"
+              >défilante</label
+            >
           </div>
-      </div>
+        </div>
         <div class="layout-head pt-3">
-          <h5>Couleur Topbar </h5>
-          <h6>Choisisez  Clair ou Sombre.</h6>
+          <h5>Couleur Topbar</h5>
+          <h6>Choisisez Clair ou Sombre.</h6>
         </div>
         <div class="row">
           <div class="col-4">
             <div
               class="form-check card-radio p-0"
               (click)="sideBar.changeTopcolor('1')"
-              (keydown.enter)="sideBar.changeTopcolor('1')" tabindex="0"
+              (keydown.enter)="sideBar.changeTopcolor('1')"
+              tabindex="0"
               [ngClass]="{ active: layoutTopColor === '1' }"
             >
               <input
@@ -371,7 +390,8 @@
             <div
               class="form-check card-radio p-0"
               (click)="sideBar.changeTopcolor('2')"
-              (keydown.enter)="sideBar.changeTopcolor('2')" tabindex="0"
+              (keydown.enter)="sideBar.changeTopcolor('2')"
+              tabindex="0"
               [class.active]="layoutTopColor === '2'"
             >
               <input
@@ -395,7 +415,7 @@
 
         <div id="sidebar-size">
           <div class="layout-head pt-3">
-            <h5>Taille de la  Sidebar </h5>
+            <h5>Taille de la Sidebar</h5>
             <h6>Choisisez une tailleSidebar.</h6>
           </div>
           <div class="row">
@@ -403,7 +423,8 @@
               <div
                 class="form-check sidebar-setting card-radio p-0"
                 (click)="sideBar.changeSidebarSize('1')"
-                (keydown.enter)="sideBar.changeSidebarSize('1')" tabindex="0"
+                (keydown.enter)="sideBar.changeSidebarSize('1')"
+                tabindex="0"
                 [ngClass]="{ active: layoutSidebarSize === '1' }"
               >
                 <input
@@ -428,7 +449,8 @@
               <div
                 class="form-check sidebar-setting card-radio p-0"
                 (click)="sideBar.changeSidebarSize('2')"
-                (keydown.enter)="sideBar.changeSidebarSize('2')" tabindex="0"
+                (keydown.enter)="sideBar.changeSidebarSize('2')"
+                tabindex="0"
                 [class.active]="layoutSidebarSize === '2'"
               >
                 <input
@@ -453,7 +475,8 @@
               <div
                 class="form-check sidebar-setting card-radio p-0"
                 (click)="sideBar.changeSidebarSize('3')"
-                (keydown.enter)="sideBar.changeSidebarSize('3')" tabindex="0"
+                (keydown.enter)="sideBar.changeSidebarSize('3')"
+                tabindex="0"
                 [class.active]="layoutSidebarSize === '3'"
               >
                 <input
@@ -486,7 +509,8 @@
               <div
                 class="form-check sidebar-setting card-radio p-0"
                 (click)="sideBar.changeSidebarView('1')"
-                (keydown.enter)="sideBar.changeSidebarView('1')" tabindex="0"
+                (keydown.enter)="sideBar.changeSidebarView('1')"
+                tabindex="0"
                 [ngClass]="{ active: layoutSidebarView === '1' }"
               >
                 <input
@@ -510,7 +534,8 @@
               <div
                 class="form-check sidebar-setting card-radio p-0"
                 (click)="sideBar.changeSidebarView('2')"
-                (keydown.enter)="sideBar.changeSidebarView('2')" tabindex="0"
+                (keydown.enter)="sideBar.changeSidebarView('2')"
+                tabindex="0"
                 [class.active]="layoutSidebarView === '2'"
               >
                 <input
@@ -541,7 +566,8 @@
             <div
               class="col-4"
               (click)="sideBar.changeSidebarColor('1')"
-              (keydown.enter)="sideBar.changeSidebarColor('1')" tabindex="0"
+              (keydown.enter)="sideBar.changeSidebarColor('1')"
+              tabindex="0"
               [ngClass]="{ active: layoutSidebarColor === '1' }"
             >
               <div
@@ -570,7 +596,8 @@
               class="col-4"
               (click)="sideBar.changeSidebarColor('2')"
               [class.active]="layoutSidebarColor === '2'"
-              (keydown.enter)="sideBar.changeSidebarColor('2')" tabindex="0"
+              (keydown.enter)="sideBar.changeSidebarColor('2')"
+              tabindex="0"
             >
               <div
                 class="form-check sidebar-setting card-radio p-0"
@@ -598,7 +625,8 @@
               <div
                 class="form-check sidebar-setting card-radio p-0"
                 (click)="sideBar.changeSidebarColor('3')"
-                (keydown.enter)="sideBar.changeSidebarColor('3')" tabindex="0"
+                (keydown.enter)="sideBar.changeSidebarColor('3')"
+                tabindex="0"
                 [class.active]="layoutSidebarColor === '3'"
               >
                 <input
@@ -668,12 +696,12 @@
         </button>
       </div>
       <div class="col-6">
-<!--        <a-->
-<!--          href="https://themeforest.net/item/smarthr-bootstrap-admin-panel-template/21153150"-->
-<!--          target="_blank"-->
-<!--          class="btn btn-primary w-100 bor-rad-50"-->
-<!--          >Buy Now</a-->
-<!--        >-->
+        <!--        <a-->
+        <!--          href="https://themeforest.net/item/smarthr-bootstrap-admin-panel-template/21153150"-->
+        <!--          target="_blank"-->
+        <!--          class="btn btn-primary w-100 bor-rad-50"-->
+        <!--          >Buy Now</a-->
+        <!--        >-->
       </div>
     </div>
   </div>
