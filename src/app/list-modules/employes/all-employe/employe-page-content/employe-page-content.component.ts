@@ -23,7 +23,7 @@ export class EmployePageContentComponent implements OnInit {
 
   public editEmployeeForm!: FormGroup;
   public recherceheEmployeForm!: FormGroup;
-
+  DepatartemtSelectedOption: any;
   constructor(
     private formBuilder: FormBuilder,
     public router: Router,
@@ -57,7 +57,7 @@ export class EmployePageContentComponent implements OnInit {
       // password: ['123456', [Validators.required]],
       // c_password: ['123456', [Validators.required]],
       departement_id: ['', [Validators.required]],
-      poste_id: ['', [Validators.required]],
+      poste_id: ['', []],
 
       telephone: ['', [Validators.required]],
       date_arrivee: ['', [Validators.required]],
@@ -174,6 +174,8 @@ export class EmployePageContentComponent implements OnInit {
         .get('lieu_naisance')
         ?.setValue(res.data.employe.lieu_naisance);
     });
+
+    this.DepatartemtSelectedOption = 3;
   }
 
   onClickSubmitEditEmployee() {
