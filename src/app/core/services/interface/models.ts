@@ -4,6 +4,16 @@ export interface apiResultFormat {
   totalData: number;
 }
 
+export interface SideBar {
+  showMyTab?: boolean;
+  tittle: string;
+  icon: string;
+  showAsTab: boolean;
+  separateRoute: boolean;
+  materialicons?: string;
+  menu: SideBarMenu[];
+}
+
 export interface SideBarMenu {
   showMyTab?: boolean;
   menuValue: string;
@@ -13,7 +23,7 @@ export interface SideBarMenu {
   icon: string;
   base: string;
   materialicons: string;
-  subMenus: SubMenu[];
+  subMenus?: SubMenu[];
   dot?: boolean;
   changeLogVersion?: boolean;
 }
@@ -29,17 +39,20 @@ export interface SubMenu {
   base6?: string;
   base7?: string;
   base8?: string;
+  haseSubSubMenu?: boolean;
+  SubSubMenu?: SubSubMenu[];
+  showSubSubRoute?: boolean;
   currentActive?: boolean;
 }
 
-export interface SideBar {
-  showMyTab?: boolean;
-  tittle: string;
-  icon: string;
-  showAsTab: boolean;
-  separateRoute: boolean;
+export interface SubSubMenu {
+  menuValue: string;
+  route?: string;
+  base?: string;
+  icon?: string;
   materialicons?: string;
-  menu: SideBarMenu[];
+  currentActive?: boolean;
+  dot?: boolean;
 }
 
 export interface routerlink {
@@ -744,7 +757,7 @@ export interface getConge {
   employe: string;
   status: string;
   congeJoui: boolean;
-  etat:  string;
+  etat: string;
   jours: number;
 }
 
@@ -771,13 +784,13 @@ export interface getGrade {
   taux_retenu_its_employe: number;
   taux_retenu_ipts_employe: number;
   //valeur_retenu_cnss_employe: number;
- // valeur_retenu_its_employe: number;
+  // valeur_retenu_its_employe: number;
   taux_retenu_cnss_employe: number;
   taux_retenu_its_employeur: number;
   taux_retenu_ipts_employeur: number;
   //valeur_retenu_its_employeur: number;
   taux_retenu_cnss_employeur: number;
- // valeur_retenu_cnss_employeur: number;
+  // valeur_retenu_cnss_employeur: number;
   ClasseLib: string;
   tauxHoraireHeureSup: number;
 }
@@ -848,10 +861,10 @@ export interface getFormation {
 export interface getExperience {
   id: number;
   employe_id: number;
-  nomStructure:string,
+  nomStructure: string;
   date_debut: Date;
   date_fin: Date;
-  posteOcupe:string,
+  posteOcupe: string;
   employe: string;
 }
 
@@ -876,7 +889,7 @@ export interface getPlainte {
   autre_info: string;
   employe_id: number;
   employe: string;
-  status: string
+  status: string;
 }
 
 export interface getMiniTemplateEmploye {
@@ -913,7 +926,6 @@ export interface getDepartEmploye {
   typeDepart_id: number;
   typeDepart: string;
 }
-
 
 export interface getPost {
   id: number;
