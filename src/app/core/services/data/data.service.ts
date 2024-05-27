@@ -110,30 +110,6 @@ export class DataService {
               haseSubSubMenu: false,
             },
             {
-              menuValue: 'Autres Départs',
-              route: routes.depart_employe,
-              base: 'depart-employe',
-              haseSubSubMenu: false,
-            },
-
-            {
-              menuValue: 'Retraite',
-              route: routes.retraite,
-              base: 'retraite',
-              haseSubSubMenu: false,
-            },
-            {
-              menuValue: 'Licenciement',
-              route: routes.licenciement,
-              base: 'licenciement',
-            },
-            {
-              menuValue: 'Echéance du CDD',
-              route: routes.echeance_cdd,
-              base: 'echeance-cdd',
-              haseSubSubMenu: false,
-            },
-            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
@@ -331,6 +307,50 @@ export class DataService {
             },
           ],
         },
+
+
+        {
+          menuValue: 'Cessation de travail',
+          route: routes.dashboard,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'la la-user-times',
+          base: 'employees',
+          materialicons: '',
+          subMenus: [
+            {
+              menuValue: 'Autres Départs',
+              route: routes.depart_employe,
+              base: 'depart-employe',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Démissions',
+              route: routes.demission,
+              base: 'demission',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Echéance du CDD',
+              route: routes.echeance_cdd,
+              base: 'echeance-cdd',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Licenciement',
+              route: routes.licenciement,
+              base: 'licenciement',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Retraite',
+              route: routes.retraite,
+              base: 'retraite',
+              haseSubSubMenu: false,
+            },
+          ],
+        },
+
         {
           menuValue: 'Formation',
           route: routes.dashboard,
