@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Autres Départs</h3>
+                <h3 class="page-title">Démission</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Autres Départs</li>
+                    <li class="breadcrumb-item active">Démission</li>
                 </ul>
             </div>
 
@@ -29,7 +29,7 @@
 
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_depart_employe"><i
-                        class="fa-solid fa-plus"></i> Ajouter un autre départ</a>
+                        class="fa-solid fa-plus"></i> Ajouter une démission</a>
             </div>
         </div>
     </div>
@@ -62,9 +62,12 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="employeeName">Nom de l'employé</th>
-                            <th mat-sort-header="typeDepart">Type Départ </th>
+                            <th mat-sort-header="dateDepart">Date de démission</th>
                             <th mat-sort-header="motif">Observation</th>
-                            <th mat-sort-header="dateDepart">Date départ</th>
+                            <th mat-sort-header="preavis">Préavis </th>
+                            <th mat-sort-header="preavis_duree">Durée Préavis (Jours) </th>
+                            <th mat-sort-header="preavis_duree">Statut Préavis </th>
+                            <th mat-sort-header="preavis_date">Date Préavis </th>
                             <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
                     </thead>
@@ -72,9 +75,12 @@
                         <tr *ngFor="let item of lstDepartEmploye; let i = index;">
                             <td>{{ i+1 }}</td>
                             <td>{{ item.employe }}</td>
-                            <td>{{ item.typeDepart }}</td>
-                            <td>{{ item.motif }}</td>
                             <td>{{ item.datedepart }}</td>
+                            <td>{{ item.motif }}</td>
+                            <td>{{ item.preavis_id ? "Oui" : "Non" }}</td>
+                            <td>{{ item.preavis_id ? item.duree_preavis : "-" }}</td>
+                            <td>{{ item.preavis_id ? item.statut_preavis : "-" }}</td>
+                            <td>{{ item.preavis_id ? item.date_preavis : "-" }}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -173,7 +179,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter un départ</h5>
+                <h5 class="modal-title">Ajouter une démission</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -186,7 +192,7 @@
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addDepartEmployeForm.get('employe_id')?.invalid && addDepartEmployeForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner l'employé">
+                                    formControlName="employe_id" placeholder="Selectionner l'employé" (selectionChange)="updateSelecctedAddPreavis($event.value)">
                                     <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
                                 <div
@@ -243,6 +249,29 @@
                             </div>
                         </div>
 
+                        <div class="col-sm-12"> <b>DETAILS DU PREAVIS DE L'EMPLOYE SELECTIONNE</b> </div>
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="">Durée (Jours)</label>
+                            <input class="form-control" type="text" formControlName="" readonly
+                            value="{{ (selectedPreavisAddForm && selectedPreavisAddForm.id) ? selectedPreavisAddForm.duree : 'Aucun' }}">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="">Statut</label>
+                            <input class="form-control" type="text" formControlName="" readonly
+                            value="{{ (selectedPreavisAddForm && selectedPreavisAddForm.id) ? selectedPreavisAddForm.statut : 'Aucun' }}">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="">Date</label>
+                            <input class="form-control" type="text" formControlName="" readonly
+                            value="{{ (selectedPreavisAddForm && selectedPreavisAddForm.id) ? selectedPreavisAddForm.date_preavis : 'Aucun' }}">
+                          </div>
+                        </div>
+
                     </div>
 
                     <div class="submit-section">
@@ -260,7 +289,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le départ</h5>
+                <h5 class="modal-title">Modifier la démission</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -274,7 +303,7 @@
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="editDepartEmployeForm.get('employe_id')?.invalid && editDepartEmployeForm.get('employe_id')?.touched"
-                                    formControlName="employe_id" placeholder="Selectionner l'employé">
+                                    formControlName="employe_id" placeholder="Selectionner l'employé" (selectionChange)="updateSelecctedEditPreavis($event.value)">
                                     <mat-option *ngFor="let item of lstEmploye" [value]="item.id"
                                     [class.mat-selected] ="item.id === editFormSelectedEmployeId">{{ item.nom }} {{ item.prenom }} </mat-option>
                                 </mat-select>
@@ -333,6 +362,29 @@
                             </div>
                         </div>
 
+                        <div class="col-sm-12"> <b>DETAILS DU PREAVIS DE L'EMPLOYE SELECTIONNE</b> </div>
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="">Durée (Jours)</label>
+                            <input class="form-control" type="text" formControlName="" readonly
+                            value="{{ (selectedPreavisEditForm && selectedPreavisEditForm.id) ? selectedPreavisEditForm.duree : 'Aucun' }}">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="">Statut</label>
+                            <input class="form-control" type="text" formControlName="" readonly
+                            value="{{ (selectedPreavisEditForm && selectedPreavisEditForm.id) ? selectedPreavisEditForm.statut : 'Aucun' }}">
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="input-block mb-3">
+                            <label class="col-form-label" for="">Date</label>
+                            <input class="form-control" type="text" formControlName="" readonly
+                            value="{{ (selectedPreavisEditForm && selectedPreavisEditForm.id) ? selectedPreavisEditForm.date_preavis : 'Aucun' }}">
+                          </div>
+                        </div>
+
                     </div>
 
                     <div class="submit-section">
@@ -351,7 +403,7 @@
             <div class="modal-body">
                 <div class="form-header">
                     <h3>Supprimer le départ</h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ce départ?</p>
+                    <p>Êtes-vous sûr de vouloir supprimer cette démission?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">

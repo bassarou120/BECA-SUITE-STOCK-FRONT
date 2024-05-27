@@ -158,7 +158,7 @@ export class DepartEmployeComponent implements OnInit {
 
  exportToPDF() {
   $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportDepartEmploye("autre").subscribe(
+    this.exp.exportDepartEmploye("autres départs").subscribe(
       (response: any) => {
         $('#spinner_pdf').addClass('d-none');
         window.open(response.data, '_blank');

@@ -20,6 +20,10 @@ export class DepartEmployeService  {
     return this.http.post(`${this.url}/les_departs`, data);
   }
 
+  getAllPreavis(): Observable<any> {
+    return this.http.get<any>(`${this.url}/preavis`);
+  }
+
   getAllDepartEmploye(): Observable<any> {
     return this.http.get<any>(`${this.url}/les_departs`);
   }

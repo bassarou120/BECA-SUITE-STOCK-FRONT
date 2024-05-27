@@ -1,7 +1,13 @@
-import { Component ,OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
-import { DataService, SideBar, SideBarMenu, routes } from 'src/app/core/core.index';
+import {
+  DataService,
+  SideBar,
+  SideBarMenu,
+  SubMenu,
+  routes,
+} from 'src/app/core/core.index';
 import { SideBarService } from 'src/app/core/services/side-bar/side-bar.service';
 
 @Component({
@@ -9,7 +15,7 @@ import { SideBarService } from 'src/app/core/services/side-bar/side-bar.service'
   templateUrl: './side-menu-one.component.html',
   styleUrls: ['./side-menu-one.component.scss'],
 })
-export class SideMenuOneComponent implements OnDestroy{
+export class SideMenuOneComponent implements OnDestroy {
   public routes = routes;
   public multilevel: Array<boolean> = [false, false, false];
   base = 'dashboard';
@@ -21,11 +27,7 @@ export class SideMenuOneComponent implements OnDestroy{
     private data: DataService,
     private sideBar: SideBarService
   ) {
-
-
     router.events.subscribe((event: object) => {
-
-
       if (event instanceof NavigationEnd) {
         const splitVal = event.url.split('/');
         this.base = splitVal[1];
@@ -39,7 +41,6 @@ export class SideMenuOneComponent implements OnDestroy{
 
     // alert(JSON.stringify(this.side_bar_data))
   }
-
 
   public miniSideBarMouseHover(position: string): void {
     if (position === 'over') {
@@ -61,6 +62,37 @@ export class SideMenuOneComponent implements OnDestroy{
         } else {
           resMenu.showSubRoute = false;
         }
+      });
+    });
+  }
+
+  public expandSubSubMenus(subMenus: SubMenu): void {
+    // sessionStorage.setItem('menuValue', subMenus.menuValue);
+    this.side_bar_data.map((mainMenus: SideBar) => {
+      mainMenus.menu.map((resMenu: SideBarMenu) => {
+        resMenu.subMenus?.map((subMenu: SubMenu) => {
+          // alert(JSON.stringify(subMenu));
+          if (subMenu.menuValue === subMenus.menuValue) {
+            subMenus.showSubSubRoute = !subMenus.showSubSubRoute;
+          } else {
+            subMenu.showSubSubRoute = false;
+          }
+        });
+
+        /*
+        // collapse other submenus which are open
+        if (resMenu.menuValue === menu.menuValue) {
+
+          menu.showSubRoute = !menu.showSubRoute;
+
+          if (menu.showSubRoute === false) {
+            sessionStorage.removeItem('menuValue');
+          }
+        } else {
+          resMenu.showSubRoute = false;
+        }
+
+        */
       });
     });
   }

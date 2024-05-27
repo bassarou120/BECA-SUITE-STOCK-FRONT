@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 import { Router } from '@angular/router';
-import { getDepartEmploye, getTypeDepart, routes, DepartEmployeService, getMiniTemplateEmploye, ExportsService } from 'src/app/core/core.index';
+import { getDepartEmploye, getTypeDepart, routes, DepartEmployeService, getMiniTemplateEmploye, ExportsService, getPreavis} from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,11 +25,20 @@ export class DemissionEmployeComponent implements OnInit {
 
   public lstDepartEmploye: Array<getDepartEmploye> = [];
   public lstTypeDepart: Array<getTypeDepart> = [];
+  public lstPreavis: Array<getPreavis> = [];
+  public filteredLstTypeDepart!: any[];
+  public typeSelected: number = 0;
+
+
   public lstTypeDepartNotToShow: string[] = ["Retraite", "Licenciement", "Démission", "Echéance de CDD"];
+
+
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: Number = 0;
   public editFormSelectedTypeDepartId: Number = 0;
   public searchDataValue = '';
+  public selectedPreavisAddForm: any;
+  public selectedPreavisEditForm: any;
   dataSource!: MatTableDataSource<getDepartEmploye>;
   // pagination variables
   public lastIndex = 0;
@@ -79,27 +88,36 @@ export class DemissionEmployeComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  updateSelecctedAddPreavis(id_emp: number) {
+    this.selectedPreavisAddForm = this.lstPreavis.find((preavis: any) => preavis.employe_id == id_emp);
+  }
+
   onClickSubmitAddDepartEmploye(){
 
     if (this.addDepartEmployeForm.valid){
         this.addDepartEmployeForm.patchValue({ datedepart: this.formatDateToString(this.addDepartEmployeForm.value.datedepart) });
 
-        console.log(this.addDepartEmployeForm.value);
-        this.data.saveDepartEmploye(this.addDepartEmployeForm.value).subscribe(
+        var ans = this.addDepartEmployeForm.value;
+        if(this.selectedPreavisAddForm && this.selectedPreavisAddForm.id) {
+          ans["preavis_id"] = this.selectedPreavisAddForm.id;
+        }
+        this.data.saveDepartEmploye(ans).subscribe(
           (data:any)=>{
             location.reload();
           }
         );
       } else {
-
         console.log("desole le formulaire n'est pas bien renseigné");
       }
-
   }
 
   private convertToDate(date: string): Date {
     const d = date.split('-');
     return new Date(Number(d[0]), Number(d[1])-1, Number(d[2]));
+  }
+
+  updateSelecctedEditPreavis(id_emp: number) {
+    this.selectedPreavisEditForm = this.lstPreavis.find((preavis: any) => preavis.employe_id == id_emp);
   }
 
   getEditForm(row: any){
@@ -112,6 +130,7 @@ export class DemissionEmployeComponent implements OnInit {
     })
     this.editFormSelectedEmployeId = row.employe_id;
     this.editFormSelectedTypeDepartId = row.typeDepart_id;
+    this.updateSelecctedEditPreavis(row.employe_id);
   }
 
   onClickSubmitEditDepartEmploye(){
@@ -119,11 +138,15 @@ export class DemissionEmployeComponent implements OnInit {
     if (this.editDepartEmployeForm.valid){
       this.editDepartEmployeForm.patchValue({ datedepart: this.formatDateToString(this.editDepartEmployeForm.value.datedepart) });
 
-        this.data.editDepartEmploye(this.editDepartEmployeForm.value).subscribe(
-          (data:any)=>{
-            location.reload();
-          }
-        )
+      var ans = this.editDepartEmployeForm.value;
+        if(this.selectedPreavisEditForm && this.selectedPreavisEditForm.id) {
+          ans["preavis_id"] = this.selectedPreavisEditForm.id;
+        }
+      this.data.editDepartEmploye(ans).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
         console.log("success")
       }else {
 
@@ -157,8 +180,6 @@ export class DemissionEmployeComponent implements OnInit {
 
 
  exportToPDF() {
-
-
   $('#spinner_pdf').removeClass('d-none');
     this.exp.exportDepartEmploye("démission").subscribe(
       (response: any) => {
@@ -225,7 +246,7 @@ exportToXLSX() {
       res.data.map((res: getDepartEmploye, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          if (!this.lstTypeDepartNotToShow.some(val => val.trim().toLowerCase() === res.typeDepart.trim().toLowerCase())) {
+          if((res.typeDepart.trim().toLowerCase() == "démission") || (res.typeDepart.trim().toLowerCase() == "démission")) {
             this.lstDepartEmploye.push(res);
             this.serialNumberArray.push(serialNumber);
           }
@@ -246,11 +267,19 @@ exportToXLSX() {
       });
     });
 
+    this.data.getAllPreavis().subscribe((res: any) => {
+      res.data.map((res: getPreavis, index: number) => {
+        this.lstPreavis.push(res);
+      });
+    });
+
     this.data.getAllTypeDepart().subscribe((res: any) => {
       res.data.data.map((res: getTypeDepart, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          if (!this.lstTypeDepartNotToShow.some(val => val.trim().toLowerCase() === res.lib.trim().toLowerCase())) {
+          if(res.lib.trim().toLowerCase() == "démission") {
+            this.typeSelected = res.id;
+            this.addDepartEmployeForm.patchValue({typeDepart_id: res.id});
             this.lstTypeDepart.push(res);
             this.serialNumberArray.push(serialNumber);
           }

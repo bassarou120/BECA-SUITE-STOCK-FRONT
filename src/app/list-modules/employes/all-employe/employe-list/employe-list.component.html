@@ -313,7 +313,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modifier Employé</h5>
+        <h5 class="modal-title">Modifier Employé ---</h5>
         <button
           type="button"
           class="btn-close"
@@ -456,7 +456,7 @@
               </div>
             </div> -->
 
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for=""
                   >Grade<span class="text-danger">*</span></label
@@ -470,7 +470,7 @@
                   formControlName="grade_id"
                   placeholder="Selectionner le grade"
                 >
-                  <!--                  <mat-option value="1">Select Department</mat-option>-->
+ 
                   <mat-option
                     *ngFor="let grade of listGrade"
                     value="{{ grade.id }}"
@@ -479,10 +479,7 @@
                     "
                     >{{ grade.lib }}
                   </mat-option>
-
-                  <!-- <mat-option value="1">Web Development</mat-option>
-                  <mat-option value="1">IT Management</mat-option>
-                  <mat-option value="1">Marketing</mat-option> -->
+ 
                 </mat-select>
                 <div
                   *ngIf="
@@ -501,7 +498,7 @@
                   >
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="col-sm-6">
               <div class="input-block mb-3">
@@ -580,7 +577,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+
+            <!-- <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for=""
                   >Poste <span class="text-danger">*</span></label
@@ -600,9 +598,7 @@
                     value="{{ poste.id }}"
                     >{{ poste.nom_poste }}</mat-option
                   >
-                  <!-- <mat-option value="1">Web Designer</mat-option>
-                  <mat-option value="1">Web Developer</mat-option>
-                  <mat-option value="1">Android Developer</mat-option> -->
+              
                 </mat-select>
                 <div
                   *ngIf="
@@ -621,8 +617,8 @@
                   >
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6">
+            </div> -->
+            <!-- <div class="col-sm-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Ancienneté</label>
                 <input
@@ -651,7 +647,7 @@
                   </small>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- <div class="col-sm-6">
               <div class="input-block mb-3">
@@ -935,7 +931,7 @@
                 >
                   <small
                     *ngIf="
-                      editEmployeeForm.get('classexese_id')?.invalid &&
+                      editEmployeeForm.get('sexe')?.invalid &&
                       editEmployeeForm.get('sexe')?.touched
                     "
                     class="text-danger"

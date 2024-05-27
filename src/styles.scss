@@ -64,9 +64,19 @@ $template-theme: mat.define-light-theme(
   display: block;
 }
 
+.sidebar .sidebar-menu .submenu ul.show-sub-menu ul.show-sub-sub-menu {
+  display: block;
+  
+  padding-left: 5%;
+
+ 
+}
+
+
 .sidebar .sidebar-menu .submenu ul.hide-sub-menu {
   display: none;
 }
+
 
 .cdk-overlay-container {
   z-index: 99999;
@@ -392,6 +402,10 @@ ul {
   box-shadow: none;
 }
 .show-sub-menu {
+  display: block !important;
+  transition: all 0.5s;
+}
+.show-sub-sub-menu {
   display: block !important;
   transition: all 0.5s;
 }
