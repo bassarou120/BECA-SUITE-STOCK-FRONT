@@ -62,9 +62,11 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="employeeName">Nom de l'employé</th>
-                            <th mat-sort-header="typeDepart">Type Départ </th>
+                            <th mat-sort-header="dateDepart">Date de démission</th>
                             <th mat-sort-header="motif">Observation</th>
-                            <th mat-sort-header="dateDepart">Date départ</th>
+                            <th mat-sort-header="preavis">Préavis </th>
+                            <th mat-sort-header="preavis_duree">Durée Préavis </th>
+                            <th mat-sort-header="preavis_date">Date Préavis </th>
                             <th class="text-end" id="exclusion-1">Action</th>
                         </tr>
                     </thead>
@@ -72,9 +74,11 @@
                         <tr *ngFor="let item of lstDepartEmploye; let i = index;">
                             <td>{{ i+1 }}</td>
                             <td>{{ item.employe }}</td>
-                            <td>{{ item.typeDepart }}</td>
-                            <td>{{ item.motif }}</td>
                             <td>{{ item.datedepart }}</td>
+                            <td>{{ item.motif }}</td>
+                            <td>{{ item.preavis_id ? "Oui" : "Non" }}</td>
+                            <td>{{ item.preavis_id ? item.duree_preavis : "-" }}</td>
+                            <td>{{ item.preavis_id ? item.date_preavis : "-" }}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"

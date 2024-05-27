@@ -25,7 +25,13 @@ export class DemissionEmployeComponent implements OnInit {
 
   public lstDepartEmploye: Array<getDepartEmploye> = [];
   public lstTypeDepart: Array<getTypeDepart> = [];
+  public filteredLstTypeDepart!: any[];
+  public typeSelected: number = 0;
+
+
   public lstTypeDepartNotToShow: string[] = ["Retraite", "Licenciement", "Démission", "Echéance de CDD"];
+
+
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: Number = 0;
   public editFormSelectedTypeDepartId: Number = 0;
@@ -225,7 +231,7 @@ exportToXLSX() {
       res.data.map((res: getDepartEmploye, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          if (!this.lstTypeDepartNotToShow.some(val => val.trim().toLowerCase() === res.typeDepart.trim().toLowerCase())) {
+          if((res.typeDepart.trim().toLowerCase() == "démission") || (res.typeDepart.trim().toLowerCase() == "démission")) {
             this.lstDepartEmploye.push(res);
             this.serialNumberArray.push(serialNumber);
           }
@@ -250,7 +256,9 @@ exportToXLSX() {
       res.data.data.map((res: getTypeDepart, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          if (!this.lstTypeDepartNotToShow.some(val => val.trim().toLowerCase() === res.lib.trim().toLowerCase())) {
+          if(res.lib.trim().toLowerCase() == "démission") {
+            this.typeSelected = res.id;
+            this.addDepartEmployeForm.patchValue({typeDepart_id: res.id});
             this.lstTypeDepart.push(res);
             this.serialNumberArray.push(serialNumber);
           }
