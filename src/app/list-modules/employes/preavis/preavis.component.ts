@@ -6,7 +6,7 @@ import { DataService,apiResultFormat, getPreavis, routes, PreavisService, getMin
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import {environment} from "../../../../environments/environment";
+//import {environment} from "../../../../environments/environment";
 
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -24,7 +24,7 @@ export class PreavisComponent implements OnInit {
 
 
   //public default_status: string = environment.default_statut_for_demands;
-  public lstStatut: Array<string> = ["Non effectué", "Effectué"];
+  public lstStatut: Array<string> = ["Non effectué et payé", "Non effectué et non payé"];
   public lstPreavis: Array<getPreavis> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: number = 0;
@@ -46,7 +46,7 @@ export class PreavisComponent implements OnInit {
 
   public addPreavisForm!: FormGroup ;
   public editPreavisForm!: FormGroup
-  public addFormSelectedStatut: string = "Non effectué";
+  public addFormSelectedStatut: string = "";
   public editFormSelectedStatut: string = "";
   public deletePreavisForm!: FormGroup
 
@@ -58,7 +58,7 @@ export class PreavisComponent implements OnInit {
      this.addPreavisForm = this.formBuilder.group({
       employe_id: [0, [Validators.required]],
       duree: ["", [Validators.required]],
-      statut: ["Non effectué", [Validators.required]],
+      statut: ["Non effectué non payé", [Validators.required]],
       date_preavis: ["", [Validators.required]],
     });
 
