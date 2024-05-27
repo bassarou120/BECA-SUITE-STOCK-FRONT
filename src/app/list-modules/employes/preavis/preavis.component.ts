@@ -24,7 +24,7 @@ export class PreavisComponent implements OnInit {
 
 
   //public default_status: string = environment.default_statut_for_demands;
-  public lstStatut: Array<string> = ["Non effectué", "Effectué"];
+  public lstStatut: Array<string> = ["Non Effectué et Non Payé", "Non Effectué et Payé", "Effectué"];
   public lstPreavis: Array<getPreavis> = [];
   public lstEmploye: Array<getMiniTemplateEmploye> = [];
   public editFormSelectedEmployeId: number = 0;
@@ -46,7 +46,7 @@ export class PreavisComponent implements OnInit {
 
   public addPreavisForm!: FormGroup ;
   public editPreavisForm!: FormGroup
-  public addFormSelectedStatut: string = "Non effectué";
+  public addFormSelectedStatut: string = "Non Effectué et Non Payé";
   public editFormSelectedStatut: string = "";
   public deletePreavisForm!: FormGroup
 
@@ -58,7 +58,7 @@ export class PreavisComponent implements OnInit {
      this.addPreavisForm = this.formBuilder.group({
       employe_id: [0, [Validators.required]],
       duree: ["", [Validators.required]],
-      statut: ["Non effectué", [Validators.required]],
+      statut: ["Non Effectué et Non Payé", [Validators.required]],
       date_preavis: ["", [Validators.required]],
     });
 
