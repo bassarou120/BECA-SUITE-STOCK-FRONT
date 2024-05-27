@@ -165,7 +165,7 @@ export class EcheanceCDDComponent implements OnInit {
 
 
   $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportDepartEmploye().subscribe(
+    this.exp.exportDepartEmploye("echéance de cdd").subscribe(
       (response: any) => {
         $('#spinner_pdf').addClass('d-none');
         window.open(response.data, '_blank');

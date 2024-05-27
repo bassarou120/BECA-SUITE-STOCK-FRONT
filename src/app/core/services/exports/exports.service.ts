@@ -70,8 +70,8 @@ export class ExportsService {
     return this.http.get<any>(`${this.url}/exports/formations`);
   }
 
-  exportDepartEmploye(): Observable<any> {
-    return this.http.get<any>(`${this.url}/exports/depart_employes`);
+  exportDepartEmploye(type: string): Observable<any> {
+    return this.http.get<any>(`${this.url}/exports/depart_employes/${type}`);
   }
 
 

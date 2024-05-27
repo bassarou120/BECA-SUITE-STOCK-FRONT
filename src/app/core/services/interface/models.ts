@@ -709,6 +709,7 @@ export interface getPreavis {
   duree: number;
   statut: string;
   id: string;
+  date_preavis: Date;
 }
 export interface getTypeContrat {
   id: number;
@@ -925,6 +926,8 @@ export interface getDepartEmploye {
   employe: string;
   typeDepart_id: number;
   typeDepart: string;
+  type_licenciement_id: number;
+  type_licenciement: string;
 }
 
 export interface getPost {

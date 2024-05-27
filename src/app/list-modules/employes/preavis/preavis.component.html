@@ -60,6 +60,7 @@
                         <tr>
                             <th style="width: 30px;" > &nbsp; #</th>
                             <th mat-sort-header="employeName"> &nbsp; Employé</th>
+                            <th mat-sort-header="date_preavis"> &nbsp; Date du préavis</th>
                             <th mat-sort-header="congeName"> &nbsp; Durée (Mois)</th>
                             <th mat-sort-header="autresInfos"> &nbsp; Statut</th>
                             <th class="text-end" id="exclusion-1">Action</th>
@@ -69,6 +70,7 @@
                         <tr *ngFor="let item of lstPreavis; let i = index;">
                             <td>{{i+1}}</td>
                             <td>{{item.employe}}</td>
+                            <td>{{item.date_preavis}}</td>
                             <td>{{item.duree}}</td>
                             <td>{{item.statut}}</td>
                             <td class="text-end" id="exclusion-2">
@@ -194,7 +196,21 @@
                             </div>
                         </div>
 
-
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3 date-input1">
+                                <label class="col-form-label" for="date_preavis">Date du préavis<span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
+                                        [class.invalid]="addPreavisForm.get('date_preavis')?.invalid && addPreavisForm.get('date_preavis')?.touched"
+                                        placeholder="Sélectionner la date du préavis" formControlName="date_preavis">
+                                        <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                                    <div> <small
+                                            *ngIf="addPreavisForm.get('date_preavis')?.invalid && addPreavisForm.get('date')?.touched"
+                                            class="text-danger"> *La date du préavis est obligatoire </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="col-sm-12">
                             <div class="input-block mb-3">
@@ -211,20 +227,18 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-12">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="statut">Statut <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text"
-                                    [class.invalid]="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched"
-                                    placeholder="Statut du préavis" formControlName="statut">
-                                <div
-                                    *ngIf="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched">
-                                    <small
-                                        *ngIf="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched"
-                                        class="text-danger"> *Statut est obligatoire</small>
-                                </div>
+                        <div class="input-block mb-12">
+                            <label class="col-form-label" for="statut">Statut<span class="text-danger">*</span></label>
+                            <mat-select class="select mat-cust-select form-control"
+                              [class.invalid]="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched"
+                              formControlName="status" placeholder="Selectionner le statut du préavis">
+                              <mat-option *ngFor="let item of lstStatut" [value]="item"
+                                [class.mat-selected]="item === addFormSelectedStatut">{{ item }} </mat-option>
+                            </mat-select>
+                            <div *ngIf="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched">
+                              <small class="text-danger"> *Le statut est obligatoire</small>
                             </div>
-                        </div>
+                          </div>
                     </div>
 
 
@@ -271,6 +285,21 @@
                             </div>
                         </div>
 
+                        <div class="col-sm-12">
+                            <div class="input-block mb-3 date-input2">
+                                <label class="col-form-label" for="date_preavis">Date du préavis<span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
+                                        [class.invalid]="editPreavisForm.get('date_preavis')?.invalid && editPreavisForm.get('date_preavis')?.touched"
+                                        placeholder="Sélectionner la date du préavis" formControlName="date_preavis">
+                                        <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
+                                    <div> <small
+                                            *ngIf="editPreavisForm.get('date_preavis')?.invalid && editPreavisForm.get('date')?.touched"
+                                            class="text-danger"> *La date du préavis est obligatoire</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
                         <div class="col-sm-12">
@@ -288,20 +317,18 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-12">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label" for="statut">Statut <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text"
-                                    [class.invalid]="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched"
-                                    placeholder="Statut du préavis" formControlName="statut">
-                                <div
-                                    *ngIf="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched">
-                                    <small
-                                        *ngIf="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched"
-                                        class="text-danger"> *Statut est obligatoire</small>
-                                </div>
+                        <div class="input-block mb-12">
+                            <label class="col-form-label" for="statut">Statut<span class="text-danger">*</span></label>
+                            <mat-select class="select mat-cust-select form-control"
+                              [class.invalid]="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched"
+                              formControlName="status" placeholder="Selectionner le statut du préavis">
+                              <mat-option *ngFor="let item of lstStatut" [value]="item"
+                                [class.mat-selected]="item === editFormSelectedStatut">{{ item }} </mat-option>
+                            </mat-select>
+                            <div *ngIf="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched">
+                              <small class="text-danger"> *Le statut est obligatoire</small>
                             </div>
-                        </div>
+                          </div>
                     </div>
 
 

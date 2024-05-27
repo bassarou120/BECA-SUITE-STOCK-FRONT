@@ -608,27 +608,6 @@ export class DataService {
               base2: 'employee-list',
             },
             {
-              menuValue: 'Autres Départs',
-              route: routes.depart_employe,
-              base: 'depart-employe',
-            },
-
-            {
-              menuValue: 'Retraite',
-              route: routes.retraite,
-              base: 'retraite',
-            },
-            {
-              menuValue: 'Licenciement',
-              route: routes.licenciement,
-              base: 'licenciement',
-            },
-            {
-              menuValue: 'Echéance du CDD',
-              route: routes.echeance_cdd,
-              base: 'echeance-cdd',
-            },
-            {
               menuValue: 'Heure supplémentaire',
               route: routes.heures_supplementaires,
               base: 'heures-supllémetaires',
@@ -708,6 +687,42 @@ export class DataService {
               menuValue: 'Absences',
               route: routes.absences,
               base: 'absences',
+            },
+          ],
+        },
+        {
+          menuValue: 'Cessation du Travail',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'la la-user-times',
+          base: 'employees',
+          materialicons: '',
+          subMenus: [
+            {
+              menuValue: 'Autres Départs',
+              route: routes.depart_employe,
+              base: 'depart-employe',
+            },
+            {
+              menuValue: 'Démission',
+              route: routes.demission,
+              base: 'demission',
+            },
+            {
+              menuValue: 'Echéance du CDD',
+              route: routes.echeance_cdd,
+              base: 'echeance-cdd',
+            },
+            {
+              menuValue: 'Licenciement',
+              route: routes.licenciement,
+              base: 'licenciement',
+            },
+            {
+              menuValue: 'Retraite',
+              route: routes.retraite,
+              base: 'retraite',
             },
           ],
         },

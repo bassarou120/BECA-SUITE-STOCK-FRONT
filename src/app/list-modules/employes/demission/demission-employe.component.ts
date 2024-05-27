@@ -12,10 +12,10 @@ import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-depart-employe',
-  templateUrl: './depart-employe.component.html',
-  styleUrls: ['./depart-employe.component.scss']
+  templateUrl: './demission-employe.component.html',
+  styleUrls: ['./demission-employe.component.scss']
 })
-export class DepartEmployeComponent implements OnInit {
+export class DemissionEmployeComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
@@ -157,8 +157,10 @@ export class DepartEmployeComponent implements OnInit {
 
 
  exportToPDF() {
+
+
   $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportDepartEmploye("autre").subscribe(
+    this.exp.exportDepartEmploye("démission").subscribe(
       (response: any) => {
         $('#spinner_pdf').addClass('d-none');
         window.open(response.data, '_blank');
