@@ -917,7 +917,8 @@ export interface getDepartEmploye {
   type_licenciement: string;
   preavis_id: number;
   duree_preavis: number;
-  date_preavis:Date;
+  date_preavis: Date;
+  statut_preavis: string;
 }
 
 
