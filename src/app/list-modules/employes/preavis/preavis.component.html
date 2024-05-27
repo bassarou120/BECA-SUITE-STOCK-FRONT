@@ -231,7 +231,7 @@
                             <label class="col-form-label" for="statut">Statut<span class="text-danger">*</span></label>
                             <mat-select class="select mat-cust-select form-control"
                               [class.invalid]="addPreavisForm.get('statut')?.invalid && addPreavisForm.get('statut')?.touched"
-                              formControlName="status" placeholder="Selectionner le statut du préavis">
+                              formControlName="statut" placeholder="Selectionner le statut du préavis">
                               <mat-option *ngFor="let item of lstStatut" [value]="item"
                                 [class.mat-selected]="item === addFormSelectedStatut">{{ item }} </mat-option>
                             </mat-select>
@@ -321,7 +321,7 @@
                             <label class="col-form-label" for="statut">Statut<span class="text-danger">*</span></label>
                             <mat-select class="select mat-cust-select form-control"
                               [class.invalid]="editPreavisForm.get('statut')?.invalid && editPreavisForm.get('statut')?.touched"
-                              formControlName="status" placeholder="Selectionner le statut du préavis">
+                              formControlName="statut" placeholder="Selectionner le statut du préavis">
                               <mat-option *ngFor="let item of lstStatut" [value]="item"
                                 [class.mat-selected]="item === editFormSelectedStatut">{{ item }} </mat-option>
                             </mat-select>

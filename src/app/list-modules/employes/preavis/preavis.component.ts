@@ -116,8 +116,7 @@ export class PreavisComponent implements OnInit {
 
   onClickSubmitAddPreavis(){
 
-      this.addPreavisForm.patchValue({ date_preavis: this.formatDateToString(this.addPreavisForm.value.date_preavis) });
-
+    this.addPreavisForm.patchValue({ date_preavis: this.formatDateToString(this.addPreavisForm.value.date_preavis) });
     if (this.addPreavisForm.valid){
       this.data.savePreavis(this.addPreavisForm.value).subscribe(
         (data: any) => {
@@ -143,7 +142,6 @@ export class PreavisComponent implements OnInit {
       date_preavis: this.convertToDate(row.date_preavis),
     })
     this.editFormSelectedStatut = row.statut;
-    //this.addFormSelectedStatut = row.statut;
     this.editFormSelectedEmployeId = row.employe_id;
   }
 
