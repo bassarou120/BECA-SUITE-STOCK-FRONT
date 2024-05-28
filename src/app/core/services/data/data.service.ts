@@ -298,7 +298,7 @@ export class DataService {
               showSubSubRoute: false,
             },
             {
-              menuValue: 'Absenceces',
+              menuValue: 'Absences',
               route: routes.absences,
               base: 'admin',
               base2: 'sdhkjh',
