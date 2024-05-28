@@ -265,7 +265,7 @@ export class DataService {
           route: routes.dashboard,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'dashboard',
+          icon: 'la la-user-tie',
           base: 'dashboard',
           materialicons: 'home',
           subMenus: [
