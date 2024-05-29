@@ -183,7 +183,7 @@
             <div class="modal-body">
             <form [formGroup]="addDepartEmployeForm" (ngSubmit)="onClickSubmitAddDepartEmploye()" novalidate>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -200,7 +200,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <!-- <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -216,9 +216,9 @@
                                         class="text-danger"> *Le type de départ est obligatoire</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3 date-input1">
                                 <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -271,7 +271,7 @@
             <div class="modal-body">
             <form [formGroup]="editDepartEmployeForm" (ngSubmit)="onClickSubmitEditDepartEmploye()" novalidate>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <input type="hidden" formControlName="id">
                                 <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
@@ -290,7 +290,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <!-- <div class="col-sm-4">
                             <div class="input-block mb-3">
                                 <label class="col-form-label" for="typeDepart_id">Type de départ <span class="text-danger">*</span></label>
                                 <mat-select  class="select mat-cust-select form-control"
@@ -306,9 +306,9 @@
                                         class="text-danger"> *Le type de départ est obligatoire</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-block mb-3 date-input2">
                                 <label class="col-form-label" for="datedepart">Date de départ<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
