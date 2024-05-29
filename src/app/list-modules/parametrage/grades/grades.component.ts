@@ -17,10 +17,10 @@ import { MatTableDataSource } from '@angular/material/table';
 export class GradesComponent implements OnInit {
   public routes = routes;
 
- 
+
   public lstGrades: Array<getGrade> = [];
   public lstClasse: Array<getClasse> = [];
- 
+
   public lstCategorie: Array<getCategorie> = [];
   public editFormSelectedEmployeId: number = 0;
   public searchDataValue = '';
@@ -117,7 +117,7 @@ export class GradesComponent implements OnInit {
           console.log(response);
           location.reload();
         });
-        
+
       } else {
         console.log("Desolé le formulaire n'est pas bien renseigné");
       }
@@ -126,6 +126,7 @@ export class GradesComponent implements OnInit {
 
   showModal(message: string) {
     const modal = document.getElementById('alert_modal');
+
     if (modal) {
       const messageElement = modal.querySelector('.modal-body p');
       if (messageElement) {
@@ -141,16 +142,19 @@ export class GradesComponent implements OnInit {
       if (okButton) {
         okButton.addEventListener('click', () => {
           this.hideModal(modal);
+          this.hideDeleteModal();
         });
       }
       window.addEventListener('click', (event) => {
         if (event.target === modal) {
           this.hideModal(modal);
+          this.hideDeleteModal();
         }
       });
       window.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
           this.hideModal(modal);
+          this.hideDeleteModal();
         }
       });
   } else {
@@ -160,6 +164,15 @@ export class GradesComponent implements OnInit {
   hideModal(modal: HTMLElement) {
     modal.style.display = 'none';
     modal.classList.remove('show');
+  }
+
+  hideDeleteModal() {
+    const deleteModalCloseButton = document.querySelector('#delete_grade .cancel-btn') as HTMLButtonElement | null;
+    if (deleteModalCloseButton) {
+      deleteModalCloseButton.click();
+    } else {
+      console.error("Delete Modal close button not found!");
+    }
   }
 
   calculateITSPercent() {
@@ -237,16 +250,16 @@ export class GradesComponent implements OnInit {
     } else {
       console.log("Desolé le formulaire n'est pas bien renseigné");
     }
-  
+
       }
 
       calculateITSPercentEdit() {
         const baseCategorielle = this.editGradeForm.get('base_categorielle')?.value;
         const primeAnciennete = this.editGradeForm.get('prime_enciennete')?.value;
-    
+
         // Calculer la somme de la base catégorielle et de la prime d'ancienneté
         const total = baseCategorielle + primeAnciennete;
-    
+
         // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
         let tauxITS = 0;
         if (total >= 0 && total <= 60000) {
@@ -263,7 +276,7 @@ export class GradesComponent implements OnInit {
           // Si le total dépasse l'intervalle le plus élevé, utiliser le taux ITS maximum (30%)
           tauxITS = 30;
         }
-    
+
         // Mettre à jour la valeur du champ taux_retenu_its_employe dans le formulaire
         this.editGradeForm.patchValue({
           taux_retenu_its_employe: tauxITS
@@ -273,13 +286,13 @@ export class GradesComponent implements OnInit {
       calculateIPTSPercentEdit() {
         const baseCategorielle = this.editGradeForm.get('base_categorielle')?.value;
         const primeAnciennete = this.editGradeForm.get('prime_enciennete')?.value;
-    
+
         console.log("Base Categorielle:", baseCategorielle);
         console.log("Prime Anciennete:", primeAnciennete);
         // Calculer la somme de la base catégorielle et de la prime d'ancienneté
         const totalpts = baseCategorielle + primeAnciennete;
         console.log("Total:", totalpts);
-    
+
         // Calculer le pourcentage de taux ITS employé en fonction de l'intervalle
         let tauxIPTS = 0;
     if (totalpts >= 0 && totalpts <= 50000) {
@@ -297,16 +310,16 @@ export class GradesComponent implements OnInit {
       tauxIPTS = 30;
     }
 
-    
+
         console.log("Taux IPTS:", tauxIPTS);
-    
+
         // Mettre à jour la valeur du champ taux_retenu_its_employe dans le formulaire
         this.editGradeForm.patchValue({
           taux_retenu_ipts_employe: tauxIPTS
         });
       }
 
-  
+
   onClickSubmitDeleteGrade(){
     console.log(this.deleteGradeForm.value)
 
@@ -328,9 +341,9 @@ export class GradesComponent implements OnInit {
 
   }
 
-   
 
- 
+
+
 
 
   getEditForm(row: any){
