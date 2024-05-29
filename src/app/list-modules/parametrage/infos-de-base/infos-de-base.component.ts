@@ -56,6 +56,11 @@ export class InfosDeBaseComponent implements OnInit {
       NOM_SIGNATAIRE_1_TXT: ["", [Validators.required]],
       NOM_SIGNATAIRE_2: ["", [Validators.required]],
       NOM_SIGNATAIRE_2_TXT: ["", [Validators.required]],
+      // Les signatures
+      SIGNATURE_1: ["", [Validators.required]],
+      SIGNATURE_1_TXT: ["", [Validators.required]],
+      SIGNATURE_2: ["", [Validators.required]],
+      SIGNATURE_2_TXT: ["", [Validators.required]],
       // Les banques et numéros de compte
       BANQUE_1: ["", [Validators.required]],
       BANQUE_1_TXT: ["", [Validators.required]],

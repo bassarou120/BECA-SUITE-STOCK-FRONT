@@ -71,27 +71,49 @@
 
       <div class="cat-4 row">
         <div class="input-block mb-3 col-6">
-          <label class="col-form-label" for="NOM_SIGNATAIRE_1_TXT">Signataire n°1 </label>
-          <mat-select class="select mat-cust-select form-control"
-            [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
-              formControlName="NOM_SIGNATAIRE_1_TXT" placeholder="-">
-              <mat-option *ngFor="let item of lstEmploye" [value]="item"
-                [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
-            </mat-select>
-          <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
-            class="text-danger"> *La valeur entrée est invalide</small>
+          <div class="input-block mb-3 col-12">
+            <label class="col-form-label" for="NOM_SIGNATAIRE_1_TXT">Signataire n°1 </label>
+            <mat-select class="select mat-cust-select form-control"
+              [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
+                formControlName="NOM_SIGNATAIRE_1_TXT" placeholder="-">
+                <mat-option *ngFor="let item of lstEmploye" [value]="item"
+                  [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
+              </mat-select>
+            <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
+              class="text-danger"> *La valeur entrée est invalide</small>
+          </div>
+
+          <div class="input-block mb-3 col-12 stick-top-just-top-field">
+            <label class="col-form-label" for="SIGNATURE_1_TXT">Signature du signataire n°1</label>
+            <input class="form-control" type="text"
+              [class.invalid]="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
+              formControlName="SIGNATURE_1_TXT">
+            <small *ngIf="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
+              class="text-danger"> *La valeur entrée est invalide</small>
+          </div>
         </div>
 
         <div class="input-block mb-3 col-6">
-          <label class="col-form-label" for="NOM_SIGNATAIRE_2_TXT">Signataire n°2 </label>
-          <mat-select class="select mat-cust-select form-control"
-            [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
-              formControlName="NOM_SIGNATAIRE_2_TXT" placeholder="-">
-              <mat-option *ngFor="let item of lstEmploye" [value]="item"
-                [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
-            </mat-select>
-          <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
-            class="text-danger"> *La valeur entrée est invalide</small>
+          <div class="input-block mb-3 col-12">
+            <label class="col-form-label" for="NOM_SIGNATAIRE_2_TXT">Signataire n°2 </label>
+            <mat-select class="select mat-cust-select form-control"
+              [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
+                formControlName="NOM_SIGNATAIRE_2_TXT" placeholder="-">
+                <mat-option *ngFor="let item of lstEmploye" [value]="item"
+                  [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
+              </mat-select>
+            <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
+              class="text-danger"> *La valeur entrée est invalide</small>
+          </div>
+
+          <div class="input-block mb-3 col-12 stick-top-just-top-field">
+            <label class="col-form-label" for="SIGNATURE_2_TXT">Signature du signataire n°2</label>
+            <input class="form-control" type="text"
+              [class.invalid]="setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.touched"
+              formControlName="SIGNATURE_2_TXT">
+            <small *ngIf="setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.touched"
+              class="text-danger"> *La valeur entrée est invalide</small>
+          </div>
         </div>
       </div>
 
@@ -106,7 +128,7 @@
               class="text-danger"> *La valeur entrée est invalide</small>
           </div>
 
-          <div class="input-block mb-3 col-12 stick-to-a-bank">
+          <div class="input-block mb-3 col-12 stick-top-just-top-field">
             <label class="col-form-label" for="NUMERO_DE_COMPTE_1_TXT">N° de compte de la banque 1</label>
             <input class="form-control" type="text"
               [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.touched"
@@ -127,7 +149,7 @@
             class="text-danger"> *La valeur entrée est invalide</small>
         </div>
 
-        <div class="input-block mb-3 col-12 stick-to-a-bank">
+        <div class="input-block mb-3 col-12 stick-top-just-top-field">
           <label class="col-form-label" for="NUMERO_DE_COMPTE_2_TXT">N° de compte de la banque 2 </label>
           <input class="form-control" type="text"
             [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.touched"
@@ -148,7 +170,7 @@
             class="text-danger"> *La valeur entrée est invalide</small>
         </div>
 
-        <div class="input-block mb-3 col-12 stick-to-a-bank">
+        <div class="input-block mb-3 col-12 stick-top-just-top-field">
           <label class="col-form-label" for="NUMERO_DE_COMPTE_3_TXT">N° de compte de la banque 3 </label>
           <input class="form-control" type="text"
             [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.touched"
@@ -169,7 +191,7 @@
             class="text-danger"> *La valeur entrée est invalide</small>
         </div>
 
-        <div class="input-block mb-3 col-12 stick-to-a-bank">
+        <div class="input-block mb-3 col-12 stick-top-just-top-field">
           <label class="col-form-label" for="NUMERO_DE_COMPTE_4_TXT">N° de compte de la banque 4 </label>
           <input class="form-control" type="text"
             [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.touched"
@@ -189,7 +211,7 @@
             class="text-danger"> *La valeur entrée est invalide</small>
         </div>
 
-        <div class="input-block mb-3 col-12 stick-to-a-bank">
+        <div class="input-block mb-3 col-12 stick-top-just-top-field">
           <label class="col-form-label" for="NUMERO_DE_COMPTE_5_TXT">N° de compte de la banque 5 </label>
           <input class="form-control" type="text"
             [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.touched"
