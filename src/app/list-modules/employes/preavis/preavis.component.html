@@ -60,7 +60,7 @@
                         <tr>
                             <th style="width: 30px;" > &nbsp; #</th>
                             <th mat-sort-header="employeName"> &nbsp; Employé</th>
-                            <th mat-sort-header="date_preavis"> &nbsp; Date du préavis</th>
+                            <th mat-sort-header="date_preavis"> &nbsp; Date de début préavis</th>
                             <th mat-sort-header="congeName"> &nbsp; Durée (Jours)</th>
                             <th mat-sort-header="autresInfos"> &nbsp; Statut</th>
                             <th class="text-end" id="exclusion-1">Action</th>
@@ -198,7 +198,7 @@
 
                         <div class="col-sm-12">
                             <div class="input-block mb-3 date-input1">
-                                <label class="col-form-label" for="date_preavis">Date du préavis<span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="date_preavis">Date de début préavis<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input1"
                                         [class.invalid]="addPreavisForm.get('date_preavis')?.invalid && addPreavisForm.get('date_preavis')?.touched"
@@ -287,7 +287,7 @@
 
                         <div class="col-sm-12">
                             <div class="input-block mb-3 date-input2">
-                                <label class="col-form-label" for="date_preavis">Date du préavis<span class="text-danger">*</span></label>
+                                <label class="col-form-label" for="date_preavis">Date de début préavis<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" bsDatepicker type="text" container=".date-input2"
                                         [class.invalid]="editPreavisForm.get('date_preavis')?.invalid && editPreavisForm.get('date_preavis')?.touched"

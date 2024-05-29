@@ -127,13 +127,6 @@ export class DataService {
               base: 'plaintes',
               haseSubSubMenu: false,
             },
-
-            {
-              menuValue: 'Les Préavis (GRH)',
-              route: routes.preavisGRH,
-              base: 'preavis',
-              haseSubSubMenu: false,
-            },
             {
               menuValue: 'Point des Congés',
               route: routes.point_conge,
@@ -322,6 +315,12 @@ export class DataService {
               menuValue: 'Autres Départs',
               route: routes.depart_employe,
               base: 'depart-employe',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Préavis',
+              route: routes.preavisGRH,
+              base: 'preavis',
               haseSubSubMenu: false,
             },
             {
