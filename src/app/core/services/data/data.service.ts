@@ -128,12 +128,7 @@ export class DataService {
               haseSubSubMenu: false,
             },
 
-            {
-              menuValue: 'Les Préavis (GRH)',
-              route: routes.preavisGRH,
-              base: 'preavis',
-              haseSubSubMenu: false,
-            },
+          
             {
               menuValue: 'Point des Congés',
               route: routes.point_conge,
@@ -340,6 +335,12 @@ export class DataService {
               menuValue: 'Licenciement',
               route: routes.licenciement,
               base: 'licenciement',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Préavis',
+              route: routes.preavis,
+              base: 'preavis',
               haseSubSubMenu: false,
             },
             {
