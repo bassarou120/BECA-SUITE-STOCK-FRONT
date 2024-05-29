@@ -319,7 +319,7 @@ export class DataService {
             },
             {
               menuValue: 'Les Préavis',
-              route: routes.preavisGRH,
+              route: routes.preavis,
               base: 'preavis',
               haseSubSubMenu: false,
             },
@@ -339,6 +339,12 @@ export class DataService {
               menuValue: 'Licenciement',
               route: routes.licenciement,
               base: 'licenciement',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Préavis',
+              route: routes.preavis,
+              base: 'preavis',
               haseSubSubMenu: false,
             },
             {

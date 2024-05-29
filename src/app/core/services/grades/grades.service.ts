@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, map } from 'rxjs';
+import { Observable, BehaviorSubject, map,  throwError, catchError } from 'rxjs';
 import {
   SideBar,
   SideBarMenu,
   apiResultFormat,
   routes,
 } from '../../core.index';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
 import {environment} from "../../../../environments/environment";
 @Injectable({
   providedIn: 'root',
@@ -38,7 +38,16 @@ export class GradeService  {
   }
 
   deleteGrade(data:any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/les_grades/${data.id}`);
+    return this.http.delete<any>(`${this.url}/les_grades/${data.id}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Une erreur s\'est produite lors de la communication avec le serveur.';
+        if (error.error && error.error.error) {
+          errorMessage = error.error.error;
+        }
+        // alert(errorMessage);
+        return throwError(errorMessage);
+      })
+    );
   }
 
 }

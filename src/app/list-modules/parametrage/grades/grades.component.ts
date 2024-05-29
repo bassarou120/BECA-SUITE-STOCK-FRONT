@@ -117,10 +117,49 @@ export class GradesComponent implements OnInit {
           console.log(response);
           location.reload();
         });
+        
       } else {
         console.log("Desolé le formulaire n'est pas bien renseigné");
       }
 
+  }
+
+  showModal(message: string) {
+    const modal = document.getElementById('alert_modal');
+    if (modal) {
+      const messageElement = modal.querySelector('.modal-body p');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      const firstFocusableElement = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (firstFocusableElement) {
+        (firstFocusableElement as HTMLElement).focus();
+      }
+      const okButton = modal.querySelector('.cancel-btn');
+      if (okButton) {
+        okButton.addEventListener('click', () => {
+          this.hideModal(modal);
+        });
+      }
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          this.hideModal(modal);
+        }
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.hideModal(modal);
+        }
+      });
+  } else {
+    console.error("Modal element not found!");
+  }
+  }
+  hideModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
   }
 
   calculateITSPercent() {
@@ -276,6 +315,9 @@ export class GradesComponent implements OnInit {
         this.data.deleteGrade(this.deleteGradeForm.value).subscribe(
           (data:any)=>{
             location.reload();
+          },
+          (error: string) => {
+            this.showModal(error);
           }
         )
         console.log("success")
@@ -286,7 +328,9 @@ export class GradesComponent implements OnInit {
 
   }
 
+   
 
+ 
 
 
   getEditForm(row: any){
