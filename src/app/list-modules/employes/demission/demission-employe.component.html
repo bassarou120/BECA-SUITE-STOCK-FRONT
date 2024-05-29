@@ -210,7 +210,8 @@
                                 <mat-select  class="select mat-cust-select form-control"
                                     [class.invalid]="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched"
                                     formControlName="typeDepart_id" placeholder="Selectionner le type de départ">
-                                    <mat-option *ngFor="let item of lstTypeDepart" value={{item.id}}>{{ item.lib }} </mat-option>
+                                    <mat-option *ngFor="let item of lstTypeDepart" [value]="item.id"
+                                    [class.mat-selected] ="item.id === typeSelected">{{ item.lib }} </mat-option>
                                 </mat-select>
                                 <div
                                     *ngIf="addDepartEmployeForm.get('typeDepart_id')?.invalid && addDepartEmployeForm.get('typeDepart_id')?.touched">

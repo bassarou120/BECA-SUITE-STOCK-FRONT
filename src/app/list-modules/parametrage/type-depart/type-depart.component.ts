@@ -6,8 +6,6 @@ import { ExportsService, routes, TypeDepartService, getTypeDepart } from 'src/ap
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
 
@@ -26,6 +24,7 @@ export class TypeDepartComponent implements OnInit {
 
 
   public lstTypeDepart: Array<getTypeDepart> = [];
+  public lstTypeDepartNotToShow: string[] = ["Retraite", "Licenciement", "Démission", "Echéance de CDD"];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<getTypeDepart>;
   // pagination variables
@@ -183,9 +182,10 @@ export class TypeDepartComponent implements OnInit {
       res.data.data.map((res: getTypeDepart, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.lstTypeDepart.push(res);
-          this.serialNumberArray.push(serialNumber);
+          if (!this.lstTypeDepartNotToShow.some(val => val.trim().toLowerCase() === res.lib.trim().toLowerCase())) {
+            this.lstTypeDepart.push(res);
+            this.serialNumberArray.push(serialNumber);
+          }
         }
       });
       this.dataSource = new MatTableDataSource<getTypeDepart>(this.lstTypeDepart);
