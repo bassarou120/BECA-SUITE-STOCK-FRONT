@@ -273,15 +273,15 @@ export class fichepaieComponent implements OnInit {
 
     this.addEmployeFichePaieForm
       .get('base_categorielle')
-      ?.setValue(this.selectedEmp.contrats[0].base_categorielle);
+      ?.setValue(this.selectedEmp.contrats[0]?.base_categorielle);
 
     this.addEmployeFichePaieForm
       .get('prime_anciennete')
-      ?.setValue(this.selectedEmp.contrats[0].prime_anciennete);
+      ?.setValue(this.selectedEmp.contrats[0]?.prime_anciennete);
 
     this.addEmployeFichePaieForm
       .get('contrat_id')
-      ?.setValue(this.selectedEmp.contrats[0].id);
+      ?.setValue(this.selectedEmp.contrats[0]?.id);
 
     this.addEmployeFichePaieForm
       .get('employe_id')
