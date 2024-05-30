@@ -19,7 +19,8 @@
           </a>
         </div>
         <div class="col-auto">
-          <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL
+          <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter
+            EXCEL
             <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>
           </a>
         </div>
@@ -53,7 +54,8 @@
         </div>
       </div>
       <div class="table-responsive">
-        <table matSort (matSortChange)="sortData($event)" class="table table-striped custom-table datatable mb-0" id="to_export">
+        <table matSort (matSortChange)="sortData($event)" class="table table-striped custom-table datatable mb-0"
+          id="to_export">
           <thead>
             <tr>
               <th style="width: 30px;">#</th>
@@ -95,6 +97,9 @@
             </tr>
           </tbody>
         </table>
+        <br />
+        <br />
+        <br />
       </div>
       <div class="table_footer">
         <div class="col-sm-12 col-md-5">
@@ -190,7 +195,8 @@
                   <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }}
                   </mat-option>
                 </mat-select>
-                <div *ngIf="addExperienceForm.get('employe_id')?.invalid && addExperienceForm.get('employe_id')?.touched">
+                <div
+                  *ngIf="addExperienceForm.get('employe_id')?.invalid && addExperienceForm.get('employe_id')?.touched">
                   <small
                     *ngIf="addExperienceForm.get('employe_id')?.invalid && addExperienceForm.get('employe_id')?.touched"
                     class="text-danger"> *L'employé est obligatoire</small>
@@ -219,12 +225,15 @@
 
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="nomStructure">Nom de la structure <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="nomStructure">Nom de la structure <span
+                    class="text-danger">*</span></label>
                 <input class="form-control" type="text"
                   [class.invalid]="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched"
                   placeholder="Entrer le nom de la Structure " formControlName="nomStructure">
-                <div *ngIf="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched">
-                  <small *ngIf="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched"
+                <div
+                  *ngIf="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched">
+                  <small
+                    *ngIf="addExperienceForm.get('nomStructure')?.invalid && addExperienceForm.get('nomStructure')?.touched"
                     class="text-danger"> *Le nom de la Structure est obligatoire</small>
                 </div>
               </div>
@@ -239,8 +248,7 @@
                     [class.invalid]="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched"
                     placeholder="Sélectionner la date de fin" formControlName="date_fin">
                   <div> <small class="text-secondary"> MM/JJ/AAAA </small> </div>
-                  <div
-                    *ngIf="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched">
+                  <div *ngIf="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched">
                     <small
                       *ngIf="addExperienceForm.get('date_fin')?.invalid && addExperienceForm.get('date_fin')?.touched"
                       class="text-danger"> *La date est obligatoire</small>
@@ -257,7 +265,8 @@
                 [class.invalid]="addExperienceForm.get('posteOcupe')?.invalid && addExperienceForm.get('posteOcupe')?.touched"
                 placeholder="Poste Occupé" formControlName="posteOcupe">
               <div *ngIf="addExperienceForm.get('posteOcupe')?.invalid && addExperienceForm.get('posteOcupe')?.touched">
-                <small *ngIf="addExperienceForm.get('posteOcupe')?.invalid && addExperienceForm.get('posteOcupe')?.touched"
+                <small
+                  *ngIf="addExperienceForm.get('posteOcupe')?.invalid && addExperienceForm.get('posteOcupe')?.touched"
                   class="text-danger"> *Le domaine est obligatoire</small>
               </div>
             </div>
@@ -281,7 +290,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modifier  l'Expérience</h5>
+        <h5 class="modal-title">Modifier l'Expérience</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -329,12 +338,15 @@
 
             <div class="col-sm-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="nomStructure">Nom de la structure <span class="text-danger">*</span></label>
+                <label class="col-form-label" for="nomStructure">Nom de la structure <span
+                    class="text-danger">*</span></label>
                 <input class="form-control" type="text"
                   [class.invalid]="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched"
                   placeholder="Entrer le nom de la Structure " formControlName="nomStructure">
-                <div *ngIf="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched">
-                  <small *ngIf="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched"
+                <div
+                  *ngIf="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched">
+                  <small
+                    *ngIf="editExperienceForm.get('nomStructure')?.invalid && editExperienceForm.get('nomStructure')?.touched"
                     class="text-danger"> *Le nom de la Structure est obligatoire</small>
                 </div>
               </div>
@@ -366,8 +378,10 @@
               <input class="form-control" type="text"
                 [class.invalid]="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched"
                 placeholder="Poste Occupé" formControlName="posteOcupe">
-              <div *ngIf="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched">
-                <small *ngIf="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched"
+              <div
+                *ngIf="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched">
+                <small
+                  *ngIf="editExperienceForm.get('posteOcupe')?.invalid && editExperienceForm.get('posteOcupe')?.touched"
                   class="text-danger"> *Le domaine est obligatoire</small>
               </div>
             </div>
@@ -388,29 +402,29 @@
 
 <!-- Delete Department Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Supprimer l' Expérience </h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                          <form [formGroup]="deleteExperienceForm" (ngSubmit)="onClickSubmitDeleteExperience()">
-                            <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteExperience()">Supprimer</a>
-                          </form>
-                        </div>
-                        <div class="col-6">
-                            <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Annuler</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Supprimer l' Expérience </h3>
+          <p>Êtes-vous sûr de vouloir supprimer ?</p>
         </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-6">
+              <form [formGroup]="deleteExperienceForm" (ngSubmit)="onClickSubmitDeleteExperience()">
+                <input type="hidden" formControlName="id">
+                <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit"
+                  (click)="onClickSubmitDeleteExperience()">Supprimer</a>
+              </form>
+            </div>
+            <div class="col-6">
+              <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Annuler</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Delete Department Modal -->

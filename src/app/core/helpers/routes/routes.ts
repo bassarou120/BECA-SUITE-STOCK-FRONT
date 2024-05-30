@@ -72,7 +72,7 @@ export class routes {
     return this.baseUrl + '/employes/plaintes';
   }
 
-  public static get preavisGRH(): string {
+  public static get preavis(): string {
     return this.baseUrl + '/employes/preavis';
   }
 

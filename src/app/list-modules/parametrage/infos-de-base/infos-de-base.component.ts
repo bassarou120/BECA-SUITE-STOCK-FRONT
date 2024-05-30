@@ -26,7 +26,7 @@ export class InfosDeBaseComponent implements OnInit {
   public lstEmploye: Array<string> = [];
   public lstInfosDeBase: Array<getInfoDeBase> = [];
 
-  public lstReadonly: { [key: string]: boolean } = {};
+  // public lstReadonly: { [key: string]: boolean } = {};
   public selectedSignataire1 = '';
   public selectedSignataire2 = '';
 
@@ -87,7 +87,7 @@ export class InfosDeBaseComponent implements OnInit {
       res.data.data.map((res: getInfoDeBase, index: number) => {
         res.cle_txt = res.cle + "_TXT";
         this.lstInfosDeBase.push(res);
-        this.lstReadonly[res.cle] = true;
+        //this.lstReadonly[res.cle] = true;
         this.updateInfo(res);
       });
     });
@@ -110,7 +110,7 @@ export class InfosDeBaseComponent implements OnInit {
   }
 
   switchReadOnlyValue(val: string) {
-    this.lstReadonly[val] = !this.lstReadonly[val];
+    //this.lstReadonly[val] = !this.lstReadonly[val];
   }
 
   setInfoDeBase() {

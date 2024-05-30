@@ -127,13 +127,6 @@ export class DataService {
               base: 'plaintes',
               haseSubSubMenu: false,
             },
-
-            {
-              menuValue: 'Les Préavis (GRH)',
-              route: routes.preavisGRH,
-              base: 'preavis',
-              haseSubSubMenu: false,
-            },
             {
               menuValue: 'Point des Congés',
               route: routes.point_conge,
@@ -325,6 +318,12 @@ export class DataService {
               haseSubSubMenu: false,
             },
             {
+              menuValue: 'Les Préavis',
+              route: routes.preavis,
+              base: 'preavis',
+              haseSubSubMenu: false,
+            },
+            {
               menuValue: 'Démissions',
               route: routes.demission,
               base: 'demission',
@@ -340,6 +339,12 @@ export class DataService {
               menuValue: 'Licenciement',
               route: routes.licenciement,
               base: 'licenciement',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Préavis',
+              route: routes.preavis,
+              base: 'preavis',
               haseSubSubMenu: false,
             },
             {
@@ -902,6 +907,7 @@ export class DataService {
               menuValue: 'Employé Dashboard',
               route: routes.employee,
               base: 'employee',
+              haseSubSubMenu: false,
             },
           ],
         },
@@ -927,21 +933,25 @@ export class DataService {
               menuValue: 'Mes Contrats',
               route: routes.mes_contrats,
               base: 'mes-contrats',
+              haseSubSubMenu: false,
             },
             {
               menuValue: 'Mes Demandes',
               route: routes.demandes,
               base: 'demandes',
+              haseSubSubMenu: false,
             },
             {
               menuValue: 'Mes Heures Supplémentaires',
               route: routes.mes_heures_supplementaires,
               base: 'mes-heures-supllémetaires',
+              haseSubSubMenu: false,
             },
             {
               menuValue: 'Mes Plaintes',
               route: routes.plaintes,
               base: 'mes-plaintes',
+              haseSubSubMenu: false,
             },
           ],
         },

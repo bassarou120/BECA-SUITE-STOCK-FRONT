@@ -6,10 +6,10 @@
       <div class="row align-items-center">
         <div class="col">
           <h3 class="page-title">Informations de base</h3>
-            <ul class="breadcrumb">
+            <!-- <ul class="breadcrumb">
               <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de Bord</a></li>
               <li class="breadcrumb-item active">Informations de base</li>
-            </ul>
+            </ul> -->
         </div>
       </div>
   </div>
@@ -18,319 +18,185 @@
   <div class="row info-form">
     <form [formGroup]="setInfoDeBaseForm" (ngSubmit)="setInfoDeBase()" novalidate>
 
-      <div class="cat-1">
-          <span class="text-lg"> <span class="arrow"></span> Le nom de l'entreprise</span>
-          <div class="row">
-            <div class="input-block mb-3 col-4 row">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="NOM_ENTREPRISE_TXT">Nom de l'entreprise </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['NOM_ENTREPRISE']"
-                  [class.invalid]="setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.invalid && setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.touched"
-                  formControlName="NOM_ENTREPRISE_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.invalid && setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                <a (click)="switchReadOnlyValue('NOM_ENTREPRISE')" id="edit_parameter">
-                  <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      <div class="cat-2">
-        <span class="text-lg"> <span class="arrow"></span> Les valeurs maximales</span>
-        <div class="row">
-          <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-11">
-              <label class="col-form-label" for="LIMITE_JOURS_CONGE">Limite de jours pour les congés </label>
-              <input class="form-control" type="number" [readonly]="lstReadonly['LIMITE_JOURS_CONGE']"
-                [class.invalid]="setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.invalid && setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.touched"
-                formControlName="LIMITE_JOURS_CONGE">
-              <small *ngIf="setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.invalid && setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.touched"
-                class="text-danger"> *La valeur entrée est invalide</small>
-            </div>
-            <div class="input-block mb-3 col-1">
-                <a (click)="switchReadOnlyValue('LIMITE_JOURS_CONGE')" id="edit_parameter">
-                  <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                </a>
-              </div>
-          </div>
-
-          <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-11">
-              <label class="col-form-label" for="LIMITE_HEURES_SUPP">Limite d'heures supplémentaires </label>
-              <input class="form-control" type="number" [readonly]="lstReadonly['LIMITE_HEURES_SUPP']"
-                [class.invalid]="setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.invalid && setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.touched"
-                formControlName="LIMITE_HEURES_SUPP">
-              <small *ngIf="setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.invalid && setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.touched"
-                class="text-danger"> *La valeur entrée est invalide</small>
-            </div>
-            <div class="input-block mb-3 col-1">
-                <a (click)="switchReadOnlyValue('LIMITE_HEURES_SUPP')" id="edit_parameter">
-                  <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                </a>
-              </div>
-          </div>
+      <div class="cat-1 row">
+        <div class="input-block mb-3 col-12">
+          <label class="col-form-label" for="NOM_ENTREPRISE_TXT">Nom de l'entreprise </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.invalid && setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.touched"
+            formControlName="NOM_ENTREPRISE_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.invalid && setInfoDeBaseForm.get('NOM_ENTREPRISE_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
         </div>
       </div>
 
-      <div class="cat-3">
-        <span class="text-lg"> <span class="arrow"></span> Les préfixes</span>
-        <div class="row">
-          <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-11">
-              <label class="col-form-label" for="PREFIXE_CONTRAT_TXT">Préfixe pour les contrats </label>
-              <input class="form-control" type="text" [readonly]="lstReadonly['PREFIXE_CONTRAT']"
-                [class.invalid]="setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.touched"
-                formControlName="PREFIXE_CONTRAT_TXT">
-              <small *ngIf="setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.touched"
-                class="text-danger"> *La valeur entrée est invalide</small>
-            </div>
-            <div class="input-block mb-3 col-1">
-                <a (click)="switchReadOnlyValue('PREFIXE_CONTRAT')" id="edit_parameter">
-                  <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                </a>
-              </div>
-          </div>
+      <div class="cat-2 row">
+        <div class="input-block mb-3 col-6">
+          <label class="col-form-label" for="LIMITE_JOURS_CONGE">Limite de jours pour les congés </label>
+          <input class="form-control" type="number"
+            [class.invalid]="setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.invalid && setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.touched"
+            formControlName="LIMITE_JOURS_CONGE">
+          <small *ngIf="setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.invalid && setInfoDeBaseForm.get('LIMITE_JOURS_CONGE')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
 
-          <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-11">
-              <label class="col-form-label" for="PREFIXE_MATRICULE_TXT">Préfixe pour les matricules </label>
-              <input class="form-control" type="text" [readonly]="lstReadonly['PREFIXE_MATRICULE']"
-                [class.invalid]="setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.touched"
-                formControlName="PREFIXE_MATRICULE_TXT">
-              <small *ngIf="setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.touched"
-                class="text-danger"> *La valeur entrée est invalide</small>
-            </div>
-            <div class="input-block mb-3 col-1">
-                <a (click)="switchReadOnlyValue('PREFIXE_MATRICULE')" id="edit_parameter">
-                  <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                </a>
-              </div>
-          </div>
+        <div class="input-block mb-3 col-6">
+          <label class="col-form-label" for="LIMITE_HEURES_SUPP">Limite d'heures supplémentaires </label>
+          <input class="form-control" type="number"
+            [class.invalid]="setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.invalid && setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.touched"
+            formControlName="LIMITE_HEURES_SUPP">
+          <small *ngIf="setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.invalid && setInfoDeBaseForm.get('LIMITE_HEURES_SUPP')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
         </div>
       </div>
 
-      <div class="cat-4">
-        <span class="text-lg"> <span class="arrow"></span> Les signataires</span>
-        <div class="row">
-          <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-11">
-              <label class="col-form-label" for="NOM_SIGNATAIRE_1_TXT">Signataire n°1 </label>
-              <mat-select class="select mat-cust-select form-control" [ngClass]="{'mat-select-disabled': lstReadonly['NOM_SIGNATAIRE_1']}"
-                [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
-                  formControlName="NOM_SIGNATAIRE_1_TXT" placeholder="-">
-                  <mat-option *ngFor="let item of lstEmploye" [value]="item" [disabled]="lstReadonly['NOM_SIGNATAIRE_1']"
-                    [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
-                </mat-select>
-              <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
-                class="text-danger"> *La valeur entrée est invalide</small>
-            </div>
-            <div class="input-block mb-3 col-1">
-                <a (click)="switchReadOnlyValue('NOM_SIGNATAIRE_1')" id="edit_parameter">
-                  <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                </a>
-              </div>
-          </div>
+      <div class="cat-3 row">
+        <div class="input-block mb-3 col-6">
+          <label class="col-form-label" for="PREFIXE_CONTRAT_TXT">Préfixe pour les contrats </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.touched"
+            formControlName="PREFIXE_CONTRAT_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_CONTRAT_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
 
-          <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-11">
-              <label class="col-form-label" for="NOM_SIGNATAIRE_2_TXT">Signataire n°2 </label>
-              <mat-select class="select mat-cust-select form-control" [ngClass]="{'mat-select-disabled': lstReadonly['NOM_SIGNATAIRE_2']}"
-                [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
-                  formControlName="NOM_SIGNATAIRE_2_TXT" placeholder="-">
-                  <mat-option *ngFor="let item of lstEmploye" [value]="item" [disabled]="lstReadonly['NOM_SIGNATAIRE_2']"
-                    [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
-                </mat-select>
-              <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
-                class="text-danger"> *La valeur entrée est invalide</small>
-            </div>
-            <div class="input-block mb-3 col-1">
-                <a (click)="switchReadOnlyValue('NOM_SIGNATAIRE_2')" id="edit_parameter">
-                  <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                </a>
-              </div>
-          </div>
+        <div class="input-block mb-3 col-6">
+          <label class="col-form-label" for="PREFIXE_MATRICULE_TXT">Préfixe pour les matricules </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.touched"
+            formControlName="PREFIXE_MATRICULE_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.invalid && setInfoDeBaseForm.get('PREFIXE_MATRICULE_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
         </div>
       </div>
 
-      <div class="cat-5">
-        <span class="text-lg"> <span class="arrow"></span> Les banques et numéros de compte</span>
-        <div class="row">
-          <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-12 row">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="BANQUE_1_TXT">Nom de la banque 1 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['BANQUE_1']"
-                  [class.invalid]="setInfoDeBaseForm.get('BANQUE_1_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_1_TXT')?.touched"
-                  formControlName="BANQUE_1_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('BANQUE_1_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_1_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('BANQUE_1')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
+      <div class="cat-4 row">
+        <div class="input-block mb-3 col-6">
+          <label class="col-form-label" for="NOM_SIGNATAIRE_1_TXT">Signataire n°1 </label>
+          <mat-select class="select mat-cust-select form-control"
+            [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
+              formControlName="NOM_SIGNATAIRE_1_TXT" placeholder="-">
+              <mat-option *ngFor="let item of lstEmploye" [value]="item"
+                [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
+            </mat-select>
+          <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_1_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
 
-            <div class="input-block mb-3 col-12 row stick-to-a-bank">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="NUMERO_DE_COMPTE_1_TXT">N° de compte de la banque 1 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['NUMERO_DE_COMPTE_1']"
-                  [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.touched"
-                  formControlName="NUMERO_DE_COMPTE_1_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('NUMERO_DE_COMPTE_1')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
-            </div>
+        <div class="input-block mb-3 col-6">
+          <label class="col-form-label" for="NOM_SIGNATAIRE_2_TXT">Signataire n°2 </label>
+          <mat-select class="select mat-cust-select form-control"
+            [class.invalid]="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
+              formControlName="NOM_SIGNATAIRE_2_TXT" placeholder="-">
+              <mat-option *ngFor="let item of lstEmploye" [value]="item"
+                [class.mat-selected]="item === selectedSignataire1">{{ item }} </mat-option>
+            </mat-select>
+          <small *ngIf="setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.invalid && setInfoDeBaseForm.get('NOM_SIGNATAIRE_2_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
+      </div>
 
+      <div class="cat-5 row">
+        <div class="input-block mb-3 col-4">
+          <div class="input-block mb-3 col-12">
+            <label class="col-form-label" for="BANQUE_1_TXT">Nom de la banque 1 </label>
+            <input class="form-control" type="text"
+              [class.invalid]="setInfoDeBaseForm.get('BANQUE_1_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_1_TXT')?.touched"
+              formControlName="BANQUE_1_TXT">
+            <small *ngIf="setInfoDeBaseForm.get('BANQUE_1_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_1_TXT')?.touched"
+              class="text-danger"> *La valeur entrée est invalide</small>
+          </div>
 
-            <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-12 row">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="BANQUE_2_TXT">Nom de la banque 2 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['BANQUE_2']"
-                  [class.invalid]="setInfoDeBaseForm.get('BANQUE_2_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_2_TXT')?.touched"
-                  formControlName="BANQUE_2_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('BANQUE_2_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_2_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('BANQUE_2')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
-
-            <div class="input-block mb-3 col-12 row stick-to-a-bank">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="NUMERO_DE_COMPTE_2_TXT">N° de compte de la banque 2 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['NUMERO_DE_COMPTE_2']"
-                  [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.touched"
-                  formControlName="NUMERO_DE_COMPTE_2_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('NUMERO_DE_COMPTE_2')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
-            </div>
+          <div class="input-block mb-3 col-12 stick-to-a-bank">
+            <label class="col-form-label" for="NUMERO_DE_COMPTE_1_TXT">N° de compte de la banque 1</label>
+            <input class="form-control" type="text"
+              [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.touched"
+              formControlName="NUMERO_DE_COMPTE_1_TXT">
+            <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_1_TXT')?.touched"
+              class="text-danger"> *La valeur entrée est invalide</small>
+          </div>
+        </div>
 
 
-            <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-12 row">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="BANQUE_3_TXT">Nom de la banque 3 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['BANQUE_3']"
-                  [class.invalid]="setInfoDeBaseForm.get('BANQUE_3_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_3_TXT')?.touched"
-                  formControlName="BANQUE_3_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('BANQUE_3_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_3_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('BANQUE_3')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
+      <div class="input-block mb-3 col-4">
+        <div class="input-block mb-3 col-12">
+          <label class="col-form-label" for="BANQUE_2_TXT">Nom de la banque 2 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('BANQUE_2_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_2_TXT')?.touched"
+            formControlName="BANQUE_2_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('BANQUE_2_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_2_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
 
-            <div class="input-block mb-3 col-12 row stick-to-a-bank">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="NUMERO_DE_COMPTE_3_TXT">N° de compte de la banque 3 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['NUMERO_DE_COMPTE_3']"
-                  [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.touched"
-                  formControlName="NUMERO_DE_COMPTE_3_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('NUMERO_DE_COMPTE_3')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
-            </div>
+        <div class="input-block mb-3 col-12 stick-to-a-bank">
+          <label class="col-form-label" for="NUMERO_DE_COMPTE_2_TXT">N° de compte de la banque 2 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.touched"
+            formControlName="NUMERO_DE_COMPTE_2_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_2_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
+      </div>
 
 
-            <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-12 row">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="BANQUE_4_TXT">Nom de la banque 4 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['BANQUE_4']"
-                  [class.invalid]="setInfoDeBaseForm.get('BANQUE_4_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_4_TXT')?.touched"
-                  formControlName="BANQUE_4_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('BANQUE_4_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_4_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('BANQUE_4')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
+      <div class="input-block mb-3 col-4">
+        <div class="input-block mb-3 col-12">
+          <label class="col-form-label" for="BANQUE_3_TXT">Nom de la banque 3 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('BANQUE_3_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_3_TXT')?.touched"
+            formControlName="BANQUE_3_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('BANQUE_3_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_3_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
 
-            <div class="input-block mb-3 col-12 row stick-to-a-bank">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="NUMERO_DE_COMPTE_4_TXT">N° de compte de la banque 4 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['NUMERO_DE_COMPTE_4']"
-                  [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.touched"
-                  formControlName="NUMERO_DE_COMPTE_4_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('NUMERO_DE_COMPTE_4')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
-            </div>
+        <div class="input-block mb-3 col-12 stick-to-a-bank">
+          <label class="col-form-label" for="NUMERO_DE_COMPTE_3_TXT">N° de compte de la banque 3 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.touched"
+            formControlName="NUMERO_DE_COMPTE_3_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_3_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
+      </div>
 
-            <div class="input-block mb-3 col-4 row">
-            <div class="input-block mb-3 col-12 row">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="BANQUE_5_TXT">Nom de la banque 5 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['BANQUE_5']"
-                  [class.invalid]="setInfoDeBaseForm.get('BANQUE_5_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_5_TXT')?.touched"
-                  formControlName="BANQUE_5_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('BANQUE_5_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_5_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('BANQUE_5')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
 
-            <div class="input-block mb-3 col-12 row stick-to-a-bank">
-              <div class="input-block mb-3 col-11">
-                <label class="col-form-label" for="NUMERO_DE_COMPTE_5_TXT">N° de compte de la banque 5 </label>
-                <input class="form-control" type="text" [readonly]="lstReadonly['NUMERO_DE_COMPTE_5']"
-                  [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.touched"
-                  formControlName="NUMERO_DE_COMPTE_5_TXT">
-                <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.touched"
-                  class="text-danger"> *La valeur entrée est invalide</small>
-              </div>
-              <div class="input-block mb-3 col-1">
-                  <a (click)="switchReadOnlyValue('NUMERO_DE_COMPTE_5')" id="edit_parameter">
-                    <i class="fa-solid fa-pencil" id="edit_parameter_icon"></i>
-                  </a>
-                </div>
-            </div>
-            </div>
+      <div class="input-block mb-3 col-4">
+        <div class="input-block mb-3 col-12">
+          <label class="col-form-label" for="BANQUE_4_TXT">Nom de la banque 4 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('BANQUE_4_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_4_TXT')?.touched"
+            formControlName="BANQUE_4_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('BANQUE_4_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_4_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
+
+        <div class="input-block mb-3 col-12 stick-to-a-bank">
+          <label class="col-form-label" for="NUMERO_DE_COMPTE_4_TXT">N° de compte de la banque 4 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.touched"
+            formControlName="NUMERO_DE_COMPTE_4_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_4_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
+      </div>
+
+      <div class="input-block mb-3 col-4">
+        <div class="input-block mb-3 col-12">
+          <label class="col-form-label" for="BANQUE_5_TXT">Nom de la banque 5 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('BANQUE_5_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_5_TXT')?.touched"
+            formControlName="BANQUE_5_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('BANQUE_5_TXT')?.invalid && setInfoDeBaseForm.get('BANQUE_5_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
+
+        <div class="input-block mb-3 col-12 stick-to-a-bank">
+          <label class="col-form-label" for="NUMERO_DE_COMPTE_5_TXT">N° de compte de la banque 5 </label>
+          <input class="form-control" type="text"
+            [class.invalid]="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.touched"
+            formControlName="NUMERO_DE_COMPTE_5_TXT">
+          <small *ngIf="setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.invalid && setInfoDeBaseForm.get('NUMERO_DE_COMPTE_5_TXT')?.touched"
+            class="text-danger"> *La valeur entrée est invalide</small>
+        </div>
         </div>
       </div>
 
