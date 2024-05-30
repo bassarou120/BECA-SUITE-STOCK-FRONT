@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import {environment} from "../../../../environments/environment";
 
 import { getInfoDeBase, getMiniTemplateEmploye, routes, InfosDeBaseService } from 'src/app/core/core.index';
 
@@ -29,6 +30,8 @@ export class InfosDeBaseComponent implements OnInit {
   // public lstReadonly: { [key: string]: boolean } = {};
   public selectedSignataire1 = '';
   public selectedSignataire2 = '';
+  public selectedSignature1 = environment.base_url_backend;
+  public selectedSignature2 = environment.base_url_backend;
 
   public searchDataValue = '';
   public setInfoDeBaseForm!: FormGroup;
@@ -95,6 +98,10 @@ export class InfosDeBaseComponent implements OnInit {
         //this.lstReadonly[res.cle] = true;
         if((res.cle!="SIGNATURE_1") && (res.cle!="SIGNATURE_2")) {
           this.updateInfo(res);
+        } else if(res.cle == "SIGNATURE_1") {
+          this.selectedSignature1 += res.valeur_txt;
+        } else {
+          this.selectedSignature2 += res.valeur_txt;
         }
       });
     });

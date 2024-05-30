@@ -83,13 +83,18 @@
               class="text-danger"> *La valeur entrée est invalide</small>
           </div>
 
-          <div class="input-block mb-3 col-12 stick-top-just-top-field">
+          <div class="input-block mb-3 col-12 stick-top-just-top-field row">
+            <div class="input-block mb-3 col-8">
             <label class="col-form-label" for="SIGNATURE_1_TXT">Signature du signataire n°1</label>
-            <input class="form-control" type="file" (change)="onFileChange($event, 'SIGNATURE_1_TXT')" accept="image/*"
-              [class.invalid]="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
-              formControlName="SIGNATURE_1_TXT">
-            <small *ngIf="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
-              class="text-danger"> *La valeur entrée est invalide</small>
+              <input class="form-control" type="file" (change)="onFileChange($event, 'SIGNATURE_1_TXT')" accept="image/*"
+                [class.invalid]="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
+                formControlName="SIGNATURE_1_TXT">
+              <small *ngIf="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
+                class="text-danger"> *La valeur entrée est invalide</small>
+            </div>
+            <div class="input-block mb-3 col-4">
+              <img [src]="selectedSignature1" style="width:120px; height:80px; margin-top:15px;">
+            </div>
           </div>
         </div>
 
@@ -106,13 +111,18 @@
               class="text-danger"> *La valeur entrée est invalide</small>
           </div>
 
-          <div class="input-block mb-3 col-12 stick-top-just-top-field">
-            <label class="col-form-label" for="SIGNATURE_2_TXT">Signature du signataire n°2</label>
-            <input class="form-control" type="file" (change)="onFileChange($event, 'SIGNATURE_2_TXT')" accept="image/*"
-              [class.invalid]="setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.touched"
-              formControlName="SIGNATURE_2_TXT">
-            <small *ngIf="setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.touched"
-              class="text-danger"> *La valeur entrée est invalide</small>
+          <div class="input-block mb-3 col-12 stick-top-just-top-field row">
+            <div class="input-block mb-3 col-8">
+              <label class="col-form-label" for="SIGNATURE_2_TXT">Signature du signataire n°2</label>
+              <input class="form-control" type="file" (change)="onFileChange($event, 'SIGNATURE_2_TXT')" accept="image/*"
+                [class.invalid]="setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.touched"
+                formControlName="SIGNATURE_2_TXT">
+              <small *ngIf="setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_2_TXT')?.touched"
+                class="text-danger"> *La valeur entrée est invalide</small>
+            </div>
+            <div class="input-block mb-3 col-4">
+              <img [src]="selectedSignature2" style="width:120px; height:80px; margin-top:15px;">
+            </div>
           </div>
         </div>
       </div>
