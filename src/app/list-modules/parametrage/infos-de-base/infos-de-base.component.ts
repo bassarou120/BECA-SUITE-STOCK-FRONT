@@ -57,10 +57,10 @@ export class InfosDeBaseComponent implements OnInit {
       NOM_SIGNATAIRE_2: ["", [Validators.required]],
       NOM_SIGNATAIRE_2_TXT: ["", [Validators.required]],
       // Les signatures
-      SIGNATURE_1: ["", [Validators.required]],
-      SIGNATURE_1_TXT: ["", [Validators.required]],
-      SIGNATURE_2: ["", [Validators.required]],
-      SIGNATURE_2_TXT: ["", [Validators.required]],
+      SIGNATURE_1: [0, [Validators.required]],
+      SIGNATURE_1_TXT: [" ", [Validators.required]],
+      SIGNATURE_2: [0, [Validators.required]],
+      SIGNATURE_2_TXT: [" ", [Validators.required]],
       // Les banques et numéros de compte
       BANQUE_1: ["", [Validators.required]],
       BANQUE_1_TXT: ["", [Validators.required]],
@@ -93,7 +93,9 @@ export class InfosDeBaseComponent implements OnInit {
         res.cle_txt = res.cle + "_TXT";
         this.lstInfosDeBase.push(res);
         //this.lstReadonly[res.cle] = true;
-        this.updateInfo(res);
+        if((res.cle!="SIGNATURE_1") && (res.cle!="SIGNATURE_2")) {
+          this.updateInfo(res);
+        }
       });
     });
 
@@ -118,18 +120,31 @@ export class InfosDeBaseComponent implements OnInit {
     //this.lstReadonly[val] = !this.lstReadonly[val];
   }
 
+  onFileChange(event: Event, fieldName: string) {
+    const target = event.target as HTMLInputElement;
+    if (target && target.files && target.files.length > 0) {
+      const file = target.files[0];
+      this.setInfoDeBaseForm.get(fieldName)!.setValue(file);
+    }
+  }
+
   setInfoDeBase() {
-    // console.log(this.setInfoDeBaseForm.value, this.setInfoDeBaseForm.valid)
+    console.log(this.setInfoDeBaseForm.value, this.setInfoDeBaseForm.valid)
 
     if (this.setInfoDeBaseForm.valid){
-      this.data.saveInfoDeBase(this.setInfoDeBaseForm.value).subscribe(response => {
-        // console.log(response);
+      const formData = new FormData();
+      Object.keys(this.setInfoDeBaseForm.value).forEach(key => {
+        formData.append(key, this.setInfoDeBaseForm.get(key)!.value);
+      });
+      this.data.saveInfoDeBase(formData).subscribe(response => {
+        console.log(response);
         location.reload();
       });
     } else {
       console.log("Desolé le formulaire n'est pas bien renseigné");
     }
   }
+
 }
 
 export interface pageSelection {
