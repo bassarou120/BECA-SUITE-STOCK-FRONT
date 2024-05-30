@@ -43,7 +43,11 @@
           <i class="fa-solid fa-magnifying-glass"></i>
         </a>
         <form>
-          <input class="form-control" type="text" placeholder="Rechercher ici" />
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Rechercher ici"
+          />
           <button class="btn" type="button" (click)="navigation()">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
@@ -75,7 +79,7 @@
     <!-- /Flag -->
 
     <!-- Notifications -->
-    <li class="nav-item dropdown">
+    <!-- <li class="nav-item dropdown">
       <a
         href="javascript:void(0);"
         class="dropdown-toggle nav-link"
@@ -95,7 +99,7 @@
               <a [routerLink]="'/activities/activites-view'">
                 <div class="chat-block d-flex">
                   <span class="avatar flex-shrink-0">
-                    <!-- <img alt="" src="assets/img/profiles/avatar-2.jpg" /> -->
+                    <img alt="" src="assets/img/profiles/avatar-2.jpg" />
                   </span>
                   <div class="media-body flex-grow-1">
                     <p class="noti-details">
@@ -115,7 +119,7 @@
               <a [routerLink]="'/activities/activites-view'">
                 <div class="chat-block d-flex">
                   <span class="avatar flex-shrink-0">
-                    <!-- <img alt="" src="assets/img/profiles/avatar-3.jpg"> -->
+                    <img alt="" src="assets/img/profiles/avatar-3.jpg">
                   </span>
                   <div class="media-body flex-grow-1">
                     <p class="noti-details">
@@ -136,7 +140,7 @@
               <a [routerLink]="'/activities/activites-view'">
                 <div class="chat-block d-flex">
                   <span class="avatar flex-shrink-0">
-                    <!-- <img alt="" src="assets/img/profiles/avatar-6.jpg"> -->
+                    <img alt="" src="assets/img/profiles/avatar-6.jpg">
                   </span>
                   <div class="media-body flex-grow-1">
                     <p class="noti-details">
@@ -156,7 +160,7 @@
               <a [routerLink]="'/activities/activites-view'">
                 <div class="chat-block d-flex">
                   <span class="avatar flex-shrink-0">
-                    <!-- <img alt="" src="assets/img/profiles/avatar-17.jpg"> -->
+                    <img alt="" src="assets/img/profiles/avatar-17.jpg">  
                   </span>
                   <div class="media-body flex-grow-1">
                     <p class="noti-details">
@@ -177,7 +181,7 @@
               <a [routerLink]="'/activities/activites-view'">
                 <div class="chat-block d-flex">
                   <span class="avatar flex-shrink-0">
-                    <!-- <img alt="" src="assets/img/profiles/avatar-13.jpg"> -->
+                     <img alt="" src="assets/img/profiles/avatar-13.jpg">  
                   </span>
                   <div class="media-body flex-grow-1">
                     <p class="noti-details">
@@ -199,7 +203,7 @@
           >
         </div>
       </div>
-    </li>
+    </li>  -->
     <!-- /Notifications -->
 
     <!-- Message Notifications -->
@@ -319,9 +323,7 @@
         <span class="status online"> {{ loggedUserData.username }} </span>
       </a>
       <div class="dropdown-menu">
-        <a class="dropdown-item" [routerLink]="routes.mon_profil"
-          >Mon Profil</a
-        >
+        <a class="dropdown-item" [routerLink]="routes.mon_profil">Mon Profil</a>
         <!-- <a class="dropdown-item" [routerLink]="'/settings/company-settings'"
           >Paramètres</a -->
 
