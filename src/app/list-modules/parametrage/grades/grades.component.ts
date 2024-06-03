@@ -362,7 +362,7 @@ export class GradesComponent implements OnInit {
       tauxHoraireHeureSup: row.tauxHoraireHeureSup,
 
       taux_retenu_its_employe: row.taux_retenu_its_employe,
-      taux_retenu_cnss_employe: row.taux_retenu_cnss_employe,
+      taux_retenu_cnss_employe: 3.6,
       taux_retenu_ipts_employe: row.taux_retenu_ipts_employe,
 
       taux_retenu_its_employeur: row.taux_retenu_its_employeur,
