@@ -57,7 +57,7 @@ export class GradesComponent implements OnInit {
       prime_enciennete: ["", [Validators.required]],
       tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: [" ", [Validators.required]],
-      taux_retenu_cnss_employe: [" ", [Validators.required]],
+      taux_retenu_cnss_employe: ["3.6", [Validators.required]],
       taux_retenu_its_employeur: [" ", [Validators.required]],
       taux_retenu_cnss_employeur: [" ", [Validators.required]],
       taux_retenu_ipts_employe: ["", [Validators.required]],
@@ -84,7 +84,7 @@ export class GradesComponent implements OnInit {
       prime_enciennete: ["", [Validators.required]],
       tauxHoraireHeureSup: ["", [Validators.required]],
       taux_retenu_its_employe: ["", [Validators.required]],
-      taux_retenu_cnss_employe: ["", [Validators.required]],
+      taux_retenu_cnss_employe: ["3.6", [Validators.required]],
 
       taux_retenu_ipts_employe: ["", [Validators.required]],
 
