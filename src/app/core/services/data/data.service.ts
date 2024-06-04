@@ -318,12 +318,6 @@ export class DataService {
               haseSubSubMenu: false,
             },
             {
-              menuValue: 'Les Préavis',
-              route: routes.preavis,
-              base: 'preavis',
-              haseSubSubMenu: false,
-            },
-            {
               menuValue: 'Démissions',
               route: routes.demission,
               base: 'demission',
