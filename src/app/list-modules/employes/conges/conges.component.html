@@ -105,6 +105,9 @@
         <br />
         <br />
         <br />
+        <br />
+        <br />
+        <br />
       </div>
       <div class="table_footer">
         <div class="col-sm-12 col-md-5">
@@ -425,7 +428,7 @@
                   class="text-danger">*</span></label>
               <mat-select class="select mat-cust-select form-control"
                 [class.invalid]="editCongeForm.get('congeJoui')?.invalid && editCongeForm.get('congeJoui')?.touched"
-                formControlName="congeJoui" placeholder="Selectionner Déductible des congés">
+                formControlName="congeJoui" placeholder="Selectionner si le congé est déjà joui par l'employé ou non">
                 <mat-option *ngFor="let item of lstValsCongeJoui" [value]="item.val"
                   [class.mat-selected]="item.val === selectedCongeJoui"> {{ item.lib }} </mat-option>
               </mat-select>
