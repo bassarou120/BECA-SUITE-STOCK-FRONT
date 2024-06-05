@@ -360,9 +360,9 @@ export class DataService {
           materialicons: 'home',
           subMenus: [
             {
-              menuValue: 'Point des contrats',
-              route: routes.point_contrat,
-              base: 'admin',
+              menuValue: 'Les Formations',
+              route: routes.formationsGRH,
+              base: 'formations',
               base2: 'sdhkjh',
               haseSubSubMenu: false,
               showSubSubRoute: false,
