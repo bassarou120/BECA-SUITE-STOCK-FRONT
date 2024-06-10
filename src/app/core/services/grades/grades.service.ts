@@ -30,7 +30,12 @@ export class GradeService  {
 
 
   saveGrade(data:any ): Observable<any> {
-    return this.http.post(`${this.url}/les_grades`, data);
+    return this.http.post(`${this.url}/les_grades`, data).pipe(
+      catchError(this.handleError));
+  }
+  
+  private handleError(error: HttpErrorResponse) {
+    return throwError(error);
   }
 
   editGrade(data:any): Observable<any> {

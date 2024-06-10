@@ -56,10 +56,10 @@ export class GradesComponent implements OnInit {
       base_categorielle: ["", [Validators.required]],
       prime_enciennete: ["", [Validators.required]],
       tauxHoraireHeureSup: ["", [Validators.required]],
-      taux_retenu_its_employe: [" ", [Validators.required]],
+      taux_retenu_its_employe: ["", [Validators.required]],
       taux_retenu_cnss_employe: ["3.6", [Validators.required]],
-      taux_retenu_its_employeur: [" ", [Validators.required]],
-      taux_retenu_cnss_employeur: [" ", [Validators.required]],
+      taux_retenu_its_employeur: ["", [Validators.required]],
+      taux_retenu_cnss_employeur: ["", [Validators.required]],
       taux_retenu_ipts_employe: ["", [Validators.required]],
       taux_retenu_ipts_employeur: ["", [Validators.required]],
     });
@@ -110,19 +110,26 @@ export class GradesComponent implements OnInit {
   }
 
 
-  onClickSubmitAddGrade(){
-
-    if (this.addGradeForm.valid){
-        this.data.saveGrade(this.addGradeForm.value).subscribe(response => {
+  onClickSubmitAddGrade(): void {
+    if (this.addGradeForm.valid) {
+      this.data.saveGrade(this.addGradeForm.value).subscribe(
+        response => {
           console.log(response);
           location.reload();
-        });
-
-      } else {
-        console.log("Desolé le formulaire n'est pas bien renseigné");
-      }
-
+        },
+        error => {
+          if (error.status === 409 && error.error.message === 'Ce grade existe déjà') {
+            alert('Ce grade que vous voulez enrégistrer existe déjà');
+          } else {
+            console.error('Erreur:', error);
+          }
+        }
+      );
+    } else {
+      console.log("Désolé, le formulaire n'est pas bien renseigné");
+    }
   }
+
 
   showModal(message: string) {
     const modal = document.getElementById('alert_modal');
