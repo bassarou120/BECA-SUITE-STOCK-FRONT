@@ -815,9 +815,12 @@ export interface getPointContrat {
   libelle: string;
   date_signature: Date;
   duree: number;
-  status_id: number;
-  libelleStatus: string;
+  date_debut: Date;
+  date_fin: Date;
+  // status_id: number;
+  // libelleStatus: string;
   etat: string;
+  status: string;
 }
 export interface getMesContrats {
   id: number;
@@ -826,7 +829,7 @@ export interface getMesContrats {
   date_debut: Date;
   date_fin: Date;
   duree: number;
-  libelleStatus: string;
+  // libelleStatus: string;
   etat: string;
   status: string;
 }
