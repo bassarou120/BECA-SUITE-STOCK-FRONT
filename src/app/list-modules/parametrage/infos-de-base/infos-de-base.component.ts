@@ -148,7 +148,7 @@ export class InfosDeBaseComponent implements OnInit {
         location.reload();
       });
     } else {
-      console.log("Desolé le formulaire n'est pas bien renseigné");
+      console.log("Desolé le formulaire est mal  renseigné");
     }
   }
 
