@@ -1037,7 +1037,7 @@
                 >
                   <td>{{ i + 1 }}</td>
                   <td>{{ contrat.num_contrat }}</td>
-                  <td>CDD</td>
+                  <td> {{contrat.type_contrat.libelle }}</td>
                   <td>{{ contrat.date_debut | date : "dd/MM/YYYY" }}</td>
                   <td>{{ contrat.date_fin | date : "dd/MM/YYYY" }}</td>
                   <td>
@@ -1485,7 +1485,17 @@
         </button>
       </div>
       <div class="modal-body">
+
+
+        <h4 style="color: red" *ngIf="showMessage==true">
+          Désolé, il est impossible de créer un nouveau contrat {{ curentEmploye?.employe.nom }}
+          {{ curentEmploye?.employe.prenom }}
+          car il a déjà un contrat dont le status est :  <u>{{showMessageStatus}}</u> . <br>
+          Veuillez modifier le statut de l'actuel contrat afin de pouvoir en créer un nouveau.
+        </h4>
+
         <form
+          *ngIf="showMessage==false"
           [formGroup]="addEmployeContratForm"
           (ngSubmit)="onClickSubmitaddEmployeContrat()"
         >
@@ -1683,7 +1693,7 @@
                   >
                 </div>
 
-               
+
               </div>
             </div>
 
@@ -1696,91 +1706,6 @@
           </div>
         </form>
 
-        <!--
-        <form>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for="">Passport No</label>
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-block mb-3 date-input2">
-                <label class="col-form-label" for=""
-                  >Passport Expiry Date</label
-                >
-                <div class="cal-icon">
-                  <input
-                    class="form-control datetimepicker"
-                    type="text"
-                    bsDatepicker
-                    container=".date-input2"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for="">Tel</label>
-                <input class="form-control" type="text" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for=""
-                  >Nationality <span class="text-danger">*</span></label
-                >
-                <input class="form-control" type="text" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for="">Religion</label>
-                <input class="form-control" type="text" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for=""
-                  >Marital status <span class="text-danger">*</span></label
-                >
-                <mat-select
-                  [(ngModel)]="selectedValue15"
-                  [ngModelOptions]="{ standalone: true }"
-                  class="user-assets select form-control"
-                  placeholder="-"
-                >
-                  <mat-option
-                    *ngFor="let data of selectedList15"
-                    [value]="data.value"
-                  >
-                    {{ data.value }}
-                  </mat-option>
-                </mat-select>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for=""
-                  >Employment of spouse</label
-                >
-                <input class="form-control" type="text" />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-block mb-3">
-                <label class="col-form-label" for="">No. of children </label>
-                <input class="form-control" type="text" />
-              </div>
-            </div>
-          </div>
-          <div class="submit-section">
-            <button class="btn btn-primary submit-btn">Submit</button>
-          </div>
-        </form>
-
-    -->
       </div>
     </div>
   </div>
