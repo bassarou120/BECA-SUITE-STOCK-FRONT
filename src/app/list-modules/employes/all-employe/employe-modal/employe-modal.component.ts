@@ -12,6 +12,10 @@ export class EmployeModalComponent implements OnInit {
   public addEmployeeForm!: FormGroup;
   public editEmployeeForm!: FormGroup;
 
+  // options: string[] = ['CNSS', 'FNRB'];
+  // selectedOption: string;
+  defaultValue: number = 0;
+
   constructor(
     private formBuilder: FormBuilder,
     public router: Router,
