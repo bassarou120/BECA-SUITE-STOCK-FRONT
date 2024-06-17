@@ -11,7 +11,12 @@ import { ActivatedRoute } from '@angular/router';
 import { routes, TypeContratService } from 'src/app/core/core.index';
 import { ContratService } from 'src/app/core/services/contrat/contrat.service';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
+import { DocumentService } from 'src/app/core/services/document/document.service';
 import { HttpClient } from '@angular/common/http';
+import {environment} from "../../../../../environments/environment";
+import * as path from 'path';
+
+
 
 interface data {
   value: string;
@@ -25,6 +30,8 @@ import { MouvementService } from 'src/app/core/services/mouvement/mouvement.serv
   styleUrls: ['./employee-profile.component.scss'],
 })
 export class EmployeeProfileComponent implements OnInit {
+  public back = environment.base_url_backend;
+
   public selectedValue1 = '';
   public selectedValue2 = '';
   public selectedValue3 = '';
@@ -43,6 +50,8 @@ export class EmployeeProfileComponent implements OnInit {
   public routes = routes;
   bsValue = new Date();
   public addEmployeeForm!: FormGroup;
+
+  selectedFile: File | null = null;
 
   @ViewChild('btnNomination') btnNomination: ElementRef | undefined;
 
@@ -65,11 +74,13 @@ export class EmployeeProfileComponent implements OnInit {
   listClasse: any;
   listGrade: any;
   listMouvement: any;
+  listDocument: any;
 
   public editEmployeInfoPersoForm!: FormGroup;
   public affectationForm!: FormGroup;
   public nominationForm!: FormGroup;
   public addEmployeContratForm!: FormGroup;
+  public addDocumentForm!: FormGroup;
 
   public valideContratForm!: FormGroup;
 
@@ -79,13 +90,35 @@ export class EmployeeProfileComponent implements OnInit {
     private mouvementservice: MouvementService,
     private contraService: ContratService,
     private activatedRoute: ActivatedRoute,
-    private typeContratService: TypeContratService
-  ) {}
+    private typeContratService: TypeContratService,
+    private documentService: DocumentService
+  ) { }
 
   totalPrime = 0;
   form = this.formBuilder.group({
     items: this.formBuilder.array([]),
   });
+
+  documentTypes = [
+    { lib: 'Acte de Naissance' },
+    { lib: 'PassPort' },
+    { lib: 'carte d’identité' },
+    { lib: 'Attestation de résidence' },
+    { lib: 'Copie de la carte CNSS' },
+    { lib: 'Lettre de motivation' },
+    { lib: 'Curriculum vitae' },
+    { lib: 'Attestations de travail' },
+    { lib: 'Acte de mariage pour les mariés' },
+    { lib: 'Acte de naissance des enfant' },
+    // Ajoutez d'autres types de documents ici
+  ];
+  documentFormat = [
+    { lib: 'jpg' },
+    { lib: 'png' },
+    { lib: 'pdf' },
+  ];
+
+  showOtherInput = false;
 
   ngOnInit() {
     this.list_prime = [];
@@ -133,6 +166,8 @@ export class EmployeeProfileComponent implements OnInit {
     this.getDataForListe();
     this.getEmpMeouvemt();
 
+
+
     // console.log(this.curentEmploye);
 
     this.affectationForm = this.formBuilder.group({
@@ -153,7 +188,100 @@ export class EmployeeProfileComponent implements OnInit {
       last_contrat_id: ['', [Validators.required]],
       observation: ['', [Validators.required]],
     });
+
+    this.addDocumentForm = this.formBuilder.group({
+      employe_id: ["", [Validators.required]],
+      type_document: ["", [Validators.required]],
+      titre: ["", [Validators.required]],
+      url: ["", [Validators.required]],
+      otherDocument: [""]
+    });
+
+    // Synchronise le champ 'titre' avec 'otherDocument' lorsqu'il change
+    this.addDocumentForm.get('otherDocument')?.valueChanges.subscribe(value => {
+      if (this.showOtherInput) {
+        this.addDocumentForm.get('titre')?.setValue(value);
+      }
+    });
+
   }
+
+  onSelectionChange(event: any): void {
+    const selectedValue = event.value;
+    if (selectedValue === 'other') {
+      this.showOtherInput = true;
+      this.addDocumentForm.get('titre')?.reset();
+      this.addDocumentForm.get('titre')?.clearValidators();
+      this.addDocumentForm.get('otherDocument')?.setValidators([Validators.required]);
+    } else {
+      this.showOtherInput = false;
+      this.addDocumentForm.get('titre')?.setValue(selectedValue);
+      this.addDocumentForm.get('titre')?.setValidators([Validators.required]);
+      this.addDocumentForm.get('otherDocument')?.clearValidators();
+      this.addDocumentForm.get('otherDocument')?.reset();
+    }
+    this.addDocumentForm.get('titre')?.updateValueAndValidity();
+    this.addDocumentForm.get('otherDocument')?.updateValueAndValidity();
+  }
+
+  onFileChange(event: Event, fieldName: string) {
+    const target = event.target as HTMLInputElement;
+    if (target && target.files && target.files.length > 0) {
+      const file = target.files[0];
+      this.addDocumentForm.get(fieldName)!.setValue(file);
+    }
+  }
+
+  onClickSubmitDocument() {
+    this.addDocumentForm
+      .get('employe_id')
+      ?.setValue(this.curentEmploye.employe.id);
+    console.log(this.addDocumentForm.value, this.addDocumentForm.valid)
+
+    if (this.addDocumentForm.valid) {
+      const formData = new FormData();
+      Object.keys(this.addDocumentForm.value).forEach(key => {
+        formData.append(key, this.addDocumentForm.get(key)!.value);
+      });
+      this.documentService.saveDocument(formData).subscribe(response => {
+        console.log(response);
+        location.reload();
+      });
+    } else {
+      console.log("Desolé le formulaire est mal  renseigné");
+    }
+  }
+
+  //  getFileName(path: string): string {
+  //   return path.split('/').pop() || '';
+  // }
+   getFileName(path: string): string {
+    const match = path.match(/[^\\/]+$/);
+    return match ? match[0] : '';
+  }
+  logFileName(fileName: string): void {
+    console.log(fileName);
+  }
+
+  // getFileExtension(filePath: string): string {
+  //   // Séparer le chemin en segments en utilisant '/' pour obtenir le nom du fichier
+  //   const segments = filePath.split('/');
+  //   const fileName = segments.pop();
+
+  //   // Vérifier si le nom du fichier est valide
+  //   if (fileName) {
+  //     // Séparer le nom du fichier en segments en utilisant '.' pour obtenir l'extension
+  //     const fileNameSegments = fileName.split('.');
+  //     const extension = fileNameSegments.pop();
+
+  //     // Vérifier si l'extension est valide et renvoyer
+  //     if (extension && fileNameSegments.length > 0) {
+  //       return extension;
+  //     }
+  //   }
+
+  //   return ''; // Retourner une chaîne vide si aucune extension n'est trouvée
+  // }
 
   getDataForListe() {
     this.employeservice.getDepartementPoste().subscribe(
@@ -166,7 +294,7 @@ export class EmployeeProfileComponent implements OnInit {
         // this.listCategorie = date.data.categorie;
         // this.listClasse = date.data.classe;
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -179,9 +307,11 @@ export class EmployeeProfileComponent implements OnInit {
           // alert(JSON.stringify(res.data[0].mouvements));
           this.listMouvement = res.data[0].mouvements;
         },
-        (eror: any) => {}
+        (eror: any) => { }
       );
   }
+
+
 
   getMonthName(monthNumber: string): string {
     const months = [
@@ -229,7 +359,7 @@ export class EmployeeProfileComponent implements OnInit {
         // alert(JSON.stringify(data.data.data));
         this.listTypeContrat = data.data.data;
       },
-      (erro: any) => {}
+      (erro: any) => { }
     );
 
     this.employeservice.getLastContrat().subscribe(
@@ -243,7 +373,7 @@ export class EmployeeProfileComponent implements OnInit {
           .get('num_contrat')
           ?.setValue('C-000' + (data.data == 0 ? '1' : data.data.id));
       },
-      (erro: any) => {}
+      (erro: any) => { }
     );
 
     // alert(JSON.stringify(this.curentEmploye.employe.grade_id));
@@ -282,7 +412,7 @@ export class EmployeeProfileComponent implements OnInit {
         // console.log(data.data)
         // this.addEmployeContratForm.get('num_contrat')?.setValue("C-000"+data.data.id)
       },
-      (erro: any) => {}
+      (erro: any) => { }
     );
   }
 
@@ -312,7 +442,7 @@ export class EmployeeProfileComponent implements OnInit {
           // this.curentEmploye = data.data;
           location.reload();
         },
-        (error: any) => {}
+        (error: any) => { }
       );
   }
 
@@ -336,7 +466,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
         // alert(JSON.stringify(res));
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -374,7 +504,7 @@ export class EmployeeProfileComponent implements OnInit {
               ) as HTMLElement;
               el.click();
             },
-            (error: any) => {}
+            (error: any) => { }
           );
 
           // this.subContent.nativeElement.click();
@@ -386,7 +516,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
         // alert(JSON.stringify(res));
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -398,7 +528,7 @@ export class EmployeeProfileComponent implements OnInit {
 
         console.log(this.curentEmploye);
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
   compareObjects(object1: any, object2: any) {
@@ -411,7 +541,7 @@ export class EmployeeProfileComponent implements OnInit {
         // alert(JSON.stringify(data.data.data));
         this.list_banque = data.data.data;
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -584,12 +714,12 @@ export class EmployeeProfileComponent implements OnInit {
     // To display the final no. of days (result)
     console.log(
       'Total number of days between dates:\n' +
-        date1.toDateString() +
-        ' and ' +
-        date2.toDateString() +
-        ' is: ' +
-        Difference_In_Days +
-        ' days'
+      date1.toDateString() +
+      ' and ' +
+      date2.toDateString() +
+      ' is: ' +
+      Difference_In_Days +
+      ' days'
     );
 
     return Difference_In_Days;
