@@ -116,6 +116,9 @@ export class EmployeeProfileComponent implements OnInit {
     { lib: 'jpg' },
     { lib: 'png' },
     { lib: 'pdf' },
+    { lib: 'doc' },
+    { lib: 'docx' },
+    { lib: 'jpeg' },
   ];
 
   showOtherInput = false;
@@ -246,6 +249,12 @@ export class EmployeeProfileComponent implements OnInit {
       this.documentService.saveDocument(formData).subscribe(response => {
         console.log(response);
         location.reload();
+      }, error => {
+        if (error.status === 422 && error.error.error === 'Le format spécifié n\'est pas identique au format de votre document') {
+          alert('Le format spécifié n\'est pas identique au format de votre document');
+        } else {
+          console.error('Erreur:', error);
+        }
       });
     } else {
       console.log("Desolé le formulaire est mal  renseigné");
@@ -259,6 +268,7 @@ export class EmployeeProfileComponent implements OnInit {
     const match = path.match(/[^\\/]+$/);
     return match ? match[0] : '';
   }
+
   logFileName(fileName: string): void {
     console.log(fileName);
   }
