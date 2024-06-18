@@ -173,6 +173,152 @@ export class fichepaieComponent implements OnInit {
     );
   }
 
+
+  calculeITS(salaireBrute:any){
+
+    salaireBrute=this.customRound(salaireBrute)
+    var bsup1=60000;
+    var bsup2=150000;
+    var bsup3=250000;
+    var bsup4=500000;
+    var bsup5=this.customRound(salaireBrute);
+
+    var tranche1=0;
+    if (salaireBrute<=bsup1){
+      tranche1=0
+    }
+    var tranche2=0;
+    if (salaireBrute<=bsup1){
+      tranche2=0
+    }else{
+      if(salaireBrute<bsup2){
+        tranche2= (salaireBrute-bsup1)*0.10
+      }else {
+        tranche2= (bsup2-bsup1)*0.10
+      }
+    }
+
+
+
+    var tranche3=0;
+
+    if (salaireBrute<=bsup2){
+      tranche3=0
+    }else{
+      if(salaireBrute<bsup3){
+        tranche3= (salaireBrute-bsup2)*0.15
+      }else {
+        tranche3= (bsup3-bsup2)*0.15
+      }
+    }
+
+
+
+    var tranche4=0;
+    if (salaireBrute<=bsup3){
+      tranche4=0
+    }else{
+      if(salaireBrute<bsup4){
+        tranche4= (salaireBrute-bsup3)*0.19
+      }else {
+        tranche4= (bsup4-bsup3)*0.19
+      }
+    }
+
+    var tranche5=0;
+    if (salaireBrute<=bsup4){
+      tranche5=0
+    }else{
+      if(salaireBrute<bsup5){
+        tranche5= (salaireBrute-bsup4)*0.30
+      }else {
+        tranche4= (bsup5-bsup4)*0.30
+      }
+    }
+return tranche1+tranche2+tranche3+tranche4+tranche5;
+
+  }
+
+  calculeIPTS(salaireBrute:any){
+    salaireBrute=this.customRound(salaireBrute)
+
+    var bsup1=50000;
+    var bsup2=130000;
+    var bsup3=280000;
+    var bsup4=530000;
+    var bsup5=this.customRound(salaireBrute);
+
+    var tranche1=0;
+    if (salaireBrute<=bsup1){
+      tranche1=0
+    }
+    var tranche2=0;
+    if (salaireBrute<=bsup1){
+      tranche2=0
+    }else{
+      if(salaireBrute<bsup2){
+        tranche2= (salaireBrute-bsup1)*0.10
+      }else {
+        tranche2= (bsup2-bsup1)*0.10
+      }
+    }
+
+
+
+    var tranche3=0;
+
+    if (salaireBrute<=bsup2){
+      tranche3=0
+    }else{
+      if(salaireBrute<bsup3){
+        tranche3= (salaireBrute-bsup2)*0.15
+      }else {
+        tranche3= (bsup3-bsup2)*0.15
+      }
+    }
+
+
+
+    var tranche4=0;
+    if (salaireBrute<=bsup3){
+      tranche4=0
+    }else{
+      if(salaireBrute<bsup4){
+        tranche4= (salaireBrute-bsup3)*0.19
+      }else {
+        tranche4= (bsup4-bsup3)*0.19
+      }
+    }
+
+    var tranche5=0;
+    if (salaireBrute<=bsup4){
+      tranche5=0
+    }else{
+      if(salaireBrute<bsup5){
+        tranche5= (salaireBrute-bsup4)*0.30
+      }else {
+        tranche4= (bsup5-bsup4)*0.30
+      }
+    }
+
+    return tranche1+tranche2+tranche3+tranche4+tranche5;
+
+  }
+
+  roundToNearestMultiple(num:any, multiple:any) {
+    return Math.ceil(num / multiple) * multiple;
+  }
+
+   customRound(f6:any) {
+    const roundedMultiple = this.roundToNearestMultiple(f6, 1000);
+    return roundedMultiple - 1000;
+  }
+
+  Round(a:any){
+    return Math.round(a)
+  }
+
+
   compareEmployeObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
   }

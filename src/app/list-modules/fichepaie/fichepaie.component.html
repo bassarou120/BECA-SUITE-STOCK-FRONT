@@ -173,31 +173,33 @@
                   "
                 >
                   {{
-                    employe.contrats[0]?.base_categorielle +
+                    Round(employe.contrats[0]?.base_categorielle +
                       employe.contrats[0]?.prime_anciennete +
                       strToNumber(employe.contrats[0]?.total_prime) +
-                      calculateTotalAutrePrime(
-                        employe.fichepaies[0]?.autre_primes
-                      ) -
-                      ((employe.contrats[0]?.base_categorielle +
-                        employe.contrats[0]?.prime_anciennete +
-                        strToNumber(employe.contrats[0]?.total_prime) +
-                        calculateTotalAutrePrime(
-                          employe.fichepaies[0]?.autre_primes
-                        )) *
-                        employe.grade.taux_retenu_cnss_employe) /
-                        100 +
-                      ((employe.contrats[0]?.base_categorielle +
-                        employe.contrats[0]?.prime_anciennete +
-                        strToNumber(employe.contrats[0]?.total_prime) +
-                        calculateTotalAutrePrime(
-                          employe.fichepaies[0].autre_primes
-                        )) *
-                        employe.grade.taux_retenu_its_employe) /
-                        100 +
-                      calculateTotalRetenue(
-                        employe.fichepaies[0].autre_retenues
-                      ) | number
+                      calculateTotalAutrePrime(employe.fichepaies[0]?.autre_primes)
+                      -
+                      (
+
+                        ( ((employe.contrats[0]?.base_categorielle + employe.contrats[0]?.prime_anciennete +
+                            strToNumber(employe.contrats[0]?.total_prime) +
+                            calculateTotalAutrePrime(employe.fichepaies[0]?.autre_primes)
+                          )
+                          *
+                          employe.grade.taux_retenu_cnss_employe) /
+                          100)
+                        +
+
+                        calculeITS(  (employe.contrats[0]?.base_categorielle +
+                          employe.contrats[0]?.prime_anciennete +
+                          strToNumber(employe.contrats[0]?.total_prime) +
+                          calculateTotalAutrePrime(
+                            employe.fichepaies[0].autre_primes
+                          )))
+
+                        +
+                        calculateTotalRetenue( employe.fichepaies[0].autre_retenues )
+                      ))
+                      | number
                   }}
                 </td>
                 <td
@@ -229,9 +231,9 @@
                       >NON</span
                     >
                   </mat-slide-toggle>
-                  <!-- 
+                  <!--
                   <mat-slide-toggle [checked]="a.isvedette ==1 ? true:false " (change)="checkCheckBoxvalue($event,a.id)">
- 
+
                                             </mat-slide-toggle> -->
                 </td>
 
@@ -419,31 +421,32 @@
                   "
                 >
                   {{
-                    employe.contrats[0]?.base_categorielle +
-                      employe.contrats[0]?.prime_anciennete +
-                      strToNumber(employe.contrats[0]?.total_prime) +
-                      calculateTotalAutrePrime(
-                        employe.fichepaies[0]?.autre_primes
-                      ) -
-                      ((employe.contrats[0]?.base_categorielle +
-                        employe.contrats[0]?.prime_anciennete +
-                        strToNumber(employe.contrats[0]?.total_prime) +
-                        calculateTotalAutrePrime(
-                          employe.fichepaies[0]?.autre_primes
-                        )) *
+                  Round(employe.contrats[0]?.base_categorielle +
+                    employe.contrats[0]?.prime_anciennete +
+                    strToNumber(employe.contrats[0]?.total_prime) +
+                    calculateTotalAutrePrime(employe.fichepaies[0]?.autre_primes)
+                    -
+                    (
+
+                      ( ((employe.contrats[0]?.base_categorielle + employe.contrats[0]?.prime_anciennete +
+                          strToNumber(employe.contrats[0]?.total_prime) +
+                          calculateTotalAutrePrime(employe.fichepaies[0]?.autre_primes)
+                        )
+                        *
                         employe.grade.taux_retenu_cnss_employe) /
-                        100 +
-                      ((employe.contrats[0]?.base_categorielle +
+                        100)
+                      +
+
+                      calculeITS(  (employe.contrats[0]?.base_categorielle +
                         employe.contrats[0]?.prime_anciennete +
                         strToNumber(employe.contrats[0]?.total_prime) +
                         calculateTotalAutrePrime(
                           employe.fichepaies[0].autre_primes
-                        )) *
-                        employe.grade.taux_retenu_its_employe) /
-                        100 +
-                      calculateTotalRetenue(
-                        employe.fichepaies[0].autre_retenues
-                      ) | number
+                        )))
+
+                      +
+                      calculateTotalRetenue( employe.fichepaies[0].autre_retenues )
+                    )) | number
                   }}
                 </td>
                 <!-- <td
@@ -497,9 +500,9 @@
                       >NON</span
                     >
                   </mat-slide-toggle>
-                  <!-- 
+                  <!--
                   <mat-slide-toggle [checked]="a.isvedette ==1 ? true:false " (change)="checkCheckBoxvalue($event,a.id)">
- 
+
                                             </mat-slide-toggle> -->
                 </td>
 
@@ -758,16 +761,17 @@
                               this.selectedEmp?.grade.taux_retenu_cnss_employe
                             }}%) :
                             {{
-                              ((selectedEmp?.contrats[0]?.base_categorielle +
-                                this.selectedEmp?.contrats[0]
-                                  ?.prime_anciennete +
-                                strToNumber(
-                                  this.selectedEmp?.contrats[0]?.total_prime
-                                ) +
-                                strToNumber(totalAutrePrime)) *
-                                this.selectedEmp?.grade
-                                  .taux_retenu_cnss_employe) /
-                                100
+                             Round( ((selectedEmp?.contrats[0]?.base_categorielle +
+                              this.selectedEmp?.contrats[0]
+                                ?.prime_anciennete +
+                              strToNumber(
+                                this.selectedEmp?.contrats[0]?.total_prime
+                              ) +
+                              strToNumber(totalAutrePrime)) *
+                              this.selectedEmp?.grade
+                                .taux_retenu_cnss_employe) /
+                              100)
+
                             }}
                           </li>
                           <li>
@@ -775,16 +779,28 @@
                               this.selectedEmp?.grade.taux_retenu_its_employe
                             }}%) :
                             {{
-                              ((selectedEmp?.contrats[0]?.base_categorielle +
-                                this.selectedEmp?.contrats[0]
-                                  ?.prime_anciennete +
-                                strToNumber(
-                                  this.selectedEmp?.contrats[0]?.total_prime
-                                ) +
-                                strToNumber(totalAutrePrime)) *
-                                this.selectedEmp?.grade
-                                  .taux_retenu_its_employe) /
-                                100
+                            calculeITS( selectedEmp?.contrats[0]?.base_categorielle +
+                              this.selectedEmp?.contrats[0]
+                                ?.prime_anciennete +
+                              strToNumber(
+                                this.selectedEmp?.contrats[0]?.total_prime
+                              ) +
+                              strToNumber(totalAutrePrime))
+                            }}
+                          </li>
+
+                          <li>
+                            IPTS ({{
+                              this.selectedEmp?.grade.taux_retenu_its_employe
+                            }}%) :
+                            {{
+                            calculeIPTS( selectedEmp?.contrats[0]?.base_categorielle +
+                              this.selectedEmp?.contrats[0]
+                                ?.prime_anciennete +
+                              strToNumber(
+                                this.selectedEmp?.contrats[0]?.total_prime
+                              ) +
+                              strToNumber(totalAutrePrime))
                             }}
                           </li>
                           <!-- <li>indemite de transport : 9000</li> -->
@@ -983,35 +999,46 @@
 
                             <td class="ceneter_cell">
                               {{
-                                ((selectedEmp?.contrats[0]?.base_categorielle +
-                                  this.selectedEmp?.contrats[0]
-                                    ?.prime_anciennete +
-                                  strToNumber(
-                                    this.selectedEmp?.contrats[0]?.total_prime
-                                  ) +
-                                  strToNumber(totalAutrePrime)) *
-                                  this.selectedEmp?.grade
-                                    .taux_retenu_cnss_employe) /
-                                  100
+                              Round( ((selectedEmp?.contrats[0]?.base_categorielle +
+                                this.selectedEmp?.contrats[0]
+                                  ?.prime_anciennete +
+                                strToNumber(
+                                  this.selectedEmp?.contrats[0]?.total_prime
+                                ) +
+                                strToNumber(totalAutrePrime)) *
+                                this.selectedEmp?.grade
+                                  .taux_retenu_cnss_employe) /
+                                100)
                               }}
                             </td>
                             <td class="ceneter_cell">
-                              {{
-                                ((selectedEmp?.contrats[0]?.base_categorielle +
-                                  this.selectedEmp?.contrats[0]
-                                    ?.prime_anciennete +
-                                  strToNumber(
-                                    this.selectedEmp?.contrats[0]?.total_prime
-                                  ) +
-                                  strToNumber(totalAutrePrime)) *
-                                  this.selectedEmp?.grade
-                                    .taux_retenu_its_employe) /
-                                  100
+                                {{
+                              calculeITS( selectedEmp?.contrats[0]?.base_categorielle +
+                              this.selectedEmp?.contrats[0]
+                                ?.prime_anciennete +
+                              strToNumber(
+                                this.selectedEmp?.contrats[0]?.total_prime
+                              ) +
+                              strToNumber(totalAutrePrime))
+
                               }}
+
+<!--                              {{-->
+<!--                                ((selectedEmp?.contrats[0]?.base_categorielle +-->
+<!--                                  this.selectedEmp?.contrats[0]-->
+<!--                                    ?.prime_anciennete +-->
+<!--                                  strToNumber(-->
+<!--                                    this.selectedEmp?.contrats[0]?.total_prime-->
+<!--                                  ) +-->
+<!--                                  strToNumber(totalAutrePrime)) *-->
+<!--                                  this.selectedEmp?.grade-->
+<!--                                    .taux_retenu_its_employe) /-->
+<!--                                  100-->
+<!--                              }}-->
                             </td>
                             <td class="ceneter_cell">
                               {{
-                                ((selectedEmp?.contrats[0]?.base_categorielle +
+                              Round(  ((selectedEmp?.contrats[0]?.base_categorielle +
                                   this.selectedEmp?.contrats[0]
                                     ?.prime_anciennete +
                                   strToNumber(
@@ -1020,12 +1047,12 @@
                                   strToNumber(totalAutrePrime)) *
                                   this.selectedEmp?.grade
                                     .taux_retenu_cnss_employeur) /
-                                  100
+                                  100)
                               }}
                             </td>
                             <td class="ceneter_cell">
                               {{
-                                ((selectedEmp?.contrats[0]?.base_categorielle +
+                              Round( ((selectedEmp?.contrats[0]?.base_categorielle +
                                   this.selectedEmp?.contrats[0]
                                     ?.prime_anciennete +
                                   strToNumber(
@@ -1034,7 +1061,7 @@
                                   strToNumber(totalAutrePrime)) *
                                   this.selectedEmp?.grade
                                     .taux_retenu_its_employeur) /
-                                  100
+                                  100)
                               }}
                             </td>
                           </tr>

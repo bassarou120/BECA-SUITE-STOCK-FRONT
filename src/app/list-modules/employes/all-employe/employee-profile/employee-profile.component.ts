@@ -147,8 +147,8 @@ export class EmployeeProfileComponent implements OnInit {
       employe_id: [this.idEmploye, []],
       base_categorielle: ['', [Validators.required]],
       prime_anciennete: ['', [Validators.required]],
-      date_debut: ['', [Validators.required]],
-      date_fin: ['', [Validators.required]],
+      date_debut: ['', []],
+      date_fin: ['', []],
       total_prime: ['', []],
       duree: ['', []],
       // duree: [this.idEmploye, [Validators.required]],
@@ -352,6 +352,8 @@ export class EmployeeProfileComponent implements OnInit {
 
   showAddContratForm = true;
 
+  showMessage=false
+  showMessageStatus=""
   initAddContrat() {
     // alert('init create contrat');
     this.typeContratService.getAllTypeContrat().subscribe(
@@ -402,9 +404,16 @@ export class EmployeeProfileComponent implements OnInit {
 
     this.employeservice.getLastContratByEmployeId(this.idEmploye).subscribe(
       (data: any) => {
-        // alert(JSON.stringify(data.data.last_contrat));
-        // alert(JSON.stringify(data.data.last_contrat[0].etat));
-        // alert(JSON.stringify(data.data.last_contrat[0].status));
+       // alert(JSON.stringify(data.data.last_contrat));
+       // alert(JSON.stringify(data.data.last_contrat[0].etat));
+       //  alert(JSON.stringify(data.data.last_contrat[0].status));
+        this.showMessageStatus=data.data.last_contrat[0].status;
+
+        if (this.showMessageStatus=="Valide et en cours" || this.showMessageStatus=="En attente de validation"){
+          this.showMessage=true;
+        }else {
+          this.showMessage=false;
+        }
         // last_contrat;
         // this.listTypeContrat=data.data.data
         // this.lastContrat=data.data
@@ -548,7 +557,7 @@ export class EmployeeProfileComponent implements OnInit {
   changeType() {
     if (this.typeContrat?.libelle == 'CDI') {
       // alert(this.typeContrat.libelle);
-      this.addEmployeContratForm.get('date_debut')?.disable();
+      // this.addEmployeContratForm.get('date_debut')?.disable();
       this.addEmployeContratForm.get('duree')?.disable();
     } else {
       this.addEmployeContratForm.get('date_debut')?.enable();
@@ -590,6 +599,9 @@ export class EmployeeProfileComponent implements OnInit {
 
   onClickSubmitaddEmployeContrat() {
     $('#spinner').removeClass('d-none');
+
+    // alert(JSON.stringify(this.addEmployeContratForm.valid))
+    // alert(JSON.stringify(this.addEmployeContratForm.value))
     if (this.addEmployeContratForm.valid) {
       this.addEmployeContratForm.get('total_prime')?.setValue(this.totalPrime);
       this.addEmployeContratForm
@@ -600,23 +612,35 @@ export class EmployeeProfileComponent implements OnInit {
             .slice(0, 10)
             .replace('T', ' ')
         );
-      this.addEmployeContratForm
-        .get('date_fin')
-        ?.setValue(
-          new Date(this.addEmployeContratForm.get('date_fin')?.value)
-            .toISOString()
-            .slice(0, 10)
-            .replace('T', ' ')
-        );
-
       var obj = this.addEmployeContratForm.value;
-      Object.assign(obj, {
-        prime: this.form.value.items,
-        duree: this.calculeNomberDay(
-          new Date(this.addEmployeContratForm.get('date_debut')?.value),
-          new Date(this.addEmployeContratForm.get('date_fin')?.value)
-        ),
-      });
+
+      if (this.typeContrat?.libelle != 'CDI') {
+        this.addEmployeContratForm
+          .get('date_fin')
+          ?.setValue(
+            new Date(this.addEmployeContratForm.get('date_fin')?.value)
+              .toISOString()
+              .slice(0, 10)
+              .replace('T', ' ')
+          );
+        // var obj = this.addEmployeContratForm.value;
+        Object.assign(obj, {
+          prime: this.form.value.items,
+          duree: this.calculeNomberDay(
+            new Date(this.addEmployeContratForm.get('date_debut')?.value),
+            new Date(this.addEmployeContratForm.get('date_fin')?.value)
+          ),
+        });
+      }else {
+
+        Object.assign(obj, {
+          prime: this.form.value.items,
+
+        });
+
+      }
+
+
 
       // alert(JSON.stringify(obj));
 
