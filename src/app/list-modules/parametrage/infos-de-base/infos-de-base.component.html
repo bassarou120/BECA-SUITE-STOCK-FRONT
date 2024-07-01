@@ -251,12 +251,12 @@
         </div>
 
         <div class="input-block mb-3 col-6">
-          <label class="col-form-label" for="NOM_PDG_TXT">Nom du PDG</label>
+          <label class="col-form-label" for="NOM_DG_TXT">Nom du PDG</label>
           <input class="form-control" type="text"
-            [class.invalid]="setInfoDeBaseForm.get('NOM_PDG_TXT')?.invalid && setInfoDeBaseForm.get('NOM_PDG_TXT')?.touched"
-            formControlName="NOM_PDG_TXT">
+            [class.invalid]="setInfoDeBaseForm.get('NOM_DG_TXT')?.invalid && setInfoDeBaseForm.get('NOM_DG_TXT')?.touched"
+            formControlName="NOM_DG_TXT">
           <small
-            *ngIf="setInfoDeBaseForm.get('NOM_PDG_TXT')?.invalid && setInfoDeBaseForm.get('NOM_PDG_TXT')?.touched"
+            *ngIf="setInfoDeBaseForm.get('NOM_DG_TXT')?.invalid && setInfoDeBaseForm.get('NOM_DG_TXT')?.touched"
             class="text-danger"> *La valeur entrée est invalide</small>
         </div>
       </div>

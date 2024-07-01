@@ -114,8 +114,8 @@ export class InfosDeBaseComponent implements OnInit {
       COURRIEL: ["", [Validators.required]],
       COURRIEL_TXT: ["", [Validators.required]],
       //  Nom du DG
-      NOM_PDG: ["", [Validators.required]],
-      NOM_PDG_TXT: ["", [Validators.required]],
+      NOM_DG: ["", [Validators.required]],
+      NOM_DG_TXT: ["", [Validators.required]],
       // -Logo de l’entreprise
       LOGO_ENTREPRISE: [0, [Validators.required]],
       LOGO_ENTREPRISE_TXT: [" ", [Validators.required]],
