@@ -194,7 +194,7 @@ export class EmployeeProfileComponent implements OnInit {
 
     this.addDocumentForm = this.formBuilder.group({
       employe_id: ["", [Validators.required]],
-      type_document: ["", [Validators.required]],
+      // type_document: ["", [Validators.required]],
       titre: ["", [Validators.required]],
       url: ["", [Validators.required]],
       otherDocument: [""]
