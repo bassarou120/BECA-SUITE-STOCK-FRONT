@@ -16,6 +16,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import * as path from 'path';
 
+
+
 interface data {
   value: string;
 }
@@ -90,7 +92,7 @@ export class EmployeeProfileComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private typeContratService: TypeContratService,
     private documentService: DocumentService
-  ) {}
+  ) { }
 
   totalPrime = 0;
   form = this.formBuilder.group({
@@ -167,6 +169,8 @@ export class EmployeeProfileComponent implements OnInit {
     this.getDataForListe();
     this.getEmpMeouvemt();
 
+
+
     // console.log(this.curentEmploye);
 
     this.affectationForm = this.formBuilder.group({
@@ -189,21 +193,20 @@ export class EmployeeProfileComponent implements OnInit {
     });
 
     this.addDocumentForm = this.formBuilder.group({
-      employe_id: ['', [Validators.required]],
-      type_document: ['', [Validators.required]],
-      titre: ['', [Validators.required]],
-      url: ['', [Validators.required]],
-      otherDocument: [''],
+      employe_id: ["", [Validators.required]],
+      // type_document: ["", [Validators.required]],
+      titre: ["", [Validators.required]],
+      url: ["", [Validators.required]],
+      otherDocument: [""]
     });
 
     // Synchronise le champ 'titre' avec 'otherDocument' lorsqu'il change
-    this.addDocumentForm
-      .get('otherDocument')
-      ?.valueChanges.subscribe((value) => {
-        if (this.showOtherInput) {
-          this.addDocumentForm.get('titre')?.setValue(value);
-        }
-      });
+    this.addDocumentForm.get('otherDocument')?.valueChanges.subscribe(value => {
+      if (this.showOtherInput) {
+        this.addDocumentForm.get('titre')?.setValue(value);
+      }
+    });
+
   }
 
   onSelectionChange(event: any): void {
@@ -212,9 +215,7 @@ export class EmployeeProfileComponent implements OnInit {
       this.showOtherInput = true;
       this.addDocumentForm.get('titre')?.reset();
       this.addDocumentForm.get('titre')?.clearValidators();
-      this.addDocumentForm
-        .get('otherDocument')
-        ?.setValidators([Validators.required]);
+      this.addDocumentForm.get('otherDocument')?.setValidators([Validators.required]);
     } else {
       this.showOtherInput = false;
       this.addDocumentForm.get('titre')?.setValue(selectedValue);
@@ -270,9 +271,9 @@ export class EmployeeProfileComponent implements OnInit {
             console.error('Erreur:', error);
           }
         }
-      );
+      });
     } else {
-      console.log('Desolé le formulaire est mal  renseigné');
+      console.log("Desolé le formulaire est mal  renseigné");
     }
   }
 
@@ -319,7 +320,7 @@ export class EmployeeProfileComponent implements OnInit {
         // this.listCategorie = date.data.categorie;
         // this.listClasse = date.data.classe;
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -332,9 +333,11 @@ export class EmployeeProfileComponent implements OnInit {
           // alert(JSON.stringify(res.data[0].mouvements));
           this.listMouvement = res.data[0].mouvements;
         },
-        (eror: any) => {}
+        (eror: any) => { }
       );
   }
+
+
 
   getMonthName(monthNumber: string): string {
     const months = [
@@ -375,8 +378,8 @@ export class EmployeeProfileComponent implements OnInit {
 
   showAddContratForm = true;
 
-  showMessage = false;
-  showMessageStatus = '';
+  showMessage=false
+  showMessageStatus=""
   initAddContrat() {
     // alert('init create contrat');
     this.typeContratService.getAllTypeContrat().subscribe(
@@ -384,7 +387,7 @@ export class EmployeeProfileComponent implements OnInit {
         // alert(JSON.stringify(data.data.data));
         this.listTypeContrat = data.data.data;
       },
-      (erro: any) => {}
+      (erro: any) => { }
     );
 
     this.employeservice.getLastContrat().subscribe(
@@ -398,7 +401,7 @@ export class EmployeeProfileComponent implements OnInit {
           .get('num_contrat')
           ?.setValue('C-000' + (data.data == 0 ? '1' : data.data.id));
       },
-      (erro: any) => {}
+      (erro: any) => { }
     );
 
     // alert(JSON.stringify(this.curentEmploye.employe.grade_id));
@@ -427,18 +430,15 @@ export class EmployeeProfileComponent implements OnInit {
 
     this.employeservice.getLastContratByEmployeId(this.idEmploye).subscribe(
       (data: any) => {
-        // alert(JSON.stringify(data.data.last_contrat));
-        // alert(JSON.stringify(data.data.last_contrat[0].etat));
-        //  alert(JSON.stringify(data.data.last_contrat[0].status));
-        this.showMessageStatus = data.data.last_contrat[0].status;
+       // alert(JSON.stringify(data.data.last_contrat));
+       // alert(JSON.stringify(data.data.last_contrat[0].etat));
+       //  alert(JSON.stringify(data.data.last_contrat[0].status));
+        this.showMessageStatus=data.data.last_contrat[0].status;
 
-        if (
-          this.showMessageStatus == 'Valide et en cours' ||
-          this.showMessageStatus == 'En attente de validation'
-        ) {
-          this.showMessage = true;
-        } else {
-          this.showMessage = false;
+        if (this.showMessageStatus=="Valide et en cours" || this.showMessageStatus=="En attente de validation"){
+          this.showMessage=true;
+        }else {
+          this.showMessage=false;
         }
         // last_contrat;
         // this.listTypeContrat=data.data.data
@@ -447,7 +447,7 @@ export class EmployeeProfileComponent implements OnInit {
         // console.log(data.data)
         // this.addEmployeContratForm.get('num_contrat')?.setValue("C-000"+data.data.id)
       },
-      (erro: any) => {}
+      (erro: any) => { }
     );
   }
 
@@ -477,7 +477,7 @@ export class EmployeeProfileComponent implements OnInit {
           // this.curentEmploye = data.data;
           location.reload();
         },
-        (error: any) => {}
+        (error: any) => { }
       );
   }
 
@@ -501,7 +501,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
         // alert(JSON.stringify(res));
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -539,7 +539,7 @@ export class EmployeeProfileComponent implements OnInit {
               ) as HTMLElement;
               el.click();
             },
-            (error: any) => {}
+            (error: any) => { }
           );
 
           // this.subContent.nativeElement.click();
@@ -551,7 +551,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
         // alert(JSON.stringify(res));
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -563,7 +563,7 @@ export class EmployeeProfileComponent implements OnInit {
 
         console.log(this.curentEmploye);
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
   compareObjects(object1: any, object2: any) {
@@ -576,7 +576,7 @@ export class EmployeeProfileComponent implements OnInit {
         // alert(JSON.stringify(data.data.data));
         this.list_banque = data.data.data;
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -657,11 +657,16 @@ export class EmployeeProfileComponent implements OnInit {
             new Date(this.addEmployeContratForm.get('date_fin')?.value)
           ),
         });
-      } else {
+      }else {
+
         Object.assign(obj, {
           prime: this.form.value.items,
+
         });
+
       }
+
+
 
       // alert(JSON.stringify(obj));
 
@@ -759,12 +764,12 @@ export class EmployeeProfileComponent implements OnInit {
     // To display the final no. of days (result)
     console.log(
       'Total number of days between dates:\n' +
-        date1.toDateString() +
-        ' and ' +
-        date2.toDateString() +
-        ' is: ' +
-        Difference_In_Days +
-        ' days'
+      date1.toDateString() +
+      ' and ' +
+      date2.toDateString() +
+      ' is: ' +
+      Difference_In_Days +
+      ' days'
     );
 
     return Difference_In_Days;

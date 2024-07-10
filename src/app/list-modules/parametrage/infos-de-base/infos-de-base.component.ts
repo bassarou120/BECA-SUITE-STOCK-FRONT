@@ -32,6 +32,7 @@ export class InfosDeBaseComponent implements OnInit {
   public selectedSignataire2 = '';
   public selectedSignature1 = environment.base_url_backend;
   public selectedSignature2 = environment.base_url_backend;
+  public logoentreprise = environment.base_url_backend;
 
   public searchDataValue = '';
   public setInfoDeBaseForm!: FormGroup;
@@ -85,6 +86,43 @@ export class InfosDeBaseComponent implements OnInit {
       BANQUE_5_TXT: ["", [Validators.required]],
       NUMERO_DE_COMPTE_5: ["", [Validators.required]],
       NUMERO_DE_COMPTE_5_TXT: ["", [Validators.required]],
+      // NOM_DESIGNATION_ENTREPRISE,
+      NOM_DESIGNATION_ENTREPRISE: ["", [Validators.required]],
+      NOM_DESIGNATION_ENTREPRISE_TXT: ["", [Validators.required]],
+      // NUMERO_AFFILIATION_CNSS,
+      NUMERO_AFFILIATION_CNSS: ["", [Validators.required]],
+      NUMERO_AFFILIATION_CNSS_TXT: ["", [Validators.required]],
+      // VILLE,
+      VILLE: ["", [Validators.required]],
+      VILLE_TXT: ["", [Validators.required]],
+      // PAYS,
+      PAYS: ["", [Validators.required]],
+      PAYS_TXT: ["", [Validators.required]],
+      // ZONE,
+      ZONE: ["", [Validators.required]],
+      ZONE_TXT: ["", [Validators.required]],
+      // QUATIER,
+      QUATIER: ["", [Validators.required]],
+      QUATIER_TXT: ["", [Validators.required]],
+      // TELEPHONE,
+      TELEPHONE: ["", [Validators.required]],
+      TELEPHONE_TXT: ["", [Validators.required]],
+      // BOITE_POSTAL, 
+      BOITE_POSTAL: ["", [Validators.required]],
+      BOITE_POSTAL_TXT: ["", [Validators.required]],
+      // COURRIEL
+      COURRIEL: ["", [Validators.required]],
+      COURRIEL_TXT: ["", [Validators.required]],
+      //  Nom du DG
+      NOM_DG: ["", [Validators.required]],
+      NOM_DG_TXT: ["", [Validators.required]],
+      // -Logo de l’entreprise
+      LOGO_ENTREPRISE: [0, [Validators.required]],
+      LOGO_ENTREPRISE_TXT: [" ", [Validators.required]],
+      // -IFU de l’entreprise
+      IFU_ENTREPRISE: ["", [Validators.required]],
+      IFU_ENTREPRISE_TXT: ["", [Validators.required]],
+
     });
   }
 
@@ -96,12 +134,14 @@ export class InfosDeBaseComponent implements OnInit {
         res.cle_txt = res.cle + "_TXT";
         this.lstInfosDeBase.push(res);
         //this.lstReadonly[res.cle] = true;
-        if((res.cle!="SIGNATURE_1") && (res.cle!="SIGNATURE_2")) {
+        if((res.cle!="SIGNATURE_1") && (res.cle!="SIGNATURE_2") && (res.cle!="LOGO_ENTREPRISE")) {
           this.updateInfo(res);
         } else if(res.cle == "SIGNATURE_1") {
           this.selectedSignature1 += res.valeur_txt;
-        } else {
+        } else if(res.cle == "SIGNATURE_2"){
           this.selectedSignature2 += res.valeur_txt;
+        }else{
+          this.logoentreprise += res.valeur_txt;
         }
       });
     });
@@ -121,6 +161,7 @@ export class InfosDeBaseComponent implements OnInit {
     });
     if(info.cle == "NOM_SIGNATAIRE_1") { this.selectedSignataire1 = info.valeur_txt; }
     if(info.cle == "NOM_SIGNATAIRE_2") { this.selectedSignataire2 = info.valeur_txt; }
+    if(info.cle == "LOGO_ENTREPRISE") { this.logoentreprise = info.valeur_txt; }
   }
 
   switchReadOnlyValue(val: string) {

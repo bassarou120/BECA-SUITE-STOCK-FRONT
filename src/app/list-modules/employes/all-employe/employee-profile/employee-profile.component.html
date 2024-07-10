@@ -40,8 +40,7 @@
                       {{ curentEmploye?.departement.nom_dep }}
                     </h6>
                     <small class="text-muted">
-                      {{ curentEmploye?.poste.nom_poste }}</small
-                    >
+                      {{ curentEmploye?.poste.nom_poste }}</small>
                     <div class="staff-id">
                       Matricule: {{ curentEmploye?.employe.matricule }}
                     </div>
@@ -53,20 +52,15 @@
                     <div class="staff-id">
                       Date d'entrée dans l'entreprise :
                       {{
-                        curentEmploye?.employe.date_arrivee
-                          | date : "dd-MM-YYYY"
+                      curentEmploye?.employe.date_arrivee
+                      | date : "dd-MM-YYYY"
                       }}
                     </div>
 
                     <div class="staff-msg">
                       <!--                      [routerLink]="routes.chat"-->
-                      <a
-                        class="btn btn-custom"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Enregister un mouvement</a
-                      >
+                      <a class="btn btn-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                        Enregister un mouvement</a>
                       <div class="dropdown-menu dropdown-menu-left">
                         <!-- <a
                           class="dropdown-item"
@@ -76,16 +70,10 @@
                         >
                           (click)="getIDForm(emp.id)"
                         -->
-                        <a
-                          id="btnNewContrat"
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#new_contract_modal"
-                          (click)="initAddContrat()"
-                        >
+                        <a id="btnNewContrat" class="dropdown-item" data-bs-toggle="modal"
+                          data-bs-target="#new_contract_modal" (click)="initAddContrat()">
                           <!--                          <i class="fa-regular fa-trash-can m-r-5"></i>-->
-                          Nouveau contrat</a
-                        >
+                          Nouveau contrat</a>
 
                         <!--                        <a class="dropdown-item"-->
                         <!--                           data-bs-toggle="modal"-->
@@ -122,6 +110,8 @@
                           >Ajouter un Document</a
                         >
 
+                        <a id="btnNomination" class="dropdown-item" data-bs-toggle="modal"
+                          data-bs-target="#nomination_modal">Nomination</a>
                         <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
@@ -150,8 +140,8 @@
                       <div class="title">Date de naissance:</div>
                       <div class="text">
                         {{
-                          curentEmploye?.employe.date_naissance
-                            | date : "dd-MM-YYYY"
+                        curentEmploye?.employe.date_naissance
+                        | date : "dd-MM-YYYY"
                         }}
                       </div>
                     </li>
@@ -213,34 +203,24 @@
       <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
         <ul class="nav nav-tabs nav-tabs-bottom">
           <li class="nav-item">
-            <a href="#emp_profile" data-bs-toggle="tab" class="nav-link active"
-              >Information personelles</a
-            >
+            <a href="#emp_profile" data-bs-toggle="tab" class="nav-link active">Information personelles</a>
           </li>
           <!--                    <li class="nav-item"><a href="#emp_projects" data-bs-toggle="tab" class="nav-link">Projects</a></li>-->
           <li class="nav-item">
-            <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
-              >Autre info
-              <small class="text-danger">(Gestion des contrats)</small></a
-            >
+            <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link">Autre info
+              <small class="text-danger">(Gestion des contrats)</small></a>
           </li>
 
           <li class="nav-item">
-            <a href="#emp_mouvement" data-bs-toggle="tab" class="nav-link"
-              >Carrière (mouvements)</a
-            >
+            <a href="#emp_mouvement" data-bs-toggle="tab" class="nav-link">Carrière (mouvements)</a>
           </li>
 
           <li class="nav-item">
-            <a href="#emp_assets" data-bs-toggle="tab" class="nav-link"
-              >Matériels (logistique)</a
-            >
+            <a href="#emp_assets" data-bs-toggle="tab" class="nav-link">Matériels (logistique)</a>
           </li>
 
           <li class="nav-item">
-            <a href="#emp_document" data-bs-toggle="tab" class="nav-link"
-              >Registre du personnel</a
-            >
+            <a href="#emp_document" data-bs-toggle="tab" class="nav-link">Registre du personnel</a>
           </li>
         </ul>
       </div>
@@ -256,13 +236,8 @@
             <div class="card-body">
               <h3 class="card-title">
                 Informations Personnelles
-                <a
-                  class="edit-icon"
-                  data-bs-toggle="modal"
-                  data-bs-target="#personal_info_modal"
-                  (click)="getEditInfoPersoForm()"
-                  ><i class="fa-solid fa-pencil"></i
-                ></a>
+                <a class="edit-icon" data-bs-toggle="modal" data-bs-target="#personal_info_modal"
+                  (click)="getEditInfoPersoForm()"><i class="fa-solid fa-pencil"></i></a>
               </h3>
               <ul class="personal-info">
                 <li>
@@ -449,10 +424,8 @@
                       <div class="timeline-content">
                         <a href="#/" class="name">{{ formation.intitule }}</a>
                         <div>{{ formation.domaine }}</div>
-                        <span class="time"
-                          >{{ formation.date_debut | slice : 0 : 4 }} -
-                          {{ formation.date_fin | slice : 0 : 4 }}</span
-                        >
+                        <span class="time">{{ formation.date_debut | slice : 0 : 4 }} -
+                          {{ formation.date_fin | slice : 0 : 4 }}</span>
                       </div>
                     </div>
                   </li>
@@ -483,15 +456,13 @@
                       <div class="timeline-content">
                         <a href="#/" class="name">{{
                           experience.posteOcupe
-                        }}</a>
-                        <span class="time"
-                          >{{
-                            getMonthName(experience.date_debut.split("-")[1])
+                          }}</a>
+                        <span class="time">{{
+                          getMonthName(experience.date_debut.split("-")[1])
                           }}
                           {{ experience.date_debut.split("-")[0] }} -
                           {{ getMonthName(experience.date_fin.split("-")[1]) }}
-                          {{ experience.date_fin.split("-")[0] }}</span
-                        >
+                          {{ experience.date_fin.split("-")[0] }}</span>
                       </div>
                     </div>
                   </li>
@@ -511,25 +482,13 @@
           <div class="card">
             <div class="card-body">
               <div class="dropdown profile-action">
-                <a
-                  aria-expanded="false"
-                  data-bs-toggle="dropdown"
-                  class="action-icon dropdown-toggle"
-                  ><i class="material-icons material-color">more_vert</i></a
-                >
+                <a aria-expanded="false" data-bs-toggle="dropdown" class="action-icon dropdown-toggle"><i
+                    class="material-icons material-color">more_vert</i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a
-                    data-bs-target="#edit_project"
-                    data-bs-toggle="modal"
-                    class="dropdown-item"
-                    ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
-                  >
-                  <a
-                    data-bs-target="#delete_project"
-                    data-bs-toggle="modal"
-                    class="dropdown-item"
-                    ><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a
-                  >
+                  <a data-bs-target="#edit_project" data-bs-toggle="modal" class="dropdown-item"><i
+                      class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+                  <a data-bs-target="#delete_project" data-bs-toggle="modal" class="dropdown-item"><i
+                      class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
                 </div>
               </div>
               <h4 class="project-title">
@@ -592,14 +551,8 @@
                 Progress <span class="text-success float-end">40%</span>
               </p>
               <div class="progress progress-xs mb-0">
-                <div
-                  style="width: 40%"
-                  title=""
-                  data-bs-toggle="tooltip"
-                  role="progressbar"
-                  class="progress-bar bg-success"
-                  data-original-title="40%"
-                ></div>
+                <div style="width: 40%" title="" data-bs-toggle="tooltip" role="progressbar"
+                  class="progress-bar bg-success" data-original-title="40%"></div>
               </div>
             </div>
           </div>
@@ -609,12 +562,8 @@
           <div class="card">
             <div class="card-body">
               <div class="dropdown profile-action">
-                <a
-                  aria-expanded="false"
-                  data-bs-toggle="dropdown"
-                  class="action-icon dropdown-toggle"
-                  ><i class="material-icons material-color">more_vert</i></a
-                >
+                <a aria-expanded="false" data-bs-toggle="dropdown" class="action-icon dropdown-toggle"><i
+                    class="material-icons material-color">more_vert</i></a>
                 <!-- <div class="dropdown-menu dropdown-menu-right">
                   <a
                     data-bs-target="#edit_project"
@@ -690,14 +639,8 @@
                 Progress <span class="text-success float-end">40%</span>
               </p>
               <div class="progress progress-xs mb-0">
-                <div
-                  style="width: 40%"
-                  title=""
-                  data-bs-toggle="tooltip"
-                  role="progressbar"
-                  class="progress-bar bg-success"
-                  data-original-title="40%"
-                ></div>
+                <div style="width: 40%" title="" data-bs-toggle="tooltip" role="progressbar"
+                  class="progress-bar bg-success" data-original-title="40%"></div>
               </div>
             </div>
           </div>
@@ -707,25 +650,13 @@
           <div class="card">
             <div class="card-body">
               <div class="dropdown profile-action">
-                <a
-                  aria-expanded="false"
-                  data-bs-toggle="dropdown"
-                  class="action-icon dropdown-toggle"
-                  ><i class="material-icons material-color">more_vert</i></a
-                >
+                <a aria-expanded="false" data-bs-toggle="dropdown" class="action-icon dropdown-toggle"><i
+                    class="material-icons material-color">more_vert</i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a
-                    data-bs-target="#edit_project"
-                    data-bs-toggle="modal"
-                    class="dropdown-item"
-                    ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
-                  >
-                  <a
-                    data-bs-target="#delete_project"
-                    data-bs-toggle="modal"
-                    class="dropdown-item"
-                    ><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a
-                  >
+                  <a data-bs-target="#edit_project" data-bs-toggle="modal" class="dropdown-item"><i
+                      class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+                  <a data-bs-target="#delete_project" data-bs-toggle="modal" class="dropdown-item"><i
+                      class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
                 </div>
               </div>
               <h4 class="project-title">
@@ -886,14 +817,8 @@
                 Progress <span class="text-success float-end">40%</span>
               </p>
               <div class="progress progress-xs mb-0">
-                <div
-                  style="width: 40%"
-                  title=""
-                  data-bs-toggle="tooltip"
-                  role="progressbar"
-                  class="progress-bar bg-success"
-                  data-original-title="40%"
-                ></div>
+                <div style="width: 40%" title="" data-bs-toggle="tooltip" role="progressbar"
+                  class="progress-bar bg-success" data-original-title="40%"></div>
               </div>
             </div>
           </div>
@@ -938,8 +863,8 @@
                         <div class="title">Date de début :</div>
                         <div class="text">
                           {{
-                            curentEmploye?.last_contat?.date_debut
-                              | date : "dd/MM/YYYY"
+                          curentEmploye?.last_contat?.date_debut
+                          | date : "dd/MM/YYYY"
                           }}
                         </div>
                       </li>
@@ -948,8 +873,8 @@
                         <div class="title">Date de Fin :</div>
                         <div class="text">
                           {{
-                            curentEmploye?.last_contat?.date_fin
-                              | date : "dd/MM/YYYY"
+                          curentEmploye?.last_contat?.date_fin
+                          | date : "dd/MM/YYYY"
                           }}
                         </div>
                       </li>
@@ -993,9 +918,7 @@
                         <th>Montant</th>
                       </tr>
 
-                      <tr
-                        *ngFor="let prime of curentEmploye?.last_contat?.prime"
-                      >
+                      <tr *ngFor="let prime of curentEmploye?.last_contat?.prime">
                         <td>{{ prime.indenmite }}</td>
                         <td>{{ prime.montant_indenmite }}</td>
                       </tr>
@@ -1011,9 +934,9 @@
               <u>
                 Salaire Bruite :
                 {{
-                  curentEmploye?.last_contat?.base_categorielle +
-                    curentEmploye?.last_contat?.prime_anciennete +
-                    convertStringToInt(curentEmploye?.last_contat?.total_prime)
+                curentEmploye?.last_contat?.base_categorielle +
+                curentEmploye?.last_contat?.prime_anciennete +
+                convertStringToInt(curentEmploye?.last_contat?.total_prime)
                 }}
                 FCFA
               </u>
@@ -1042,15 +965,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  *ngFor="
+                <tr *ngFor="
                     let contrat of curentEmploye?.list_contrat;
                     let i = index
-                  "
-                >
+                  ">
                   <td>{{ i + 1 }}</td>
                   <td>{{ contrat.num_contrat }}</td>
-                  <td>{{ contrat.type_contrat.libelle }}</td>
+                  <td> {{contrat.type_contrat.libelle }}</td>
                   <td>{{ contrat.date_debut | date : "dd/MM/YYYY" }}</td>
                   <td>{{ contrat.date_fin | date : "dd/MM/YYYY" }}</td>
                   <td>
@@ -1221,6 +1142,7 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
+
             <hr />
             <h3 class="card-title">
               Les documents de {{ curentEmploye?.employe.nom }}
@@ -1234,37 +1156,26 @@
                   <tr>
                     <th>#</th>
 
-                    <th>Nom du document</th>
-                    <th>Type document</th>
-                    <th>Lien vers document</th>
-                    <th>Date de création</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="
-                      let document of curentEmploye?.list_document;
-                      let i = index
-                    "
-                  >
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ document.titre }}</td>
-                    <td>{{ document.type_document }}</td>
-                    <td>{{ document.url }}</td>
-                    <td>{{ document.created_at | date : "dd/MM/YYYY" }}</td>
-                    <td>
-                      <a
-                        [href]="back + document.url"
-                        [download]="getFileName(document.url)"
-                        (click)="logFileName(getFileName(document.url))"
-                        >Télécharger</a
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <br /><br /><br />
+                      <th>Nom du document</th>
+                      <th>Type document</th>
+                      <th>Lien vers document</th>
+                      <th>Date de création</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let document of curentEmploye?.list_document; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ document.titre }}</td>
+                      <td>{{ document.type_document }}</td>
+                      <td>{{ document.url }}</td>
+                      <td>{{ document.created_at | date : "dd/MM/YYYY" }}</td>
+                      <td><a [href]="back + document.url"  [attr.download]="getFileName(document.url)" (click)="logFileName(getFileName(document.url))">Télécharger</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br /><br /><br />
+
             </div>
           </div>
         </div>
@@ -1769,6 +1680,8 @@
                     ><i class="fa-solid fa-plus-circle"></i> Ajouter prime</a
                   >
                 </div>
+
+
               </div>
             </div>
 
@@ -1780,6 +1693,7 @@
             </div>
           </div>
         </form>
+
       </div>
     </div>
   </div>
@@ -2023,11 +1937,7 @@
 
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for=""
-                  >Situation matrimoniale<span class="text-danger"
-                    >*</span
-                  ></label
-                >
+                <label class="col-form-label" for="">Situation matrimoniale<span class="text-danger">*</span></label>
 
                 <!--                  [ngModelOptions]="{ standalone: true }"-->
                 <mat-select
@@ -2087,12 +1997,7 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">RIB</label>
                 <div class="cal-icon">
-                  <input
-                    type="number"
-                    formControlName="rib"
-                    value="{{ curentEmploye?.rib }}"
-                    class="form-control"
-                  />
+                  <input type="number" formControlName="rib" value="{{ curentEmploye?.rib }}" class="form-control" />
                 </div>
               </div>
             </div>
@@ -2186,7 +2091,8 @@
             </div>
           </form>
 
-      --></div>
+      -->
+      </div>
     </div>
   </div>
 </div>
@@ -2309,9 +2215,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for=""
-                      >Phone <span class="text-danger">*</span></label
-                    >
+                    <label class="col-form-label" for="">Phone <span class="text-danger">*</span></label>
                     <input class="form-control" type="text" />
                   </div>
                 </div>
@@ -2542,9 +2446,7 @@
                   </div>
                 </div>
                 <div class="add-more">
-                  <a href="javascript:void(0);"
-                    ><i class="fa-solid fa-plus-circle"></i> Add More</a
-                  >
+                  <a href="javascript:void(0);"><i class="fa-solid fa-plus-circle"></i> Add More</a>
                 </div>
               </div>
             </div>

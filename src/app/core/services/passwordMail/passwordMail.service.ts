@@ -28,4 +28,13 @@ export class passwordMailService  {
       );
   }
 
+  savePasswordMail2(data: any): Observable<any> {
+    return this.http.post(`${this.url}/reset-password`, data)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
 }
