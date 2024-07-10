@@ -64,6 +64,10 @@ export class EmployeService {
     return this.http.get<any>(`${this.url}/getDepartementPoste`);
   }
 
+  getTechargerContrat(id: any) {
+    return this.http.get<any>(`${this.url}/generateContrat/${id}`);
+  }
+
   getLastContrat() {
     return this.http.get<any>(`${this.url}/getLastContrat`);
   }

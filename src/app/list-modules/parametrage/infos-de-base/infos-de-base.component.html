@@ -86,7 +86,10 @@
           <div class="input-block mb-3 col-12 stick-top-just-top-field row">
             <div class="input-block mb-3 col-8">
             <label class="col-form-label" for="SIGNATURE_1_TXT">Signature du signataire n°1</label>
-              <input class="form-control" type="file" (change)="onFileChange($event, 'SIGNATURE_1_TXT')" accept="image/*"
+              <input class="form-control"
+                     type="file"
+                     (change)="onFileChange($event, 'SIGNATURE_1_TXT')"
+                     accept="image/*"
                 [class.invalid]="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
                 formControlName="SIGNATURE_1_TXT">
               <small *ngIf="setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.invalid && setInfoDeBaseForm.get('SIGNATURE_1_TXT')?.touched"
