@@ -1221,18 +1221,17 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <hr />
-            <h3 class="card-title">
-              Les documents de {{ curentEmploye?.employe.nom }}
-              {{ curentEmploye?.employe.prenom }}
-            </h3>
-            <hr />
 
-            <div class="table-responsive table-newdatatable">
-              <table class="table table-new custom-table mb-0 datatable">
-                <thead>
-                  <tr>
-                    <th>#</th>
+            <hr />
+          <h3 class="card-title">Les documents de {{ curentEmploye?.employe.nom }}
+            {{ curentEmploye?.employe.prenom }}</h3>
+          <hr />
+
+              <div class="table-responsive table-newdatatable">
+                <table class="table table-new custom-table mb-0 datatable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
 
                       <th>Nom du document</th>
                       <th>Type document</th>
@@ -1254,37 +1253,6 @@
                 </table>
                 <br /><br /><br />
 
-                    <th>Nom du document</th>
-                    <th>Type document</th>
-                    <th>Lien vers document</th>
-                    <th>Date de création</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="
-                      let document of curentEmploye?.list_document;
-                      let i = index
-                    "
-                  >
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ document.titre }}</td>
-                    <td>{{ document.type_document }}</td>
-                    <td>{{ document.url }}</td>
-                    <td>{{ document.created_at | date : "dd/MM/YYYY" }}</td>
-                    <td>
-                      <a
-                        [href]="back + document.url"
-                        [download]="getFileName(document.url)"
-                        (click)="logFileName(getFileName(document.url))"
-                        >Télécharger</a
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <br /><br /><br />
             </div>
           </div>
         </div>
