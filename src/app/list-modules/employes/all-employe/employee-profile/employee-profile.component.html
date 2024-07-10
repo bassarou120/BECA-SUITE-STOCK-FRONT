@@ -40,7 +40,8 @@
                       {{ curentEmploye?.departement.nom_dep }}
                     </h6>
                     <small class="text-muted">
-                      {{ curentEmploye?.poste.nom_poste }}</small>
+                      {{ curentEmploye?.poste.nom_poste }}</small
+                    >
                     <div class="staff-id">
                       Matricule: {{ curentEmploye?.employe.matricule }}
                     </div>
@@ -52,15 +53,20 @@
                     <div class="staff-id">
                       Date d'entrée dans l'entreprise :
                       {{
-                      curentEmploye?.employe.date_arrivee
-                      | date : "dd-MM-YYYY"
+                        curentEmploye?.employe.date_arrivee
+                          | date : "dd-MM-YYYY"
                       }}
                     </div>
 
                     <div class="staff-msg">
                       <!--                      [routerLink]="routes.chat"-->
-                      <a class="btn btn-custom" data-bs-toggle="dropdown" aria-expanded="false">
-                        Enregister un mouvement</a>
+                      <a
+                        class="btn btn-custom"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Enregister un mouvement</a
+                      >
                       <div class="dropdown-menu dropdown-menu-left">
                         <!-- <a
                           class="dropdown-item"
@@ -70,10 +76,16 @@
                         >
                           (click)="getIDForm(emp.id)"
                         -->
-                        <a id="btnNewContrat" class="dropdown-item" data-bs-toggle="modal"
-                          data-bs-target="#new_contract_modal" (click)="initAddContrat()">
+                        <a
+                          id="btnNewContrat"
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#new_contract_modal"
+                          (click)="initAddContrat()"
+                        >
                           <!--                          <i class="fa-regular fa-trash-can m-r-5"></i>-->
-                          Nouveau contrat</a>
+                          Nouveau contrat</a
+                        >
 
                         <!--                        <a class="dropdown-item"-->
                         <!--                           data-bs-toggle="modal"-->
@@ -89,13 +101,27 @@
                           Renouveler le contrat</a
                         > -->
 
-                        <a class="dropdown-item" data-bs-toggle="modal"
-                          data-bs-target="#affectation_modal">Affectation</a>
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#affectation_modal"
+                          >Affectation</a
+                        >
 
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#document_modal">Document</a>
+                        <a
+                          id="btnNomination"
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#nomination_modal"
+                          >Nomination</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#document_modal"
+                          >Ajouter un Document</a
+                        >
 
-                        <a id="btnNomination" class="dropdown-item" data-bs-toggle="modal"
-                          data-bs-target="#nomination_modal">Nomination</a>
                         <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
@@ -124,8 +150,8 @@
                       <div class="title">Date de naissance:</div>
                       <div class="text">
                         {{
-                        curentEmploye?.employe.date_naissance
-                        | date : "dd-MM-YYYY"
+                          curentEmploye?.employe.date_naissance
+                            | date : "dd-MM-YYYY"
                         }}
                       </div>
                     </li>
@@ -187,24 +213,34 @@
       <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
         <ul class="nav nav-tabs nav-tabs-bottom">
           <li class="nav-item">
-            <a href="#emp_profile" data-bs-toggle="tab" class="nav-link active">Information personelles</a>
+            <a href="#emp_profile" data-bs-toggle="tab" class="nav-link active"
+              >Information personelles</a
+            >
           </li>
           <!--                    <li class="nav-item"><a href="#emp_projects" data-bs-toggle="tab" class="nav-link">Projects</a></li>-->
           <li class="nav-item">
-            <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link">Autre info
-              <small class="text-danger">(Gestion des contrats)</small></a>
+            <a href="#bank_statutory" data-bs-toggle="tab" class="nav-link"
+              >Autre info
+              <small class="text-danger">(Gestion des contrats)</small></a
+            >
           </li>
 
           <li class="nav-item">
-            <a href="#emp_mouvement" data-bs-toggle="tab" class="nav-link">Carrière (mouvements)</a>
+            <a href="#emp_mouvement" data-bs-toggle="tab" class="nav-link"
+              >Carrière (mouvements)</a
+            >
           </li>
 
           <li class="nav-item">
-            <a href="#emp_assets" data-bs-toggle="tab" class="nav-link">Matériels (logistique)</a>
+            <a href="#emp_assets" data-bs-toggle="tab" class="nav-link"
+              >Matériels (logistique)</a
+            >
           </li>
 
           <li class="nav-item">
-            <a href="#emp_document" data-bs-toggle="tab" class="nav-link">Registre du personnel</a>
+            <a href="#emp_document" data-bs-toggle="tab" class="nav-link"
+              >Registre du personnel</a
+            >
           </li>
         </ul>
       </div>
@@ -220,8 +256,13 @@
             <div class="card-body">
               <h3 class="card-title">
                 Informations Personnelles
-                <a class="edit-icon" data-bs-toggle="modal" data-bs-target="#personal_info_modal"
-                  (click)="getEditInfoPersoForm()"><i class="fa-solid fa-pencil"></i></a>
+                <a
+                  class="edit-icon"
+                  data-bs-toggle="modal"
+                  data-bs-target="#personal_info_modal"
+                  (click)="getEditInfoPersoForm()"
+                  ><i class="fa-solid fa-pencil"></i
+                ></a>
               </h3>
               <ul class="personal-info">
                 <li>
@@ -408,8 +449,10 @@
                       <div class="timeline-content">
                         <a href="#/" class="name">{{ formation.intitule }}</a>
                         <div>{{ formation.domaine }}</div>
-                        <span class="time">{{ formation.date_debut | slice : 0 : 4 }} -
-                          {{ formation.date_fin | slice : 0 : 4 }}</span>
+                        <span class="time"
+                          >{{ formation.date_debut | slice : 0 : 4 }} -
+                          {{ formation.date_fin | slice : 0 : 4 }}</span
+                        >
                       </div>
                     </div>
                   </li>
@@ -440,13 +483,15 @@
                       <div class="timeline-content">
                         <a href="#/" class="name">{{
                           experience.posteOcupe
-                          }}</a>
-                        <span class="time">{{
-                          getMonthName(experience.date_debut.split("-")[1])
+                        }}</a>
+                        <span class="time"
+                          >{{
+                            getMonthName(experience.date_debut.split("-")[1])
                           }}
                           {{ experience.date_debut.split("-")[0] }} -
                           {{ getMonthName(experience.date_fin.split("-")[1]) }}
-                          {{ experience.date_fin.split("-")[0] }}</span>
+                          {{ experience.date_fin.split("-")[0] }}</span
+                        >
                       </div>
                     </div>
                   </li>
@@ -466,13 +511,25 @@
           <div class="card">
             <div class="card-body">
               <div class="dropdown profile-action">
-                <a aria-expanded="false" data-bs-toggle="dropdown" class="action-icon dropdown-toggle"><i
-                    class="material-icons material-color">more_vert</i></a>
+                <a
+                  aria-expanded="false"
+                  data-bs-toggle="dropdown"
+                  class="action-icon dropdown-toggle"
+                  ><i class="material-icons material-color">more_vert</i></a
+                >
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a data-bs-target="#edit_project" data-bs-toggle="modal" class="dropdown-item"><i
-                      class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                  <a data-bs-target="#delete_project" data-bs-toggle="modal" class="dropdown-item"><i
-                      class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+                  <a
+                    data-bs-target="#edit_project"
+                    data-bs-toggle="modal"
+                    class="dropdown-item"
+                    ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
+                  >
+                  <a
+                    data-bs-target="#delete_project"
+                    data-bs-toggle="modal"
+                    class="dropdown-item"
+                    ><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a
+                  >
                 </div>
               </div>
               <h4 class="project-title">
@@ -535,8 +592,14 @@
                 Progress <span class="text-success float-end">40%</span>
               </p>
               <div class="progress progress-xs mb-0">
-                <div style="width: 40%" title="" data-bs-toggle="tooltip" role="progressbar"
-                  class="progress-bar bg-success" data-original-title="40%"></div>
+                <div
+                  style="width: 40%"
+                  title=""
+                  data-bs-toggle="tooltip"
+                  role="progressbar"
+                  class="progress-bar bg-success"
+                  data-original-title="40%"
+                ></div>
               </div>
             </div>
           </div>
@@ -546,8 +609,12 @@
           <div class="card">
             <div class="card-body">
               <div class="dropdown profile-action">
-                <a aria-expanded="false" data-bs-toggle="dropdown" class="action-icon dropdown-toggle"><i
-                    class="material-icons material-color">more_vert</i></a>
+                <a
+                  aria-expanded="false"
+                  data-bs-toggle="dropdown"
+                  class="action-icon dropdown-toggle"
+                  ><i class="material-icons material-color">more_vert</i></a
+                >
                 <!-- <div class="dropdown-menu dropdown-menu-right">
                   <a
                     data-bs-target="#edit_project"
@@ -623,8 +690,14 @@
                 Progress <span class="text-success float-end">40%</span>
               </p>
               <div class="progress progress-xs mb-0">
-                <div style="width: 40%" title="" data-bs-toggle="tooltip" role="progressbar"
-                  class="progress-bar bg-success" data-original-title="40%"></div>
+                <div
+                  style="width: 40%"
+                  title=""
+                  data-bs-toggle="tooltip"
+                  role="progressbar"
+                  class="progress-bar bg-success"
+                  data-original-title="40%"
+                ></div>
               </div>
             </div>
           </div>
@@ -634,13 +707,25 @@
           <div class="card">
             <div class="card-body">
               <div class="dropdown profile-action">
-                <a aria-expanded="false" data-bs-toggle="dropdown" class="action-icon dropdown-toggle"><i
-                    class="material-icons material-color">more_vert</i></a>
+                <a
+                  aria-expanded="false"
+                  data-bs-toggle="dropdown"
+                  class="action-icon dropdown-toggle"
+                  ><i class="material-icons material-color">more_vert</i></a
+                >
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a data-bs-target="#edit_project" data-bs-toggle="modal" class="dropdown-item"><i
-                      class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                  <a data-bs-target="#delete_project" data-bs-toggle="modal" class="dropdown-item"><i
-                      class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+                  <a
+                    data-bs-target="#edit_project"
+                    data-bs-toggle="modal"
+                    class="dropdown-item"
+                    ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
+                  >
+                  <a
+                    data-bs-target="#delete_project"
+                    data-bs-toggle="modal"
+                    class="dropdown-item"
+                    ><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a
+                  >
                 </div>
               </div>
               <h4 class="project-title">
@@ -801,8 +886,14 @@
                 Progress <span class="text-success float-end">40%</span>
               </p>
               <div class="progress progress-xs mb-0">
-                <div style="width: 40%" title="" data-bs-toggle="tooltip" role="progressbar"
-                  class="progress-bar bg-success" data-original-title="40%"></div>
+                <div
+                  style="width: 40%"
+                  title=""
+                  data-bs-toggle="tooltip"
+                  role="progressbar"
+                  class="progress-bar bg-success"
+                  data-original-title="40%"
+                ></div>
               </div>
             </div>
           </div>
@@ -847,8 +938,8 @@
                         <div class="title">Date de début :</div>
                         <div class="text">
                           {{
-                          curentEmploye?.last_contat?.date_debut
-                          | date : "dd/MM/YYYY"
+                            curentEmploye?.last_contat?.date_debut
+                              | date : "dd/MM/YYYY"
                           }}
                         </div>
                       </li>
@@ -857,8 +948,8 @@
                         <div class="title">Date de Fin :</div>
                         <div class="text">
                           {{
-                          curentEmploye?.last_contat?.date_fin
-                          | date : "dd/MM/YYYY"
+                            curentEmploye?.last_contat?.date_fin
+                              | date : "dd/MM/YYYY"
                           }}
                         </div>
                       </li>
@@ -902,7 +993,9 @@
                         <th>Montant</th>
                       </tr>
 
-                      <tr *ngFor="let prime of curentEmploye?.last_contat?.prime">
+                      <tr
+                        *ngFor="let prime of curentEmploye?.last_contat?.prime"
+                      >
                         <td>{{ prime.indenmite }}</td>
                         <td>{{ prime.montant_indenmite }}</td>
                       </tr>
@@ -918,9 +1011,9 @@
               <u>
                 Salaire Bruite :
                 {{
-                curentEmploye?.last_contat?.base_categorielle +
-                curentEmploye?.last_contat?.prime_anciennete +
-                convertStringToInt(curentEmploye?.last_contat?.total_prime)
+                  curentEmploye?.last_contat?.base_categorielle +
+                    curentEmploye?.last_contat?.prime_anciennete +
+                    convertStringToInt(curentEmploye?.last_contat?.total_prime)
                 }}
                 FCFA
               </u>
@@ -949,13 +1042,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="
+                <tr
+                  *ngFor="
                     let contrat of curentEmploye?.list_contrat;
                     let i = index
-                  ">
+                  "
+                >
                   <td>{{ i + 1 }}</td>
                   <td>{{ contrat.num_contrat }}</td>
-                  <td> {{contrat.type_contrat.libelle }}</td>
+                  <td>{{ contrat.type_contrat.libelle }}</td>
                   <td>{{ contrat.date_debut | date : "dd/MM/YYYY" }}</td>
                   <td>{{ contrat.date_fin | date : "dd/MM/YYYY" }}</td>
                   <td>
@@ -963,9 +1058,9 @@
                   </td>
                   <td>
                     {{
-                    contrat.status === null
-                    ? "En cours de validation"
-                    : contrat.status
+                      contrat.status === null
+                        ? "En cours de validation"
+                        : contrat.status
                     }}
                   </td>
 
@@ -976,37 +1071,72 @@
                       </a> -->
 
                       <div class="dropdown">
-                        <a class="action-icon" data-bs-toggle="dropdown" aria-expanded="false"><i
-                            class="material-icons">more_vert</i></a>
+                        <a
+                          class="action-icon"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          ><i class="material-icons">more_vert</i></a
+                        >
                         <div class="dropdown-menu dropdown-menu-right">
-                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
+                          <a
+                            class="dropdown-item"
+                            (click)="telechargerContract(contrat.id)"
+                          >
+                            Telecharger le contrat</a
+                          >
+
+                          <a
+                            class="dropdown-item"
+                            data-bs-toggle="modal"
+                            data-bs-target="#valide_contrat"
+                            (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Valider le contrat'
                               )
-                            ">
-                            Valider le contrat</a>
-                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
+                            "
+                          >
+                            Valider le contrat</a
+                          >
+                          <a
+                            class="dropdown-item"
+                            data-bs-toggle="modal"
+                            data-bs-target="#valide_contrat"
+                            (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Rompre le contrat'
                               )
-                            ">
-                            Rompre le contrat</a>
+                            "
+                          >
+                            Rompre le contrat</a
+                          >
 
-                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
+                          <a
+                            class="dropdown-item"
+                            data-bs-toggle="modal"
+                            data-bs-target="#valide_contrat"
+                            (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Suspendre le contrat'
                               )
-                            ">
-                            Suspendre le contrat</a>
-                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
+                            "
+                          >
+                            Suspendre le contrat</a
+                          >
+                          <a
+                            class="dropdown-item"
+                            data-bs-toggle="modal"
+                            data-bs-target="#valide_contrat"
+                            (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Supprimer le contrat'
                               )
-                            ">Supprimer le contrat</a>
+                            "
+                            >Supprimer le contrat</a
+                          >
                         </div>
                       </div>
                     </div>
@@ -1071,7 +1201,8 @@
                         <div>
                           {{ mouv.poste?.nom_poste }} | {{ mouv.grade?.lib }}
                         </div>
-                        <span class="time">{{ mouv.created_at | date : "dd/MM/YYYY" }}
+                        <span class="time"
+                          >{{ mouv.created_at | date : "dd/MM/YYYY" }}
                         </span>
                       </div>
                     </div>
@@ -1090,17 +1221,18 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-
             <hr />
-          <h3 class="card-title">Les documents de {{ curentEmploye?.employe.nom }}
-            {{ curentEmploye?.employe.prenom }}</h3>
-          <hr />
+            <h3 class="card-title">
+              Les documents de {{ curentEmploye?.employe.nom }}
+              {{ curentEmploye?.employe.prenom }}
+            </h3>
+            <hr />
 
-              <div class="table-responsive table-newdatatable">
-                <table class="table table-new custom-table mb-0 datatable">
-                  <thead>
-                    <tr>
-                      <th>#</th>
+            <div class="table-responsive table-newdatatable">
+              <table class="table table-new custom-table mb-0 datatable">
+                <thead>
+                  <tr>
+                    <th>#</th>
 
                       <th>Nom du document</th>
                       <th>Type document</th>
@@ -1122,6 +1254,37 @@
                 </table>
                 <br /><br /><br />
 
+                    <th>Nom du document</th>
+                    <th>Type document</th>
+                    <th>Lien vers document</th>
+                    <th>Date de création</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let document of curentEmploye?.list_document;
+                      let i = index
+                    "
+                  >
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ document.titre }}</td>
+                    <td>{{ document.type_document }}</td>
+                    <td>{{ document.url }}</td>
+                    <td>{{ document.created_at | date : "dd/MM/YYYY" }}</td>
+                    <td>
+                      <a
+                        [href]="back + document.url"
+                        [download]="getFileName(document.url)"
+                        (click)="logFileName(getFileName(document.url))"
+                        >Télécharger</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br /><br /><br />
             </div>
           </div>
         </div>
@@ -1408,22 +1571,28 @@
           Nouveau Contrat pour {{ curentEmploye?.employe.nom }}
           {{ curentEmploye?.employe.prenom }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-
-
-        <h4 style="color: red" *ngIf="showMessage==true">
-          Désolé, il est impossible de créer un nouveau contrat {{ curentEmploye?.employe.nom }}
+        <h4 style="color: red" *ngIf="showMessage == true">
+          Désolé, il est impossible de créer un nouveau contrat
+          {{ curentEmploye?.employe.nom }}
           {{ curentEmploye?.employe.prenom }}
-          car il a déjà un contrat dont le status est :  <u>{{showMessageStatus}}</u> . <br>
-          Veuillez modifier le statut de l'actuel contrat afin de pouvoir en créer un nouveau.
+          car il a déjà un contrat dont le status est :
+          <u>{{ showMessageStatus }}</u> . <br />
+          Veuillez modifier le statut de l'actuel contrat afin de pouvoir en
+          créer un nouveau.
         </h4>
 
         <form
-          *ngIf="showMessage==false"
+          *ngIf="showMessage == false"
           [formGroup]="addEmployeContratForm"
           (ngSubmit)="onClickSubmitaddEmployeContrat()"
         >
@@ -1431,19 +1600,38 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Num Contrat </label>
-                <input readonly type="text" formControlName="num_contrat" class="form-control" />
+                <input
+                  readonly
+                  type="text"
+                  formControlName="num_contrat"
+                  class="form-control"
+                />
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <input hidden="true" type="text" formControlName="type_contrat_id" />
+                <input
+                  hidden="true"
+                  type="text"
+                  formControlName="type_contrat_id"
+                />
 
-                <label class="col-form-label">Type de contrat<span class="text-danger">*</span></label>
+                <label class="col-form-label"
+                  >Type de contrat<span class="text-danger">*</span></label
+                >
 
-                <mat-select class="user-assets select form-control" placeholder="-" [(ngModel)]="typeContrat"
-                  (ngModelChange)="changeType()" formControlName="type_contrat">
-                  <mat-option *ngFor="let data of listTypeContrat" [value]="data">
+                <mat-select
+                  class="user-assets select form-control"
+                  placeholder="-"
+                  [(ngModel)]="typeContrat"
+                  (ngModelChange)="changeType()"
+                  formControlName="type_contrat"
+                >
+                  <mat-option
+                    *ngFor="let data of listTypeContrat"
+                    [value]="data"
+                  >
                     {{ data.libelle }}
                   </mat-option>
                 </mat-select>
@@ -1475,8 +1663,13 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Durée (mois)</label>
                 <div class="cal-icon-">
-                  <input [(ngModel)]="dureeContrat" (change)="changeDuree()" formControlName="duree"
-                    class="form-control" type="number" />
+                  <input
+                    [(ngModel)]="dureeContrat"
+                    (change)="changeDuree()"
+                    formControlName="duree"
+                    class="form-control"
+                    type="number"
+                  />
                 </div>
               </div>
             </div>
@@ -1485,8 +1678,13 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Date de début</label>
                 <div class="cal-icon-">
-                  <input (change)="changeDateDebut()" formControlName="date_debut" class="form-control datetimepicker"
-                    type="date" container=".date-input2" />
+                  <input
+                    (change)="changeDateDebut()"
+                    formControlName="date_debut"
+                    class="form-control datetimepicker"
+                    type="date"
+                    container=".date-input2"
+                  />
                 </div>
               </div>
             </div>
@@ -1495,23 +1693,39 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Date de fin</label>
                 <div class="cal-icon-">
-                  <input readonly formControlName="date_fin" class="form-control datetimepicker" type="date"
-                    container=".date-input2" />
+                  <input
+                    readonly
+                    formControlName="date_fin"
+                    class="form-control datetimepicker"
+                    type="date"
+                    container=".date-input2"
+                  />
                 </div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="">Base catégorielle /Rémunér. forfaitaire
+                <label class="col-form-label" for=""
+                  >Base catégorielle /Rémunér. forfaitaire
                 </label>
-                <input readonly type="text" formControlName="base_categorielle" class="form-control" />
+                <input
+                  readonly
+                  type="text"
+                  formControlName="base_categorielle"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Prime d'ancienneté</label>
-                <input readonly type="text" formControlName="prime_anciennete" class="form-control" />
+                <input
+                  readonly
+                  type="text"
+                  formControlName="prime_anciennete"
+                  class="form-control"
+                />
               </div>
             </div>
 
@@ -1523,28 +1737,47 @@
 
                 <div class="row" [formGroup]="form">
                   <div formArrayName="items">
-                    <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+                    <div
+                      *ngFor="let item of items.controls; let i = index"
+                      [formGroupName]="i"
+                    >
                       <div class="row">
                         <div class="col-md-4">
                           <div class="input-block mb-3">
                             <label class="col-form-label" for="">
                               Indemnité {{ i + 1 }}
                             </label>
-                            <input type="text" id="indemnite" formControlName="indenmite" class="form-control" />
+                            <input
+                              type="text"
+                              id="indemnite"
+                              formControlName="indenmite"
+                              class="form-control"
+                            />
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="input-block mb-3">
-                            <label class="col-form-label" for="">Montant de l'indemnité {{ i + 1 }}</label>
-                            <input type="number" (change)="calucleTotalPrime()" id="montant_indemnite"
-                              formControlName="montant_indenmite" class="form-control" />
+                            <label class="col-form-label" for=""
+                              >Montant de l'indemnité {{ i + 1 }}</label
+                            >
+                            <input
+                              type="number"
+                              (change)="calucleTotalPrime()"
+                              id="montant_indemnite"
+                              formControlName="montant_indenmite"
+                              class="form-control"
+                            />
                           </div>
                         </div>
                         <div class="col-md-1" style="">
                           <br />
                           <br />
-                          <a href="javascript:void(0);" (click)="removePrime(i)" class="delete-icon"><i
-                              class="fa-regular fa-trash-can"></i></a>
+                          <a
+                            href="javascript:void(0);"
+                            (click)="removePrime(i)"
+                            class="delete-icon"
+                            ><i class="fa-regular fa-trash-can"></i
+                          ></a>
                         </div>
                       </div>
                     </div>
@@ -1552,11 +1785,10 @@
                 </div>
 
                 <div class="add-more">
-                  <a href="javascript:void(0); " (click)="addPrime()"><i class="fa-solid fa-plus-circle"></i> Ajouter
-                    prime</a>
+                  <a href="javascript:void(0); " (click)="addPrime()"
+                    ><i class="fa-solid fa-plus-circle"></i> Ajouter prime</a
+                  >
                 </div>
-
-
               </div>
             </div>
 
@@ -1568,7 +1800,6 @@
             </div>
           </div>
         </form>
-
       </div>
     </div>
   </div>
@@ -1581,7 +1812,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Profile Information</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -1763,37 +1999,67 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Informations Personnele</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="editEmployeInfoPersoForm" (ngSubmit)="onClickSubmitInfoPersoEmployee()">
+        <form
+          [formGroup]="editEmployeInfoPersoForm"
+          (ngSubmit)="onClickSubmitInfoPersoEmployee()"
+        >
           <div class="row">
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Num Passport </label>
-                <input type="text" formControlName="passport" [value]="1" class="form-control" />
+                <input
+                  type="text"
+                  formControlName="passport"
+                  [value]="1"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
-                <label class="col-form-label" for="">date d'expiration du passeport</label>
+                <label class="col-form-label" for=""
+                  >date d'expiration du passeport</label
+                >
                 <div class="cal-icon-">
-                  <input formControlName="passport_exp" class="form-control datetimepicker" type="date"
-                    container=".date-input2" />
+                  <input
+                    formControlName="passport_exp"
+                    class="form-control datetimepicker"
+                    type="date"
+                    container=".date-input2"
+                  />
                 </div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="">Situation matrimoniale<span class="text-danger">*</span></label>
+                <label class="col-form-label" for=""
+                  >Situation matrimoniale<span class="text-danger"
+                    >*</span
+                  ></label
+                >
 
                 <!--                  [ngModelOptions]="{ standalone: true }"-->
-                <mat-select [(ngModel)]="selectedValue15" class="user-assets select form-control" placeholder="-"
-                  formControlName="matrimoniale">
-                  <mat-option *ngFor="let data of selectedList15" [value]="data.value">
+                <mat-select
+                  [(ngModel)]="selectedValue15"
+                  class="user-assets select form-control"
+                  placeholder="-"
+                  formControlName="matrimoniale"
+                >
+                  <mat-option
+                    *ngFor="let data of selectedList15"
+                    [value]="data.value"
+                  >
                     {{ data.value }}
                   </mat-option>
                 </mat-select>
@@ -1803,7 +2069,12 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Nombre d'enfants</label>
-                <input formControlName="nbr_enfant" class="form-control" value="888" type="number" />
+                <input
+                  formControlName="nbr_enfant"
+                  class="form-control"
+                  value="888"
+                  type="number"
+                />
               </div>
             </div>
 
@@ -1811,9 +2082,16 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Banque </label>
 
-                <mat-select class="user-assets select form-control" placeholder="-" [compareWith]="compareObjects"
-                  formControlName="banque_id">
-                  <mat-option *ngFor="let data of list_banque" [value]="data.id">
+                <mat-select
+                  class="user-assets select form-control"
+                  placeholder="-"
+                  [compareWith]="compareObjects"
+                  formControlName="banque_id"
+                >
+                  <mat-option
+                    *ngFor="let data of list_banque"
+                    [value]="data.id"
+                  >
                     {{ data.nom }}
                   </mat-option>
                 </mat-select>
@@ -1829,7 +2107,12 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">RIB</label>
                 <div class="cal-icon">
-                  <input type="number" formControlName="rib" value="{{ curentEmploye?.rib }}" class="form-control" />
+                  <input
+                    type="number"
+                    formControlName="rib"
+                    value="{{ curentEmploye?.rib }}"
+                    class="form-control"
+                  />
                 </div>
               </div>
             </div>
@@ -1923,8 +2206,7 @@
             </div>
           </form>
 
-      -->
-      </div>
+      --></div>
     </div>
   </div>
 </div>
@@ -1936,7 +2218,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Family Informations</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -1947,36 +2234,48 @@
               <div class="card-body">
                 <h3 class="card-title">
                   Family Member
-                  <a href="javascript:void(0);" class="delete-icon"><i class="fa-regular fa-trash-can"></i></a>
+                  <a href="javascript:void(0);" class="delete-icon"
+                    ><i class="fa-regular fa-trash-can"></i
+                  ></a>
                 </h3>
                 <div class="row">
                   <div class="col-md-6">
                     <div class="input-block mb-3">
-                      <label class="col-form-label" for="">Name <span class="text-danger">*</span></label>
+                      <label class="col-form-label" for=""
+                        >Name <span class="text-danger">*</span></label
+                      >
                       <input class="form-control" type="text" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="input-block mb-3">
-                      <label class="col-form-label" for="">Relationship <span class="text-danger">*</span></label>
+                      <label class="col-form-label" for=""
+                        >Relationship <span class="text-danger">*</span></label
+                      >
                       <input class="form-control" type="text" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="input-block mb-3">
-                      <label class="col-form-label" for="">Date of birth <span class="text-danger">*</span></label>
+                      <label class="col-form-label" for=""
+                        >Date of birth <span class="text-danger">*</span></label
+                      >
                       <input class="form-control" type="text" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="input-block mb-3">
-                      <label class="col-form-label" for="">Phone <span class="text-danger">*</span></label>
+                      <label class="col-form-label" for=""
+                        >Phone <span class="text-danger">*</span></label
+                      >
                       <input class="form-control" type="text" />
                     </div>
                   </div>
                 </div>
                 <div class="add-more">
-                  <a href="javascript:void(0);"><i class="fa-solid fa-plus-circle"></i> Add More</a>
+                  <a href="javascript:void(0);"
+                    ><i class="fa-solid fa-plus-circle"></i> Add More</a
+                  >
                 </div>
               </div>
             </div>
@@ -1997,7 +2296,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Personal Information</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2009,19 +2313,25 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Name <span class="text-danger">*</span></label>
+                    <label class="col-form-label" for=""
+                      >Name <span class="text-danger">*</span></label
+                    >
                     <input type="text" class="form-control" />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Relationship <span class="text-danger">*</span></label>
+                    <label class="col-form-label" for=""
+                      >Relationship <span class="text-danger">*</span></label
+                    >
                     <input class="form-control" type="text" />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Phone <span class="text-danger">*</span></label>
+                    <label class="col-form-label" for=""
+                      >Phone <span class="text-danger">*</span></label
+                    >
                     <input class="form-control" type="text" />
                   </div>
                 </div>
@@ -2041,19 +2351,25 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Name <span class="text-danger">*</span></label>
+                    <label class="col-form-label" for=""
+                      >Name <span class="text-danger">*</span></label
+                    >
                     <input type="text" class="form-control" />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Relationship <span class="text-danger">*</span></label>
+                    <label class="col-form-label" for=""
+                      >Relationship <span class="text-danger">*</span></label
+                    >
                     <input class="form-control" type="text" />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Phone <span class="text-danger">*</span></label>
+                    <label class="col-form-label" for=""
+                      >Phone <span class="text-danger">*</span></label
+                    >
                     <input class="form-control" type="text" />
                   </div>
                 </div>
@@ -2082,7 +2398,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Education Informations</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2093,7 +2414,9 @@
               <div class="card-body">
                 <h3 class="card-title">
                   Education Informations
-                  <a href="javascript:void(0);" class="delete-icon"><i class="fa-regular fa-trash-can"></i></a>
+                  <a href="javascript:void(0);" class="delete-icon"
+                    ><i class="fa-regular fa-trash-can"></i
+                  ></a>
                 </h3>
                 <div class="row">
                   <div class="col-md-6">
@@ -2116,7 +2439,13 @@
                     <div class="input-block mb-3 form-focus inputs date-input3">
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Starting Date</mat-label>
-                        <input bsDatepicker container=".date-input3" type="text" matInput value="01-06-2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input3"
+                          type="text"
+                          matInput
+                          value="01-06-2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2124,7 +2453,13 @@
                     <div class="input-block mb-3 form-focus inputs date-input4">
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Complete Date</mat-label>
-                        <input bsDatepicker container=".date-input4" type="text" matInput value="09-06-2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input4"
+                          type="text"
+                          matInput
+                          value="09-06-2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2132,7 +2467,11 @@
                     <div class="input-block mb-3 form-focus inputs">
                       <mat-form-field class="example-full-width">
                         <mat-label>Degree</mat-label>
-                        <input type="text" value="BE Computer Science" matInput />
+                        <input
+                          type="text"
+                          value="BE Computer Science"
+                          matInput
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2152,7 +2491,9 @@
               <div class="card-body">
                 <h3 class="card-title">
                   Education Informations
-                  <a href="javascript:void(0);" class="delete-icon"><i class="fa-regular fa-trash-can"></i></a>
+                  <a href="javascript:void(0);" class="delete-icon"
+                    ><i class="fa-regular fa-trash-can"></i
+                  ></a>
                 </h3>
                 <div class="row">
                   <div class="col-md-6">
@@ -2175,7 +2516,13 @@
                     <div class="input-block mb-3 form-focus inputs date-input5">
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Starting Date</mat-label>
-                        <input bsDatepicker container=".date-input5" type="text" matInput value="01-06-2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input5"
+                          type="text"
+                          matInput
+                          value="01-06-2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2183,7 +2530,13 @@
                     <div class="input-block mb-3 form-focus inputs date-input5">
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Complete Date</mat-label>
-                        <input bsDatepicker container=".date-input6" type="text" matInput value="09-06-2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input6"
+                          type="text"
+                          matInput
+                          value="09-06-2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2191,7 +2544,11 @@
                     <div class="input-block mb-3 form-focus inputs">
                       <mat-form-field class="example-full-width">
                         <mat-label>Degree</mat-label>
-                        <input type="text" value="BE Computer Science" matInput />
+                        <input
+                          type="text"
+                          value="BE Computer Science"
+                          matInput
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2205,7 +2562,9 @@
                   </div>
                 </div>
                 <div class="add-more">
-                  <a href="javascript:void(0);"><i class="fa-solid fa-plus-circle"></i> Add More</a>
+                  <a href="javascript:void(0);"
+                    ><i class="fa-solid fa-plus-circle"></i> Add More</a
+                  >
                 </div>
               </div>
             </div>
@@ -2226,7 +2585,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Experience Informations</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2237,14 +2601,20 @@
               <div class="card-body">
                 <h3 class="card-title">
                   Experience Informations
-                  <a href="javascript:void(0);" class="delete-icon"><i class="fa-regular fa-trash-can"></i></a>
+                  <a href="javascript:void(0);" class="delete-icon"
+                    ><i class="fa-regular fa-trash-can"></i
+                  ></a>
                 </h3>
                 <div class="row">
                   <div class="col-md-6">
                     <div class="input-block mb-3 form-focus inputs">
                       <mat-form-field class="example-full-width">
                         <mat-label>Company Name</mat-label>
-                        <input type="text" value="Digital Devlopment Inc" matInput />
+                        <input
+                          type="text"
+                          value="Digital Devlopment Inc"
+                          matInput
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2268,7 +2638,13 @@
                     <div class="input-block mb-3 form-focus inputs date-input7">
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Period From</mat-label>
-                        <input bsDatepicker container=".date-input7" type="text" matInput value="09/06/2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input7"
+                          type="text"
+                          matInput
+                          value="09/06/2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2276,7 +2652,13 @@
                     <div class="input-block mb-3 form-focus inputs date-input8">
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Period To</mat-label>
-                        <input bsDatepicker container=".date-input8" type="text" matInput value="12/06/2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input8"
+                          type="text"
+                          matInput
+                          value="12/06/2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2288,14 +2670,20 @@
               <div class="card-body">
                 <h3 class="card-title">
                   Experience Informations
-                  <a href="javascript:void(0);" class="delete-icon"><i class="fa-regular fa-trash-can"></i></a>
+                  <a href="javascript:void(0);" class="delete-icon"
+                    ><i class="fa-regular fa-trash-can"></i
+                  ></a>
                 </h3>
                 <div class="row">
                   <div class="col-md-6">
                     <div class="input-block mb-3 form-focus inputs">
                       <mat-form-field class="example-full-width">
                         <mat-label>Company Name</mat-label>
-                        <input type="text" value="Digital Devlopment Inc" matInput />
+                        <input
+                          type="text"
+                          value="Digital Devlopment Inc"
+                          matInput
+                        />
                       </mat-form-field>
                     </div>
                   </div>
@@ -2319,21 +2707,37 @@
                     <div class="input-block mb-3 form-focus inputs date-input9">
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Period From</mat-label>
-                        <input bsDatepicker container=".date-input9" type="text" matInput value="09/06/2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input9"
+                          type="text"
+                          matInput
+                          value="09/06/2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <div class="input-block mb-3 form-focus inputs date-input10">
+                    <div
+                      class="input-block mb-3 form-focus inputs date-input10"
+                    >
                       <mat-form-field class="example-full-width cal-icon">
                         <mat-label>Period To</mat-label>
-                        <input bsDatepicker container=".date-input10" type="text" matInput value="12/06/2022" />
+                        <input
+                          bsDatepicker
+                          container=".date-input10"
+                          type="text"
+                          matInput
+                          value="12/06/2022"
+                        />
                       </mat-form-field>
                     </div>
                   </div>
                 </div>
                 <div class="add-more">
-                  <a href="javascript:void(0);"><i class="fa-solid fa-plus-circle"></i> Add More</a>
+                  <a href="javascript:void(0);"
+                    ><i class="fa-solid fa-plus-circle"></i> Add More</a
+                  >
                 </div>
               </div>
             </div>
@@ -2363,12 +2767,22 @@
               <form [formGroup]="valideContratForm">
                 <input type="hidden" formControlName="id" />
                 <input type="hidden" formControlName="action" />
-                <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit"
-                  (click)="onClickSubmitValideContrat()">OUI</a>
+                <a
+                  href="javascript:void(0);"
+                  class="btn btn-primary continue-btn"
+                  type="submit"
+                  (click)="onClickSubmitValideContrat()"
+                  >OUI</a
+                >
               </form>
             </div>
             <div class="col-6">
-              <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Annuler</a>
+              <a
+                href="javascript:void(0);"
+                data-bs-dismiss="modal"
+                class="btn btn-primary cancel-btn"
+                >Annuler</a
+              >
             </div>
           </div>
         </div>
@@ -2388,7 +2802,12 @@
           {{ curentEmploye?.employe.nom }}
           {{ curentEmploye?.employe.prenom }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2398,16 +2817,26 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Poste actuel</label>
-                <input type="text" [value]="curentEmploye?.poste.nom_poste" class="form-control" />
+                <input
+                  type="text"
+                  [value]="curentEmploye?.poste.nom_poste"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Nouveau Poste</label>
                 <div class="input-block mb-3">
-                  <mat-select class="select mat-cust-select form-control" formControlName="poste_id"
-                    placeholder="Selectinnez le poste ">
-                    <mat-option *ngFor="let poste of listPoste" value="{{ poste.id }}">{{ poste.nom_poste }}
+                  <mat-select
+                    class="select mat-cust-select form-control"
+                    formControlName="poste_id"
+                    placeholder="Selectinnez le poste "
+                  >
+                    <mat-option
+                      *ngFor="let poste of listPoste"
+                      value="{{ poste.id }}"
+                      >{{ poste.nom_poste }}
                     </mat-option>
                   </mat-select>
                 </div>
@@ -2418,13 +2847,22 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Observations</label>
 
-                <textarea class="form-control" formControlName="observation" id="" cols="30" rows="5"></textarea>
+                <textarea
+                  class="form-control"
+                  formControlName="observation"
+                  id=""
+                  cols="30"
+                  rows="5"
+                ></textarea>
               </div>
             </div>
 
             <div class="submit-section">
               <!-- <input class="btn btn-primary" type="submit" value="Enregister" /> -->
-              <button (click)="onClickSubmitAfectationEmployee()" class="btn btn-primary submit-btn">
+              <button
+                (click)="onClickSubmitAfectationEmployee()"
+                class="btn btn-primary submit-btn"
+              >
                 Enregister
               </button>
             </div>
@@ -2446,7 +2884,12 @@
           {{ curentEmploye?.employe.nom }}
           {{ curentEmploye?.employe.prenom }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2455,34 +2898,80 @@
           <div class="row">
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="">Document <span class="text-danger">*</span></label>
-                <mat-select class="select mat-cust-select form-control"
-                  [class.invalid]="addDocumentForm.get('titre')?.invalid && addDocumentForm.get('titre')?.touched"
-                  formControlName="titre" placeholder="Sélectionner le document"
-                  (selectionChange)="onSelectionChange($event)">
-                  <mat-option *ngFor="let item of documentTypes" [value]="item.lib"> {{ item.lib }} </mat-option>
+                <label class="col-form-label" for=""
+                  >Document <span class="text-danger">*</span></label
+                >
+                <mat-select
+                  class="select mat-cust-select form-control"
+                  [class.invalid]="
+                    addDocumentForm.get('titre')?.invalid &&
+                    addDocumentForm.get('titre')?.touched
+                  "
+                  formControlName="titre"
+                  placeholder="Sélectionner le document"
+                  (selectionChange)="onSelectionChange($event)"
+                >
+                  <mat-option
+                    *ngFor="let item of documentTypes"
+                    [value]="item.lib"
+                  >
+                    {{ item.lib }}
+                  </mat-option>
                   <mat-option value="other">Autres document</mat-option>
                 </mat-select>
                 <div *ngIf="showOtherInput" class="mt-3">
-                  <label class="col-form-label" for="">Nom du Document <span class="text-danger">*</span></label>
-                  <input matInput placeholder="Nom du document" formControlName="otherDocument" class="form-control" />
+                  <label class="col-form-label" for=""
+                    >Nom du Document <span class="text-danger">*</span></label
+                  >
+                  <input
+                    matInput
+                    placeholder="Nom du document"
+                    formControlName="otherDocument"
+                    class="form-control"
+                  />
                 </div>
-                <div *ngIf="addDocumentForm.get('titre')?.invalid && addDocumentForm.get('titre')?.touched">
-                  <small class="text-danger"> *Type de document est obligatoire</small>
+                <div
+                  *ngIf="
+                    addDocumentForm.get('titre')?.invalid &&
+                    addDocumentForm.get('titre')?.touched
+                  "
+                >
+                  <small class="text-danger">
+                    *Type de document est obligatoire</small
+                  >
                 </div>
               </div>
             </div>
             <!-- <div class="col-md-6">
               <div class="input-block mb-3">
-                <label class="col-form-label" for="">Format duDocument <span class="text-danger">*</span></label>
-                <mat-select class="select mat-cust-select form-control"
-                  [class.invalid]="addDocumentForm.get('type_document')?.invalid && addDocumentForm.get('type_document')?.touched"
-                  formControlName="type_document" placeholder="Sélectionner le format du document">
-                  <mat-option *ngFor="let item of documentFormat" [value]="item.lib"> {{ item.lib }} </mat-option>
+                <label class="col-form-label" for=""
+                  >Format duDocument <span class="text-danger">*</span></label
+                >
+                <mat-select
+                  class="select mat-cust-select form-control"
+                  [class.invalid]="
+                    addDocumentForm.get('type_document')?.invalid &&
+                    addDocumentForm.get('type_document')?.touched
+                  "
+                  formControlName="type_document"
+                  placeholder="Sélectionner le format du document"
+                >
+                  <mat-option
+                    *ngFor="let item of documentFormat"
+                    [value]="item.lib"
+                  >
+                    {{ item.lib }}
+                  </mat-option>
                 </mat-select>
                 <div
-                  *ngIf="addDocumentForm.get('type_document')?.invalid && addDocumentForm.get('type_document')?.touched">
-                  <small class="text-danger"> * Le Format du document est obligatoire</small>
+                  *ngIf="
+                    addDocumentForm.get('type_document')?.invalid &&
+                    addDocumentForm.get('type_document')?.touched
+                  "
+                >
+                  <small class="text-danger">
+                    * Le Format du document est obligatoire</small
+                  >
                 </div>
               </div>
             </div> -->
@@ -2490,12 +2979,20 @@
             <div class="col-md-12">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Fichier</label>
-                <input type="file" class="form-control" formControlName="url" (change)="onFileChange($event, 'url')"/>
+                <input
+                  type="file"
+                  class="form-control"
+                  formControlName="url"
+                  (change)="onFileChange($event, 'url')"
+                />
               </div>
             </div>
 
             <div class="submit-section">
-              <button (click)="onClickSubmitDocument()" class="btn btn-primary submit-btn">
+              <button
+                (click)="onClickSubmitDocument()"
+                class="btn btn-primary submit-btn"
+              >
                 Enregister
               </button>
             </div>
@@ -2517,7 +3014,12 @@
           {{ curentEmploye?.employe.nom }}
           {{ curentEmploye?.employe.prenom }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2527,17 +3029,27 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Poste actuel</label>
-                <input type="text" [value]="curentEmploye?.poste.nom_poste" class="form-control" />
+                <input
+                  type="text"
+                  [value]="curentEmploye?.poste.nom_poste"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Nouveau Poste</label>
                 <div class="input-block mb-3">
-                  <mat-select class="select mat-cust-select form-control" formControlName="poste_id"
-                    placeholder="Selectinnez le poste ">
+                  <mat-select
+                    class="select mat-cust-select form-control"
+                    formControlName="poste_id"
+                    placeholder="Selectinnez le poste "
+                  >
                     <mat-option value="1">Select poste</mat-option>
-                    <mat-option *ngFor="let poste of listPoste" value="{{ poste.id }}">{{ poste.nom_poste }}
+                    <mat-option
+                      *ngFor="let poste of listPoste"
+                      value="{{ poste.id }}"
+                      >{{ poste.nom_poste }}
                     </mat-option>
                   </mat-select>
                 </div>
@@ -2547,16 +3059,26 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Grade actuel</label>
-                <input type="text" [value]="curentEmploye?.grade.lib" class="form-control" />
+                <input
+                  type="text"
+                  [value]="curentEmploye?.grade.lib"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Grade</label>
                 <div class="input-block mb-3">
-                  <mat-select class="select mat-cust-select form-control" formControlName="grade_id"
-                    placeholder="Selectinnez le poste ">
-                    <mat-option *ngFor="let grade of listGrade" value="{{ grade.id }}">{{ grade.lib }}
+                  <mat-select
+                    class="select mat-cust-select form-control"
+                    formControlName="grade_id"
+                    placeholder="Selectinnez le poste "
+                  >
+                    <mat-option
+                      *ngFor="let grade of listGrade"
+                      value="{{ grade.id }}"
+                      >{{ grade.lib }}
                     </mat-option>
                   </mat-select>
                 </div>
@@ -2567,13 +3089,22 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Ovservations</label>
 
-                <textarea class="form-control" formControlName="observation" id="" cols="30" rows="5"></textarea>
+                <textarea
+                  class="form-control"
+                  formControlName="observation"
+                  id=""
+                  cols="30"
+                  rows="5"
+                ></textarea>
               </div>
             </div>
 
             <div class="submit-section">
               <!-- <input class="btn btn-primary" type="submit" value="Enregister" /> -->
-              <button (click)="onClickSubmitNominationEmployee()" class="btn btn-primary submit-btn">
+              <button
+                (click)="onClickSubmitNominationEmployee()"
+                class="btn btn-primary submit-btn"
+              >
                 Suivant
               </button>
             </div>
