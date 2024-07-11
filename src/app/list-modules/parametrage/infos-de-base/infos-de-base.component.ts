@@ -62,9 +62,9 @@ export class InfosDeBaseComponent implements OnInit {
       NOM_SIGNATAIRE_2_TXT: ["", [Validators.required]],
       // Les signatures
       SIGNATURE_1: [0, [Validators.required]],
-      SIGNATURE_1_TXT: ["", [Validators.required]],
+      SIGNATURE_1_TXT: [" ", [Validators.required]],
       SIGNATURE_2: [0, [Validators.required]],
-      SIGNATURE_2_TXT: ["", [Validators.required]],
+      SIGNATURE_2_TXT: [" ", [Validators.required]],
       // Les banques et numéros de compte
       BANQUE_1: ["", [Validators.required]],
       BANQUE_1_TXT: ["", [Validators.required]],
@@ -118,7 +118,7 @@ export class InfosDeBaseComponent implements OnInit {
       NOM_DG_TXT: ["", [Validators.required]],
       // -Logo de l’entreprise
       LOGO_ENTREPRISE: [0, [Validators.required]],
-      LOGO_ENTREPRISE_TXT: ["", [Validators.required]],
+      LOGO_ENTREPRISE_TXT: [" ", [Validators.required]],
       // -IFU de l’entreprise
       IFU_ENTREPRISE: ["", [Validators.required]],
       IFU_ENTREPRISE_TXT: ["", [Validators.required]],

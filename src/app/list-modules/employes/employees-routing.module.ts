@@ -6,6 +6,7 @@ import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { DemissionEmployeComponent } from './demission/demission-employe.component';
 import { EcheanceCDDComponent } from './echeance-cdd/echeance-cdd.component';
+import { SoldePourCompteComponent } from './solde-pour-compte/solde-pour-compte.component';
 import { RetraiteComponent } from './retraite/retraite.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
@@ -71,6 +72,7 @@ const routes: Routes = [
       { path: "depart-employe", component: DepartEmployeComponent, canActivate: [GRHGuard] },
       { path: "demission", component: DemissionEmployeComponent, canActivate: [GRHGuard] },
       { path: "echeance-cdd", component: EcheanceCDDComponent, canActivate: [GRHGuard] },
+      { path: "solde-pour-compte", component: SoldePourCompteComponent, canActivate: [GRHGuard] },
       { path: "retraite", component: RetraiteComponent, canActivate: [GRHGuard] },
       { path: "licenciement", component: LicenciementComponent, canActivate: [GRHGuard] },
       { path: "point-conge", component: PointCongeComponent, canActivate: [GRHGuard] },

@@ -5,6 +5,7 @@ import { PointCongeComponent } from './point-conge/point-conge.component';
 import { DepartEmployeComponent } from './depart-employe/depart-employe.component';
 import { DemissionEmployeComponent } from './demission/demission-employe.component';
 import { EcheanceCDDComponent } from './echeance-cdd/echeance-cdd.component';
+import { SoldePourCompteComponent } from './solde-pour-compte/solde-pour-compte.component';
 import { MesPlaintesComponent } from './mes-plaintes/mes-plaintes.component';
 import { HeuresSupplementairesComponent } from './heures_supplementaires/heures_supplementaires.component';
 import { NgModule } from '@angular/core';
@@ -73,6 +74,7 @@ import { RetraiteComponent } from './retraite/retraite.component';
     DepartEmployeComponent,
     DemissionEmployeComponent,
     EcheanceCDDComponent,
+    SoldePourCompteComponent,
     PointCongeComponent,
     PointContratComponent,
     MesContratsComponent,

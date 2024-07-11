@@ -1,0 +1,73 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Solde pour tout Compte</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+          <li class="breadcrumb-item active">Solde pour tout Compte</li>
+        </ul>
+      </div>
+
+
+
+      <div class="col-auto float-end ms-auto">
+        <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_depart_employe"><i
+            class="fa-solid fa-plus"></i> Nouveau</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <br><br><br>
+    <h3 class="page-title">RECU POUR SOLDE DE TOUT COMPTE TYPE</h3>
+    <br><br><br><br><br><br><br><br>
+    <h5>Veuillez Cliquer sur le bouton Nouveau et sélectionner l'employé concerné</h5>
+  </div>
+
+
+
+  <!-- Add Department Modal -->
+  <div id="add_depart_employe" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Solde Pour Tout Compte</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addGenerateSoldePourToutCompte" (ngSubmit)="onClickSubmitAdd()" novalidate>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="employe_id">Employé <span class="text-danger">*</span></label>
+                  <mat-select class="select mat-cust-select form-control"
+                    [class.invalid]="addGenerateSoldePourToutCompte.get('employe_id')?.invalid && addGenerateSoldePourToutCompte.get('employe_id')?.touched"
+                    formControlName="employe_id" placeholder="Selectionner l'employé">
+                    <mat-option *ngFor="let item of lstEmploye" value={{item.id}}>{{ item.nom }} {{ item.prenom }}
+                    </mat-option>
+                  </mat-select>
+                  <div
+                    *ngIf="addGenerateSoldePourToutCompte.get('employe_id')?.invalid && addGenerateSoldePourToutCompte.get('employe_id')?.touched">
+                    <small
+                      *ngIf="addGenerateSoldePourToutCompte.get('employe_id')?.invalid && addGenerateSoldePourToutCompte.get('employe_id')?.touched"
+                      class="text-danger"> *L'employé est obligatoire</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-section mt-10">
+              <button class="btn btn-primary submit-btn" type="submit">Générer </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Add Department Modal -->

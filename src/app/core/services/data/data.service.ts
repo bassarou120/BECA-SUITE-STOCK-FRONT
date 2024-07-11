@@ -347,6 +347,12 @@ export class DataService {
               base: 'retraite',
               haseSubSubMenu: false,
             },
+            {
+              menuValue: 'Solde pour tout compte',
+              route: routes.soldePourToutCompte,
+              base: 'solde-pour-compte',
+              haseSubSubMenu: false,
+            },
           ],
         },
 
