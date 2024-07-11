@@ -118,7 +118,7 @@ export class InfosDeBaseComponent implements OnInit {
       NOM_DG_TXT: ["", [Validators.required]],
       // -Logo de l’entreprise
       LOGO_ENTREPRISE: [0, [Validators.required]],
-      LOGO_ENTREPRISE_TXT: [" ", [Validators.required]],
+      LOGO_ENTREPRISE_TXT: ["", [Validators.required]],
       // -IFU de l’entreprise
       IFU_ENTREPRISE: ["", [Validators.required]],
       IFU_ENTREPRISE_TXT: ["", [Validators.required]],
@@ -161,7 +161,6 @@ export class InfosDeBaseComponent implements OnInit {
     });
     if(info.cle == "NOM_SIGNATAIRE_1") { this.selectedSignataire1 = info.valeur_txt; }
     if(info.cle == "NOM_SIGNATAIRE_2") { this.selectedSignataire2 = info.valeur_txt; }
-    if(info.cle == "LOGO_ENTREPRISE") { this.logoentreprise = info.valeur_txt; }
   }
 
   switchReadOnlyValue(val: string) {
