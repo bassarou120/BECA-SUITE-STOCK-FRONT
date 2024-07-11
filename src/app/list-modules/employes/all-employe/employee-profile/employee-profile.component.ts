@@ -19,7 +19,7 @@ import * as path from 'path';
 
 
 interface data {
-  value: string;
+   value: string;
 }
 import { formatDate } from '@angular/common';
 import { MouvementService } from 'src/app/core/services/mouvement/mouvement.service';
@@ -330,7 +330,7 @@ export class EmployeeProfileComponent implements OnInit {
       .getMouvementByEmploye({ id: this.idEmploye })
       .subscribe(
         (res: any) => {
-          // alert(JSON.stringify(res.data[0].mouvements));
+           // alert(JSON.stringify(res.data[0].mouvements));
           this.listMouvement = res.data[0].mouvements;
         },
         (eror: any) => { }
