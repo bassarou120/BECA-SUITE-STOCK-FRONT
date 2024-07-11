@@ -118,7 +118,7 @@ export class InfosDeBaseComponent implements OnInit {
       NOM_DG_TXT: ["", [Validators.required]],
       // -Logo de l’entreprise
       LOGO_ENTREPRISE: [0, [Validators.required]],
-      LOGO_ENTREPRISE_TXT: [" ", [Validators.required]],
+      LOGO_ENTREPRISE_TXT: ["", [Validators.required]],
       // -IFU de l’entreprise
       IFU_ENTREPRISE: ["", [Validators.required]],
       IFU_ENTREPRISE_TXT: ["", [Validators.required]],
