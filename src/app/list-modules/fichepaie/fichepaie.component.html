@@ -570,9 +570,210 @@
           <br /><br /><br />
         </div>
       </div>
+
+
+      <!--   FICHES DE PAIE Archiver-->
+      <div id="archive_fiche" class="tab-pane fade">
+        <hr />
+        FICHES DE PAIE DU MOIS VALIDE
+        <div class="table-responsive table-newdatatable">
+          <table class="table table-new custom-table mb-0 datatable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Employé</th>
+
+                <th>Salaire base</th>
+                <th>Total Prime</th>
+                <!-- <th>Total retenue</th> -->
+                <th>Salaire net</th>
+
+                <th>Validation N.1</th>
+                <th>Validation N.2</th>
+
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fiche of all_fiche; let i = index">
+                <td
+                  *ngIf="
+                    fiche.validation1 == 1 &&
+                    fiche.validation2 == 1
+                  "
+                >
+                  {{ i + 1 }}
+                </td>
+                <td
+                  *ngIf="
+                    fiche.validation1 == 1 &&
+                    fiche.validation2 == 1
+                  "
+                >
+                  {{ fiche.employe.nom }} {{ fiche.employe.prenom }}
+                </td>
+
+                <!-- <td>{{ contrat.date_debut | date : "dd/mm/YYYY" }}</td> -->
+                <td
+                  *ngIf="
+                    fiche.validation1 == 1 &&
+                    fiche .validation2 == 1
+                  "
+                >
+                  {{
+                  fiche.contrat.base_categorielle +
+                  fiche.contrat?.prime_anciennete | number
+                  }}
+                </td>
+                <td
+                  *ngIf="
+                    fiche.validation1 == 1 &&
+                    fiche. validation2 == 1
+                  "
+                >
+                  {{
+                    strToNumber(fiche.contrat?.total_prime) +
+                      calculateTotalAutrePrime(
+                        fiche?.autre_primes
+                      )
+                  }}
+                </td>
+                <td
+                  *ngIf="
+                    fiche. validation1 == 1 &&
+                    fiche. validation2 == 1
+                  "
+                >
+                  {{
+                  Round(fiche.contrat ?.base_categorielle +
+                    fiche.contrat ?.prime_anciennete +
+                    strToNumber(fiche.contrat ?.total_prime) +
+                    calculateTotalAutrePrime(fiche  ?.autre_primes)
+                    -
+                    (
+
+                      ( ((fiche.contrat ?.base_categorielle + fiche.contrat ?.prime_anciennete +
+                          strToNumber(fiche.contrat ?.total_prime) +
+                          calculateTotalAutrePrime(fiche ?.autre_primes)
+                        )
+                        *
+                        fiche.employe.grade.taux_retenu_cnss_employe) /
+                        100)
+                      +
+
+                      calculeITS(  (fiche.contrat ?.base_categorielle +
+                        fiche.contrat ?.prime_anciennete +
+                        strToNumber(fiche.contrat ?.total_prime) +
+                        calculateTotalAutrePrime(
+                          fiche.autre_primes
+                        )))
+
+                      +
+                      calculateTotalRetenue( fiche .autre_retenues )
+                    )) | number
+                  }}
+                </td>
+
+                <td
+                  *ngIf="
+                    fiche .validation1 == 1 &&
+                    fiche .validation2 == 1
+                  "
+                >
+                  <mat-slide-toggle
+                    disabled="true"
+                    color="primary"
+                    [checked]="
+                      fiche .validation1 == 1 ? true : false
+                    "
+                  >
+                    <span
+                      *ngIf="fiche .validation1 == 1"
+                      class="badge bg-inverse-success"
+                      >OUI</span
+                    >
+                    <span
+                      *ngIf="fiche .validation1 == 0"
+                      class="badge bg-inverse-warning"
+                      >NON</span
+                    >
+                  </mat-slide-toggle>
+                  <!--
+                  <mat-slide-toggle [checked]="a.isvedette ==1 ? true:false " (change)="checkCheckBoxvalue($event,a.id)">
+
+                                            </mat-slide-toggle> -->
+                </td>
+
+                <td
+                  *ngIf="
+                  fiche.validation1 == 1 &&
+                    fiche.validation2 == 1
+                  "
+                >
+                  <mat-slide-toggle
+                    disabled="true"
+                    color="primary"
+                    [checked]="
+                     fiche.validation2 == 1 ? true : false
+                    "
+                  >
+                    <span
+                      *ngIf="fiche.validation2 == 1"
+                      class="badge bg-inverse-success"
+                      >OUI</span
+                    >
+                    <span
+                      *ngIf="fiche.validation2 == 0"
+                      class="badge bg-inverse-warning"
+                      >NON</span
+                    >
+                  </mat-slide-toggle>
+                </td>
+
+                <td
+                  *ngIf="
+                    fiche.validation1 == 1 &&
+                    fiche.validation2 == 1
+                  "
+                >
+                  <div class="table-actions d-flex">
+                    <!-- <a class="delete-table me-2">
+                      <img src="assets/img/icons/eye.svg" alt="Eye Icon" />
+                    </a> -->
+
+                    <div class="dropdown">
+                      <a
+                        class="action-icon"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="material-icons">more_vert</i></a
+                      >
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a
+                          class="dropdown-item"
+                          (click)="exportFichePaie(fiche.id)"
+                        >
+                          Affiche la fiche</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <br /><br /><br />
+          <br /><br /><br />
+          <br /><br /><br />
+        </div>
+      </div>
+
+
+
     </div>
 
-    <!-- Ajouter contract Modal -->
+    <!-- Ajouter Fiche paie Modal -->
     <div id="add_fiche_modal" class="modal custom-modal fade" role="dialog">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -697,6 +898,8 @@
                         </ul>
                         <br />
 
+                        <h5>Heure suplementaire  ({{ sommeHeureSup }} H): {{montantHeureSup}} FCFA</h5>
+
                         <h5>Autre Indemnités ({{ totalAutrePrime }})</h5>
 
                         <div class="row" [formGroup]="formAutrePrime">
@@ -763,7 +966,7 @@
                             {{
                              Round( ((selectedEmp?.contrats[0]?.base_categorielle +
                               this.selectedEmp?.contrats[0]
-                                ?.prime_anciennete +
+                                ?.prime_anciennete + montantHeureSup+
                               strToNumber(
                                 this.selectedEmp?.contrats[0]?.total_prime
                               ) +
@@ -781,7 +984,7 @@
                             {{
                             calculeITS( selectedEmp?.contrats[0]?.base_categorielle +
                               this.selectedEmp?.contrats[0]
-                                ?.prime_anciennete +
+                                ?.prime_anciennete +montantHeureSup+
                               strToNumber(
                                 this.selectedEmp?.contrats[0]?.total_prime
                               ) +
@@ -796,7 +999,7 @@
                             {{
                             calculeIPTS( selectedEmp?.contrats[0]?.base_categorielle +
                               this.selectedEmp?.contrats[0]
-                                ?.prime_anciennete +
+                                ?.prime_anciennete +montantHeureSup +
                               strToNumber(
                                 this.selectedEmp?.contrats[0]?.total_prime
                               ) +

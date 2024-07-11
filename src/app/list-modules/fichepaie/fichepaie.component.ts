@@ -19,6 +19,9 @@ export class fichepaieComponent implements OnInit {
 
   employes_who_has_no_fiche: any;
   employes_who_has_fiche: any;
+  all_fiche: any;
+  sommeHeureSup=0;
+  montantHeureSup=0
 
   selectedEmp: any;
   selectedFiche: any;
@@ -160,8 +163,10 @@ export class fichepaieComponent implements OnInit {
   initAddFiche() {
     this.fichepaieService.initgetEmployeForFichepaie().subscribe(
       (response: any) => {
-        console.log(response.data);
+        // console.log(response.data.all_fiche);
+        console.log(response.data.employes_who_has_no_fiche);
 
+        this.all_fiche=response.data.all_fiche
         this.employes_who_has_no_fiche =
           response.data.employes_who_has_no_fiche;
 
@@ -408,8 +413,27 @@ return tranche1+tranche2+tranche3+tranche4+tranche5;
     );
   }
 
+
+  caluculesommeHeurSup( ){
+    this.sommeHeureSup=0;
+    this.selectedEmp?.employe_heure_sup.map(
+      (d:any)=>{
+        // console.log('ok ok ok',d)
+        this.sommeHeureSup=this.sommeHeureSup+d.nombreHeure
+
+      }
+    )
+
+}
+
+
+
+
+
   selectedEmpChange() {
     // alert('je viens de changer');
+    this.caluculesommeHeurSup()
+    console.log('ici',this.selectedEmp)
     this.addEmployeFichePaieForm
       .get('grade')
       ?.setValue(this.selectedEmp.grade.lib);
@@ -436,6 +460,23 @@ return tranche1+tranche2+tranche3+tranche4+tranche5;
     this.addEmployeFichePaieForm
       .get('rappel_emp')
       ?.setValue(this.selectedEmp.nom + ' ' + this.selectedEmp.prenom);
+
+    this.fichepaieService.calculeheureSup({
+      'id':this.selectedEmp.id,
+      'heursup':this.sommeHeureSup
+    }).subscribe(
+      (response: any) => {
+        // console.log(response.data.all_fiche);
+        console.log(response.data.momtant_heure_sup);
+
+        this.montantHeureSup=response.data.momtant_heure_sup
+
+
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   exportFichePaie(id: any) {
