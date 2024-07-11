@@ -56,6 +56,14 @@ export class EmployeService {
     return this.http.post(`${this.url}/contrats`, data);
   }
 
+  generateSoldePourToutCompte(data: any): Observable<Object> {
+    return this.http.post(`${this.url}/generateSoldePourToutCompte`, data);
+  }
+
+  getAllEmployes(): Observable<any> {
+    return this.http.get<any>(`${this.url}/employe`);
+  }
+
   deleteEmploye(id: any): Observable<any> {
     return this.http.delete<any>(`${this.url}/employe/${id}`);
   }

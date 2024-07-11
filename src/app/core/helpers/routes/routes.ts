@@ -170,6 +170,10 @@ export class routes {
     return this.baseUrl + '/employes/retraite';
   }
 
+  public static get soldePourToutCompte(): string {
+    return this.baseUrl + '/employes/solde-pour-compte';
+  }
+
   public static get licenciement(): string {
     return this.baseUrl + '/employes/licenciement';
   }
