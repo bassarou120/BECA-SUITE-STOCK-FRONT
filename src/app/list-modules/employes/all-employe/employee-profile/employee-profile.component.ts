@@ -189,11 +189,11 @@ export class EmployeeProfileComponent implements OnInit {
     });
 
     this.addDocumentForm = this.formBuilder.group({
-      employe_id: ["", [Validators.required]],
+      employe_id: ['', [Validators.required]],
       // type_document: ["", [Validators.required]],
-      titre: ["", [Validators.required]],
-      url: ["", [Validators.required]],
-      otherDocument: [""]
+      titre: ['', [Validators.required]],
+      url: ['', [Validators.required]],
+      otherDocument: [''],
     });
 
     // Synchronise le champ 'titre' avec 'otherDocument' lorsqu'il change
