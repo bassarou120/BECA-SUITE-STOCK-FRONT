@@ -36,6 +36,11 @@ export class FichepaieService {
     return this.http.post(`${this.url}/fiche_paie`, data);
   }
 
+  calculeheureSup(data: any): Observable<Object> {
+    return this.http.post(`${this.url}/fiche_paies/calculeheureSup`, data);
+  }
+
+
   validerFicheEmploye(id: any, data: any): Observable<Object> {
     return this.http.post(`${this.url}/fiche_paies/valider/${id}`, data);
   }
