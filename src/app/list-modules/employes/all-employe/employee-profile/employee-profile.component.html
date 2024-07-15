@@ -57,10 +57,14 @@
                       }}
                     </div>
 
+
                     <div class="staff-msg">
                       <!--                      [routerLink]="routes.chat"-->
-                      <a class="btn btn-custom" data-bs-toggle="dropdown" aria-expanded="false">
+                      <a class="btn btn-custom me-2" data-bs-toggle="dropdown" aria-expanded="false">
                         Enregister un mouvement</a>
+                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#document_modal">
+                          Ajouter un Document
+                        </button>
                       <div class="dropdown-menu dropdown-menu-left">
                         <!-- <a
                           class="dropdown-item"
@@ -89,29 +93,14 @@
                           Renouveler le contrat</a
                         > -->
 
-                        <a
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#affectation_modal"
-                          >Affectation</a
-                        >
-
-                        <a
-                          id="btnNomination"
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#nomination_modal"
-                          >Nomination</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          data-bs-toggle="modal"
-                          data-bs-target="#document_modal"
-                          >Ajouter un Document</a
-                        >
+                        <a class="dropdown-item" data-bs-toggle="modal"
+                          data-bs-target="#affectation_modal">Affectation</a>
 
                         <a id="btnNomination" class="dropdown-item" data-bs-toggle="modal"
                           data-bs-target="#nomination_modal">Nomination</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#document_modal">Ajouter un
+                          Document</a>
+
                         <!-- <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
@@ -992,72 +981,40 @@
                       </a> -->
 
                       <div class="dropdown">
-                        <a
-                          class="action-icon"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          ><i class="material-icons">more_vert</i></a
-                        >
+                        <a class="action-icon" data-bs-toggle="dropdown" aria-expanded="false"><i
+                            class="material-icons">more_vert</i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                          <a
-                            class="dropdown-item"
-                            (click)="telechargerContract(contrat.id)"
-                          >
-                            Telecharger le contrat</a
-                          >
+                          <a class="dropdown-item" (click)="telechargerContract(contrat.id)">
+                            Telecharger le contrat</a>
 
-                          <a
-                            class="dropdown-item"
-                            data-bs-toggle="modal"
-                            data-bs-target="#valide_contrat"
-                            (click)="
+                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Valider le contrat'
                               )
-                            "
-                          >
-                            Valider le contrat</a
-                          >
-                          <a
-                            class="dropdown-item"
-                            data-bs-toggle="modal"
-                            data-bs-target="#valide_contrat"
-                            (click)="
+                            ">
+                            Valider le contrat</a>
+                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Rompre le contrat'
                               )
-                            "
-                          >
-                            Rompre le contrat</a
-                          >
+                            ">
+                            Rompre le contrat</a>
 
-                          <a
-                            class="dropdown-item"
-                            data-bs-toggle="modal"
-                            data-bs-target="#valide_contrat"
-                            (click)="
+                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Suspendre le contrat'
                               )
-                            "
-                          >
-                            Suspendre le contrat</a
-                          >
-                          <a
-                            class="dropdown-item"
-                            data-bs-toggle="modal"
-                            data-bs-target="#valide_contrat"
-                            (click)="
+                            ">
+                            Suspendre le contrat</a>
+                          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#valide_contrat" (click)="
                               getValideContratForm(
                                 contrat.id,
                                 'Supprimer le contrat'
                               )
-                            "
-                            >Supprimer le contrat</a
-                          >
+                            ">Supprimer le contrat</a>
                         </div>
                       </div>
                     </div>
@@ -1122,8 +1079,7 @@
                         <div>
                           {{ mouv.poste?.nom_poste }} | {{ mouv.grade?.lib }}
                         </div>
-                        <span class="time"
-                          >{{ mouv.created_at | date : "dd/MM/YYYY" }}
+                        <span class="time">{{ mouv.created_at | date : "dd/MM/YYYY" }}
                         </span>
                       </div>
                     </div>
@@ -1156,25 +1112,26 @@
                   <tr>
                     <th>#</th>
 
-                      <th>Nom du document</th>
-                      <th>Type document</th>
-                      <th>Lien vers document</th>
-                      <th>Date de création</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let document of curentEmploye?.list_document; let i = index">
-                      <td>{{ i + 1 }}</td>
-                      <td>{{ document.titre }}</td>
-                      <td>{{ document.type_document }}</td>
-                      <td>{{ document.url }}</td>
-                      <td>{{ document.created_at | date : "dd/MM/YYYY" }}</td>
-                      <td><a [href]="back + document.url"  [attr.download]="getFileName(document.url)" (click)="logFileName(getFileName(document.url))">Télécharger</a></td>
-                    </tr>
-                  </tbody>
-                </table>
-                <br /><br /><br />
+                    <th>Nom du document</th>
+                    <th>Type document</th>
+                    <th>Lien vers document</th>
+                    <th>Date de création</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let document of curentEmploye?.list_document; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ document.titre }}</td>
+                    <td>{{ document.type_document }}</td>
+                    <td>{{ document.url }}</td>
+                    <td>{{ document.created_at | date : "dd/MM/YYYY" }}</td>
+                    <td><a [href]="back + document.url" [attr.download]="getFileName(document.url)"
+                        (click)="logFileName(getFileName(document.url))">Télécharger</a></td>
+                  </tr>
+                </tbody>
+              </table>
+              <br /><br /><br />
 
             </div>
           </div>
@@ -1502,27 +1459,13 @@
 
             <div class="col-md-6">
               <div class="input-block mb-3">
-                <input
-                  hidden="true"
-                  type="text"
-                  formControlName="type_contrat_id"
-                />
+                <input hidden="true" type="text" formControlName="type_contrat_id" />
 
-                <label class="col-form-label"
-                  >Type de contrat<span class="text-danger">*</span></label
-                >
+                <label class="col-form-label">Type de contrat<span class="text-danger">*</span></label>
 
-                <mat-select
-                  class="user-assets select form-control"
-                  placeholder="-"
-                  [(ngModel)]="typeContrat"
-                  (ngModelChange)="changeType()"
-                  formControlName="type_contrat"
-                >
-                  <mat-option
-                    *ngFor="let data of listTypeContrat"
-                    [value]="data"
-                  >
+                <mat-select class="user-assets select form-control" placeholder="-" [(ngModel)]="typeContrat"
+                  (ngModelChange)="changeType()" formControlName="type_contrat">
+                  <mat-option *ngFor="let data of listTypeContrat" [value]="data">
                     {{ data.libelle }}
                   </mat-option>
                 </mat-select>
@@ -1554,13 +1497,8 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Durée (mois)</label>
                 <div class="cal-icon-">
-                  <input
-                    [(ngModel)]="dureeContrat"
-                    (change)="changeDuree()"
-                    formControlName="duree"
-                    class="form-control"
-                    type="number"
-                  />
+                  <input [(ngModel)]="dureeContrat" (change)="changeDuree()" formControlName="duree"
+                    class="form-control" type="number" />
                 </div>
               </div>
             </div>
@@ -1569,13 +1507,8 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Date de début</label>
                 <div class="cal-icon-">
-                  <input
-                    (change)="changeDateDebut()"
-                    formControlName="date_debut"
-                    class="form-control datetimepicker"
-                    type="date"
-                    container=".date-input2"
-                  />
+                  <input (change)="changeDateDebut()" formControlName="date_debut" class="form-control datetimepicker"
+                    type="date" container=".date-input2" />
                 </div>
               </div>
             </div>
@@ -1584,13 +1517,8 @@
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Date de fin</label>
                 <div class="cal-icon-">
-                  <input
-                    readonly
-                    formControlName="date_fin"
-                    class="form-control datetimepicker"
-                    type="date"
-                    container=".date-input2"
-                  />
+                  <input readonly formControlName="date_fin" class="form-control datetimepicker" type="date"
+                    container=".date-input2" />
                 </div>
               </div>
             </div>
@@ -2649,22 +2577,12 @@
               <form [formGroup]="valideContratForm">
                 <input type="hidden" formControlName="id" />
                 <input type="hidden" formControlName="action" />
-                <a
-                  href="javascript:void(0);"
-                  class="btn btn-primary continue-btn"
-                  type="submit"
-                  (click)="onClickSubmitValideContrat()"
-                  >OUI</a
-                >
+                <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit"
+                  (click)="onClickSubmitValideContrat()">OUI</a>
               </form>
             </div>
             <div class="col-6">
-              <a
-                href="javascript:void(0);"
-                data-bs-dismiss="modal"
-                class="btn btn-primary cancel-btn"
-                >Annuler</a
-              >
+              <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Annuler</a>
             </div>
           </div>
         </div>
@@ -2684,12 +2602,7 @@
           {{ curentEmploye?.employe.nom }}
           {{ curentEmploye?.employe.prenom }}
         </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2699,26 +2612,16 @@
             <div class="col-md-6">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Poste actuel</label>
-                <input
-                  type="text"
-                  [value]="curentEmploye?.poste.nom_poste"
-                  class="form-control"
-                />
+                <input type="text" [value]="curentEmploye?.poste.nom_poste" class="form-control" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="input-block mb-3 date-input2">
                 <label class="col-form-label" for="">Nouveau Poste</label>
                 <div class="input-block mb-3">
-                  <mat-select
-                    class="select mat-cust-select form-control"
-                    formControlName="poste_id"
-                    placeholder="Selectinnez le poste "
-                  >
-                    <mat-option
-                      *ngFor="let poste of listPoste"
-                      value="{{ poste.id }}"
-                      >{{ poste.nom_poste }}
+                  <mat-select class="select mat-cust-select form-control" formControlName="poste_id"
+                    placeholder="Selectinnez le poste ">
+                    <mat-option *ngFor="let poste of listPoste" value="{{ poste.id }}">{{ poste.nom_poste }}
                     </mat-option>
                   </mat-select>
                 </div>
@@ -2729,22 +2632,13 @@
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Observations</label>
 
-                <textarea
-                  class="form-control"
-                  formControlName="observation"
-                  id=""
-                  cols="30"
-                  rows="5"
-                ></textarea>
+                <textarea class="form-control" formControlName="observation" id="" cols="30" rows="5"></textarea>
               </div>
             </div>
 
             <div class="submit-section">
               <!-- <input class="btn btn-primary" type="submit" value="Enregister" /> -->
-              <button
-                (click)="onClickSubmitAfectationEmployee()"
-                class="btn btn-primary submit-btn"
-              >
+              <button (click)="onClickSubmitAfectationEmployee()" class="btn btn-primary submit-btn">
                 Enregister
               </button>
             </div>
@@ -2766,12 +2660,7 @@
           {{ curentEmploye?.employe.nom }}
           {{ curentEmploye?.employe.prenom }}
         </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -2861,20 +2750,12 @@
             <div class="col-md-12">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Fichier</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  formControlName="url"
-                  (change)="onFileChange($event, 'url')"
-                />
+                <input type="file" class="form-control" formControlName="url" (change)="onFileChange($event, 'url')" />
               </div>
             </div>
 
             <div class="submit-section">
-              <button
-                (click)="onClickSubmitDocument()"
-                class="btn btn-primary submit-btn"
-              >
+              <button (click)="onClickSubmitDocument()" class="btn btn-primary submit-btn">
                 Enregister
               </button>
             </div>
