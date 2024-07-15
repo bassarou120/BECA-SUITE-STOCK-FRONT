@@ -419,6 +419,7 @@ return tranche1+tranche2+tranche3+tranche4+tranche5;
     this.selectedEmp?.employe_heure_sup.map(
       (d:any)=>{
         // console.log('ok ok ok',d)
+        console.log('ok ok ok',d)
         this.sommeHeureSup=this.sommeHeureSup+d.nombreHeure
 
       }
