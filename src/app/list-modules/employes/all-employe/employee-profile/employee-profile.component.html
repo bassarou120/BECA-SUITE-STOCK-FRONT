@@ -1129,7 +1129,7 @@
                         (click)="logFileName(getFileName(document.url))">Télécharger</a></td>
                     <td><form [formGroup]="deleteDocumentForm" (ngSubmit)="onClickSubmitDeleteDocument(document)">
                       <input type="hidden" formControlName="id">
-                      <a href="javascript:void(0);" type="submit"
+                      <a href="javascript:void(0);" type="submit" 
                         (click)="onClickSubmitDeleteDocument(document)">Supprimer</a>
                     </form></td>
                   </tr>
