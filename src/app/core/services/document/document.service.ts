@@ -29,4 +29,8 @@ export class DocumentService  {
     return this.http.get<any>(`${this.url}/documents/${data}`);
   }
 
+  deleteDocument(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/documents/${data.id}`);
+  }
+
 }
