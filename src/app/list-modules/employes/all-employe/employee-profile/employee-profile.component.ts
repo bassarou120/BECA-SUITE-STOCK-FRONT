@@ -79,6 +79,8 @@ export class EmployeeProfileComponent implements OnInit {
   public nominationForm!: FormGroup;
   public addEmployeContratForm!: FormGroup;
   public addDocumentForm!: FormGroup;
+  public deleteDocumentForm!: FormGroup
+
 
   public valideContratForm!: FormGroup;
 
@@ -204,6 +206,10 @@ export class EmployeeProfileComponent implements OnInit {
           this.addDocumentForm.get('titre')?.setValue(value);
         }
       });
+
+      this.deleteDocumentForm = this.formBuilder.group({
+        id: [0, [Validators.required]],
+      });
   }
 
   onSelectionChange(event: any): void {
@@ -259,12 +265,12 @@ export class EmployeeProfileComponent implements OnInit {
         },
         (error) => {
           if (
-            error.status === 422 &&
+            error.status === 400 &&
             error.error.error ===
-              "Le format spécifié n'est pas identique au format de votre document"
+              "Un document avec ce titre existe déjà pour cet employé."
           ) {
             alert(
-              "Le format spécifié n'est pas identique au format de votre document"
+              "Un document avec ce titre existe déjà pour cet employé."
             );
           } else {
             console.error('Erreur:', error);
@@ -274,6 +280,26 @@ export class EmployeeProfileComponent implements OnInit {
     } else {
       console.log('Desolé le formulaire est mal  renseigné');
     }
+  }
+
+  onClickSubmitDeleteDocument(row: any){
+
+    this.deleteDocumentForm.patchValue({
+      id: row.id
+    })
+
+    if (this.deleteDocumentForm.valid){
+      const id = this.deleteDocumentForm.value.id;
+      this.documentService.deleteDocument(this.deleteDocumentForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    } else {
+      console.log("desole le formulaire n'est pas bien renseigné")
+    }
+
   }
 
   //  getFileName(path: string): string {
