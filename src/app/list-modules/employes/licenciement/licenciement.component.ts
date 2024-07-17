@@ -83,6 +83,13 @@ export class LicenciementComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  telechargerLettre(id :any){
+    this.data.getTechargerLettre(id).subscribe((data: any) => {
+      window.open(data.data, '_target');
+      console.log(data);
+    });
+  }
+
   onClickSubmitAddDepartEmploye(){
 
     if (this.addDepartEmployeForm.valid){

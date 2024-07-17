@@ -16,6 +16,10 @@ export class DepartEmployeService  {
   url: string = environment.backend ;
   constructor(private http: HttpClient) {}
 
+  getTechargerLettre(id: any) {
+    return this.http.get<any>(`${this.url}/getlettre_licenciment/${id}`);
+  }
+
   saveDepartEmploye(data:any ): Observable<any> {
     return this.http.post(`${this.url}/les_departs`, data);
   }

@@ -80,6 +80,8 @@
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
+                                      <a class="dropdown-item" (click)="telechargerLettre(item.id)">
+                                        Telecharger la lettre </a>
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
                                             data-bs-target="#edit_depart_employe"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Modifier</a>
@@ -97,6 +99,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <br />
+                <br />
+                <br />
+                <br />
                 <br />
         <br />
         <br />
