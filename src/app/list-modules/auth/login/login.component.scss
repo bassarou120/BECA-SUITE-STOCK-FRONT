@@ -10,7 +10,7 @@
 
     &:hover {
       color: transparent; // Masque la couleur du texte au survol
-      background-image: linear-gradient(to right, orange, red);
+      background-image: linear-gradient(to right, #0099ff, #002aff);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;

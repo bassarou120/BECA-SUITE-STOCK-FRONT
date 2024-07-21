@@ -19,9 +19,9 @@ export class ListModulesComponent implements OnDestroy {
   public mobileSidebar = false;
   public showMiniSidebar = false;
 
-  public layoutSidebarColor = '1';
+  public layoutSidebarColor = '2';
   public layoutTopColor = '1';
-  public layoutColor = '1';
+  public layoutColor = '4';
   public layoutWidth = '1';
   public layoutPosition = '1';
   public layoutPositionScroll = '1';

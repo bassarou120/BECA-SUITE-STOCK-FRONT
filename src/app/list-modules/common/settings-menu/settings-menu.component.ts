@@ -9,10 +9,10 @@ import { SideBarService } from 'src/app/core/core.index';
 export class SettingsMenuComponent {
   public showSettings = false;
   public layoutPosition = '1';
-  public layoutColor = '1';
+  public layoutColor = '4';
   public layoutWidth = '1';
   public layoutTopColor = '1';
-  public layoutSidebarColor = '1';
+  public layoutSidebarColor = '2';
   public layoutPositionScroll = '1';
   public layoutSidebarSize = '1';
   public layoutSidebarView = '1';
@@ -56,7 +56,7 @@ export class SettingsMenuComponent {
     this.sideBar.changeLayout('1'),
     this.sideBar.changeColors('1'),
     this.sideBar.changeWidth('1');
-    this.sideBar.changeTopcolor('1'), 
+    this.sideBar.changeTopcolor('1'),
     this.sideBar.changeSidebarColor('1'),
     this.sideBar.changepositionscroll('1'),
     this.sideBar.changeSidebarSize('1'),
@@ -67,5 +67,5 @@ export class SettingsMenuComponent {
     this.sideBar.changeWidth('2');
   }
 
-  
+
 }

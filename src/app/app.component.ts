@@ -10,7 +10,7 @@ import { url } from './core/core.index';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  title = 'BECA-SUITE-GRH-FRONT';
+  title = 'BECA-SUITE-STOCK';
   base = '';
   page = '';
   last = '';
