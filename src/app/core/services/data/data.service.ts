@@ -61,7 +61,7 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: '',
+          menuValue: 'GENERALE',
           route: routes.payroll,
           hasSubRoute: true,
           showSubRoute: false,
@@ -70,7 +70,14 @@ export class DataService {
           materialicons: 'request_quote',
           subMenus: [
             {
-              menuValue: 'Attribution des rôles',
+              menuValue: 'Liste des bureaux',
+              route: routes.attribution_roles,
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+
+            {
+              menuValue: 'Categorie Articles',
               route: routes.attribution_roles,
               base: 'attribution-role',
               haseSubSubMenu: false,
@@ -82,29 +89,7 @@ export class DataService {
 
           ],
         },
-        {
-          menuValue: 'GENERALE',
-          route: routes.payroll,
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'cog',
-          base: 'payroll',
-          materialicons: 'request_quote',
-          subMenus: [
-            {
-              menuValue: 'Informations de base',
-              route: routes.infos_de_base,
-              base: 'infos-de-base',
-              haseSubSubMenu: false,
-            },
-            {
-              menuValue: 'Rôle',
-              route: routes.role,
-              base: 'role',
-              haseSubSubMenu: false,
-            },
-          ],
-        },
+
       ],
     },
 

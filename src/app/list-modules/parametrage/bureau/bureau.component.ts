@@ -1,30 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Router } from '@angular/router';
+import { ExportsService, routes, banqueService, getBanque } from 'src/app/core/core.index';
 
-import { MatTableDataSource } from '@angular/material/table';
-import { ExportsService, getTypeConge, routes, TypeCongeService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
+
+
 @Component({
-  selector: 'app-typeConge',
-  templateUrl: './typeConge.component.html',
-  styleUrls: ['./typeConge.component.scss']
+  selector: 'app-banque',
+  templateUrl: './bureau.component.html',
+  styleUrls: ['./bureau.component.scss']
 })
-export class TypeCongeComponent implements OnInit {
-  title = 'pagination';
+export class BureauComponent implements OnInit {
   public routes = routes;
-  public lstTypeConges: Array<getTypeConge> = [];
+  selected = 'option1';
+
+  public lstPst: Array<any>=[];
+
+
+  public lstBanque: Array<getBanque> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getTypeConge>;
-  public addTypeCongeForm!: FormGroup ;
-  public editTypeCongeForm!: FormGroup;
-  public deleteTypeCongeForm!: FormGroup;
-
-
+  dataSource!: MatTableDataSource<getBanque>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -39,96 +41,120 @@ export class TypeCongeComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: TypeCongeService, private formBuilder: FormBuilder, private exp: ExportsService) {}
+  public addBanqueForm!: FormGroup ;
+  public editBanqueForm!: FormGroup
+  public deleteBanqueForm!: FormGroup
+
+  constructor(private formBuilder: FormBuilder,public router: Router, private data: banqueService, private exp: ExportsService) {}
 
   ngOnInit(): void {
     this.getTableData();
-    this.addTypeCongeForm = this.formBuilder.group({
-      libelle: ['', Validators.required]
-    });
-    this.editTypeCongeForm = this.formBuilder.group({
-      id: [0, Validators.required],
-      libelle: ['', Validators.required]
-    });
-    this.deleteTypeCongeForm = this.formBuilder.group({
-      id: [0, Validators.required],
-    });
+    this.addBanqueForm = this.formBuilder.group({
+      nom: ["", [Validators.required]],
+   });
+   this.editBanqueForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+    nom: ["", [Validators.required]],
+  });
+   this.deleteBanqueForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+  });
+ }
+
+ onClickSubmitAddBanque(){
+
+  console.log(this.addBanqueForm.value)
+
+  if (this.addBanqueForm.valid){
+    this.data.saveBanque(this.addBanqueForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+
+    alert("desole le formulaire n'est pas bien renseigné")
   }
 
+
+}
+
+onClickSubmitEditBanque(){
+  console.log(this.editBanqueForm.value)
+
+    if (this.editBanqueForm.valid){
+      const id = this.editBanqueForm.value.id;
+      this.data.editBanque(this.editBanqueForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+onClickSubmitDeleteBanque(){
+  console.log(this.deleteBanqueForm.value)
+
+    if (this.deleteBanqueForm.valid){
+      const id = this.deleteBanqueForm.value.id;
+      this.data.deleteBanque(this.deleteBanqueForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+getEditForm(row: any){
+  this.editBanqueForm.patchValue({
+   id:row.id,
+   nom:row.nom
+  })
+}
+
+getDeleteForm(row: any){
+  this.deleteBanqueForm.patchValue({
+   id:row.id,
+  })
+}
+
+
   private getTableData(): void {
-    this.lstTypeConges = [];
+    this.lstBanque = [];
     this.serialNumberArray = [];
 
-    this.data.getAllTypeConges().subscribe((res: any) => {
+    this.data.getAllBanque().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getTypeConge, index: number) => {
+      res.data.data.map((res: getBanque, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstTypeConges.push(res);
+          this.lstBanque.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getTypeConge>(this.lstTypeConges);
+      this.dataSource = new MatTableDataSource<getBanque>(this.lstBanque);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
 
   }
 
-  saveTypeConge() {
-    // console.log(this.addTypeCongeForm.value, this.addTypeCongeForm.valid);
-    if (this.addTypeCongeForm.valid){
-      this.data.saveTypeConge(this.addTypeCongeForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Desolé le formulaire n'est pas bien renseigné");
-    }
-  }
-
-  getEditTypeConge(row: any) {
-    this.editTypeCongeForm.patchValue({
-      id: row.id,
-      libelle: row.libelle
-    })
-  }
-
-  editTypeConge() {
-    // console.log(this.editTypeCongeForm.value, this.editTypeCongeForm.valid);
-    if (this.editTypeCongeForm.valid){
-      this.data.editTypeConge(this.editTypeCongeForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Desolé le formulaire n'est pas bien renseigné");
-    }
-  }
-
-  getDeleteTypeConge(row: any) {
-    this.deleteTypeCongeForm.patchValue({
-      id: row.id
-    })
-  }
-
-  deleteTypeConge() {
-    // console.log(this.deleteTypeCongeForm.value, this.deleteTypeCongeForm.valid);
-    if (this.deleteTypeCongeForm.valid){
-      this.data.deleteTypeConge(this.deleteTypeCongeForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Erreur");
-    }
-  }
 
 
   exportToPDF() {
     $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportTypesConge().subscribe(
+    this.exp.exportBanques().subscribe(
       (response: any) => {
         $('#spinner_pdf').addClass('d-none');
         window.open(response.data, '_blank');
@@ -144,7 +170,7 @@ export class TypeCongeComponent implements OnInit {
     $('#spinner_xlsx').removeClass('d-none');
     setTimeout(() => {
       const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Types De Congés.xlsx";
+      const filename = "Les Banques.xlsx";
 
       if (table) {
         const wb = XLSX.utils.book_new();
@@ -165,7 +191,7 @@ export class TypeCongeComponent implements OnInit {
         });
 
         const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Types De Congés");
+        XLSX.utils.book_append_sheet(wb, ws1, "Les Banques");
 
         XLSX.writeFile(wb, filename);
         $('#spinner_xlsx').addClass('d-none');
@@ -176,20 +202,14 @@ export class TypeCongeComponent implements OnInit {
     }, 10);
   }
 
-
-
-
-
-
-
   public sortData(sort: Sort) {
-    const data = this.lstTypeConges.slice();
+    const data = this.lstBanque.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstTypeConges = data;
+      this.lstBanque = data;
     } else {
-      this.lstTypeConges = data.sort((a: any, b: any) => {
+      this.lstBanque = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -199,7 +219,7 @@ export class TypeCongeComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstTypeConges = this.dataSource.filteredData;
+    this.lstBanque = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypeDepartComponent } from './type-depart.component';
+import { BureauComponent } from './bureau.component';
 
-describe('PostesComponent', () => {
-  let component: TypeDepartComponent;
-  let fixture: ComponentFixture<TypeDepartComponent>;
+describe('BanqueComponent', () => {
+  let component: BureauComponent;
+  let fixture: ComponentFixture<BureauComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TypeDepartComponent ]
+      declarations: [ BureauComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TypeDepartComponent);
+    fixture = TestBed.createComponent(BureauComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
