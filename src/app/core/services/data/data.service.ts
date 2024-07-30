@@ -44,13 +44,78 @@ export class DataService {
       ],
     },
 
+
     {
-      tittle: 'Gestion de stock',
+      tittle: 'Stocks/Immobilisations',
       icon: 'layers',
       showAsTab: false,
       separateRoute: false,
       menu: [
 
+        {
+          menuValue: 'Gestion stocks',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'box-open',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Entrées de stock',
+              route: "#",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Sorties de stock',
+              route: "#",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+
+            {
+              menuValue: 'Inventaire',
+              route: "#",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            }
+          ]
+        },
+
+        {
+          menuValue: 'Immobilisations',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'digital-tachograph',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Enregistrement',
+              route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Tranfert',
+              route: routes.demandes,
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+
+            // {
+            //   menuValue: 'Inventaire',
+            //   route: "#",
+            //   base: 'demandes',
+            //   haseSubSubMenu: false,
+            // }
+          ]
+        },
       ],
     },
 
