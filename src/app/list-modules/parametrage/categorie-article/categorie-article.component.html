@@ -5,27 +5,29 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Catégorie</h3>
+                <h3 class="page-title">Liste des catégories d'article</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Catégorie</li>
+                    <li class="breadcrumb-item active">catégorie</li>
                 </ul>
             </div>
 
-            <div class="col-auto row">
-              <div class="col-auto">
-                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF
-                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span></a>
-              </div>
-              <div class="col-auto">
-                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL
-                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span></a>
-              </div>
-            </div>
+<!--            <div class="col-auto row">-->
+<!--              <div class="col-auto">-->
+<!--                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF-->
+<!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>-->
+<!--                </a>-->
+<!--              </div>-->
+<!--              <div class="col-auto">-->
+<!--                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL-->
+<!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </div>-->
 
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter une catégorie</a>
+                        class="fa-solid fa-plus"></i> Ajouter une categorie</a>
             </div>
         </div>
     </div>
@@ -51,14 +53,14 @@
                     </div>
                 </div>
             </div>
-            <div  id="to_export" class="table-responsive">
+            <div id="to_export" class="table-responsive">
                 <table matSort (matSortChange)="sortData($event)"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
-                            <th mat-sort-header="departmentName">Nom de la catégorie</th>
-                            <th class="text-end" id="exclusion-1">Action</th>
+                            <th mat-sort-header="departmentName">Libellé</th>
+                            <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,10 +73,10 @@
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                                            data-bs-target="#edit_categorie"><i class="fa-solid fa-pencil m-r-5"></i>
+                                            data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
                                             Modifier</a>
                                         <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                                            data-bs-target="#delete_categorie"><i class="fa-regular fa-trash-can m-r-5"></i>
+                                            data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
                                             Supprimer</a>
                                     </div>
                                 </div>
@@ -147,7 +149,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                              lstCategorie.length === 0
+                            lstCategorie.length === 0
                         }">
                                 <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
@@ -160,29 +162,28 @@
     </div>
 </div>
 <!-- /Page Content -->
-
-<!-- Add Type absence Modal -->
+<!-- Add Poste Modal -->
 <div id="add_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter une catégorie</h5>
+                <h5 class="modal-title">Ajouter une categorie</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="addCategorieForm" (ngSubmit)="onClickSubmitAddCategorie()" novalidate>
+              <form [formGroup]="addCategorieForm" (ngSubmit)="onClickSubmitAddBanque()" novalidate>
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Nom de la catégorie <span class="text-danger">*</span></label>
+                  <label class="col-form-label" for="">Libellé<span class="text-danger">*</span></label>
                   <input class="form-control" type="text"
-                      [class.invalid]="addCategorieForm.get('libelle')?.invalid && addCategorieForm.get('libelle')?.touched"
+                      [class.invalid]="addCategorieForm.get('libelle')?.invalid && addCategorieForm.get('nlibelleom')?.touched"
                       formControlName="libelle">
                   <div
                       *ngIf="addCategorieForm.get('libelle')?.invalid && addCategorieForm.get('libelle')?.touched">
                       <small
                           *ngIf="addCategorieForm.get('libelle')?.invalid && addCategorieForm.get('libelle')?.touched"
-                          class="text-danger"> *le nom de la catégorie est obligatoire</small>
+                          class="text-danger"> *le libelle est obligatoire</small>
                   </div>
               </div>
                   <div class="submit-section">
@@ -193,23 +194,23 @@
         </div>
     </div>
 </div>
-<!-- /Add Type absence Modal -->
+<!-- /Add Poste Modal -->
 
-<!-- Edit Type absence Modal -->
-<div id="edit_categorie" class="modal custom-modal fade" role="dialog">
+<!-- Edit poste Modal -->
+<div id="edit_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier la catégorie</h5>
+                <h5 class="modal-title">Modifier le Bureau</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="editCategorieForm" (ngSubmit)="onClickSubmitEditCategorie()" novalidate>
+              <form [formGroup]="editCategorieForm" (ngSubmit)="onClickSubmitEditBanque()" novalidate>
                 <div class="input-block mb-3">
                   <input type="hidden" formControlName="id">
-                  <label class="col-form-label" for="">Nom de la catégorie<span class="text-danger">*</span></label>
+                  <label class="col-form-label" for="">Libellé <span class="text-danger">*</span></label>
                   <input class="form-control" type="text"
                       [class.invalid]="editCategorieForm.get('libelle')?.invalid && editCategorieForm.get('libelle')?.touched"
                       formControlName="libelle">
@@ -217,7 +218,7 @@
                       *ngIf="editCategorieForm.get('libelle')?.invalid && editCategorieForm.get('libelle')?.touched">
                       <small
                           *ngIf="editCategorieForm.get('libelle')?.invalid && editCategorieForm.get('libelle')?.touched"
-                          class="text-danger"> *le nom de la catégorie est obligatoire</small>
+                          class="text-danger"> *le libellé est obligatoire</small>
                   </div>
               </div>
                   <div class="submit-section">
@@ -228,23 +229,23 @@
         </div>
     </div>
 </div>
-<!-- /Edit Type d'absence Modal -->
+<!-- /Edit Department Modal -->
 
-<!-- Delete Type d'absence Modal -->
-<div class="modal custom-modal fade" id="delete_categorie" role="dialog">
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_department" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer la catégorie</h3>
-                    <p>Êtes-vous sûr de vouloir supprimer la catégorie?</p>
+                    <h3>Supprimer la categorie</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                          <form [formGroup]="deleteCategorieForm" (ngSubmit)="onClickSubmitDeleteCategorie()">
+                          <form [formGroup]="deleteCategorieForm" (ngSubmit)="onClickSubmitDeleteBanque()">
                             <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteCategorie()">Supprimer</a>
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteBanque()">Supprimer</a>
                           </form>
                         </div>
                         <div class="col-6">
@@ -257,4 +258,4 @@
         </div>
     </div>
 </div>
-<!-- /Delete Categorie Modal -->
+<!-- /Delete Department Modal -->

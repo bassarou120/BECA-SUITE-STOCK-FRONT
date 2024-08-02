@@ -1,35 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ExportsService, routes, typeAbsenceService, getTypeAbsence, getDeductibleFromConge } from 'src/app/core/core.index';
+import { Router } from '@angular/router';
+import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
-
+import {bureauService} from "../../../core/services/bureau/bureau.service";
+import {fournisseurService} from "../../../core/services/fournisseur/fournisseur.service";
 
 
 
 @Component({
-  selector: 'app-postes',
-  templateUrl: './typeAbsence.component.html',
-  styleUrls: ['./typeAbsence.component.scss']
+  selector: 'app-banque',
+  templateUrl: './fournisseur.component.html',
+  styleUrls: ['./fournisseur.component.scss']
 })
-export class TypeAbsenceComponent implements OnInit {
+export class FournisseurComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstTabs: Array<any>=[];
+  public lstPst: Array<any>=[];
 
-  public lstTypeAbsence: Array<getTypeAbsence> = [];
-  public selectedDeductible = 0;
-  public lstDeductible: Array<getDeductibleFromConge> = [{val: 0, lib: "Non Déductible"}, {val: 1, lib: "Déductible"}];
+
+  public lstFournisseur: Array<getFournisseur> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getTypeAbsence>;
+  dataSource!: MatTableDataSource<getFournisseur>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -44,121 +43,125 @@ export class TypeAbsenceComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addTypeAbsenceForm!: FormGroup ;
-  public editTypeAbsenceForm!: FormGroup
-  public deleteTypeAbsenceForm!: FormGroup
+  public addFournisseurForm!: FormGroup ;
+  public editFournisseurForm!: FormGroup
+  public deleteFournisseurForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router, private data: typeAbsenceService, private exp: ExportsService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router, private fournisseurService: fournisseurService, private exp: ExportsService) {}
+
 
   ngOnInit(): void {
-     this.getTableData();
-    this.addTypeAbsenceForm = this.formBuilder.group({
-      libelle: ["", [Validators.required]],
-      detConge: [0, [Validators.required]],
+    this.getTableData();
+    this.addFournisseurForm = this.formBuilder.group({
+      nom: ["", [Validators.required]],
+      adresse: ["", [Validators.required]],
+      telephone: ["", [Validators.required]],
    });
-   this.editTypeAbsenceForm = this.formBuilder.group({
+   this.editFournisseurForm = this.formBuilder.group({
     id: [0, [Validators.required]],
-    libelle: ["", [Validators.required]],
-    detConge: [0, [Validators.required]],
+     nom: ["", [Validators.required]],
+     adresse: ["", [Validators.required]],
+     telephone: ["", [Validators.required]],
   });
-   this.deleteTypeAbsenceForm = this.formBuilder.group({
+   this.deleteFournisseurForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
+ }
+
+ onClickSubmitAddBanque(){
+
+  console.log(this.addFournisseurForm.value)
+
+  if (this.addFournisseurForm.valid){
+    this.fournisseurService.save(this.addFournisseurForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+
+    alert("desole le formulaire n'est pas bien renseigné")
   }
 
-  onClickSubmitAddTypeAbsence(){
 
-    console.log(this.addTypeAbsenceForm.value)
+}
 
-    if (this.addTypeAbsenceForm.valid){
-      this.data.saveTypeAbsence(this.addTypeAbsenceForm.value).subscribe(
+onClickSubmitEditBanque(){
+  console.log(this.editFournisseurForm.value)
+
+    if (this.editFournisseurForm.valid){
+      const id = this.editFournisseurForm.value.id;
+      this.fournisseurService.edit(this.editFournisseurForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
       )
+      console.log("success")
     }else {
 
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
+}
 
-  }
+onClickSubmitDeleteBanque(){
+  console.log(this.deleteFournisseurForm.value)
 
-  onClickSubmitEditTypeAbsence(){
-    console.log(this.editTypeAbsenceForm.value)
+    if (this.deleteFournisseurForm.valid){
+      const id = this.deleteFournisseurForm.value.id;
+      this.fournisseurService.delete(this.deleteFournisseurForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
 
-      if (this.editTypeAbsenceForm.valid){
-        const id = this.editTypeAbsenceForm.value.id;
-        this.data.editTypeAbsence(this.editTypeAbsenceForm.value).subscribe(
-          (data:any)=>{
-            location.reload();
-          }
-        )
-        console.log("success")
-      }else {
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
 
-        alert("desole le formulaire n'est pas bien renseigné")
-      }
+}
 
-  }
+getEditForm(row: any){
+  this.editFournisseurForm.patchValue({
+   id:row.id,
+   libelle:row.libelle
+  })
+}
 
-  onClickSubmitDeleteTypeAbsence(){
-    console.log(this.deleteTypeAbsenceForm.value)
-
-      if (this.deleteTypeAbsenceForm.valid){
-        const id = this.deleteTypeAbsenceForm.value.id;
-        this.data.deleteTypeAbsence(this.deleteTypeAbsenceForm.value).subscribe(
-          (data:any)=>{
-            location.reload();
-          }
-        )
-        console.log("success")
-      }else {
-
-        alert("desole le formulaire n'est pas bien renseigné")
-      }
-
-  }
-
-  getEditForm(row: any){
-    this.editTypeAbsenceForm.patchValue({
-     id:row.id,
-     libelle:row.libelle,
-     detConge: row.detConge,
-    });
-    this.selectedDeductible = row.detConge;
-  }
-
-  getDeleteForm(row: any){
-    this.deleteTypeAbsenceForm.patchValue({
-     id:row.id,
-    })
-  }
+getDeleteForm(row: any){
+  this.deleteFournisseurForm.patchValue({
+   id:row.id,
+  })
+}
 
 
   private getTableData(): void {
-    this.lstTypeAbsence = [];
+    this.lstFournisseur = [];
     this.serialNumberArray = [];
 
-    this.data.getAllTypeAbsence().subscribe((res: any) => {
+    this.fournisseurService.getAll().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getTypeAbsence, index: number) => {
+      res.data.data.map((res: getFournisseur, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstTypeAbsence.push(res);
+          this.lstFournisseur.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getTypeAbsence>(this.lstTypeAbsence);
+      this.dataSource = new MatTableDataSource<getFournisseur>(this.lstFournisseur);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
+
   }
+
+
 
   exportToPDF() {
     $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportTypesAbsence().subscribe(
+    this.exp.exportBanques().subscribe(
       (response: any) => {
         $('#spinner_pdf').addClass('d-none');
         window.open(response.data, '_blank');
@@ -174,7 +177,7 @@ export class TypeAbsenceComponent implements OnInit {
     $('#spinner_xlsx').removeClass('d-none');
     setTimeout(() => {
       const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Types Absence.xlsx";
+      const filename = "Les Bureau.xlsx";
 
       if (table) {
         const wb = XLSX.utils.book_new();
@@ -195,7 +198,7 @@ export class TypeAbsenceComponent implements OnInit {
         });
 
         const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Types Absence");
+        XLSX.utils.book_append_sheet(wb, ws1, "Les Bureau");
 
         XLSX.writeFile(wb, filename);
         $('#spinner_xlsx').addClass('d-none');
@@ -207,13 +210,13 @@ export class TypeAbsenceComponent implements OnInit {
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstTypeAbsence.slice();
+    const data = this.lstFournisseur.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstTypeAbsence = data;
+      this.lstFournisseur = data;
     } else {
-      this.lstTypeAbsence = data.sort((a: any, b: any) => {
+      this.lstFournisseur = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -223,7 +226,7 @@ export class TypeAbsenceComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstTypeAbsence = this.dataSource.filteredData;
+    this.lstFournisseur = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

@@ -4,7 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListModulesComponent } from './list-modules.component';
 import { AuthService } from '../core/services/auth/auth.service';
 import { fichepaieComponent } from './fichepaie/fichepaie.component';
-import { ordrevirementComponent } from './ordrevirement/ordrevirement.component';
+import {EntreeStockComponent} from "./entree-stock/entree-stock.component";
+import {SortieStockComponent} from "./sortie-stock/sortie-stock.component";
+
+
 
 const routes: Routes = [
   {
@@ -61,11 +64,18 @@ const routes: Routes = [
         component: fichepaieComponent,
         canActivate: [GRHGuard],
       },
+
       {
-        path: 'ordreVirement',
-        component: ordrevirementComponent,
+        path: 'entree-stock',
+        component: EntreeStockComponent,
         canActivate: [GRHGuard],
       },
+      {
+        path: 'sortie-stock',
+        component: SortieStockComponent,
+        canActivate: [GRHGuard],
+      },
+
 
       /*
 

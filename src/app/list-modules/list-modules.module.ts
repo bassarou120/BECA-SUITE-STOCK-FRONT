@@ -15,7 +15,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { fichepaieComponent } from './fichepaie/fichepaie.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ordrevirementComponent } from './ordrevirement/ordrevirement.component';
+import { EntreeStockComponent } from './entree-stock/entree-stock.component';
+import { SortieStockComponent } from './sortie-stock/sortie-stock.component';
+
+
 
 // @ts-ignore
 @NgModule({
@@ -29,7 +32,11 @@ import { ordrevirementComponent } from './ordrevirement/ordrevirement.component'
     HeaderTwoComponent,
     HeaderThreeComponent,
     fichepaieComponent,
-    ordrevirementComponent,
+    EntreeStockComponent,
+    SortieStockComponent
+
+    // SortieStockComponent
+
   ],
   imports: [
     CommonModule,

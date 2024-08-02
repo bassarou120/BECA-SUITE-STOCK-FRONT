@@ -1,30 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Router } from '@angular/router';
+import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
 
-import { MatTableDataSource } from '@angular/material/table';
-import { getClasse, routes, ClasseService, ExportsService } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
+import {bureauService} from "../../../core/services/bureau/bureau.service";
+import {articleService} from "../../../core/services/article/article.service";
+import {categorieArticleService} from "../../../core/services/categorie-article/categorie-article.service";
+
+
 
 @Component({
-  selector: 'app-classes',
-  templateUrl: './classes.component.html',
-  styleUrls: ['./classes.component.scss']
+  selector: 'app-banque',
+  templateUrl: './article.component.html',
+  styleUrls: ['./article.component.scss']
 })
-export class ClasseComponent implements OnInit {
-  title = 'pagination';
+export class ArticleComponent implements OnInit {
   public routes = routes;
-  public lstClasses: Array<getClasse> = [];
+  selected = 'option1';
+
+  public lstPst: Array<any>=[];
+
+
+  public lstArticle: Array<any> = [];
+  lstCategorie:any;
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getClasse>;
-  public addClasseForm!: FormGroup ;
-  public editClasseForm!: FormGroup;
-  public deleteClasseForm!: FormGroup;
-
-
+  dataSource!: MatTableDataSource<any>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -39,55 +45,149 @@ export class ClasseComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  constructor(private data: ClasseService, private formBuilder: FormBuilder, private exp: ExportsService) {}
+  public addArticleForm!: FormGroup ;
+  public editArticleForm!: FormGroup
+  public deleteArticleForm!: FormGroup
+
+  constructor(private formBuilder: FormBuilder,public router: Router,
+              private articleService: articleService,
+              private categorieService: categorieArticleService,
+              private exp: ExportsService) {}
 
   ngOnInit(): void {
     this.getTableData();
-    this.addClasseForm = this.formBuilder.group({
-      lib: ['', Validators.required],
-      borneInf: ['', Validators.required],
-      borneSup: ['', Validators.required],
-    }, { validator: this.bornesValidator });
-    this.editClasseForm = this.formBuilder.group({
-      id: [0, Validators.required],
-      lib: ['', Validators.required],
-      borneInf: ['', Validators.required],
-      borneSup: ['', Validators.required],
-    }, { validator: this.bornesValidator });
-    this.deleteClasseForm = this.formBuilder.group({
-      id: [0, Validators.required],
+    this.getCategorie();
+
+    this.addArticleForm = this.formBuilder.group({
+      libelle: ["", [Validators.required]],
+      categorie_article_id: ["", [Validators.required]],
+      description: ["", []],
+      code: ["", [Validators.required]],
+      stock_alert: ["", [Validators.required]],
+   });
+   this.editArticleForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+     libelle: ["", [Validators.required]],
+
+     categorie_article_id: ["", [Validators.required]],
+     description: ["", [ ]],
+     code: ["", [Validators.required]],
+     stock_alert: ["", [Validators.required]],
+  });
+   this.deleteArticleForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+  });
+ }
+
+
+  getCategorie(){
+
+    this.categorieService.getAll().subscribe(
+      (res: any) => {
+
+        // alert(JSON.stringify(res.data.data))
+        this.lstCategorie=res.data.data
+
+    },
+      (error:any)=>{
+
     });
+
+
   }
 
-  private bornesValidator(group: FormGroup) {
-    const startBorneControl = group.get('borneInf');
-    const endBorneControl = group.get('borneSup');
-    if (!startBorneControl || !endBorneControl) {
-      return null;
-    }
-    const startBorne = startBorneControl.value;
-    const endBorne = endBorneControl.value;
-    if (startBorne && endBorne && startBorne >= endBorne) {
-      return { bornesInvalid: true };
-    }
-    return null;
+ onClickSubmitAddArticle(){
+
+  console.log(this.addArticleForm.value)
+
+  if (this.addArticleForm.valid){
+    this.articleService.save(this.addArticleForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+
+    alert("desole le formulaire n'est pas bien renseigné")
   }
+
+
+}
+
+onClickSubmitEditArticle(){
+  console.log(this.editArticleForm.value)
+
+    if (this.editArticleForm.valid){
+      const id = this.editArticleForm.value.id;
+      this.articleService.edit(this.editArticleForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+onClickSubmitDeleteBanque(){
+  console.log(this.deleteArticleForm.value)
+
+    if (this.deleteArticleForm.valid){
+      const id = this.deleteArticleForm.value.id;
+      this.articleService.delete(this.deleteArticleForm.value).subscribe(
+        (data:any)=>{
+
+          // alert(JSON.stringify(data))
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+getEditForm(row: any){
+  this.editArticleForm.patchValue({
+   id:row.id,
+   libelle:row.libelle,
+    categorie_article_id: row.categorie_article_id,
+    description:row.description,
+    code: row.code,
+    stock_alert: row.stock_alert,
+  })
+}
+
+getDeleteForm(row: any){
+  this.deleteArticleForm.patchValue({
+   id:row.id,
+  })
+}
+
 
   private getTableData(): void {
-    this.lstClasses = [];
+    this.lstArticle = [];
     this.serialNumberArray = [];
 
-    this.data.getAllClasses().subscribe((res: any) => {
+    this.articleService.getAll().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getClasse, index: number) => {
+      res.data.data.map((res: any, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstClasses.push(res);
+          this.lstArticle.push(res);
+
+
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<getClasse>(this.lstClasses);
+      console.log(this.lstArticle);
+      this.dataSource = new MatTableDataSource<any>(this.lstArticle);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -95,9 +195,10 @@ export class ClasseComponent implements OnInit {
   }
 
 
+
   exportToPDF() {
     $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportClasses().subscribe(
+    this.exp.exportBanques().subscribe(
       (response: any) => {
         $('#spinner_pdf').addClass('d-none');
         window.open(response.data, '_blank');
@@ -113,7 +214,7 @@ export class ClasseComponent implements OnInit {
     $('#spinner_xlsx').removeClass('d-none');
     setTimeout(() => {
       const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Les classes.xlsx";
+      const filename = "Les Bureau.xlsx";
 
       if (table) {
         const wb = XLSX.utils.book_new();
@@ -134,7 +235,7 @@ export class ClasseComponent implements OnInit {
         });
 
         const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Les Classes");
+        XLSX.utils.book_append_sheet(wb, ws1, "Les Bureau");
 
         XLSX.writeFile(wb, filename);
         $('#spinner_xlsx').addClass('d-none');
@@ -145,70 +246,14 @@ export class ClasseComponent implements OnInit {
     }, 10);
   }
 
-  saveClasse() {
-
-    if (this.addClasseForm.valid){
-      this.data.saveClasse(this.addClasseForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Desolé le formulaire n'est pas bien renseigné");
-    }
-  }
-
-  getEditClasse(row: any) {
-    this.editClasseForm.patchValue({
-      id: row.id,
-      lib: row.lib,
-      borneInf: row.borneInf,
-      borneSup: row.borneSup,
-    })
-  }
-
-  editClasse() {
-    console.log(this.editClasseForm.value, this.editClasseForm.valid);
-
-    if (this.editClasseForm.valid){
-      this.data.editClasse(this.editClasseForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Desolé le formulaire n'est pas bien renseigné");
-    }
-  }
-
-  getDeleteClasse(row: any) {
-    this.deleteClasseForm.patchValue({
-      id: row.id
-    })
-  }
-
-  deleteClasse() {
-
-    if (this.deleteClasseForm.valid){
-      this.data.deleteClasse(this.deleteClasseForm.value).subscribe(response => {
-        console.log(response);
-        location.reload();
-      });
-    } else {
-      console.log("Erreur");
-    }
-  }
-
-
-
-
-
   public sortData(sort: Sort) {
-    const data = this.lstClasses.slice();
+    const data = this.lstArticle.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstClasses = data;
+      this.lstArticle = data;
     } else {
-      this.lstClasses = data.sort((a: any, b: any) => {
+      this.lstArticle = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -218,7 +263,7 @@ export class ClasseComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstClasses = this.dataSource.filteredData;
+    this.lstArticle = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

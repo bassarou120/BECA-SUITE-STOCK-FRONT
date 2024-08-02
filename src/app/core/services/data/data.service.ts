@@ -64,14 +64,14 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Entrées de stock',
-              route: "#",
+              route: "entree-stock",
               // route: routes.mes_contrats,
               base: 'mes-contrats',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Sorties de stock',
-              route: "#",
+              route: "sortie-stock",
               base: 'demandes',
               haseSubSubMenu: false,
             },
@@ -136,14 +136,26 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Liste des bureaux',
-              route: routes.attribution_roles,
+              route: "parametrage/bureau",
               base: 'attribution-role',
               haseSubSubMenu: false,
             },
 
             {
               menuValue: 'Categorie Articles',
-              route: routes.attribution_roles,
+              route: "parametrage/categorie-article",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+         {
+              menuValue: 'Les Articles',
+              route: "parametrage/article",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+     {
+              menuValue: 'Les Fournisseur',
+              route: "parametrage/fournisseur",
               base: 'attribution-role',
               haseSubSubMenu: false,
             },

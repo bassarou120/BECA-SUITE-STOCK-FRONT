@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ExportsService, routes, CategorieService, getCategorie } from 'src/app/core/core.index';
+import { Router } from '@angular/router';
+import {ExportsService, routes, banqueService, getBanque, getCategorieArticle} from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,25 +9,26 @@ import { MatTableDataSource } from '@angular/material/table';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
-
+import {bureauService} from "../../../core/services/bureau/bureau.service";
+import {categorieArticleService} from "../../../core/services/categorie-article/categorie-article.service";
 
 
 
 @Component({
-  selector: 'app-categorie',
-  templateUrl: './categorie.component.html',
-  styleUrls: ['./categorie.component.scss']
+  selector: 'app-banque',
+  templateUrl: './categorie-article.component.html',
+  styleUrls: ['./categorie-article.component.scss']
 })
-export class CategorieComponent implements OnInit {
+export class CategorieArticleComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstTabs: Array<any>=[];
+  public lstPst: Array<any>=[];
 
 
-  public lstCategorie: Array<getCategorie> = [];
+  public lstCategorie: Array<getCategorieArticle> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getCategorie>;
+  dataSource!: MatTableDataSource<getCategorieArticle>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -46,102 +47,132 @@ export class CategorieComponent implements OnInit {
   public editCategorieForm!: FormGroup
   public deleteCategorieForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router, private data: CategorieService, private exp: ExportsService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router, private data: categorieArticleService, private exp: ExportsService) {}
 
   ngOnInit(): void {
-     this.getTableData();
+    this.getTableData();
     this.addCategorieForm = this.formBuilder.group({
       libelle: ["", [Validators.required]],
    });
    this.editCategorieForm = this.formBuilder.group({
     id: [0, [Validators.required]],
-    libelle: ["", [Validators.required]],
+     libelle: ["", [Validators.required]],
   });
    this.deleteCategorieForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
+ }
+
+ onClickSubmitAddBanque(){
+
+  console.log(this.addCategorieForm.value)
+
+  if (this.addCategorieForm.valid){
+    this.data.save(this.addCategorieForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+
+    alert("desole le formulaire n'est pas bien renseigné")
   }
 
-  onClickSubmitAddCategorie(){
 
-    console.log(this.addCategorieForm.value)
+}
 
-    if (this.addCategorieForm.valid){
-      this.data.saveCategorie(this.addCategorieForm.value).subscribe(
+onClickSubmitEditBanque(){
+  console.log(this.editCategorieForm.value)
+
+    if (this.editCategorieForm.valid){
+      const id = this.editCategorieForm.value.id;
+      this.data.edit(this.editCategorieForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
       )
+      console.log("success")
     }else {
 
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
+}
 
-  }
+onClickSubmitDeleteBanque(){
+  console.log(this.deleteCategorieForm.value)
 
-  onClickSubmitEditCategorie(){
+    if (this.deleteCategorieForm.valid){
+      const id = this.deleteCategorieForm.value.id;
+      this.data.delete(this.deleteCategorieForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
 
-      if (this.editCategorieForm.valid){
-        const id = this.editCategorieForm.value.id;
-        this.data.editCategorie(this.editCategorieForm.value).subscribe(
-          (data:any)=>{
-            location.reload();
-          }
-        )
-      } else {
-        alert("desole le formulaire n'est pas bien renseigné")
-      }
-
-  }
-
-  onClickSubmitDeleteCategorie(){
-
-      if (this.deleteCategorieForm.valid){
-        const id = this.deleteCategorieForm.value.id;
-        this.data.deleteCategorie(this.deleteCategorieForm.value).subscribe(
-          (data:any)=>{
-            location.reload();
-          }
-        )
-      } else {
-        alert("desole le formulaire n'est pas bien renseigné")
-      }
-
-  }
-
-  getEditForm(row: any){
-    this.editCategorieForm.patchValue({
-     id:row.id,
-     libelle:row.libelle
-    })
-  }
-
-  getDeleteForm(row: any){
-    this.deleteCategorieForm.patchValue({
-     id:row.id,
-    })
-  }
-
-
-  exportToPDF() {$('#spinner_pdf').removeClass('d-none');
-  this.exp.exportCategories().subscribe(
-    (response: any) => {
-      $('#spinner_pdf').addClass('d-none');
-      window.open(response.data, '_blank');
-    },
-    (error: any) => {
-      $('#spinner_pdf').addClass('d-none');
-      alert(JSON.stringify(error));
+      alert("desole le formulaire n'est pas bien renseigné")
     }
-  );
+
+}
+
+getEditForm(row: any){
+  this.editCategorieForm.patchValue({
+   id:row.id,
+   libelle:row.libelle
+  })
+}
+
+getDeleteForm(row: any){
+  this.deleteCategorieForm.patchValue({
+   id:row.id,
+  })
+}
+
+
+  private getTableData(): void {
+    this.lstCategorie = [];
+    this.serialNumberArray = [];
+
+    this.data.getAll().subscribe((res: any) => {
+      this.totalData = res.data.total;
+      res.data.data.map((res: getCategorieArticle, index: number) => {
+        const serialNumber = index + 1;
+        if (index >= this.skip && serialNumber <= this.limit) {
+          res.id;// = serialNumber;
+          this.lstCategorie.push(res);
+          this.serialNumberArray.push(serialNumber);
+        }
+      });
+      this.dataSource = new MatTableDataSource<getCategorieArticle>(this.lstCategorie);
+      this.calculateTotalPages(this.totalData, this.pageSize);
+    });
+
+
+  }
+
+
+
+  exportToPDF() {
+    $('#spinner_pdf').removeClass('d-none');
+    this.exp.exportBanques().subscribe(
+      (response: any) => {
+        $('#spinner_pdf').addClass('d-none');
+        window.open(response.data, '_blank');
+      },
+      (error: any) => {
+        $('#spinner_pdf').addClass('d-none');
+        alert(JSON.stringify(error));
+      }
+    );
   }
 
   exportToXLSX() {
     $('#spinner_xlsx').removeClass('d-none');
     setTimeout(() => {
       const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Catégories.xlsx";
+      const filename = "Les Bureau.xlsx";
 
       if (table) {
         const wb = XLSX.utils.book_new();
@@ -162,7 +193,7 @@ export class CategorieComponent implements OnInit {
         });
 
         const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Les Catégories");
+        XLSX.utils.book_append_sheet(wb, ws1, "Les Bureau");
 
         XLSX.writeFile(wb, filename);
         $('#spinner_xlsx').addClass('d-none');
@@ -171,27 +202,6 @@ export class CategorieComponent implements OnInit {
         $('#spinner_xlsx').addClass('d-none');
       }
     }, 10);
-  }
-
-  private getTableData(): void {
-    this.lstCategorie = [];
-    this.serialNumberArray = [];
-
-    this.data.getAllCategorie().subscribe((res: any) => {
-      this.totalData = res.data.total;
-      res.data.data.map((res: getCategorie, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-          this.lstCategorie.push(res);
-          this.serialNumberArray.push(serialNumber);
-        }
-      });
-      this.dataSource = new MatTableDataSource<getCategorie>(this.lstCategorie);
-      this.calculateTotalPages(this.totalData, this.pageSize);
-    });
-
-
   }
 
   public sortData(sort: Sort) {

@@ -1,5 +1,5 @@
 import { AttributionRoleComponent } from './attribution-role/attribution-role.component';
-import { ClasseComponent } from './classes/classes.component';
+
 
 import { InfosDeBaseComponent } from './infos-de-base/infos-de-base.component';
 import { NgModule } from '@angular/core';
@@ -9,9 +9,13 @@ import { PostesComponent } from './postes/postes.component';
 import { BanqueComponent } from './banque/banque.component';
 import { RoleComponent } from './role/role.component';
 import { ParametrageComponent } from './parametrage.component';
-import { CategorieComponent } from './categorie/categorie.component';
+import {BureauComponent} from "./bureau/bureau.component";
+import {CategorieArticleComponent} from "./categorie-article/categorie-article.component";
+import {ArticleComponent} from "./article/article.component";
+import {FournisseurComponent} from "./fournisseur/fournisseur.component";
 
-import { GradesComponent } from './grades/grades.component';
+
+
 
 const routes: Routes = [
   {
@@ -22,14 +26,17 @@ const routes: Routes = [
     { path: "departments", component: DepartmentsComponent },
     { path: "postes", component: PostesComponent },
     { path: "banque", component: BanqueComponent },
+    { path: "bureau", component: BureauComponent },
+    { path: "categorie-article", component: CategorieArticleComponent },
+    { path: "article", component: ArticleComponent },
+    { path: "fournisseur", component: FournisseurComponent },
 
     { path: "role", component: RoleComponent },
-    { path: "categorie", component: CategorieComponent },
+
 
     { path: "infos-de-base", component: InfosDeBaseComponent },
 
-    { path: "classes", component: ClasseComponent },
-    { path: "grades", component: GradesComponent },
+
     { path: "attribution-role", component: AttributionRoleComponent },
   ],
  }];

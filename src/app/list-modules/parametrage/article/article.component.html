@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Liste des bureaux </h3>
+                <h3 class="page-title">Liste des articles</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">Bureau</li>
+                    <li class="breadcrumb-item active">Article</li>
                 </ul>
             </div>
 
@@ -27,7 +27,7 @@
 
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter un bureau</a>
+                        class="fa-solid fa-plus"></i> Ajouter un article</a>
             </div>
         </div>
     </div>
@@ -59,14 +59,20 @@
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
+                            <th mat-sort-header="departmentName">Code</th>
                             <th mat-sort-header="departmentName">Libellé</th>
+                            <th mat-sort-header="departmentName">Categorie</th>
+                            <th mat-sort-header="departmentName">Stock d'alert</th>
                             <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstBureau; let i = index;">
+                        <tr *ngFor="let item of lstArticle; let i = index;">
                             <td>{{i+1}}</td>
+                            <td>{{ item.code }}</td>
                             <td>{{item.libelle}}</td>
+                            <td>{{item.categorie.libelle}}</td>
+                            <td>{{item.stock_alert}}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -82,7 +88,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstBureau.length === 0">
+                        <tr *ngIf="lstArticle.length === 0">
                             <td colspan="10">
                                 <h5 style="text-align: center;">Aucun Résultat</h5>
                             </td>
@@ -149,7 +155,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                            lstBureau.length === 0
+                            lstArticle.length === 0
                         }">
                                 <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
@@ -167,26 +173,93 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter un bureau</h5>
+                <h5 class="modal-title">Ajouter un article</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="addBureauForm" (ngSubmit)="onClickSubmitAddBanque()" novalidate>
+              <form [formGroup]="addArticleForm" (ngSubmit)="onClickSubmitAddArticle()" novalidate>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Code<span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="addArticleForm.get('code')?.invalid && addArticleForm.get('code')?.touched"
+                      formControlName="code">
+                  <div
+                      *ngIf="addArticleForm.get('code')?.invalid && addArticleForm.get('code')?.touched">
+                      <small
+                          *ngIf="addArticleForm.get('libelle')?.invalid && addArticleForm.get('code')?.touched"
+                          class="text-danger"> *le code est obligatoire</small>
+                  </div>
+              </div>
+
+
                 <div class="input-block mb-3">
                   <label class="col-form-label" for="">Libellé<span class="text-danger">*</span></label>
                   <input class="form-control" type="text"
-                      [class.invalid]="addBureauForm.get('libelle')?.invalid && addBureauForm.get('nlibelleom')?.touched"
+                      [class.invalid]="addArticleForm.get('libelle')?.invalid && addArticleForm.get('nlibelleom')?.touched"
                       formControlName="libelle">
                   <div
-                      *ngIf="addBureauForm.get('libelle')?.invalid && addBureauForm.get('libelle')?.touched">
+                      *ngIf="addArticleForm.get('libelle')?.invalid && addArticleForm.get('libelle')?.touched">
                       <small
-                          *ngIf="addBureauForm.get('libelle')?.invalid && addBureauForm.get('libelle')?.touched"
+                          *ngIf="addArticleForm.get('libelle')?.invalid && addArticleForm.get('libelle')?.touched"
                           class="text-danger"> *le libelle est obligatoire</small>
                   </div>
               </div>
-                  <div class="submit-section">
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Catérgorie<span class="text-danger">*</span></label>
+<!--                  <input class="form-control" type="text"-->
+<!--                      [class.invalid]="addEntreeStockForm.get('libelle')?.invalid && addEntreeStockForm.get('nlibelleom')?.touched"-->
+<!--                      formControlName="libelle">-->
+<!--                  [class.mat-selected] ="item.id === loggedEmployeId"-->
+                  <mat-select  class="select mat-cust-select form-control"
+                               [class.invalid]="addArticleForm.get('categorie_article_id')?.invalid && addArticleForm.get('categorie_article_id')?.touched"
+                               formControlName="categorie_article_id" placeholder="Selectionner categorie">
+                    <mat-option *ngFor="let item of lstCategorie" [disabled]="false" [value]="item.id"
+                                >{{ item.libelle }}   </mat-option>
+                  </mat-select>
+
+
+              </div>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Stock d'arlet<span class="text-danger">*</span></label>
+                  <input class="form-control" type="number"
+                         [class.invalid]="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched"
+                         formControlName="stock_alert">
+                  <div
+                    *ngIf="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched">
+                    <small
+                      *ngIf="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched"
+                      class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                  </div>
+                </div>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Description<span class="text-danger"></span></label>
+
+                  <textarea class="form-control" type="text"
+                             [class.invalid]="addArticleForm.get('description')?.invalid && addArticleForm.get('description')?.touched"
+                             formControlName="description">
+
+                  </textarea>
+<!--                  <input >-->
+
+                </div>
+
+
+
+
+
+
+
+                <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                   </div>
               </form>
@@ -207,20 +280,82 @@
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="editBureauForm" (ngSubmit)="onClickSubmitEditBanque()" novalidate>
+              <form [formGroup]="editArticleForm" (ngSubmit)="onClickSubmitEditArticle()" novalidate>
+
+
+
                 <div class="input-block mb-3">
-                  <input type="hidden" formControlName="id">
-                  <label class="col-form-label" for="">Libellé <span class="text-danger">*</span></label>
+                  <label class="col-form-label" for="">Code<span class="text-danger">*</span></label>
                   <input class="form-control" type="text"
-                      [class.invalid]="editBureauForm.get('libelle')?.invalid && editBureauForm.get('libelle')?.touched"
-                      formControlName="libelle">
+                         [class.invalid]="editArticleForm.get('code')?.invalid && editArticleForm.get('code')?.touched"
+                         formControlName="code">
                   <div
-                      *ngIf="editBureauForm.get('libelle')?.invalid && editBureauForm.get('libelle')?.touched">
-                      <small
-                          *ngIf="editBureauForm.get('libelle')?.invalid && editBureauForm.get('libelle')?.touched"
-                          class="text-danger"> *le libellé est obligatoire</small>
+                    *ngIf="editArticleForm.get('code')?.invalid && editArticleForm.get('code')?.touched">
+                    <small
+                      *ngIf="editArticleForm.get('libelle')?.invalid && editArticleForm.get('code')?.touched"
+                      class="text-danger"> *le code est obligatoire</small>
                   </div>
-              </div>
+                </div>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Libellé<span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                         [class.invalid]="editArticleForm.get('libelle')?.invalid && editArticleForm.get('nlibelleom')?.touched"
+                         formControlName="libelle">
+                  <div
+                    *ngIf="editArticleForm.get('libelle')?.invalid && editArticleForm.get('libelle')?.touched">
+                    <small
+                      *ngIf="editArticleForm.get('libelle')?.invalid && editArticleForm.get('libelle')?.touched"
+                      class="text-danger"> *le libelle est obligatoire</small>
+                  </div>
+                </div>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Catérgorie<span class="text-danger">*</span></label>
+                  <!--                  <input class="form-control" type="text"-->
+                  <!--                      [class.invalid]="addEntreeStockForm.get('libelle')?.invalid && addEntreeStockForm.get('nlibelleom')?.touched"-->
+                  <!--                      formControlName="libelle">-->
+                  <!--                  [class.mat-selected] ="item.id === loggedEmployeId"-->
+                  <mat-select  class="select mat-cust-select form-control"
+                               [class.invalid]="editArticleForm.get('categorie_article_id')?.invalid && editArticleForm.get('categorie_article_id')?.touched"
+                               formControlName="categorie_article_id" placeholder="Selectionner categorie">
+                    <mat-option *ngFor="let item of lstCategorie" [disabled]="false" [value]="item.id"
+                    >{{ item.libelle }}   </mat-option>
+                  </mat-select>
+
+
+                </div>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Stock d'arlet<span class="text-danger">*</span></label>
+                  <input class="form-control" type="number"
+                         [class.invalid]="editArticleForm.get('stock_alert')?.invalid && editArticleForm.get('stock_alert')?.touched"
+                         formControlName="stock_alert">
+                  <div
+                    *ngIf="editArticleForm.get('stock_alert')?.invalid && editArticleForm.get('stock_alert')?.touched">
+                    <small
+                      *ngIf="editArticleForm.get('stock_alert')?.invalid && editArticleForm.get('stock_alert')?.touched"
+                      class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                  </div>
+                </div>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Description<span class="text-danger"></span></label>
+
+                  <textarea class="form-control" type="text"
+                            [class.invalid]="editArticleForm.get('description')?.invalid && editArticleForm.get('description')?.touched"
+                            formControlName="description">
+
+                  </textarea>
+                  <!--                  <input >-->
+
+                </div>
+
+
                   <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                   </div>
@@ -237,13 +372,13 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer le bureau</h3>
+                    <h3>Supprimer l'article</h3>
                     <p>Êtes-vous sûr de vouloir supprimer ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                          <form [formGroup]="deleteBureauForm" (ngSubmit)="onClickSubmitDeleteBanque()">
+                          <form [formGroup]="deleteArticleForm" (ngSubmit)="onClickSubmitDeleteBanque()">
                             <input type="hidden" formControlName="id">
                             <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteBanque()">Supprimer</a>
                           </form>

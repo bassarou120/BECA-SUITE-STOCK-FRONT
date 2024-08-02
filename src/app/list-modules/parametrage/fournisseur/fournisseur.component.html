@@ -5,27 +5,29 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Type d'absence</h3>
+                <h3 class="page-title">Liste des fourniseurs </h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">type d'absence</li>
+                    <li class="breadcrumb-item active">fourniseur</li>
                 </ul>
             </div>
 
-            <div class="col-auto row">
-              <div class="col-auto">
-                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF
-                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span></a>
-              </div>
-              <div class="col-auto">
-                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL
-                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span></a>
-              </div>
-            </div>
+<!--            <div class="col-auto row">-->
+<!--              <div class="col-auto">-->
+<!--                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF-->
+<!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>-->
+<!--                </a>-->
+<!--              </div>-->
+<!--              <div class="col-auto">-->
+<!--                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL-->
+<!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </div>-->
 
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter un type d'Absence</a>
+                        class="fa-solid fa-plus"></i> Ajouter un fourniseur</a>
             </div>
         </div>
     </div>
@@ -51,22 +53,24 @@
                     </div>
                 </div>
             </div>
-            <div  id="to_export" class="table-responsive">
+            <div id="to_export" class="table-responsive">
                 <table matSort (matSortChange)="sortData($event)"
                     class="table table-striped custom-table datatable mb-0">
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
-                            <th mat-sort-header="departmentName">Nom du Type d'Absence</th>
-                            <th mat-sort-header="deductibleConge">Déductible des congés</th>
+                            <th mat-sort-header="departmentName">Nom</th>
+                            <th mat-sort-header="departmentName">Téléphone</th>
+                            <th mat-sort-header="departmentName">Adresse</th>
                             <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of lstTypeAbsence; let i = index;">
+                        <tr *ngFor="let item of lstFournisseur; let i = index;">
                             <td>{{i+1}}</td>
-                            <td>{{item.libelle}}</td>
-                            <td>{{ item.detConge ? "Oui" : "Non" }}</td>
+                            <td>{{item.nom}}</td>
+                            <td>{{item.telephone}}</td>
+                            <td>{{item.adresse}}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -82,7 +86,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngIf="lstTypeAbsence.length === 0">
+                        <tr *ngIf="lstFournisseur.length === 0">
                             <td colspan="10">
                                 <h5 style="text-align: center;">Aucun Résultat</h5>
                             </td>
@@ -149,7 +153,7 @@
                           disabled:
                             currentPage ===
                               pageNumberArray[pageNumberArray.length - 1] ||
-                              lstTypeAbsence.length === 0
+                            lstFournisseur.length === 0
                         }">
                                 <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                 </a>
@@ -162,46 +166,60 @@
     </div>
 </div>
 <!-- /Page Content -->
-<!-- Add Type absence Modal -->
+<!-- Add Poste Modal -->
 <div id="add_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Ajouter un type d'absence</h5>
+                <h5 class="modal-title">Ajouter un fournisseur</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="addTypeAbsenceForm" (ngSubmit)="onClickSubmitAddTypeAbsence()" novalidate>
+              <form [formGroup]="addFournisseurForm" (ngSubmit)="onClickSubmitAddBanque()" novalidate>
+
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Nom du Type d'absence <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text" placeholder="Nom du type d'absence"
-                      [class.invalid]="addTypeAbsenceForm.get('libelle')?.invalid && addTypeAbsenceForm.get('libelle')?.touched"
-                      formControlName="libelle">
+                  <label class="col-form-label" for="">Nom du fournisseur<span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="addFournisseurForm.get('nom')?.invalid && addFournisseurForm.get('nom')?.touched"
+                      formControlName="nom">
                   <div
-                      *ngIf="addTypeAbsenceForm.get('libelle')?.invalid && addTypeAbsenceForm.get('libelle')?.touched">
+                      *ngIf="addFournisseurForm.get('nom')?.invalid && addFournisseurForm.get('nom')?.touched">
                       <small
-                          *ngIf="addTypeAbsenceForm.get('libelle')?.invalid && addTypeAbsenceForm.get('libelle')?.touched"
-                          class="text-danger"> *le nom du Type d'absence est obligatoire</small>
+                          *ngIf="addFournisseurForm.get('nom')?.invalid && addFournisseurForm.get('nom')?.touched"
+                          class="text-danger"> *le nom est obligatoire</small>
                   </div>
               </div>
 
-              <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Déductible des congés <span class="text-danger">*</span></label>
-                  <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="addTypeAbsenceForm.get('employe_id')?.invalid && addTypeAbsenceForm.get('employe_id')?.touched"
-                                    formControlName="detConge" placeholder="Selectionner Déductible des congés">
-                                    <mat-option *ngFor="let item of lstDeductible" [value]="item.val"
-                                    [class.mat-selected] ="item.val === 0"> {{ item.lib }} </mat-option>
-                        </mat-select>
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Téléphone<span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="addFournisseurForm.get('telephone')?.invalid && addFournisseurForm.get('telephone')?.touched"
+                      formControlName="telephone">
                   <div
-                      *ngIf="addTypeAbsenceForm.get('detConge')?.invalid && addTypeAbsenceForm.get('detConge')?.touched">
+                      *ngIf="addFournisseurForm.get('telephone')?.invalid && addFournisseurForm.get('telephone')?.touched">
                       <small
-                          *ngIf="addTypeAbsenceForm.get('detConge')?.invalid && addTypeAbsenceForm.get('detConge')?.touched"
-                          class="text-danger"> *Déductible des congés est obligatoire</small>
+                          *ngIf="addFournisseurForm.get('telephone')?.invalid && addFournisseurForm.get('telephone')?.touched"
+                          class="text-danger"> *le telephone est obligatoire</small>
                   </div>
               </div>
+
+
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Adresse<span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="addFournisseurForm.get('adresse')?.invalid && addFournisseurForm.get('adresse')?.touched"
+                      formControlName="adresse">
+                  <div
+                      *ngIf="addFournisseurForm.get('adresse')?.invalid && addFournisseurForm.get('adresse')?.touched">
+                      <small
+                          *ngIf="addFournisseurForm.get('adresse')?.invalid && addFournisseurForm.get('adresse')?.touched"
+                          class="text-danger"> *l'adresse est obligatoire</small>
+                  </div>
+              </div>
+
 
                   <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
@@ -211,51 +229,68 @@
         </div>
     </div>
 </div>
-<!-- /Add Type absence Modal -->
+<!-- /Add Poste Modal -->
 
-<!-- Edit Type absence Modal -->
+<!-- Edit poste Modal -->
 <div id="edit_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le Type d'absence</h5>
+                <h5 class="modal-title">Modifier le fournisseur</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="editTypeAbsenceForm" (ngSubmit)="onClickSubmitEditTypeAbsence()" novalidate>
+              <form [formGroup]="editFournisseurForm" (ngSubmit)="onClickSubmitEditBanque()" novalidate>
+
                 <div class="input-block mb-3">
                   <input type="hidden" formControlName="id">
-                  <label class="col-form-label" for="">Nom du Type d'absence <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text" placeholder="Nom du type d'absence"
-                      [class.invalid]="editTypeAbsenceForm.get('libelle')?.invalid && editTypeAbsenceForm.get('libelle')?.touched"
-                      formControlName="libelle">
+                  <label class="col-form-label" for="">Nom du fournisseur <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="editFournisseurForm.get('nom')?.invalid && editFournisseurForm.get('nom')?.touched"
+                      formControlName="nom">
                   <div
-                      *ngIf="editTypeAbsenceForm.get('libelle')?.invalid && editTypeAbsenceForm.get('libelle')?.touched">
+                      *ngIf="editFournisseurForm.get('nom')?.invalid && editFournisseurForm.get('nom')?.touched">
                       <small
-                          *ngIf="editTypeAbsenceForm.get('libelle')?.invalid && editTypeAbsenceForm.get('libelle')?.touched"
-                          class="text-danger"> *le nom du Type d'absence est obligatoire</small>
+                          *ngIf="editFournisseurForm.get('nom')?.invalid && editFournisseurForm.get('nom')?.touched"
+                          class="text-danger"> *le libellé est obligatoire</small>
                   </div>
               </div>
+
+                <div class="input-block mb-3">
+
+                  <label class="col-form-label" for="">Téléphone <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                         [class.invalid]="editFournisseurForm.get('telephone')?.invalid && editFournisseurForm.get('telephone')?.touched"
+                         formControlName="telephone">
+                  <div
+                    *ngIf="editFournisseurForm.get('telephone')?.invalid && editFournisseurForm.get('telephone')?.touched">
+                    <small
+                      *ngIf="editFournisseurForm.get('telephone')?.invalid && editFournisseurForm.get('telephone')?.touched"
+                      class="text-danger"> *le telephoneest obligatoire</small>
+                  </div>
+                </div>
+
 
               <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Déductible des congés <span class="text-danger">*</span></label>
-                  <mat-select  class="select mat-cust-select form-control"
-                                    [class.invalid]="editTypeAbsenceForm.get('employe_id')?.invalid && editTypeAbsenceForm.get('employe_id')?.touched"
-                                    formControlName="detConge" placeholder="Selectionner Déductible des congés">
-                                    <mat-option *ngFor="let item of lstDeductible" [value]="item.val"
-                                    [class.mat-selected] ="item.val === selectedDeductible"> {{ item.lib }} </mat-option>
-                        </mat-select>
-                  <div
-                      *ngIf="editTypeAbsenceForm.get('detConge')?.invalid && editTypeAbsenceForm.get('detConge')?.touched">
-                      <small
-                          *ngIf="editTypeAbsenceForm.get('detConge')?.invalid && editTypeAbsenceForm.get('detConge')?.touched"
-                          class="text-danger"> *Déductible des congés est obligatoire</small>
-                  </div>
-              </div>
 
-                  <div class="submit-section">
+                  <label class="col-form-label" for="">Adresse <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text"
+                         [class.invalid]="editFournisseurForm.get('adresse')?.invalid && editFournisseurForm.get('adresse')?.touched"
+                         formControlName="adresse">
+                  <div
+                    *ngIf="editFournisseurForm.get('adresse')?.invalid && editFournisseurForm.get('adresse')?.touched">
+                    <small
+                      *ngIf="editFournisseurForm.get('adresse')?.invalid && editFournisseurForm.get('adresse')?.touched"
+                      class="text-danger"> *l'adresse est obligatoire</small>
+                  </div>
+                </div>
+
+
+
+
+                <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                   </div>
               </form>
@@ -263,23 +298,23 @@
         </div>
     </div>
 </div>
-<!-- /Edit Type d'absence Modal -->
+<!-- /Edit Department Modal -->
 
-<!-- Delete Type d'absence Modal -->
+<!-- Delete Department Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer le département</h3>
+                    <h3>Supprimer le bureau</h3>
                     <p>Êtes-vous sûr de vouloir supprimer ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                          <form [formGroup]="deleteTypeAbsenceForm" (ngSubmit)="onClickSubmitDeleteTypeAbsence()">
+                          <form [formGroup]="deleteFournisseurForm" (ngSubmit)="onClickSubmitDeleteBanque()">
                             <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteTypeAbsence()">Supprimer</a>
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteBanque()">Supprimer</a>
                           </form>
                         </div>
                         <div class="col-6">
@@ -292,4 +327,4 @@
         </div>
     </div>
 </div>
-<!-- /Delete TypeAbsence Modal -->
+<!-- /Delete Department Modal -->

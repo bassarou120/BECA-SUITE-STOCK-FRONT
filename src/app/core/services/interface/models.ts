@@ -947,6 +947,26 @@ export interface getBanque {
   nom: string;
 }
 
+
+
+export interface getFournisseur {
+  id: number;
+  nom: string;
+  telephone: string;
+  adresse: string;
+
+}
+
+  export interface getArticle {
+  id: number;
+  libelle: string;
+}
+
+export interface getCategorieArticle {
+  id: number;
+  libelle: string;
+}
+
 export interface getTypeAbsence {
   id: number;
   libelle: string;

@@ -13,11 +13,13 @@ import {ParametrageComponent} from "./parametrage.component";
 import {BureauComponent} from "./bureau/bureau.component";
 import {RoleComponent} from "./role/role.component";
 import {PostesComponent} from "./postes/postes.component";
-import {ClasseComponent} from "./classes/classes.component";
-import {GradesComponent} from "./grades/grades.component";
+
 import {BanqueComponent} from "./banque/banque.component";
 import {DepartmentsComponent} from "./departments/departments.component";
-import {CategorieComponent} from "./categorie/categorie.component";
+import {CategorieArticleComponent} from "./categorie-article/categorie-article.component";
+import {ArticleComponent} from "./article/article.component";
+import {FournisseurComponent} from "./fournisseur/fournisseur.component";
+
 
 @NgModule({
   declarations: [
@@ -32,14 +34,15 @@ import {CategorieComponent} from "./categorie/categorie.component";
     BanqueComponent,
     // TypeAbsenceComponent,
     RoleComponent,
-    CategorieComponent,
     // StatutComponent,
     InfosDeBaseComponent,
     // TypeDepartComponent,
-    ClasseComponent,
-    GradesComponent,
+
     BureauComponent,
     AttributionRoleComponent,
+    CategorieArticleComponent,
+    ArticleComponent,
+    FournisseurComponent
   ],
   imports: [
     CommonModule,
