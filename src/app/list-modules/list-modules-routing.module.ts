@@ -6,6 +6,8 @@ import { AuthService } from '../core/services/auth/auth.service';
 import { fichepaieComponent } from './fichepaie/fichepaie.component';
 import {EntreeStockComponent} from "./entree-stock/entree-stock.component";
 import {SortieStockComponent} from "./sortie-stock/sortie-stock.component";
+import {EtatStockComponent} from "./etat-stock/etat-stock.component";
+import {EntreeImmoComponent} from "./entree-immo/entree-immo.component";
 
 
 
@@ -73,6 +75,17 @@ const routes: Routes = [
       {
         path: 'sortie-stock',
         component: SortieStockComponent,
+        canActivate: [GRHGuard],
+      },
+      {
+        path: 'etat-stock',
+        component: EtatStockComponent,
+        canActivate: [GRHGuard],
+      },
+
+      {
+        path: 'entree-immo',
+        component: EntreeImmoComponent,
         canActivate: [GRHGuard],
       },
 

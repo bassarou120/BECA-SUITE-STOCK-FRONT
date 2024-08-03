@@ -77,8 +77,8 @@ export class DataService {
             },
 
             {
-              menuValue: 'Inventaire',
-              route: "#",
+              menuValue: 'Etat Stock',
+              route: "etat-stock",
               base: 'demandes',
               haseSubSubMenu: false,
             }
@@ -96,8 +96,8 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
-              menuValue: 'Enregistrement',
-              route: routes.mes_contrats,
+              menuValue: 'Immo/Enregistrement',
+              route: 'entree-immo',
               base: 'mes-contrats',
               haseSubSubMenu: false,
             },

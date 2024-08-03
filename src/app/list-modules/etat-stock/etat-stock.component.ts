@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getBureau} from 'src/app/core/core.index';
+import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,25 +9,33 @@ import { MatTableDataSource } from '@angular/material/table';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
-import {bureauService} from "../../../core/services/bureau/bureau.service";
+
+import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
+import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
+import {articleService} from "../../core/services/article/article.service";
+import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
 
 
 
 @Component({
   selector: 'app-banque',
-  templateUrl: './bureau.component.html',
-  styleUrls: ['./bureau.component.scss']
+  templateUrl: './etat-stock.component.html',
+  styleUrls: ['./etat-stock.component.scss']
 })
-export class BureauComponent implements OnInit {
+export class EtatStockComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
   public lstPst: Array<any>=[];
 
 
-  public lstBureau: Array<getBureau> = [];
+  public lstEntreeStock: Array<any> = [];
+  lstEtatStock:any;
+  lstCategorie:any;
+  lstForuniseur:any;
+  lstArticel:any;
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<getBureau>;
+  dataSource!: MatTableDataSource<any>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -42,32 +50,99 @@ export class BureauComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addBureauForm!: FormGroup ;
-  public editBureauForm!: FormGroup
-  public deleteBureauForm!: FormGroup
+  public addEntreeStockForm!: FormGroup ;
+  public editEntreeStockForm!: FormGroup
+  public deleteEntreeStockForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,public router: Router, private data: bureauService, private exp: ExportsService) {}
+  constructor(private formBuilder: FormBuilder,public router: Router,
+              private articleService:articleService,
+              private fournisseurService: fournisseurService,
+              private entreeSortieStockService: entreeSortieStockService,
+              private categorieService: categorieArticleService,
+              private exp: ExportsService) {}
+
 
   ngOnInit(): void {
     this.getTableData();
-    this.addBureauForm = this.formBuilder.group({
-      libelle: ["", [Validators.required]],
+   // this.getFournisseur();
+   //  this.getArticle();
+
+    this.addEntreeStockForm = this.formBuilder.group({
+      article_id: ["", [Validators.required]],
+      date_mouvement: ["", [Validators.required]],
+      type: ["ENTREE", []],
+      qte: ["", [Validators.required]],
+      fournisseur: ["",  [Validators.required]],
    });
-   this.editBureauForm = this.formBuilder.group({
+
+   this.editEntreeStockForm = this.formBuilder.group({
     id: [0, [Validators.required]],
-     libelle: ["", [Validators.required]],
+     article_id: ["", [Validators.required]],
+     date_mouvement: ["", [Validators.required]],
+     type: ["ENTREE", []],
+     qte: ["", [Validators.required]],
+     fourniseur: ["",  []],
   });
-   this.deleteBureauForm = this.formBuilder.group({
+   this.deleteEntreeStockForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
  }
 
- onClickSubmitAddBanque(){
 
-  console.log(this.addBureauForm.value)
+  // getCategorie(){
+  //
+  //   this.categorieService.getAll().subscribe(
+  //     (res: any) => {
+  //
+  //       // alert(JSON.stringify(res.data.data))
+  //       this.lstCategorie=res.data.data
+  //
+  //   },
+  //     (error:any)=>{
+  //
+  //   });
+  //
+  //
+  // }
+  //
+  // getFournisseur(){
+  //
+  //   this.fournisseurService.getAll().subscribe(
+  //     (res: any) => {
+  //
+  //       // alert(JSON.stringify(res.data.data))
+  //       this.lstForuniseur=res.data.data
+  //
+  //   },
+  //     (error:any)=>{
+  //
+  //   });
+  //
+  //
+  // }
+  //
+  // getArticle(){
+  //
+  //   this.articleService.getAll().subscribe(
+  //     (res: any) => {
+  //
+  //       // alert(JSON.stringify(res.data.data))
+  //       this.lstArticel=res.data.data
+  //
+  //   },
+  //     (error:any)=>{
+  //
+  //   });
+  //
+  //
+  // }
 
-  if (this.addBureauForm.valid){
-    this.data.save(this.addBureauForm.value).subscribe(
+ onClickSubmitAddEntreeStock(){
+
+  console.log(this.addEntreeStockForm.value)
+
+  if (this.addEntreeStockForm.valid){
+    this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
@@ -80,12 +155,12 @@ export class BureauComponent implements OnInit {
 
 }
 
-onClickSubmitEditBanque(){
-  console.log(this.editBureauForm.value)
+onClickSubmitEditArticle(){
+  console.log(this.editEntreeStockForm.value)
 
-    if (this.editBureauForm.valid){
-      const id = this.editBureauForm.value.id;
-      this.data.edit(this.editBureauForm.value).subscribe(
+    if (this.editEntreeStockForm.valid){
+      const id = this.editEntreeStockForm.value.id;
+      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
@@ -99,12 +174,14 @@ onClickSubmitEditBanque(){
 }
 
 onClickSubmitDeleteBanque(){
-  console.log(this.deleteBureauForm.value)
+  console.log(this.deleteEntreeStockForm.value)
 
-    if (this.deleteBureauForm.valid){
-      const id = this.deleteBureauForm.value.id;
-      this.data.delete(this.deleteBureauForm.value).subscribe(
+    if (this.deleteEntreeStockForm.valid){
+      const id = this.deleteEntreeStockForm.value.id;
+      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe(
         (data:any)=>{
+
+          // alert(JSON.stringify(data))
           location.reload();
         }
       )
@@ -116,35 +193,48 @@ onClickSubmitDeleteBanque(){
 
 }
 
+
+
 getEditForm(row: any){
-  this.editBureauForm.patchValue({
+  this.editEntreeStockForm.patchValue({
    id:row.id,
-   libelle:row.libelle
+    article_id:row.article_id,
+    date_mouvement: row.date_mouvement,
+    qte:row.qte,
+    code: row.code,
+    fournisseur: row.fournisseur,
   })
 }
 
 getDeleteForm(row: any){
-  this.deleteBureauForm.patchValue({
+  this.deleteEntreeStockForm.patchValue({
    id:row.id,
   })
 }
 
 
   private getTableData(): void {
-    this.lstBureau = [];
+    this.lstEtatStock = [];
     this.serialNumberArray = [];
 
-    this.data.getAll().subscribe((res: any) => {
+    this.entreeSortieStockService.getAllStock().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: getBureau, index: number) => {
+      res.data.data.map((res: any, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstBureau.push(res);
-          this.serialNumberArray.push(serialNumber);
+
+          // alert(res.type);
+
+            this.lstEtatStock.push(res);
+
+            this.serialNumberArray.push(serialNumber);
+
+
         }
       });
-      this.dataSource = new MatTableDataSource<getBureau>(this.lstBureau);
+      console.log(this.lstEtatStock);
+      this.dataSource = new MatTableDataSource<any>(this.lstEtatStock);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -204,13 +294,13 @@ getDeleteForm(row: any){
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstBureau.slice();
+    const data = this.lstEntreeStock.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstBureau = data;
+      this.lstEntreeStock = data;
     } else {
-      this.lstBureau = data.sort((a: any, b: any) => {
+      this.lstEntreeStock = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -220,7 +310,7 @@ getDeleteForm(row: any){
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstBureau = this.dataSource.filteredData;
+    this.lstEntreeStock = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

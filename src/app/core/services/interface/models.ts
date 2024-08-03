@@ -946,6 +946,10 @@ export interface getBanque {
   id: number;
   nom: string;
 }
+export interface getBureau {
+  id: number;
+  libelle: string;
+}
 
 
 

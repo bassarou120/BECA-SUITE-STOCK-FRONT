@@ -17,7 +17,10 @@ import { fichepaieComponent } from './fichepaie/fichepaie.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { EntreeStockComponent } from './entree-stock/entree-stock.component';
 import { SortieStockComponent } from './sortie-stock/sortie-stock.component';
+import { EtatStockComponent } from './etat-stock/etat-stock.component';
+import { EntreeImmoComponent } from './entree-immo/entree-immo.component';
 
+import  {AlertComponent} from './common/alert/alert.component'
 
 
 // @ts-ignore
@@ -33,9 +36,11 @@ import { SortieStockComponent } from './sortie-stock/sortie-stock.component';
     HeaderThreeComponent,
     fichepaieComponent,
     EntreeStockComponent,
-    SortieStockComponent
+    SortieStockComponent,
+    AlertComponent,
+    EtatStockComponent,
+    EntreeImmoComponent
 
-    // SortieStockComponent
 
   ],
   imports: [

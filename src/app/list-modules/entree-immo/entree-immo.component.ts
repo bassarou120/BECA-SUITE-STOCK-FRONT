@@ -16,22 +16,23 @@ import {articleService} from "../../core/services/article/article.service";
 import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
 import {EmployeService} from "../../core/services/employe/employe.service";
 import {bureauService} from "../../core/services/bureau/bureau.service";
+import {immoService} from "../../core/services/immo/immo.service";
 
 
 
 @Component({
   selector: 'app-banque',
-  templateUrl: './sortie-stock.component.html',
-  styleUrls: ['./sortie-stock.component.scss']
+  templateUrl: './entree-immo.component.html',
+  styleUrls: ['./entree-immo.component.scss']
 })
-export class  SortieStockComponent implements OnInit {
+export class EntreeImmoComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
   public lstPst: Array<any>=[];
 
 
-  public lstSortieStock: Array<any> = [];
+  public lstEntreeImmo: Array<any> = [];
   stockDisponible=0;
   lstCategorie:any;
   lstForuniseur:any;
@@ -54,9 +55,9 @@ export class  SortieStockComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
   article_id:any;
-  public addEntreeStockForm!: FormGroup ;
-  public editEntreeStockForm!: FormGroup
-  public deleteEntreeStockForm!: FormGroup
+  public addEntreeImmoForm!: FormGroup ;
+  public editEntreeImmoForm!: FormGroup
+  public deleteEntreeImmoForm!: FormGroup
 
   showAlert=false;
   messageAlert=""
@@ -68,7 +69,7 @@ export class  SortieStockComponent implements OnInit {
               private employeService:EmployeService,
               private  bureauService:bureauService,
               private fournisseurService: fournisseurService,
-              private entreeSortieStockService: entreeSortieStockService,
+              private immoService: immoService,
               private categorieService: categorieArticleService,
               private exp: ExportsService) {}
 
@@ -80,17 +81,20 @@ export class  SortieStockComponent implements OnInit {
    this.getEmploye();
    this.getArticle();
 
-    this.addEntreeStockForm = this.formBuilder.group({
-      article_id: ["", [Validators.required]],
+    this.addEntreeImmoForm = this.formBuilder.group({
+
       date_mouvement: ["", [Validators.required]],
-      type: ["SORTIE", []],
+      code: ["", [Validators.required]],
+      designation: ["", [Validators.required]],
+      duree_amorti: ["", [Validators.required]],
+
       bureau_id:['',[Validators.required]],
       employe_id:['',[Validators.required]],
-      qte: ["", [Validators.required]],
+
       fournisseur: ["",  [ ]],
    });
 
-   this.editEntreeStockForm = this.formBuilder.group({
+   this.editEntreeImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
      article_id: ["", [Validators.required]],
      date_mouvement: ["", [Validators.required]],
@@ -100,7 +104,7 @@ export class  SortieStockComponent implements OnInit {
      employe_id:['',[Validators.required]],
      fourniseur: ["",  []],
   });
-   this.deleteEntreeStockForm = this.formBuilder.group({
+   this.deleteEntreeImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
  }
@@ -116,7 +120,7 @@ export class  SortieStockComponent implements OnInit {
 
   changeQte(){
 
-    var t=this.stockDisponible-this.addEntreeStockForm.get('qte')?.value
+    var t=this.stockDisponible-this.addEntreeImmoForm.get('qte')?.value
     if(t<0 ){
 
       this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
@@ -129,15 +133,15 @@ export class  SortieStockComponent implements OnInit {
   }
   changeArtice(){
 
-    this.entreeSortieStockService.getSockByArticle({
-      article_id:this.addEntreeStockForm.get('article_id')?.value
+    this.immoService.getSockByArticle({
+      article_id:this.addEntreeImmoForm.get('article_id')?.value
     }).subscribe(
       (resp:any)=>{
 
         // alert(resp.data.qte)
         this.stockDisponible=resp.data.qte;
 
-        this.addEntreeStockForm.get('qte')?.setValue('')
+        this.addEntreeImmoForm.get('qte')?.setValue('')
 
       }
     )
@@ -221,30 +225,32 @@ export class  SortieStockComponent implements OnInit {
 
   }
 
- onClickSubmitAddEntreeStock(){
+ onClickSubmitAddImmo(){
 
-  console.log(this.addEntreeStockForm.value)
+  console.log(this.addEntreeImmoForm.value)
 
-  if (this.addEntreeStockForm.valid){
-    this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
+  if (this.addEntreeImmoForm.valid){
+    this.immoService.save(this.addEntreeImmoForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
+    this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
+    this.showAlert=true;
 
-    alert("desole le formulaire n'est pas bien renseigné")
+    // alert("desole le formulaire n'est pas bien renseigné")
   }
 
 
 }
 
 onClickSubmitEditArticle(){
-  console.log(this.editEntreeStockForm.value)
+  console.log(this.editEntreeImmoForm.value)
 
-    if (this.editEntreeStockForm.valid){
-      const id = this.editEntreeStockForm.value.id;
-      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe(
+    if (this.editEntreeImmoForm.valid){
+      const id = this.editEntreeImmoForm.value.id;
+      this.immoService.edit(this.editEntreeImmoForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
@@ -258,11 +264,11 @@ onClickSubmitEditArticle(){
 }
 
 onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeStockForm.value)
+  console.log(this.deleteEntreeImmoForm.value)
 
-    if (this.deleteEntreeStockForm.valid){
-      const id = this.deleteEntreeStockForm.value.id;
-      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe(
+    if (this.deleteEntreeImmoForm.valid){
+      const id = this.deleteEntreeImmoForm.value.id;
+      this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
         (data:any)=>{
 
           // alert(JSON.stringify(data))
@@ -280,7 +286,7 @@ onClickSubmitDeleteBanque(){
 
 
 getEditForm(row: any){
-  this.editEntreeStockForm.patchValue({
+  this.editEntreeImmoForm.patchValue({
    id:row.id,
     article_id:row.article_id,
     date_mouvement: row.date_mouvement,
@@ -291,17 +297,17 @@ getEditForm(row: any){
 }
 
 getDeleteForm(row: any){
-  this.deleteEntreeStockForm.patchValue({
+  this.deleteEntreeImmoForm.patchValue({
    id:row.id,
   })
 }
 
 
   private getTableData(): void {
-    this.lstSortieStock = [];
+    this.lstEntreeImmo = [];
     this.serialNumberArray = [];
 
-    this.entreeSortieStockService.getAll().subscribe((res: any) => {
+    this.immoService.getAll().subscribe((res: any) => {
       this.totalData = res.data.total;
       res.data.data.map((res: any, index: number) => {
         const serialNumber = index + 1;
@@ -309,16 +315,16 @@ getDeleteForm(row: any){
           res.id;// = serialNumber;
 
           // alert(res.type);
-          if(res.type=="SORTIE"){
-            this.lstSortieStock.push(res);
+
+            this.lstEntreeImmo.push(res);
 
             this.serialNumberArray.push(serialNumber);
-          }
+
 
         }
       });
-      console.log(this.lstSortieStock);
-      this.dataSource = new MatTableDataSource<any>(this.lstSortieStock);
+      console.log(this.lstEntreeImmo);
+      this.dataSource = new MatTableDataSource<any>(this.lstEntreeImmo);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -378,13 +384,13 @@ getDeleteForm(row: any){
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstSortieStock.slice();
+    const data = this.lstEntreeImmo.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstSortieStock = data;
+      this.lstEntreeImmo = data;
     } else {
-      this.lstSortieStock = data.sort((a: any, b: any) => {
+      this.lstEntreeImmo = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -394,7 +400,7 @@ getDeleteForm(row: any){
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstSortieStock = this.dataSource.filteredData;
+    this.lstEntreeImmo = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {
