@@ -23,6 +23,14 @@ export class immoService {
     return this.http.post(`${this.url}/immo`, data);
   }
 
+  saveTransfert(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/transfert-immo`, data);
+  }
+
+  getAllTransfer(): Observable<any> {
+    return this.http.get<any>(`${this.url}/transfert-immo`);
+  }
+
   getAll(): Observable<any> {
     return this.http.get<any>(`${this.url}/immo`);
   }

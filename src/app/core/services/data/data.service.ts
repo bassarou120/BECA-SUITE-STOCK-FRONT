@@ -103,7 +103,7 @@ export class DataService {
             },
             {
               menuValue: 'Tranfert',
-              route: routes.demandes,
+              route: "transfert-immo",
               base: 'demandes',
               haseSubSubMenu: false,
             },
@@ -118,6 +118,47 @@ export class DataService {
         },
       ],
     },
+
+
+
+    {
+      tittle: 'Gestion des rapports',
+      icon: 'layers',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'Rapports',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'doc',
+          base: 'employees',
+          dot: false,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Rapport stock',
+              route: "entree-stock",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Rapport Immo.',
+              route: "rapport-immo",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+
+          ]
+        },
+
+      ],
+    },
+
 
     {
       tittle: 'PARAMETRAGE',

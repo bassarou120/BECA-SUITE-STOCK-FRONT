@@ -52,7 +52,7 @@ export class GRHGuard implements CanActivate {
       return true;
     }
     // Sinon, redirigez vers la page unauthorized
-    this.router.navigate(['/dashboard/employee']);
+    this.router.navigate(['/login']);
     return false;
   }
 }
@@ -74,3 +74,4 @@ export class EmployeGuard implements CanActivate {
     return false;
   }
 }
+

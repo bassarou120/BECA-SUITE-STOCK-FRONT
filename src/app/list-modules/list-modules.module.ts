@@ -19,6 +19,9 @@ import { EntreeStockComponent } from './entree-stock/entree-stock.component';
 import { SortieStockComponent } from './sortie-stock/sortie-stock.component';
 import { EtatStockComponent } from './etat-stock/etat-stock.component';
 import { EntreeImmoComponent } from './entree-immo/entree-immo.component';
+import { TransfertImmoComponent } from './transfert-immo/transfert-immo.component';
+
+import {rapportImmoComponent} from './rapportatge-immo/rapport-immo.component'
 
 import  {AlertComponent} from './common/alert/alert.component'
 
@@ -39,7 +42,9 @@ import  {AlertComponent} from './common/alert/alert.component'
     SortieStockComponent,
     AlertComponent,
     EtatStockComponent,
-    EntreeImmoComponent
+    EntreeImmoComponent,
+    TransfertImmoComponent,
+    rapportImmoComponent
 
 
   ],

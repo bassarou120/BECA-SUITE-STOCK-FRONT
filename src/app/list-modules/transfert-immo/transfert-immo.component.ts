@@ -14,26 +14,31 @@ import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/
 import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
 import {articleService} from "../../core/services/article/article.service";
 import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
+import {EmployeService} from "../../core/services/employe/employe.service";
+import {bureauService} from "../../core/services/bureau/bureau.service";
+import {immoService} from "../../core/services/immo/immo.service";
 
 
 
 @Component({
   selector: 'app-banque',
-  templateUrl: './etat-stock.component.html',
-  styleUrls: ['./etat-stock.component.scss']
+  templateUrl: './transfert-immo.component.html',
+  styleUrls: ['./transfert-immo.component.scss']
 })
-export class EtatStockComponent implements OnInit {
+export class TransfertImmoComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
   public lstPst: Array<any>=[];
 
 
-  public lstEntreeStock: Array<any> = [];
-  lstEtatStock:any;
+  public lstTransfertImmo: Array<any> = [];
+  stockDisponible=0;
   lstCategorie:any;
   lstForuniseur:any;
-  lstArticel:any;
+  lstEmployer:any;
+  lstBureau:any;
+  lstImmo:any;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
   // pagination variables
@@ -49,15 +54,24 @@ export class EtatStockComponent implements OnInit {
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
   //** / pagination variables
+  article_id:any;
+  public addTransfertImmoForm!: FormGroup ;
+  public editTrensfertImmoForm!: FormGroup
+  public deleteEntreeImmoForm!: FormGroup
 
-  public addEntreeStockForm!: FormGroup ;
-  public editEntreeStockForm!: FormGroup
-  public deleteEntreeStockForm!: FormGroup
+  showAlert=false;
+  messageAlert=""
+
+  isDisabledBtn=false
+
+  selectedImmo: any;
 
   constructor(private formBuilder: FormBuilder,public router: Router,
               private articleService:articleService,
+              private employeService:EmployeService,
+              private  bureauService:bureauService,
               private fournisseurService: fournisseurService,
-              private entreeSortieStockService: entreeSortieStockService,
+              private immoService: immoService,
               private categorieService: categorieArticleService,
               private exp: ExportsService) {}
 
@@ -65,102 +79,191 @@ export class EtatStockComponent implements OnInit {
   ngOnInit(): void {
     this.getTableData();
    // this.getFournisseur();
-   //  this.getArticle();
+    this.getBureau();
+   this.getEmploye();
+   this.getImmo();
 
-    this.addEntreeStockForm = this.formBuilder.group({
-      article_id: ["", [Validators.required]],
+    this.addTransfertImmoForm = this.formBuilder.group({
+
       date_mouvement: ["", [Validators.required]],
-      type: ["ENTREE", []],
-      qte: ["", [Validators.required]],
-      fournisseur: ["",  [Validators.required]],
+      immo_id:['',[Validators.required]],
+      immo:['',[Validators.required]],
+      old_bureau:['',[Validators.required]],
+      old_employe:['',[Validators.required]],
+      bureau_id:['',[Validators.required]],
+      employe_id:['',[Validators.required]],
+      Observation: ["",  [ ]],
+
    });
 
-   this.editEntreeStockForm = this.formBuilder.group({
+   this.editTrensfertImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
-     article_id: ["", [Validators.required]],
      date_mouvement: ["", [Validators.required]],
-     type: ["ENTREE", []],
-     qte: ["", [Validators.required]],
-     fourniseur: ["",  []],
+     immo_id:['',[Validators.required]],
+     immo:['',[Validators.required]],
+     old_bureau:['',[Validators.required]],
+     old_employe:['',[Validators.required]],
+     bureau_id:['',[Validators.required]],
+     employe_id:['',[Validators.required]],
+     Observation: ["",  [ ]],
   });
-   this.deleteEntreeStockForm = this.formBuilder.group({
+   this.deleteEntreeImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
  }
 
+  hideAlert() {
+    this.showAlert = false;
+  }
 
-  // getCategorie(){
-  //
-  //   this.categorieService.getAll().subscribe(
-  //     (res: any) => {
-  //
-  //       // alert(JSON.stringify(res.data.data))
-  //       this.lstCategorie=res.data.data
-  //
-  //   },
-  //     (error:any)=>{
-  //
-  //   });
-  //
-  //
-  // }
-  //
-  // getFournisseur(){
-  //
-  //   this.fournisseurService.getAll().subscribe(
-  //     (res: any) => {
-  //
-  //       // alert(JSON.stringify(res.data.data))
-  //       this.lstForuniseur=res.data.data
-  //
-  //   },
-  //     (error:any)=>{
-  //
-  //   });
-  //
-  //
-  // }
-  //
-  // getArticle(){
-  //
-  //   this.articleService.getAll().subscribe(
-  //     (res: any) => {
-  //
-  //       // alert(JSON.stringify(res.data.data))
-  //       this.lstImmo=res.data.data
-  //
-  //   },
-  //     (error:any)=>{
-  //
-  //   });
-  //
-  //
-  // }
+  resetAlert() {
+    // Utilisez cette méthode pour réinitialiser l'alerte si nécessaire
+    this.showAlert = true;
+  }
 
- onClickSubmitAddEntreeStock(){
 
-  console.log(this.addEntreeStockForm.value)
+  selectedImmoChange(){
 
-  if (this.addEntreeStockForm.valid){
-    this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
+    this.addTransfertImmoForm.get("immo_id")?.setValue(this.selectedImmo.id)
+    this.addTransfertImmoForm.get("old_bureau")?.setValue(this.selectedImmo.bureau.libelle)
+    this.addTransfertImmoForm.get("old_employe")?.setValue(this.selectedImmo.employe.nom+" "+this.selectedImmo.employe.prenom)
+    console.log(this.selectedImmo);
+
+  }
+
+  changeQte(){
+
+    var t=this.stockDisponible-this.addTransfertImmoForm.get('qte')?.value
+    if(t<0 ){
+
+      this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
+      this.showAlert=true;
+      this.isDisabledBtn=true
+  // alert('Vous ne pouvez pas sortir ce article au dela de '+this.stockDisponible)
+    }else {
+      this.isDisabledBtn=false
+    }
+  }
+  changeArtice(){
+
+    this.immoService.getSockByArticle({
+      article_id:this.addTransfertImmoForm.get('article_id')?.value
+    }).subscribe(
+      (resp:any)=>{
+
+        // alert(resp.data.qte)
+        this.stockDisponible=resp.data.qte;
+
+        this.addTransfertImmoForm.get('qte')?.setValue('')
+
+      }
+    )
+
+    // alert(this.addTransfertImmoForm.get('article_id')?.value)
+  }
+
+
+ getEmploye(){
+
+   this.employeService.getAllEmploye().subscribe(
+     (res: any) => {
+
+         // alert(JSON.stringify(res.data ))
+       this.lstEmployer=res.data
+
+     },
+     (error:any)=>{
+
+     });
+ }
+
+  getBureau(){
+
+    this.bureauService.getAll().subscribe(
+      (res: any) => {
+        // alert(JSON.stringify(res.data ))
+        this.lstBureau=res.data.data
+
+      },
+      (error:any)=>{
+
+      });
+  }
+
+  getCategorie(){
+
+    this.categorieService.getAll().subscribe(
+      (res: any) => {
+
+        // alert(JSON.stringify(res.data.data))
+        this.lstCategorie=res.data.data
+
+    },
+      (error:any)=>{
+
+    });
+
+
+  }
+
+  getFournisseur(){
+
+    this.fournisseurService.getAll().subscribe(
+      (res: any) => {
+
+        // alert(JSON.stringify(res.data.data))
+        this.lstForuniseur=res.data.data
+
+    },
+      (error:any)=>{
+
+    });
+
+
+  }
+
+  getImmo(){
+
+    this.immoService.getAll().subscribe(
+      (res: any) => {
+
+        // alert(JSON.stringify(res.data.data))
+        this.lstImmo=res.data.data
+
+    },
+      (error:any)=>{
+
+    });
+
+
+  }
+
+ onClickSubmitAddImmo(){
+
+  console.log(this.addTransfertImmoForm.value)
+
+  if (this.addTransfertImmoForm.valid){
+    this.immoService.saveTransfert(this.addTransfertImmoForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
+    this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
+    this.showAlert=true;
 
-    alert("desole le formulaire n'est pas bien renseigné")
+    // alert("desole le formulaire n'est pas bien renseigné")
   }
 
 
 }
 
 onClickSubmitEditArticle(){
-  console.log(this.editEntreeStockForm.value)
+  console.log(this.editTrensfertImmoForm.value)
 
-    if (this.editEntreeStockForm.valid){
-      const id = this.editEntreeStockForm.value.id;
-      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe(
+    if (this.editTrensfertImmoForm.valid){
+      const id = this.editTrensfertImmoForm.value.id;
+      this.immoService.edit(this.editTrensfertImmoForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
@@ -174,11 +277,11 @@ onClickSubmitEditArticle(){
 }
 
 onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeStockForm.value)
+  console.log(this.deleteEntreeImmoForm.value)
 
-    if (this.deleteEntreeStockForm.valid){
-      const id = this.deleteEntreeStockForm.value.id;
-      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe(
+    if (this.deleteEntreeImmoForm.valid){
+      const id = this.deleteEntreeImmoForm.value.id;
+      this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
         (data:any)=>{
 
           // alert(JSON.stringify(data))
@@ -196,7 +299,7 @@ onClickSubmitDeleteBanque(){
 
 
 getEditForm(row: any){
-  this.editEntreeStockForm.patchValue({
+  this.editTrensfertImmoForm.patchValue({
    id:row.id,
     article_id:row.article_id,
     date_mouvement: row.date_mouvement,
@@ -207,17 +310,17 @@ getEditForm(row: any){
 }
 
 getDeleteForm(row: any){
-  this.deleteEntreeStockForm.patchValue({
+  this.deleteEntreeImmoForm.patchValue({
    id:row.id,
   })
 }
 
 
   private getTableData(): void {
-    this.lstEtatStock = [];
+    this.lstTransfertImmo = [];
     this.serialNumberArray = [];
 
-    this.entreeSortieStockService.getAllStock().subscribe((res: any) => {
+    this.immoService.getAllTransfer().subscribe((res: any) => {
       this.totalData = res.data.total;
       res.data.data.map((res: any, index: number) => {
         const serialNumber = index + 1;
@@ -226,15 +329,15 @@ getDeleteForm(row: any){
 
           // alert(res.type);
 
-            this.lstEtatStock.push(res);
+            this.lstTransfertImmo.push(res);
 
             this.serialNumberArray.push(serialNumber);
 
 
         }
       });
-      console.log(this.lstEtatStock);
-      this.dataSource = new MatTableDataSource<any>(this.lstEtatStock);
+      console.log(this.lstTransfertImmo);
+      this.dataSource = new MatTableDataSource<any>(this.lstTransfertImmo);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -294,13 +397,13 @@ getDeleteForm(row: any){
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstEntreeStock.slice();
+    const data = this.lstTransfertImmo.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstEntreeStock = data;
+      this.lstTransfertImmo = data;
     } else {
-      this.lstEntreeStock = data.sort((a: any, b: any) => {
+      this.lstTransfertImmo = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -310,7 +413,7 @@ getDeleteForm(row: any){
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstEntreeStock = this.dataSource.filteredData;
+    this.lstTransfertImmo = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

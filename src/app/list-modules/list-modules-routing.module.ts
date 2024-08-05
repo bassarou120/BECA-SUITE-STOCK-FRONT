@@ -8,6 +8,8 @@ import {EntreeStockComponent} from "./entree-stock/entree-stock.component";
 import {SortieStockComponent} from "./sortie-stock/sortie-stock.component";
 import {EtatStockComponent} from "./etat-stock/etat-stock.component";
 import {EntreeImmoComponent} from "./entree-immo/entree-immo.component";
+import {TransfertImmoComponent} from "./transfert-immo/transfert-immo.component";
+import {rapportImmoComponent} from "./rapportatge-immo/rapport-immo.component";
 
 
 
@@ -86,6 +88,18 @@ const routes: Routes = [
       {
         path: 'entree-immo',
         component: EntreeImmoComponent,
+        canActivate: [GRHGuard],
+      },
+      {
+        path: 'transfert-immo',
+        component: TransfertImmoComponent,
+        canActivate: [GRHGuard],
+      },
+
+
+      {
+        path: 'rapport-immo',
+        component: rapportImmoComponent,
         canActivate: [GRHGuard],
       },
 
