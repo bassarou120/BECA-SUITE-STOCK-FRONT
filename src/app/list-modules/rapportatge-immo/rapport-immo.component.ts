@@ -79,12 +79,13 @@ export class rapportImmoComponent implements OnInit {
     oneYearFromNow.setFullYear(currentDate.getFullYear() - 1);
 
 
+
     this.rapportImmoForm = this.formBuilder.group({
       type_rapport: ['', [Validators.required]],
       bureau_id: ['', [ ]],
       employe_id: ['', [ ]],
-      date_debut: [currentDate.toISOString().split('T')[0], []],
-      date_fin: [oneYearFromNow.toISOString().split('T')[0], []],
+      date_fin: [currentDate.toISOString().split('T')[0], []],
+      date_debut: [oneYearFromNow.toISOString().split('T')[0], []],
     });
 
     this.initAddFiche();
