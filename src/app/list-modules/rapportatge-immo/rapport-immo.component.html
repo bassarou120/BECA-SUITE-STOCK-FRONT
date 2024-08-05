@@ -37,7 +37,7 @@
           </div>
 
           <form
-            [formGroup]="ordreVirementForm"
+            [formGroup]="rapportImmoForm"
             (ngSubmit)="onClickSubmitRapportImmo()"
           >
             <div class="row">
@@ -50,7 +50,7 @@
                     class="user-assets select form-control"
                     placeholder="Selectionner le type de rapport"
 
-                    formControlName="banque_id"
+                    formControlName="type_rapport"
                   >
                     <mat-option  value="fiche_transfert_immo"  >
                       <mat-option  value="rapport_immo"  >

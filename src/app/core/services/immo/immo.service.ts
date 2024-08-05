@@ -52,4 +52,8 @@ export class immoService {
   getSockByArticle(data:any ): Observable<Object> {
     return this.http.post(`${this.url}/getSockByArticle`, data);
   }
+
+  immoRapport(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/immo-rapport`, data);
+  }
 }

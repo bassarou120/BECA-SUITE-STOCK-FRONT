@@ -133,14 +133,14 @@ export class DataService {
           route: routes.employees,
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'doc',
+          icon: 'file',
           base: 'employees',
           dot: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Rapport stock',
-              route: "entree-stock",
+              route: "rapport-immo",
               // route: routes.mes_contrats,
               base: 'mes-contrats',
               haseSubSubMenu: false,

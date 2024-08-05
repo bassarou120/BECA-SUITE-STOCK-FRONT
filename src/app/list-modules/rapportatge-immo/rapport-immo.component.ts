@@ -6,6 +6,7 @@ import { EmployeService } from 'src/app/core/services/employe/employe.service';
 import { FichepaieService } from 'src/app/core/services/fiche-paie/fichepaie.service';
 import { TypeContratService } from 'src/app/core/services/typeContrat/typeContrat.service';
 import {bureauService} from "../../core/services/bureau/bureau.service";
+import {immoService} from "../../core/services/immo/immo.service";
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import * as bootstrap from 'bootstrap';
 import * as $ from 'jquery';
@@ -34,7 +35,7 @@ export class rapportImmoComponent implements OnInit {
 
   public addEmployeFichePaieForm!: FormGroup;
   public valideFichepaieForm!: FormGroup;
-  public ordreVirementForm!: FormGroup;
+  public rapportImmoForm!: FormGroup;
   listAnnee: any;
   listMois = [
     { id: 1, name: 'Janvier' },
@@ -63,6 +64,7 @@ export class rapportImmoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private typeContratService: TypeContratService,
     private fichepaieService: FichepaieService,
+    private immoService: immoService,
     private employeService:EmployeService,
     private  bureauService:bureauService,
   ) {}
@@ -71,32 +73,18 @@ export class rapportImmoComponent implements OnInit {
 
     this.getBureau();
     this.getEmploye();
-    this.addEmployeFichePaieForm = this.formBuilder.group({
-      date_fiche: [this.formatDate(new Date()), [Validators.required]],
-      contrat_id: ['', [Validators.required]],
-      employe_id: ['', [Validators.required]],
-      employe: ['', []],
-      employe_edit: ['', []],
-      base_categorielle: ['', []],
-      prime_anciennete: ['', []],
-      autre_primes: ['', []],
-      grade_id: ['', []],
-      autre_retenues: ['', []],
-      rappel_emp: ['', []],
-      grade: ['', [Validators.required]],
-      edite_fiche_mode: [null, []],
-      fiche_id: [null, []],
-    });
 
-    this.valideFichepaieForm = this.formBuilder.group({
-      id: [0, [Validators.required]],
-      action: ['', [Validators.required]],
-    });
+    const currentDate = new Date();
+    const oneYearFromNow = new Date(currentDate);
+    oneYearFromNow.setFullYear(currentDate.getFullYear() - 1);
 
-    this.ordreVirementForm = this.formBuilder.group({
-      banque_id: ['', [Validators.required]],
-      annee: ['', [Validators.required]],
-      mois: ['', [Validators.required]],
+
+    this.rapportImmoForm = this.formBuilder.group({
+      type_rapport: ['', [Validators.required]],
+      bureau_id: ['', [ ]],
+      employe_id: ['', [ ]],
+      date_debut: [currentDate.toISOString().split('T')[0], []],
+      date_fin: [oneYearFromNow.toISOString().split('T')[0], []],
     });
 
     this.initAddFiche();
@@ -198,29 +186,31 @@ export class rapportImmoComponent implements OnInit {
   }
 
   onClickSubmitRapportImmo() {
-    // alert(JSON.stringify(this.ordreVirementForm.value));
+    // alert(JSON.stringify(this.rapportImmoForm.value));
 
     this.showloader = true;
-    if (this.ordreVirementForm.valid) {
-      this.fichepaieService
-        .getOrdreVirement(this.ordreVirementForm.value)
+    if (this.rapportImmoForm.valid) {
+      this.immoService.immoRapport(this.rapportImmoForm.value)
         .subscribe(
           (res: any) => {
             // alert(JSON.stringify(res.data));
             if (res.success == true) {
               console.log(res.data.data);
               this.ordreVierementData = res.data.data.ordre;
-              this.urlOrdrevirement = res.data.url;
+              var url = res.data.url;
               this.showloader = false;
 
               // window.open(res.data, '_blank');
-              // window.open(this.urlOrdrevirement, '_blank');
+              window.open(url , '_blank');
             } else {
               this.showloader = false;
               alert(res.message);
             }
           },
-          (error: any) => {}
+          (error: any) => {
+            this.showloader = false;
+            alert("error serveur veuiillez contacter l'administrateur du site");
+          }
         );
     } else {
       this.showloader = false;
