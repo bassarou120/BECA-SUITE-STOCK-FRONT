@@ -88,7 +88,7 @@ export class rapportImmoComponent implements OnInit {
       date_debut: [oneYearFromNow.toISOString().split('T')[0], []],
     });
 
-    this.initAddFiche();
+    this.init();
 
     let res = [];
     for (let index = 2024; index < 2050; index++) {
@@ -98,6 +98,16 @@ export class rapportImmoComponent implements OnInit {
     this.listAnnee = res;
 
     this.getListeBanque();
+  }
+
+
+  init(){
+    const currentDate = new Date();
+    const oneYearFromNow = new Date(currentDate);
+    oneYearFromNow.setFullYear(currentDate.getFullYear() - 1);
+
+    this.rapportImmoForm.get('date_debut')?.setValue(oneYearFromNow.toISOString().split('T')[0])
+    this.rapportImmoForm.get('date_fin')?.setValue(currentDate.toISOString().split('T')[0])
   }
 
 
