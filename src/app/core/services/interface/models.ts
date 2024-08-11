@@ -949,6 +949,7 @@ export interface getBanque {
 export interface getBureau {
   id: number;
   libelle: string;
+  description: string;
 }
 
 

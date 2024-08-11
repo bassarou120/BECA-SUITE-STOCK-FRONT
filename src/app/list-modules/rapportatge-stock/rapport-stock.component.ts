@@ -12,10 +12,10 @@ import * as bootstrap from 'bootstrap';
 import * as $ from 'jquery';
 @Component({
   selector: 'app-ordrevirement',
-  templateUrl: './rapport-immo.component.html',
-  styleUrls: ['./rapport-immo.component.scss'],
+  templateUrl: './rapport-stock.component.html',
+  styleUrls: ['./rapport-stock.component.scss'],
 })
-export class rapportImmoComponent implements OnInit {
+export class rapportStockComponent implements OnInit {
   curentEmploye: any;
   idEmploye: any;
 
@@ -213,7 +213,7 @@ console.log(currentDate.toISOString().split('T')[0],oneYearFromNow.toISOString()
 
               // window.open(res.data, '_blank');
               window.open(url , '_blank');
-              location.reload();
+              // location.reload();
             } else {
               this.showloader = false;
               alert(res.message);

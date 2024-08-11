@@ -10,6 +10,7 @@ import {EtatStockComponent} from "./etat-stock/etat-stock.component";
 import {EntreeImmoComponent} from "./entree-immo/entree-immo.component";
 import {TransfertImmoComponent} from "./transfert-immo/transfert-immo.component";
 import {rapportImmoComponent} from "./rapportatge-immo/rapport-immo.component";
+import {rapportStockComponent} from "./rapportatge-stock/rapport-stock.component";
 
 
 
@@ -100,6 +101,11 @@ const routes: Routes = [
       {
         path: 'rapport-immo',
         component: rapportImmoComponent,
+        canActivate: [GRHGuard],
+      },
+  {
+        path: 'rapport-stock',
+        component: rapportStockComponent,
         canActivate: [GRHGuard],
       },
 

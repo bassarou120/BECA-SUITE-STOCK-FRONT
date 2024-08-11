@@ -7,12 +7,12 @@
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
-          <h3 class="page-title">Gestion des Rapports d'immobilisations</h3>
+          <h3 class="page-title">Gestion des Rapports des stocks</h3>
           <ul class="breadcrumb">
             <li class="breadcrumb-item">
               <a>Tableau de bord</a>
             </li>
-            <li class="breadcrumb-item active">Rapports inmmo</li>
+            <li class="breadcrumb-item active">Rapports Stock</li>
           </ul>
         </div>
         <div class="col-auto float-end ms-auto"></div>
@@ -52,26 +52,18 @@
 
                     formControlName="type_rapport"
                   >
-                    <mat-option  value="fiche_transfert_immo"  >
-                      FICHE DE TRANSFERT D’IMMOBILISATION
-
+                    <mat-option  value="rapport_entree"  >
+                      RAPPORT DES ENTREES
                     </mat-option>
 
-                    <mat-option  value="rapport_immo"  >
-                    RAPPORT D’IMMOBILISATION
+                    <mat-option  value="rapport_sortie"  >
+                      RAPPORT DES SORTIES
                     </mat-option>
 
-                    <mat-option  value="fiche_inventaire_immo"  >
-                      FICHE DE PRISE D’INVENTAIRE
+                    <mat-option  value="rapport_etat"  >
+                      RAPPORT ETAT DU STOCK
                     </mat-option>
 
-                    <mat-option  value="fiche_mise_dispo"  >
-                      FICHE DE MISE A DISPO
-                    </mat-option>
-
-                    <mat-option  value="qrcode_immo"  >
-                      GENERER LE CODE QR DES IMMOBILISATION
-                    </mat-option>
 
 
                   </mat-select>

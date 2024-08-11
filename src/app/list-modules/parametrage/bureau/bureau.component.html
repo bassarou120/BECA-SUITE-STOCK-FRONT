@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Liste des bureaux </h3>
+                <h3 class="page-title">Liste des bureaux/ Localisation </h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
                     <li class="breadcrumb-item active">Bureau</li>
@@ -27,7 +27,7 @@
 
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter un bureau</a>
+                        class="fa-solid fa-plus"></i> Ajouter un bureau/ localisation</a>
             </div>
         </div>
     </div>
@@ -60,6 +60,7 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th mat-sort-header="departmentName">Libellé</th>
+                            <th mat-sort-header="departmentName">Description</th>
                             <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
@@ -67,6 +68,7 @@
                         <tr *ngFor="let item of lstBureau; let i = index;">
                             <td>{{i+1}}</td>
                             <td>{{item.libelle}}</td>
+                            <td>{{item.description }}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -174,6 +176,7 @@
             </div>
             <div class="modal-body">
               <form [formGroup]="addBureauForm" (ngSubmit)="onClickSubmitAddBanque()" novalidate>
+
                 <div class="input-block mb-3">
                   <label class="col-form-label" for="">Libellé<span class="text-danger">*</span></label>
                   <input class="form-control" type="text"
@@ -186,6 +189,19 @@
                           class="text-danger"> *le libelle est obligatoire</small>
                   </div>
               </div>
+                              <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Description<span class="text-danger"></span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="addBureauForm.get('description')?.invalid && addBureauForm.get('description')?.touched"
+                      formControlName="libelle">
+                  <div
+                      *ngIf="addBureauForm.get('description')?.invalid && addBureauForm.get('description')?.touched">
+                      <small
+                          *ngIf="addBureauForm.get('description')?.invalid && addBureauForm.get('description')?.touched"
+                          class="text-danger"> *la descriptionobligatoire</small>
+                  </div>
+              </div>
+
                   <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                   </div>
@@ -201,13 +217,15 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier le Bureau</h5>
+                <h5 class="modal-title">Modifier le Bureau/localisation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
               <form [formGroup]="editBureauForm" (ngSubmit)="onClickSubmitEditBanque()" novalidate>
+
+
                 <div class="input-block mb-3">
                   <input type="hidden" formControlName="id">
                   <label class="col-form-label" for="">Libellé <span class="text-danger">*</span></label>
@@ -221,6 +239,22 @@
                           class="text-danger"> *le libellé est obligatoire</small>
                   </div>
               </div>
+
+                <div class="input-block mb-3">
+                  <input type="hidden" formControlName="id">
+                  <label class="col-form-label" for="">Description <span class="text-danger"></span></label>
+                  <input class="form-control" type="text"
+                      [class.invalid]="editBureauForm.get('description')?.invalid && editBureauForm.get('description')?.touched"
+                      formControlName="description">
+                  <div
+                      *ngIf="editBureauForm.get('description')?.invalid && editBureauForm.get('description')?.touched">
+                      <small
+                          *ngIf="editBureauForm.get('description')?.invalid && editBureauForm.get('description')?.touched"
+                          class="text-danger"> *la description est obligatoire</small>
+                  </div>
+              </div>
+
+
                   <div class="submit-section">
                       <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                   </div>

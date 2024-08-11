@@ -52,10 +52,12 @@ export class BureauComponent implements OnInit {
     this.getTableData();
     this.addBureauForm = this.formBuilder.group({
       libelle: ["", [Validators.required]],
+      description: ["", [ ]],
    });
    this.editBureauForm = this.formBuilder.group({
     id: [0, [Validators.required]],
      libelle: ["", [Validators.required]],
+     description: ["", [ ]],
   });
    this.deleteBureauForm = this.formBuilder.group({
     id: [0, [Validators.required]],
@@ -119,7 +121,8 @@ onClickSubmitDeleteBanque(){
 getEditForm(row: any){
   this.editBureauForm.patchValue({
    id:row.id,
-   libelle:row.libelle
+   libelle:row.libelle,
+    description:row.description
   })
 }
 

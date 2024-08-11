@@ -140,7 +140,7 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Rapport stock',
-              route: "rapport-immo",
+              route: "rapport-stock",
               // route: routes.mes_contrats,
               base: 'mes-contrats',
               haseSubSubMenu: false,

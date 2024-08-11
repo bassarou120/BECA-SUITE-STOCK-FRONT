@@ -89,20 +89,26 @@ export class EntreeImmoComponent implements OnInit {
       duree_amorti: ["", [Validators.required]],
 
       bureau_id:['',[Validators.required]],
-      employe_id:['',[Validators.required]],
+      employe_id:['',[]],
 
-      fournisseur: ["",  [ ]],
+      montant_ttc: ["",  [ ]],
+      etat: ["",  [ ]],
+      observation: ["",  [ ]],
    });
 
    this.editEntreeImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
-     article_id: ["", [Validators.required]],
      date_mouvement: ["", [Validators.required]],
-     type: ["SORTIE", []],
-     qte: ["", [Validators.required]],
+     code: ["", [Validators.required]],
+     designation: ["", [Validators.required]],
+     duree_amorti: ["", [Validators.required]],
+
      bureau_id:['',[Validators.required]],
      employe_id:['',[Validators.required]],
-     fourniseur: ["",  []],
+
+     montant_ttc: ["",  [ ]],
+     etat: ["",  [ ]],
+     observation: ["",  [ ]],
   });
    this.deleteEntreeImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
@@ -286,13 +292,19 @@ onClickSubmitDeleteBanque(){
 
 
 getEditForm(row: any){
+
   this.editEntreeImmoForm.patchValue({
    id:row.id,
-    article_id:row.article_id,
     date_mouvement: row.date_mouvement,
-    qte:row.qte,
     code: row.code,
-    fournisseur: row.fournisseur,
+    designation: row.designation,
+    duree_amorti: row.duree_amorti,
+    bureau_id: row.bureau_id,
+    employe_id: row.employe_id,
+    montant_ttc: row.montant_ttc,
+    etat: row.etat,
+    observation: row.observation,
+
   })
 }
 

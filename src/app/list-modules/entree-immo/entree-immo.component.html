@@ -66,7 +66,9 @@
                               <th mat-sort-header="departmentName">LOCALISATION</th>
                               <th mat-sort-header="departmentName">EMPLOYE</th>
                               <th mat-sort-header="departmentName">DATE</th>
-                              <th mat-sort-header="departmentName"> AMORTISSEMENT</th>
+                              <th mat-sort-header="departmentName">ETAT</th>
+                              <th mat-sort-header="departmentName">MONTANT</th>
+                              <th mat-sort-header="departmentName"> AMORTI.</th>
                               <th class="text-end" id="exclusion-1">Actions</th>
                           </tr>
                       </thead>
@@ -79,6 +81,8 @@
                               <td>{{item.bureau.libelle}}</td>
                             <td>{{item.employe.prenom}} {{item.employe.nom}}</td>
                               <td>{{item.date_mouvement    | date : "dd-MM-YYYY"}}</td>
+                              <td>{{item.etat}}</td>
+                              <td>{{item.montant_ttc}}</td>
                               <td>{{item.duree_amorti}}</td>
 
                               <td class="text-end" id="exclusion-2">
@@ -232,7 +236,38 @@
 
                   </div>
 
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text"
+                           [class.invalid]="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched"
+                           formControlName="montant_ttc">
+                    <div
+                      *ngIf="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched">
+                      <small
+                        *ngIf="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched"
+                        class="text-danger"> *le montant ttc  est obligatoire</small>
+                    </div>
 
+
+                  </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Etat<span class="text-danger">*</span></label>
+                    <mat-select
+
+                      class="user-assets select form-control"
+                      placeholder="Selectionner l'etat "
+
+                      formControlName="etat"
+                    >
+                      <mat-option  value="Fonctionnel"  >Fonctionnel</mat-option>
+                      <mat-option  value="Moyen"  > Moyen </mat-option>
+                      <mat-option  value="Défectueux"  > Défectueux </mat-option>
+                      <mat-option  value="Mis au rebus"  > Mis au rebus </mat-option>
+
+                    </mat-select>
+
+                  </div>
 
                   <div class="input-block mb-3">
                     <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">*  </span></label><br>
@@ -248,9 +283,8 @@
                     </div>
                   </div>
 
-
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Bureau<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="bureau"> Bureau<span class="text-danger">*</span></label>
 
                     <mat-select  class="select mat-cust-select form-control"
                                  [class.invalid]="addEntreeImmoForm.get('bureau_id')?.invalid && addEntreeImmoForm.get('bureau_id')?.touched"
@@ -262,7 +296,7 @@
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Employé<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="employe_id" >Employé<span class="text-danger"></span></label>
 
                     <mat-select  class="select mat-cust-select form-control"
                                  [class.invalid]="addEntreeImmoForm.get('employe_id')?.invalid && addEntreeImmoForm.get('employe_id')?.touched"
@@ -273,9 +307,14 @@
 
                   </div>
 
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="obs">Observations<span class="text-danger">  </span></label><br>
 
+                    <input class="form-control" type="text"
+                           [class.invalid]="addEntreeImmoForm.get('observation')?.invalid && addEntreeImmoForm.get('observation')?.touched"
+                           formControlName="observation">
 
-
+                  </div>
 
 
                   <div class="submit-section">
@@ -293,7 +332,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title">Modifier le Bureau</h5>
+                  <h5 class="modal-title">Modifier  </h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
@@ -317,50 +356,119 @@
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Article<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Code<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text"
+                           [class.invalid]="editEntreeImmoForm.get('code')?.invalid && editEntreeImmoForm.get('code')?.touched"
+                           formControlName="code">
+                    <div
+                      *ngIf="editEntreeImmoForm.get('code')?.invalid && editEntreeImmoForm.get('code')?.touched">
+                      <small
+                        *ngIf="editEntreeImmoForm.get('code')?.invalid && editEntreeImmoForm.get('code')?.touched"
+                        class="text-danger"> *le code  est obligatoire</small>
+                    </div>
 
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="editEntreeImmoForm.get('article_id')?.invalid && editEntreeImmoForm.get('article_id')?.touched"
-                                 formControlName="article_id" placeholder="Selectionner l'articel">
-                      <mat-option *ngFor="let item of lstArticel" [disabled]="false" [value]="item.id"
-                      >{{ item.libelle }}   </mat-option>
-                    </mat-select>
+                  </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Designation<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text"
+                           [class.invalid]="editEntreeImmoForm.get('designation')?.invalid && editEntreeImmoForm.get('designation')?.touched"
+                           formControlName="designation">
+                    <div
+                      *ngIf="editEntreeImmoForm.get('designation')?.invalid && editEntreeImmoForm.get('designation')?.touched">
+                      <small
+                        *ngIf="editEntreeImmoForm.get('designation')?.invalid && editEntreeImmoForm.get('designation')?.touched"
+                        class="text-danger"> *la designation  est obligatoire</small>
+                    </div>
 
 
                   </div>
 
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text"
+                           [class.invalid]="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched"
+                           formControlName="montant_ttc">
+                    <div
+                      *ngIf="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched">
+                      <small
+                        *ngIf="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched"
+                        class="text-danger"> *le montant ttc  est obligatoire</small>
+                    </div>
+
+
+                  </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Quantité<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Etat<span class="text-danger">*</span></label>
+                    <mat-select
+
+                      class="user-assets select form-control"
+                      placeholder="Selectionner l'etat "
+
+                      formControlName="etat"
+                    >
+                      <mat-option  value="Fonctionnel"  >Fonctionnel</mat-option>
+                      <mat-option  value="Moyen"  > Moyen </mat-option>
+                      <mat-option  value="Défectueux"  > Défectueux </mat-option>
+                      <mat-option  value="Mis au rebus"  > Mis au rebus </mat-option>
+
+                    </mat-select>
+
+                  </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">*  </span></label><br>
+
                     <input class="form-control" type="number"
-                           [class.invalid]="editEntreeImmoForm.get('qte')?.invalid && editEntreeImmoForm.get('qte')?.touched"
-                           formControlName="qte">
+                           [class.invalid]="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched"
+                           formControlName="duree_amorti">
                     <div
-                      *ngIf="editEntreeImmoForm.get('qte')?.invalid && editEntreeImmoForm.get('qte')?.touched">
+                      *ngIf="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched">
                       <small
-                        *ngIf="editEntreeImmoForm.get('qte')?.invalid && editEntreeImmoForm.get('qte')?.touched"
-                        class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                        *ngIf="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched"
+                        class="text-danger"> *la Duree d'amortissement  est obligatoire</small>
                     </div>
                   </div>
 
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="bureau"> Bureau<span class="text-danger">*</span></label>
 
-<!--                  <div class="input-block mb-3">-->
-<!--                    <label class="col-form-label" for="">Fournisseur<span class="text-danger">*</span></label>-->
+                    <mat-select  class="select mat-cust-select form-control"
+                                 [class.invalid]="editEntreeImmoForm.get('bureau_id')?.invalid && editEntreeImmoForm.get('bureau_id')?.touched"
+                                 formControlName="bureau_id" placeholder="Selectionner le bureau">
+                      <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
+                      >{{ item.libelle }}   </mat-option>
+                    </mat-select>
 
-<!--                    <mat-select  class="select mat-cust-select form-control"-->
-<!--                                 [class.invalid]="editTrensfertImmoForm.get('fournisseur')?.invalid && editTrensfertImmoForm.get('fournisseur')?.touched"-->
-<!--                                 formControlName="fournisseur" placeholder="Selectionner le fournisseur">-->
-<!--                      <mat-option *ngFor="let item of lstForuniseur" [disabled]="false" [value]="item.nom"-->
-<!--                      >{{ item.nom }}   </mat-option>-->
-<!--                    </mat-select>-->
+                  </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="employe_id" >Employé<span class="text-danger"></span></label>
+
+                    <mat-select  class="select mat-cust-select form-control"
+                                 [class.invalid]="editEntreeImmoForm.get('employe_id')?.invalid && editEntreeImmoForm.get('employe_id')?.touched"
+                                 formControlName="employe_id" placeholder="Selectionner l'employé">
+                      <mat-option *ngFor="let item of lstEmployer" [disabled]="false" [value]="item.id"
+                      >{{ item.nom }} {{ item.prenom }}    </mat-option>
+                    </mat-select>
+
+                  </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="obs">Observations<span class="text-danger">  </span></label><br>
+
+                    <input class="form-control" type="text"
+                           [class.invalid]="editEntreeImmoForm.get('observation')?.invalid && editEntreeImmoForm.get('observation')?.touched"
+                           formControlName="observation">
+
+                  </div>
 
 
-<!--                  </div>-->
 
 
 
-
-                    <div class="submit-section">
+                  <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                     </div>
                 </form>
