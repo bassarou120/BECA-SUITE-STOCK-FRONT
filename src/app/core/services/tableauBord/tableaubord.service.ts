@@ -39,4 +39,8 @@ export class TableauBordService {
   getDataTableauBord() {
     return this.http.get<any>(`${this.url}/getDataTableauBord`);
   }
+
+  getDataTableauBordStock() {
+    return this.http.get<any>(`${this.url}/getDataTableauBordStock`);
+  }
 }

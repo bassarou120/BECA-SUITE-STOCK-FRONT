@@ -159,7 +159,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getTableauBord() {
-    this.tableauBordService.getDataTableauBord().subscribe(
+    this.tableauBordService.getDataTableauBordStock().subscribe(
       (data: any) => {
         // alert(JSON.stringify(data.data));
         this.dataTableauBord = data.data;

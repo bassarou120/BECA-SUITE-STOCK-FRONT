@@ -16,5 +16,402 @@
   </div>
   <!-- /Page Header -->
 
+
+
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+      <div class="card dash-widget">
+        <div class="card-body">
+          <span class="dash-widget-icon"><i class="fa-solid fa-solid fa-boxes-stacked "></i></span>
+          <div class="dash-widget-info">
+            <h3>{{ dataTableauBord?.immo_fonctionnel }}</h3>
+            <span>Immo. Fonctionnel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+      <div class="card dash-widget">
+        <div class="card-body">
+          <span class="dash-widget-icon">
+            <i class="fa-solid fa-cubes-stacked"></i>
+<!--            <i class="fa-solid fa-user-minus"></i>-->
+          </span>
+          <div class="dash-widget-info">
+            <h3>{{ dataTableauBord?.immo_defectueux }}</h3>
+            <span>Immo. Défectueux</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+      <div class="card dash-widget">
+        <div class="card-body">
+          <span class="dash-widget-icon">
+            <i class="fa-solid fa-comment-dots"></i>
+          </span>
+          <div class="dash-widget-info">
+            <h3>{{ dataTableauBord?.mis_au_rebus }}</h3>
+            <span>Immo. Mis au rebus</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+      <div class="card dash-widget">
+        <div class="card-body">
+          <span class="dash-widget-icon">
+            <i class="fa-regular fa-face-frown"></i>
+          </span>
+          <div class="dash-widget-info">
+            <h3>{{ dataTableauBord?.top10_stock_en_alert }}</h3>
+            <span>Nombre d'article en alerte</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-6 d-flex">
+      <div class="card card-table flex-fill">
+        <div class="card-header">
+          <h3 class="card-title mb-0">Quelques immobilisations</h3>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table custom-table mb-0">
+              <thead>
+              <tr>
+                <th>CODE </th>
+                <th>DESIGNATION</th>
+
+                <th>MONTANT TTC</th>
+                <th>Date</th>
+
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                *ngFor="
+                    let emp of dataTableauBord.top10_immo?.data;
+                    let i = index
+                  "
+              >
+                <td>{{ emp.code }}</td>
+                <td>{{ emp.designation }} </td>
+
+                <td>{{ emp.montant_ttc }}</td>
+                <td>{{ emp.date_mouvement | date : "dd/MM/YYYY" }}</td>
+              </tr>
+
+              <!--
+              <tr>
+                <td>
+                  <h2 class="table-avatar">
+                    <a [routerLink]="routes.employeProfile" class="avatar"
+                      ><img alt="" src="assets/img/profiles/avatar-5.jpg"
+                    /></a>
+                    <a [routerLink]="routes.employeProfile"
+                      >Barry Cuda <span>CEO</span></a
+                    >
+                  </h2>
+                </td>
+                <td>barrycuda@example.com</td>
+                <td>
+                  <div class="dropdown action-label">
+                    <a
+                      class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="fa-regular fa-circle-dot text-success"></i>
+                      Active
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item"
+                        ><i
+                          class="fa-regular fa-circle-dot text-success me-1"
+                        ></i>
+                        Active</a
+                      >
+                      <a class="dropdown-item"
+                        ><i
+                          class="fa-regular fa-circle-dot text-danger me-1"
+                        ></i>
+                        Inactive</a
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
+                      >
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-regular fa-trash-can m-r-5"></i>
+                        Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h2 class="table-avatar">
+                    <a [routerLink]="routes.employeProfile" class="avatar"
+                      ><img alt="" src="assets/img/profiles/avatar-11.jpg"
+                    /></a>
+                    <a [routerLink]="routes.employeProfile"
+                      >Tressa Wexler <span>Manager</span></a
+                    >
+                  </h2>
+                </td>
+                <td>tressawexler@example.com</td>
+                <td>
+                  <div class="dropdown action-label">
+                    <a
+                      class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="fa-regular fa-circle-dot text-danger"></i>
+                      Inactive
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item"
+                        ><i
+                          class="fa-regular fa-circle-dot text-success me-1"
+                        ></i>
+                        Active</a
+                      >
+                      <a class="dropdown-item"
+                        ><i
+                          class="fa-regular fa-circle-dot text-danger me-1"
+                        ></i>
+                        Inactive</a
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
+                      >
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-regular fa-trash-can m-r-5"></i>
+                        Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            --></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a [routerLink]="'/entree-immo'">Voir tous les Immobilisations</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex">
+      <div class="card card-table flex-fill">
+        <div class="card-header">
+          <h3 class="card-title mb-0">Etat du stock</h3>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table custom-table mb-0">
+              <thead>
+              <tr>
+                <th>ARTICLES</th>
+                <th>CATEGORIE</th>
+                <th>QTE ACTUELLE</th>
+
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                *ngFor="
+                    let emp of dataTableauBord.top10_stock?.data;
+                    let i = index
+                  "
+              >
+                <td>{{ emp.article.libelle }}  </td>
+                <td>{{ emp.article.categorie.libelle }}  </td>
+                <td *ngIf="emp.qte >= emp.article.stock_alert " style="background-color: #46f5a6" >{{ emp.qte }}  </td>
+                <td *ngIf="emp.qte < emp.article.stock_alert " style="background-color:  #f15b78" >{{ emp.qte }}  </td>
+<!--                <td>{{ emp.conge.date_debut | date : "dd/MM/YYYY" }}</td>-->
+<!--                <td>{{ emp.conge.date_fin | date : "dd/MM/YYYY" }}</td>-->
+<!--                <td>{{ emp.conge.created_at | date : "dd/MM/YYYY" }}</td>-->
+              </tr>
+
+              <!--
+              <tr>
+                <td>
+                  <h2>
+                    <a [routerLink]="'/projects/project-page'"
+                      >Office Management</a
+                    >
+                  </h2>
+                  <small class="block text-ellipsis">
+                    <span class="me-1">1</span>
+                    <span class="text-muted">open tasks, </span>
+                    <span class="me-1">9</span>
+                    <span class="text-muted">tasks completed</span>
+                  </small>
+                </td>
+                <td>
+                  <div class="progress progress-xs progress-striped">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      data-bs-toggle="tooltip"
+                      title="65%"
+                      style="width: 65%"
+                    ></div>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
+                      >
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-regular fa-trash-can m-r-5"></i>
+                        Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h2>
+                    <a [routerLink]="'/projects/project-page'"
+                      >Project Management</a
+                    >
+                  </h2>
+                  <small class="block text-ellipsis">
+                    <span class="me-1">2</span>
+                    <span class="text-muted">open tasks, </span>
+                    <span class="me-1">5</span>
+                    <span class="text-muted">tasks completed</span>
+                  </small>
+                </td>
+                <td>
+                  <div class="progress progress-xs progress-striped">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      data-bs-toggle="tooltip"
+                      title="15%"
+                      style="width: 15%"
+                    ></div>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
+                      >
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-regular fa-trash-can m-r-5"></i>
+                        Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+
+              <tr>
+                <td>
+                  <h2>
+                    <a [routerLink]="'/projects/project-page'"
+                      >Digital Marketplace</a
+                    >
+                  </h2>
+                  <small class="block text-ellipsis">
+                    <span class="me-1">7</span>
+                    <span class="text-muted">open tasks, </span>
+                    <span class="me-1">14</span>
+                    <span class="text-muted">tasks completed</span>
+                  </small>
+                </td>
+                <td>
+                  <div class="progress progress-xs progress-striped">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      data-bs-toggle="tooltip"
+                      title="100%"
+                      style="width: 100%"
+                    ></div>
+                  </div>
+                </td>
+                <td class="text-end">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a
+                      >
+                      <a class="dropdown-item" href="javascript:void(0)"
+                        ><i class="fa-regular fa-trash-can m-r-5"></i>
+                        Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            --></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a [routerLink]="'/etat-stock'">Voir plus</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </div>
 <!-- /Page Content -->
