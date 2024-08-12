@@ -200,6 +200,11 @@ export class DataService {
               base: 'attribution-role',
               haseSubSubMenu: false,
             },
+            {
+              menuValue: 'Attribution des rôles',
+              route: routes.attribution_roles,
+              base: 'attribution-role',
+            },
 
 
 
@@ -638,8 +643,7 @@ export class DataService {
     },
   ];
 
-  public sideBar =
-    this.authService.userRole && this.authService.userRole <= 3
+  public sideBar = this.authService.userRole && this.authService.userRole <= 3
       ? this.grhSideBar
       : this.employeSideBar;
 
