@@ -211,7 +211,7 @@
 
 
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Catérgorie<span class="text-danger">*</span></label>
+                  <label class="col-form-label" for="">Catégorie<span class="text-danger">*</span></label>
 <!--                  <input class="form-control" type="text"-->
 <!--                      [class.invalid]="addTransfertImmoForm.get('libelle')?.invalid && addTransfertImmoForm.get('nlibelleom')?.touched"-->
 <!--                      formControlName="libelle">-->
@@ -222,6 +222,12 @@
                     <mat-option *ngFor="let item of lstCategorie" [disabled]="false" [value]="item.id"
                                 >{{ item.libelle }}   </mat-option>
                   </mat-select>
+                  <div
+                      *ngIf="addArticleForm.get('categorie_article_id')?.invalid && addArticleForm.get('categorie_article_id')?.touched">
+                      <small
+                          *ngIf="addArticleForm.get('categorie_article_id')?.invalid && addArticleForm.get('categorie_article_id')?.touched"
+                          class="text-danger"> *la catégorie est obligatoire</small>
+                  </div>
 
 
               </div>
@@ -260,7 +266,7 @@
 
 
                 <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                      <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
                   </div>
               </form>
             </div>
@@ -324,13 +330,19 @@
                     <mat-option *ngFor="let item of lstCategorie" [disabled]="false" [value]="item.id"
                     >{{ item.libelle }}   </mat-option>
                   </mat-select>
+                  <div
+                    *ngIf="editArticleForm.get('categorie_article_id')?.invalid && editArticleForm.get('categorie_article_id')?.touched">
+                    <small
+                      *ngIf="editArticleForm.get('categorie_article_id')?.invalid && editArticleForm.get('categorie_article_id')?.touched"
+                      class="text-danger"> *la catégorie est obligatoire</small>
+                  </div>
 
 
                 </div>
 
 
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Stock d'arlet<span class="text-danger">*</span></label>
+                  <label class="col-form-label" for="">Stock d'alerte<span class="text-danger">*</span></label>
                   <input class="form-control" type="number"
                          [class.invalid]="editArticleForm.get('stock_alert')?.invalid && editArticleForm.get('stock_alert')?.touched"
                          formControlName="stock_alert">
@@ -338,7 +350,7 @@
                     *ngIf="editArticleForm.get('stock_alert')?.invalid && editArticleForm.get('stock_alert')?.touched">
                     <small
                       *ngIf="editArticleForm.get('stock_alert')?.invalid && editArticleForm.get('stock_alert')?.touched"
-                      class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                      class="text-danger"> *le stock d'alerte  est obligatoire</small>
                   </div>
                 </div>
 
@@ -357,7 +369,7 @@
 
 
                   <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                      <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
                   </div>
               </form>
             </div>

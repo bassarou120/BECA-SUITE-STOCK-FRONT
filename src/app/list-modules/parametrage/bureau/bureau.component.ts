@@ -69,13 +69,14 @@ export class BureauComponent implements OnInit {
   console.log(this.addBureauForm.value)
 
   if (this.addBureauForm.valid){
+    $('#spinnerr').removeClass('d-none');
     this.data.save(this.addBureauForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
-
+    $('#spinnerr').addClass('d-none');
     alert("desole le formulaire n'est pas bien renseigné")
   }
 
@@ -86,6 +87,7 @@ onClickSubmitEditBanque(){
   console.log(this.editBureauForm.value)
 
     if (this.editBureauForm.valid){
+      $('#spinner').removeClass('d-none');
       const id = this.editBureauForm.value.id;
       this.data.edit(this.editBureauForm.value).subscribe(
         (data:any)=>{
@@ -94,7 +96,7 @@ onClickSubmitEditBanque(){
       )
       console.log("success")
     }else {
-
+      $('#spinner').addClass('d-none');
       alert("desole le formulaire n'est pas bien renseigné")
     }
 

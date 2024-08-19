@@ -243,12 +243,14 @@ export class TransfertImmoComponent implements OnInit {
   console.log(this.addTransfertImmoForm.value)
 
   if (this.addTransfertImmoForm.valid){
+    $('#spinnerr').removeClass('d-none');
     this.immoService.saveTransfert(this.addTransfertImmoForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
+    $('#spinnerr').addClass('d-none');
     this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
     this.showAlert=true;
 

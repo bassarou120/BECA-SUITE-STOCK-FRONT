@@ -73,13 +73,14 @@ export class FournisseurComponent implements OnInit {
   console.log(this.addFournisseurForm.value)
 
   if (this.addFournisseurForm.valid){
+    $('#spinnerr').removeClass('d-none');
     this.fournisseurService.save(this.addFournisseurForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
-
+    $('#spinnerr').addClass('d-none');
     alert("desole le formulaire n'est pas bien renseigné")
   }
 
@@ -90,6 +91,7 @@ onClickSubmitEditBanque(){
   console.log(this.editFournisseurForm.value)
 
     if (this.editFournisseurForm.valid){
+      $('#spinner').removeClass('d-none');
       const id = this.editFournisseurForm.value.id;
       this.fournisseurService.edit(this.editFournisseurForm.value).subscribe(
         (data:any)=>{
@@ -98,7 +100,7 @@ onClickSubmitEditBanque(){
       )
       console.log("success")
     }else {
-
+      $('#spinner').addClass('d-none');
       alert("desole le formulaire n'est pas bien renseigné")
     }
 

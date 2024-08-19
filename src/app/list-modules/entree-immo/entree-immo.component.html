@@ -203,7 +203,7 @@
                         *ngIf="addEntreeImmoForm.get('date_mouvement')?.invalid && addEntreeImmoForm.get('date_mouvement')?.touched">
                         <small
                             *ngIf="addEntreeImmoForm.get('date_mouvement')?.invalid && addEntreeImmoForm.get('date_mouvement')?.touched"
-                            class="text-danger"> *le code est obligatoire</small>
+                            class="text-danger"> *la date est obligatoire</small>
                     </div>
                 </div>
 
@@ -237,15 +237,16 @@
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span> (en FCFA)</label>
                     <input class="form-control" type="text"
                            [class.invalid]="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched"
                            formControlName="montant_ttc">
                     <div
                       *ngIf="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched">
-                      <small
-                        *ngIf="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched"
-                        class="text-danger"> *le montant ttc  est obligatoire</small>
+                      <small *ngIf="addEntreeImmoForm.get('montant_ttc')?.hasError('min')" class="text-danger">
+                        *le montant TTC doit etre supérieur ou égale à 0.</small>
+                      <small *ngIf="addEntreeImmoForm.get('montant_ttc')?.hasError('required')" class="text-danger">
+                        *le montant TTC  est obligatoire.</small>
                     </div>
 
 
@@ -266,20 +267,27 @@
                       <mat-option  value="Mis au rebus"  > Mis au rebus </mat-option>
 
                     </mat-select>
+                    <div
+                        *ngIf="addEntreeImmoForm.get('etat')?.invalid && addEntreeImmoForm.get('etat')?.touched">
+                        <small
+                            *ngIf="addEntreeImmoForm.get('etat')?.invalid && addEntreeImmoForm.get('etat')?.touched"
+                            class="text-danger"> *l'etat est obligatoire</small>
+                    </div>
 
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">*  </span></label><br>
+                    <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">* </span> (en Année)</label><br>
 
                     <input class="form-control" type="number" (ngModelChange)="changeQte()"
-                           [class.invalid]="addEntreeImmoForm.get('qte')?.invalid && addEntreeImmoForm.get('duree_amorti')?.touched"
+                           [class.invalid]="addEntreeImmoForm.get('duree_amorti')?.invalid && addEntreeImmoForm.get('duree_amorti')?.touched"
                            formControlName="duree_amorti">
                     <div
                       *ngIf="addEntreeImmoForm.get('duree_amorti')?.invalid && addEntreeImmoForm.get('duree_amorti')?.touched">
-                      <small
-                        *ngIf="addEntreeImmoForm.get('duree_amorti')?.invalid && addEntreeImmoForm.get('duree_amorti')?.touched"
-                        class="text-danger"> *la Duree d'amortissement  est obligatoire</small>
+                      <small *ngIf="addEntreeImmoForm.get('duree_amorti')?.hasError('min')" class="text-danger">
+                        *la duree d'amortissement doit etre supérieur ou égale à 0.</small>
+                      <small *ngIf="addEntreeImmoForm.get('duree_amorti')?.hasError('required')" class="text-danger">
+                        *la duree d'amortissement  est obligatoire.</small>
                     </div>
                   </div>
 
@@ -292,6 +300,12 @@
                       <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
                       >{{ item.libelle }}   </mat-option>
                     </mat-select>
+                    <div
+                        *ngIf="addEntreeImmoForm.get('bureau_id')?.invalid && addEntreeImmoForm.get('bureau_id')?.touched">
+                        <small
+                            *ngIf="addEntreeImmoForm.get('bureau_id')?.invalid && addEntreeImmoForm.get('bureau_id')?.touched"
+                            class="text-danger"> *le bureau obligatoire</small>
+                    </div>
 
                   </div>
 
@@ -318,7 +332,7 @@
 
 
                   <div class="submit-section">
-                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
                     </div>
                 </form>
               </div>
@@ -351,7 +365,7 @@
                       *ngIf="editEntreeImmoForm.get('date_mouvement')?.invalid && editEntreeImmoForm.get('date_mouvement')?.touched">
                       <small
                         *ngIf="editEntreeImmoForm.get('date_mouvement')?.invalid && editEntreeImmoForm.get('date_mouvement')?.touched"
-                        class="text-danger"> *le code est obligatoire</small>
+                        class="text-danger"> *la date est obligatoire</small>
                     </div>
                   </div>
 
@@ -385,15 +399,16 @@
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span> (en FCFA)</label>
                     <input class="form-control" type="text"
                            [class.invalid]="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched"
                            formControlName="montant_ttc">
                     <div
                       *ngIf="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched">
-                      <small
-                        *ngIf="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched"
-                        class="text-danger"> *le montant ttc  est obligatoire</small>
+                      <small *ngIf="editEntreeImmoForm.get('montant_ttc')?.hasError('min')" class="text-danger">
+                        *le montant TTC doit etre supérieur ou égale à 0.</small>
+                      <small *ngIf="editEntreeImmoForm.get('montant_ttc')?.hasError('required')" class="text-danger">
+                        *le montant TTC  est obligatoire.</small>
                     </div>
 
 
@@ -414,20 +429,27 @@
                       <mat-option  value="Mis au rebus"  > Mis au rebus </mat-option>
 
                     </mat-select>
+                    <div
+                        *ngIf="editEntreeImmoForm.get('etat')?.invalid && editEntreeImmoForm.get('etat')?.touched">
+                        <small
+                            *ngIf="editEntreeImmoForm.get('etat')?.invalid && editEntreeImmoForm.get('etat')?.touched"
+                            class="text-danger"> *l'etat est obligatoire</small>
+                    </div>
 
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">*  </span></label><br>
+                    <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">*</span> (en Année)</label><br>
 
                     <input class="form-control" type="number"
                            [class.invalid]="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched"
                            formControlName="duree_amorti">
                     <div
                       *ngIf="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched">
-                      <small
-                        *ngIf="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched"
-                        class="text-danger"> *la Duree d'amortissement  est obligatoire</small>
+                      <small *ngIf="editEntreeImmoForm.get('duree_amorti')?.hasError('min')" class="text-danger">
+                        *la duree d'amortissement doit etre supérieur ou égale à 0.</small>
+                      <small *ngIf="editEntreeImmoForm.get('duree_amorti')?.hasError('required')" class="text-danger">
+                        *la duree d'amortissement  est obligatoire.</small>
                     </div>
                   </div>
 
@@ -440,6 +462,12 @@
                       <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
                       >{{ item.libelle }}   </mat-option>
                     </mat-select>
+                    <div
+                        *ngIf="editEntreeImmoForm.get('bureau_id')?.invalid && editEntreeImmoForm.get('bureau_id')?.touched">
+                        <small
+                            *ngIf="editEntreeImmoForm.get('bureau_id')?.invalid && editEntreeImmoForm.get('bureau_id')?.touched"
+                            class="text-danger"> *le bureau est obligatoire</small>
+                    </div>
 
                   </div>
 
@@ -469,7 +497,7 @@
 
 
                   <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
                     </div>
                 </form>
               </div>

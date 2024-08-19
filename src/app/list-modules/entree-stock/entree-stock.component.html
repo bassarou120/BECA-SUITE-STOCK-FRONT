@@ -195,7 +195,7 @@
                         *ngIf="addEntreeStockForm.get('date_mouvement')?.invalid && addEntreeStockForm.get('date_mouvement')?.touched">
                         <small
                             *ngIf="addEntreeStockForm.get('date_mouvement')?.invalid && addEntreeStockForm.get('date_mouvement')?.touched"
-                            class="text-danger"> *le code est obligatoire</small>
+                            class="text-danger"> *la date est obligatoire</small>
                     </div>
                 </div>
 
@@ -204,10 +204,16 @@
 
                     <mat-select  class="select mat-cust-select form-control"
                                  [class.invalid]="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched"
-                                 formControlName="article_id" placeholder="Selectionner l'articel">
+                                 formControlName="article_id" placeholder="Selectionner l'article">
                       <mat-option *ngFor="let item of lstArticel" [disabled]="false" [value]="item.id"
                                   >{{ item.libelle }}   </mat-option>
                     </mat-select>
+                    <div
+                        *ngIf="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched">
+                        <small
+                            *ngIf="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched"
+                            class="text-danger"> *l'article est obligatoire</small>
+                    </div>
 
 
                 </div>
@@ -220,15 +226,16 @@
                            formControlName="qte">
                     <div
                       *ngIf="addEntreeStockForm.get('qte')?.invalid && addEntreeStockForm.get('qte')?.touched">
-                      <small
-                        *ngIf="addEntreeStockForm.get('qte')?.invalid && addEntreeStockForm.get('qte')?.touched"
-                        class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                        <small *ngIf="addEntreeStockForm.get('qte')?.hasError('min')" class="text-danger">
+                          *la quantité  doit etre supérieur ou égale à 0.</small>
+                        <small *ngIf="addEntreeStockForm.get('qte')?.hasError('required')" class="text-danger">
+                          *la quantité  est obligatoire.</small>
                     </div>
                   </div>
 
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Fournisseur<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Fournisseur</label>
 
                     <mat-select  class="select mat-cust-select form-control"
                                  [class.invalid]="addEntreeStockForm.get('fournisseur')?.invalid && addEntreeStockForm.get('fournisseur')?.touched"
@@ -236,6 +243,7 @@
                       <mat-option *ngFor="let item of lstForuniseur" [disabled]="false" [value]="item.nom"
                       >{{ item.nom }}   </mat-option>
                     </mat-select>
+
 
 
                   </div>
@@ -246,7 +254,7 @@
 
 
                   <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
                     </div>
                 </form>
               </div>
@@ -279,7 +287,7 @@
                       *ngIf="editEntreeStockForm.get('date_mouvement')?.invalid && editEntreeStockForm.get('date_mouvement')?.touched">
                       <small
                         *ngIf="editEntreeStockForm.get('date_mouvement')?.invalid && editEntreeStockForm.get('date_mouvement')?.touched"
-                        class="text-danger"> *le code est obligatoire</small>
+                        class="text-danger"> *la date est obligatoire</small>
                     </div>
                   </div>
 
@@ -304,15 +312,16 @@
                            formControlName="qte">
                     <div
                       *ngIf="editEntreeStockForm.get('qte')?.invalid && editEntreeStockForm.get('qte')?.touched">
-                      <small
-                        *ngIf="editEntreeStockForm.get('qte')?.invalid && editEntreeStockForm.get('qte')?.touched"
-                        class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                      <small *ngIf="editEntreeStockForm.get('qte')?.hasError('min')" class="text-danger">
+                        *la quantité  doit etre supérieur ou égale à 0.</small>
+                      <small *ngIf="editEntreeStockForm.get('qte')?.hasError('required')" class="text-danger">
+                        *la quantité  est obligatoire.</small>
                     </div>
                   </div>
 
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Fournisseur<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Fournisseur</label>
 
                     <mat-select  class="select mat-cust-select form-control"
                                  [class.invalid]="editEntreeStockForm.get('fournisseur')?.invalid && editEntreeStockForm.get('fournisseur')?.touched"
@@ -328,7 +337,7 @@
 
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
                     </div>
                 </form>
               </div>
