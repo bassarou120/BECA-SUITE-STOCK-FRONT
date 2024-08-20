@@ -16,7 +16,7 @@ export class DataService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  public grhSideBar: SideBar[] = [
+  public adminSideBar: SideBar[] = [
     {
       tittle: 'Menu principal',
       icon: 'airplay',
@@ -104,6 +104,12 @@ export class DataService {
             {
               menuValue: 'Tranfert',
               route: "transfert-immo",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Réparations',
+              route: "repartion-immo",
               base: 'demandes',
               haseSubSubMenu: false,
             },
@@ -204,6 +210,7 @@ export class DataService {
               menuValue: 'Attribution des rôles',
               route: routes.attribution_roles,
               base: 'attribution-role',
+              haseSubSubMenu: false,
             },
 
 
@@ -571,7 +578,7 @@ export class DataService {
     */
   ];
 
-  public employeSideBar: SideBar[] = [
+  public gsmSideBar: SideBar[] = [
     {
       tittle: 'Menu principal',
       icon: 'airplay',
@@ -588,10 +595,236 @@ export class DataService {
           materialicons: 'home',
           subMenus: [
             {
+              menuValue: 'Admin Dashboard',
+              route: routes.admin,
+              base: 'admin',
+              haseSubSubMenu: false,
+            },
+
+          ],
+        },
+      ],
+    },
+
+
+    {
+      tittle: 'Stocks/Immobilisations',
+      icon: 'layers',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'Gestion stocks',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'box-open',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Entrées de stock',
+              route: "entree-stock",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Sorties de stock',
+              route: "sortie-stock",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+
+            {
+              menuValue: 'Etat Stock',
+              route: "etat-stock",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            }
+          ]
+        },
+
+        {
+          menuValue: 'Immobilisations',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'digital-tachograph',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Immo/Enregistrement',
+              route: 'entree-immo',
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Tranfert',
+              route: "transfert-immo",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Réparations',
+              route: "repartion-immo",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+
+            // {
+            //   menuValue: 'Inventaire',
+            //   route: "#",
+            //   base: 'demandes',
+            //   haseSubSubMenu: false,
+            // }
+          ]
+        },
+      ],
+    },
+
+
+
+    {
+      tittle: 'Gestion des rapports',
+      icon: 'layers',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'Rapports',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'file',
+          base: 'employees',
+          dot: false,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Rapport stock',
+              route: "rapport-stock",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Rapport Immo.',
+              route: "rapport-immo",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+
+          ]
+        },
+
+      ],
+    },
+
+
+    {
+      tittle: 'PARAMETRAGE',
+      icon: 'set',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'GENERALE',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'tools',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Liste des bureaux',
+              route: "parametrage/bureau",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+
+            {
+              menuValue: 'Categorie Articles',
+              route: "parametrage/categorie-article",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Articles',
+              route: "parametrage/article",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Fournisseur',
+              route: "parametrage/fournisseur",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+            // {
+            //   menuValue: 'Attribution des rôles',
+            //   route: routes.attribution_roles,
+            //   base: 'attribution-role',
+            //   haseSubSubMenu: false,
+            // },
+
+
+
+
+
+          ],
+        },
+
+      ],
+    },
+
+    /*
+          subMenus: [
+            {
+              menuValue: 'Admin Dashboard',
+              route: routes.admin,
+              base: 'admin',
+            },
+            {
               menuValue: 'Employé Dashboard',
               route: routes.employee,
               base: 'employee',
-              haseSubSubMenu: false,
+            },
+          ],
+          */
+
+    /*
+    {
+      tittle: 'Menu principal',
+      icon: 'airplay',
+      showAsTab: true,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Tableau de bord',
+          route: routes.dashboard,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'dashboard',
+          base: 'dashboard',
+          materialicons: 'home',
+          subMenus: [
+            {
+              menuValue: 'Admin Dashboard',
+              route: routes.admin,
+              base: 'admin',
+            },
+            {
+              menuValue: 'Employé Dashboard',
+              route: routes.employee,
+              base: 'employee',
             },
           ],
         },
@@ -617,35 +850,515 @@ export class DataService {
               menuValue: 'Mes Contrats',
               route: routes.mes_contrats,
               base: 'mes-contrats',
-              haseSubSubMenu: false,
             },
             {
               menuValue: 'Mes Demandes',
               route: routes.demandes,
               base: 'demandes',
-              haseSubSubMenu: false,
             },
             {
               menuValue: 'Mes Heures Supplémentaires',
               route: routes.mes_heures_supplementaires,
               base: 'mes-heures-supllémetaires',
-              haseSubSubMenu: false,
             },
             {
               menuValue: 'Mes Plaintes',
               route: routes.plaintes,
               base: 'mes-plaintes',
-              haseSubSubMenu: false,
+            },
+          ],
+        },
+        {
+          menuValue: 'Employés (GRH)',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'la la-users-cog',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Tous les employés',
+              route: routes.employee_page,
+
+              base: 'employee-page',
+              base2: 'employee-list',
+            },
+            {
+              menuValue: 'Heure supplémentaire',
+              route: routes.heures_supplementaires,
+              base: 'heures-supllémetaires',
+            },
+            {
+              menuValue: 'Les Expériences (GRH)',
+              route: routes.experiences,
+              base: 'experiences',
+            },
+            {
+              menuValue: 'Plaintes et Satisfaction (GRH)',
+              route: routes.plaintesGRH,
+              base: 'plaintes',
+            },
+
+            {
+              menuValue: 'Les Préavis (GRH)',
+              route: routes.preavisGRH,
+              base: 'preavis',
+            },
+            {
+              menuValue: 'Point des Congés',
+              route: routes.point_conge,
+              base: 'point-conge',
+            },
+            {
+              menuValue: 'Point des Contrats',
+              route: routes.point_contrat,
+              base: 'point-contrat',
             },
           ],
         },
       ],
     },
+    {
+      tittle: 'Gestion Administrative',
+      icon: 'file',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Gestion de la paie',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'money',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Fiche de paie',
+              route: routes.fichePaie,
+              base: 'employee-salary',
+            },
+            {
+              menuValue: 'Ordre de virement',
+              route: routes.ordreVirement,
+              base: 'employee-salary',
+            },
+          ],
+        },
+        {
+          menuValue: 'Congés et Absences',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'user-minus',
+          base: 'employees',
+          materialicons: '',
+          subMenus: [
+            {
+              menuValue: 'Congés',
+              route: routes.conges,
+              base: 'holidays',
+            },
+            {
+              menuValue: 'Absences',
+              route: routes.absences,
+              base: 'absences',
+            },
+          ],
+        },
+        {
+          menuValue: 'Cessation du Travail',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'la la-user-times',
+          base: 'employees',
+          materialicons: '',
+          subMenus: [
+            {
+              menuValue: 'Autres Départs',
+              route: routes.depart_employe,
+              base: 'depart-employe',
+            },
+            {
+              menuValue: 'Démission',
+              route: routes.demission,
+              base: 'demission',
+            },
+            {
+              menuValue: 'Echéance du CDD',
+              route: routes.echeance_cdd,
+              base: 'echeance-cdd',
+            },
+            {
+              menuValue: 'Licenciement',
+              route: routes.licenciement,
+              base: 'licenciement',
+            },
+            {
+              menuValue: 'Retraite',
+              route: routes.retraite,
+              base: 'retraite',
+            },
+          ],
+        },
+        {
+          menuValue: 'Formation',
+          route: routes.formationsGRH,
+          base: 'formations',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'graduation-cap',
+          dot: true,
+          materialicons: '',
+          subMenus: [
+            {
+              menuValue: 'Formation',
+              route: routes.formationsGRH,
+              base: 'formations',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      tittle: 'PARAMETRAGE',
+      icon: 'set',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'GRH',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'tools',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Attribution des rôles',
+              route: routes.attribution_roles,
+              base: 'attribution-role',
+            },
+            {
+              menuValue: 'Banque',
+              route: routes.banque,
+              base: 'banque',
+            },
+            {
+              menuValue: 'Catégorie',
+              route: routes.categorie,
+              base: 'categorie',
+            },
+            {
+              menuValue: 'Classes',
+              route: routes.classes,
+              base: 'classes',
+            },
+            {
+              menuValue: 'Département',
+              route: routes.departement,
+              base: 'departement',
+            },
+            {
+              menuValue: 'Grades',
+              route: routes.grades,
+              base: 'grades',
+            },
+            {
+              menuValue: 'Poste',
+              route: routes.poste,
+              base: 'poste',
+            },
+            {
+              menuValue: "Type d'Absence",
+              route: routes.typeAbsence,
+              base: 'type-absence',
+            },
+            {
+              menuValue: 'Type de Congé',
+              route: routes.type_conge,
+              base: 'type-contrat',
+            },
+            {
+              menuValue: 'Type de Contrat',
+              route: routes.type_contrat,
+              base: 'type-contrat',
+            },
+            {
+              menuValue: 'Type Départ',
+              route: routes.type_depart,
+              base: 'type-depart',
+            },
+            {
+              menuValue: 'Type de Prime',
+              route: routes.type_prime,
+              base: 'type-prime',
+            },
+
+            {
+              menuValue: 'Type de Licenciement',
+              route: routes.type_licenciement,
+              base: 'type-licenciement',
+            },
+
+            // {
+            //   menuValue: 'Statut',
+            //   route: routes.statut,
+            //   base: 'statut',
+            // },
+          ],
+        },
+
+        {
+          menuValue: 'GENERALE',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'cog',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Informations de base',
+              route: routes.infos_de_base,
+              base: 'infos-de-base',
+            },
+            {
+              menuValue: 'Rôle',
+              route: routes.role,
+              base: 'role',
+            },
+          ],
+        },
+      ],
+    },
+
+    */
   ];
 
-  public sideBar = this.authService.userRole && this.authService.userRole <= 3
-      ? this.grhSideBar
-      : this.employeSideBar;
+  public asgsmSideBar: SideBar[] = [
+    {
+      tittle: 'Menu principal',
+      icon: 'airplay',
+      showAsTab: true,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'Tableau de bord',
+          route: routes.dashboard,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'dashboard',
+          base: 'dashboard',
+          materialicons: 'home',
+          subMenus: [
+            {
+              menuValue: 'Admin Dashboard',
+              route: routes.admin,
+              base: 'admin',
+              haseSubSubMenu: false,
+            },
+
+          ],
+        },
+      ],
+    },
+
+
+    {
+      tittle: 'Stocks/Immobilisations',
+      icon: 'layers',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'Gestion stocks',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'box-open',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Entrées de stock',
+              route: "entree-stock",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Sorties de stock',
+              route: "sortie-stock",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+
+            {
+              menuValue: 'Etat Stock',
+              route: "etat-stock",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            }
+          ]
+        },
+
+        {
+          menuValue: 'Immobilisations',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'digital-tachograph',
+          base: 'employees',
+          dot: true,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Immo/Enregistrement',
+              route: 'entree-immo',
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Tranfert',
+              route: "transfert-immo",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Réparations',
+              route: "repartion-immo",
+              base: 'demandes',
+              haseSubSubMenu: false,
+            },
+
+            // {
+            //   menuValue: 'Inventaire',
+            //   route: "#",
+            //   base: 'demandes',
+            //   haseSubSubMenu: false,
+            // }
+          ]
+        },
+      ],
+    },
+
+
+
+    {
+      tittle: 'Gestion des rapports',
+      icon: 'layers',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+
+        {
+          menuValue: 'Rapports',
+          route: routes.employees,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'file',
+          base: 'employees',
+          dot: false,
+          materialicons: 'people',
+          subMenus: [
+            {
+              menuValue: 'Rapport stock',
+              route: "rapport-stock",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Rapport Immo.',
+              route: "rapport-immo",
+              // route: routes.mes_contrats,
+              base: 'mes-contrats',
+              haseSubSubMenu: false,
+            },
+
+          ]
+        },
+
+      ],
+    },
+
+/*
+    {
+      tittle: 'PARAMETRAGE',
+      icon: 'set',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
+        {
+          menuValue: 'GENERALE',
+          route: routes.payroll,
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'tools',
+          base: 'payroll',
+          materialicons: 'request_quote',
+          subMenus: [
+            {
+              menuValue: 'Liste des bureaux',
+              route: "parametrage/bureau",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+
+            {
+              menuValue: 'Categorie Articles',
+              route: "parametrage/categorie-article",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Articles',
+              route: "parametrage/article",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Les Fournisseur',
+              route: "parametrage/fournisseur",
+              base: 'attribution-role',
+              haseSubSubMenu: false,
+            },
+            // {
+            //   menuValue: 'Attribution des rôles',
+            //   route: routes.attribution_roles,
+            //   base: 'attribution-role',
+            //   haseSubSubMenu: false,
+            // },
+
+
+
+
+
+          ],
+        },
+
+      ],
+    },
+    */
+
+
+  ];
+
+
+
+
+  public sideBar = this.authService.userRole && this.authService.userRole == 1
+      ? this.adminSideBar
+      :
+    this.authService.userRole && this.authService.userRole == 5 ?
+    this.gsmSideBar:this.asgsmSideBar;
 
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<
     Array<SideBar>

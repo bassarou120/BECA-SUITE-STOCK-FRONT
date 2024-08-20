@@ -71,7 +71,7 @@
                             <td>{{ item.titre ? item.titre : "-"}}</td>
                             <td>{{ item.departement ? item.departement : "-"}}</td>
                             <td class="text-end" id="exclusion-2">
-                                <div class="dropdown dropdown-action">
+                                <div *ngIf="item.role !='Super Admin (Directeur)'" class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">

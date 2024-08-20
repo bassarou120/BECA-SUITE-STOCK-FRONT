@@ -22,17 +22,17 @@ import {immoService} from "../../core/services/immo/immo.service";
 
 @Component({
   selector: 'app-banque',
-  templateUrl: './transfert-immo.component.html',
-  styleUrls: ['./transfert-immo.component.scss']
+  templateUrl: './reparation-immo.component.html',
+  styleUrls: ['./reparation-immo.component.scss']
 })
-export class TransfertImmoComponent implements OnInit {
+export class ReparationImmoComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
   public lstPst: Array<any>=[];
 
 
-  public lstTransfertImmo: Array<any> = [];
+  public lstReparationImmo: Array<any> = [];
   stockDisponible=0;
   lstCategorie:any;
   lstForuniseur:any;
@@ -55,9 +55,9 @@ export class TransfertImmoComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
   article_id:any;
-  public addTransfertImmoForm!: FormGroup ;
-  public editTrensfertImmoForm!: FormGroup
-  public deleteEntreeImmoForm!: FormGroup
+  public addReparationImmoForm!: FormGroup ;
+  public editReparationImmoForm!: FormGroup
+  public deleteReparationImmoForm!: FormGroup
 
   showAlert=false;
   messageAlert=""
@@ -83,20 +83,18 @@ export class TransfertImmoComponent implements OnInit {
    this.getEmploye();
    this.getImmo();
 
-    this.addTransfertImmoForm = this.formBuilder.group({
+    this.addReparationImmoForm = this.formBuilder.group({
 
       date_mouvement: ["", [Validators.required]],
       immo_id:['',[Validators.required]],
       immo:['',[Validators.required]],
-      old_bureau:['',[Validators.required]],
-      old_employe:['',[Validators.required]],
-      bureau_id:['',[Validators.required]],
-      employe_id:['',[Validators.required]],
-      Observation: ["",  [ ]],
+      panne:['',[Validators.required]],
+      cout:['',[Validators.required]],
+      observation: ["",  [ ]],
 
    });
 
-   this.editTrensfertImmoForm = this.formBuilder.group({
+   this.editReparationImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
      date_mouvement: ["", [Validators.required]],
      immo_id:['',[Validators.required]],
@@ -107,7 +105,7 @@ export class TransfertImmoComponent implements OnInit {
      employe_id:['',[Validators.required]],
      Observation: ["",  [ ]],
   });
-   this.deleteEntreeImmoForm = this.formBuilder.group({
+   this.deleteReparationImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
  }
@@ -124,16 +122,17 @@ export class TransfertImmoComponent implements OnInit {
 
   selectedImmoChange(){
 
-    this.addTransfertImmoForm.get("immo_id")?.setValue(this.selectedImmo.id)
-    this.addTransfertImmoForm.get("old_bureau")?.setValue(this.selectedImmo.bureau.libelle)
-    this.addTransfertImmoForm.get("old_employe")?.setValue(this.selectedImmo.employe.nom+" "+this.selectedImmo.employe.prenom)
+
     console.log(this.selectedImmo);
+    this.addReparationImmoForm.get("immo_id")?.setValue(this.selectedImmo.id)
+
+
 
   }
 
   changeQte(){
 
-    var t=this.stockDisponible-this.addTransfertImmoForm.get('qte')?.value
+    var t=this.stockDisponible-this.addReparationImmoForm.get('qte')?.value
     if(t<0 ){
 
       this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
@@ -147,14 +146,14 @@ export class TransfertImmoComponent implements OnInit {
   changeArtice(){
 
     this.immoService.getSockByArticle({
-      article_id:this.addTransfertImmoForm.get('article_id')?.value
+      article_id:this.addReparationImmoForm.get('article_id')?.value
     }).subscribe(
       (resp:any)=>{
 
         // alert(resp.data.qte)
         this.stockDisponible=resp.data.qte;
 
-        this.addTransfertImmoForm.get('qte')?.setValue('')
+        this.addReparationImmoForm.get('qte')?.setValue('')
 
       }
     )
@@ -226,7 +225,6 @@ export class TransfertImmoComponent implements OnInit {
 
     this.immoService.getAll().subscribe(
       (res: any) => {
-
         // alert(JSON.stringify(res.data.data))
         this.lstImmo=res.data.data
 
@@ -238,14 +236,14 @@ export class TransfertImmoComponent implements OnInit {
 
   }
 
- onClickSubmitAddImmo(){
+ onClickSubmitAddReaparationImmo(){
 
-  console.log(this.addTransfertImmoForm.value)
+  console.log(this.addReparationImmoForm.value)
 
-  if (this.addTransfertImmoForm.valid){
-    this.immoService.saveTransfert(this.addTransfertImmoForm.value).subscribe(
+  if (this.addReparationImmoForm.valid){
+    this.immoService.saveRepation(this.addReparationImmoForm.value).subscribe(
       (data:any)=>{
-        location.reload();
+          location.reload();
       }
     )
   }else {
@@ -259,11 +257,11 @@ export class TransfertImmoComponent implements OnInit {
 }
 
 onClickSubmitEditArticle(){
-  console.log(this.editTrensfertImmoForm.value)
+  console.log(this.editReparationImmoForm.value)
 
-    if (this.editTrensfertImmoForm.valid){
-      const id = this.editTrensfertImmoForm.value.id;
-      this.immoService.edit(this.editTrensfertImmoForm.value).subscribe(
+    if (this.editReparationImmoForm.valid){
+      const id = this.editReparationImmoForm.value.id;
+      this.immoService.edit(this.editReparationImmoForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
@@ -276,12 +274,12 @@ onClickSubmitEditArticle(){
 
 }
 
-onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeImmoForm.value)
+onClickSubmitDeleteReparation(){
+  console.log(this.deleteReparationImmoForm.value)
 
-    if (this.deleteEntreeImmoForm.valid){
-      const id = this.deleteEntreeImmoForm.value.id;
-      this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
+    if (this.deleteReparationImmoForm.valid){
+      const id = this.deleteReparationImmoForm.value.id;
+      this.immoService.deleteRepartion(this.deleteReparationImmoForm.value).subscribe(
         (data:any)=>{
 
           // alert(JSON.stringify(data))
@@ -299,7 +297,7 @@ onClickSubmitDeleteBanque(){
 
 
 getEditForm(row: any){
-  this.editTrensfertImmoForm.patchValue({
+  this.editReparationImmoForm.patchValue({
    id:row.id,
     article_id:row.article_id,
     date_mouvement: row.date_mouvement,
@@ -310,17 +308,17 @@ getEditForm(row: any){
 }
 
 getDeleteForm(row: any){
-  this.deleteEntreeImmoForm.patchValue({
+  this.deleteReparationImmoForm.patchValue({
    id:row.id,
   })
 }
 
 
   private getTableData(): void {
-    this.lstTransfertImmo = [];
+    this.lstReparationImmo = [];
     this.serialNumberArray = [];
 
-    this.immoService.getAllTransfer().subscribe((res: any) => {
+    this.immoService.getAllReapartion().subscribe((res: any) => {
       this.totalData = res.data.total;
       res.data.data.map((res: any, index: number) => {
         const serialNumber = index + 1;
@@ -329,15 +327,15 @@ getDeleteForm(row: any){
 
           // alert(res.type);
 
-            this.lstTransfertImmo.push(res);
+            this.lstReparationImmo.push(res);
 
             this.serialNumberArray.push(serialNumber);
 
 
         }
       });
-      console.log(this.lstTransfertImmo);
-      this.dataSource = new MatTableDataSource<any>(this.lstTransfertImmo);
+      console.log(this.lstReparationImmo);
+      this.dataSource = new MatTableDataSource<any>(this.lstReparationImmo);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -397,13 +395,13 @@ getDeleteForm(row: any){
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstTransfertImmo.slice();
+    const data = this.lstReparationImmo.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstTransfertImmo = data;
+      this.lstReparationImmo = data;
     } else {
-      this.lstTransfertImmo = data.sort((a: any, b: any) => {
+      this.lstReparationImmo = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -413,7 +411,7 @@ getDeleteForm(row: any){
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstTransfertImmo = this.dataSource.filteredData;
+    this.lstReparationImmo = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {
