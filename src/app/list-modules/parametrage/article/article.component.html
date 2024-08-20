@@ -234,7 +234,7 @@
 
 
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Stock d'arlet<span class="text-danger">*</span></label>
+                  <label class="col-form-label" for="">Stock d'alerte<span class="text-danger">*</span></label>
                   <input class="form-control" type="number"
                          [class.invalid]="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched"
                          formControlName="stock_alert">
@@ -242,7 +242,7 @@
                     *ngIf="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched">
                     <small
                       *ngIf="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched"
-                      class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                      class="text-danger"> *le stock d'alerte  est obligatoire</small>
                   </div>
                 </div>
 
@@ -319,7 +319,7 @@
 
 
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Catérgorie<span class="text-danger">*</span></label>
+                  <label class="col-form-label" for="">Catégorie<span class="text-danger">*</span></label>
                   <!--                  <input class="form-control" type="text"-->
                   <!--                      [class.invalid]="addTransfertImmoForm.get('libelle')?.invalid && addTransfertImmoForm.get('nlibelleom')?.touched"-->
                   <!--                      formControlName="libelle">-->
