@@ -101,13 +101,14 @@ export class ArticleComponent implements OnInit {
   console.log(this.addArticleForm.value)
 
   if (this.addArticleForm.valid){
+    $('#spinnerr').removeClass('d-none');
     this.articleService.save(this.addArticleForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
-
+    $('#spinnerr').addClass('d-none');
     alert("desole le formulaire n'est pas bien renseigné")
   }
 
@@ -118,6 +119,7 @@ onClickSubmitEditArticle(){
   console.log(this.editArticleForm.value)
 
     if (this.editArticleForm.valid){
+      $('#spinner').removeClass('d-none');
       const id = this.editArticleForm.value.id;
       this.articleService.edit(this.editArticleForm.value).subscribe(
         (data:any)=>{
@@ -126,7 +128,7 @@ onClickSubmitEditArticle(){
       )
       console.log("success")
     }else {
-
+      $('#spinner').addClass('d-none');
       alert("desole le formulaire n'est pas bien renseigné")
     }
 

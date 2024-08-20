@@ -86,13 +86,13 @@ export class EntreeImmoComponent implements OnInit {
       date_mouvement: ["", [Validators.required]],
       code: ["", [Validators.required]],
       designation: ["", [Validators.required]],
-      duree_amorti: ["", [Validators.required]],
+      duree_amorti: ["", [Validators.required,Validators.min(0)]],
 
       bureau_id:['',[Validators.required]],
       employe_id:['',[]],
 
-      montant_ttc: ["",  [ ]],
-      etat: ["",  [ ]],
+      montant_ttc: ["",  [Validators.required,Validators.min(0)]],
+      etat: ["",  [Validators.required]],
       observation: ["",  [ ]],
    });
 
@@ -101,13 +101,13 @@ export class EntreeImmoComponent implements OnInit {
      date_mouvement: ["", [Validators.required]],
      code: ["", [Validators.required]],
      designation: ["", [Validators.required]],
-     duree_amorti: ["", [Validators.required]],
+     duree_amorti: ["", [Validators.required, Validators.min(0)]],
 
      bureau_id:['',[Validators.required]],
-     employe_id:['',[Validators.required]],
+     employe_id:['',[]],
 
-     montant_ttc: ["",  [ ]],
-     etat: ["",  [ ]],
+     montant_ttc: ["", [Validators.required,Validators.min(0)]],
+     etat: ["",  [Validators.required]],
      observation: ["",  [ ]],
   });
    this.deleteEntreeImmoForm = this.formBuilder.group({
@@ -236,12 +236,14 @@ export class EntreeImmoComponent implements OnInit {
   console.log(this.addEntreeImmoForm.value)
 
   if (this.addEntreeImmoForm.valid){
+    $('#spinnerr').removeClass('d-none');
     this.immoService.save(this.addEntreeImmoForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
+    $('#spinnerr').addClass('d-none');
     this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
     this.showAlert=true;
 
@@ -256,6 +258,7 @@ onClickSubmitEditArticle(){
 
     if (this.editEntreeImmoForm.valid){
       const id = this.editEntreeImmoForm.value.id;
+      $('#spinner').removeClass('d-none');
       this.immoService.edit(this.editEntreeImmoForm.value).subscribe(
         (data:any)=>{
           location.reload();
@@ -263,7 +266,7 @@ onClickSubmitEditArticle(){
       )
       console.log("success")
     }else {
-
+      $('#spinner').addClass('d-none');
       alert("desole le formulaire n'est pas bien renseigné")
     }
 

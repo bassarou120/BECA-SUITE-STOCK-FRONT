@@ -201,7 +201,7 @@ export class DataService {
               haseSubSubMenu: false,
             },
      {
-              menuValue: 'Les Fournisseur',
+              menuValue: 'Les Fournisseurs',
               route: "parametrage/fournisseur",
               base: 'attribution-role',
               haseSubSubMenu: false,

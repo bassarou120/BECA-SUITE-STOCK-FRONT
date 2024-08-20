@@ -201,11 +201,13 @@ console.log(currentDate.toISOString().split('T')[0],oneYearFromNow.toISOString()
 
     this.showloader = true;
     if (this.rapportImmoForm.valid) {
+      $('#spinnerr').removeClass('d-none');
       this.immoService.immoRapport(this.rapportImmoForm.value)
         .subscribe(
           (res: any) => {
             // alert(JSON.stringify(res.data));
             if (res.success == true) {
+              $('#spinnerr').addClass('d-none');
               console.log(res.data.data);
               this.ordreVierementData = res.data.data.ordre;
               var url = res.data.url;
@@ -215,16 +217,19 @@ console.log(currentDate.toISOString().split('T')[0],oneYearFromNow.toISOString()
               window.open(url , '_blank');
               location.reload();
             } else {
+              $('#spinnerr').addClass('d-none');
               this.showloader = false;
               alert(res.message);
             }
           },
           (error: any) => {
+            $('#spinnerr').addClass('d-none');
             this.showloader = false;
-            alert("error serveur veuiillez contacter l'administrateur du site");
+            alert("error serveur veuillez contacter l'administrateur du site");
           }
         );
     } else {
+      $('#spinnerr').addClass('d-none');
       this.showloader = false;
       alert('Veuillez bien remplire le formulaire');
     }

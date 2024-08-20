@@ -68,13 +68,14 @@ export class CategorieArticleComponent implements OnInit {
   console.log(this.addCategorieForm.value)
 
   if (this.addCategorieForm.valid){
+    $('#spinnerr').removeClass('d-none');
     this.data.save(this.addCategorieForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
-
+    $('#spinnerr').addClass('d-none');
     alert("desole le formulaire n'est pas bien renseigné")
   }
 
@@ -85,6 +86,7 @@ onClickSubmitEditBanque(){
   console.log(this.editCategorieForm.value)
 
     if (this.editCategorieForm.valid){
+      $('#spinner').removeClass('d-none');
       const id = this.editCategorieForm.value.id;
       this.data.edit(this.editCategorieForm.value).subscribe(
         (data:any)=>{
@@ -93,7 +95,7 @@ onClickSubmitEditBanque(){
       )
       console.log("success")
     }else {
-
+      $('#spinner').addClass('d-none');
       alert("desole le formulaire n'est pas bien renseigné")
     }
 

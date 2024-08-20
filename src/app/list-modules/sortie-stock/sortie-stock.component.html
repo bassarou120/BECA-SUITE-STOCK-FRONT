@@ -65,7 +65,7 @@
                               <th mat-sort-header="departmentName">Categorie</th>
                               <th mat-sort-header="departmentName">Qté</th>
                               <th mat-sort-header="departmentName">Date</th>
-                              <th mat-sort-header="departmentName">Buerau</th>
+                              <th mat-sort-header="departmentName">Bureau</th>
                               <th mat-sort-header="departmentName">Employé</th>
                               <th class="text-end" id="exclusion-1">Actions</th>
                           </tr>
@@ -198,7 +198,7 @@
                         *ngIf="addEntreeStockForm.get('date_mouvement')?.invalid && addEntreeStockForm.get('date_mouvement')?.touched">
                         <small
                             *ngIf="addEntreeStockForm.get('date_mouvement')?.invalid && addEntreeStockForm.get('date_mouvement')?.touched"
-                            class="text-danger"> *le code est obligatoire</small>
+                            class="text-danger"> *la date est obligatoire</small>
                     </div>
                 </div>
 
@@ -212,8 +212,12 @@
                       <mat-option *ngFor="let item of lstArticel" [disabled]="false" [value]="item.id"
                                   >{{ item.libelle }}   </mat-option>
                     </mat-select>
-
-
+                    <div
+                        *ngIf="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched">
+                        <small
+                            *ngIf="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched"
+                            class="text-danger"> *l'article est obligatoire</small>
+                    </div>
                 </div>
 
 
@@ -225,9 +229,10 @@
                            formControlName="qte">
                     <div
                       *ngIf="addEntreeStockForm.get('qte')?.invalid && addEntreeStockForm.get('qte')?.touched">
-                      <small
-                        *ngIf="addEntreeStockForm.get('qte')?.invalid && addEntreeStockForm.get('qte')?.touched"
-                        class="text-danger"> *la Quantité  est obligatoire</small>
+                      <small *ngIf="addEntreeStockForm.get('qte')?.hasError('min')" class="text-danger">
+                        *la quantité  doit etre supérieur ou égale à 0.</small>
+                      <small *ngIf="addEntreeStockForm.get('qte')?.hasError('required')" class="text-danger">
+                        *la quantité  est obligatoire.</small>
                     </div>
                   </div>
 
@@ -241,6 +246,12 @@
                       <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
                       >{{ item.libelle }}   </mat-option>
                     </mat-select>
+                    <div
+                        *ngIf="addEntreeStockForm.get('bureau_id')?.invalid && addEntreeStockForm.get('bureau_id')?.touched">
+                        <small
+                            *ngIf="addEntreeStockForm.get('bureau_id')?.invalid && addEntreeStockForm.get('bureau_id')?.touched"
+                            class="text-danger"> *le bureau est obligatoire</small>
+                    </div>
 
                   </div>
 
@@ -253,6 +264,12 @@
                       <mat-option *ngFor="let item of lstEmployer" [disabled]="false" [value]="item.id"
                       >{{ item.nom }} {{ item.prenom }}    </mat-option>
                     </mat-select>
+                    <div
+                        *ngIf="addEntreeStockForm.get('employe_id')?.invalid && addEntreeStockForm.get('employe_id')?.touched">
+                        <small
+                            *ngIf="addEntreeStockForm.get('employe_id')?.invalid && addEntreeStockForm.get('employe_id')?.touched"
+                            class="text-danger"> *l'employe est obligatoire</small>
+                    </div>
 
                   </div>
 
@@ -262,7 +279,7 @@
 
 
                   <div class="submit-section">
-                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
                     </div>
                 </form>
               </div>
@@ -295,7 +312,7 @@
                       *ngIf="editEntreeStockForm.get('date_mouvement')?.invalid && editEntreeStockForm.get('date_mouvement')?.touched">
                       <small
                         *ngIf="editEntreeStockForm.get('date_mouvement')?.invalid && editEntreeStockForm.get('date_mouvement')?.touched"
-                        class="text-danger"> *le code est obligatoire</small>
+                        class="text-danger"> *la date est obligatoire</small>
                     </div>
                   </div>
 
@@ -320,9 +337,10 @@
                            formControlName="qte">
                     <div
                       *ngIf="editEntreeStockForm.get('qte')?.invalid && editEntreeStockForm.get('qte')?.touched">
-                      <small
-                        *ngIf="editEntreeStockForm.get('qte')?.invalid && editEntreeStockForm.get('qte')?.touched"
-                        class="text-danger"> *le stock d'arlet  est obligatoire</small>
+                      <small *ngIf="editEntreeStockForm.get('qte')?.hasError('min')" class="text-danger">
+                        *la quantité  doit etre supérieur ou égale à 0.</small>
+                      <small *ngIf="editEntreeStockForm.get('qte')?.hasError('required')" class="text-danger">
+                        *la quantité  est obligatoire.</small>
                     </div>
                   </div>
 
@@ -344,7 +362,7 @@
 
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
                     </div>
                 </form>
               </div>

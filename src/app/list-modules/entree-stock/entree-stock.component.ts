@@ -70,8 +70,8 @@ export class EntreeStockComponent implements OnInit {
       article_id: ["", [Validators.required]],
       date_mouvement: ["", [Validators.required]],
       type: ["ENTREE", []],
-      qte: ["", [Validators.required]],
-      fournisseur: ["",  [Validators.required]],
+      qte: ["", [Validators.required,Validators.min(0)]],
+      fournisseur: ["",  []],
    });
 
    this.editEntreeStockForm = this.formBuilder.group({
@@ -79,7 +79,7 @@ export class EntreeStockComponent implements OnInit {
      article_id: ["", [Validators.required]],
      date_mouvement: ["", [Validators.required]],
      type: ["ENTREE", []],
-     qte: ["", [Validators.required]],
+     qte: ["", [Validators.required,Validators.min(0)]],
      fourniseur: ["",  []],
   });
    this.deleteEntreeStockForm = this.formBuilder.group({
@@ -141,13 +141,14 @@ export class EntreeStockComponent implements OnInit {
   console.log(this.addEntreeStockForm.value)
 
   if (this.addEntreeStockForm.valid){
+    $('#spinnerr').removeClass('d-none');
     this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
     )
   }else {
-
+    $('#spinnerr').addClass('d-none');
     alert("desole le formulaire n'est pas bien renseigné")
   }
 
@@ -159,6 +160,7 @@ onClickSubmitEditArticle(){
 
     if (this.editEntreeStockForm.valid){
       const id = this.editEntreeStockForm.value.id;
+      $('#spinner').removeClass('d-none');
       this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe(
         (data:any)=>{
           location.reload();
@@ -166,7 +168,7 @@ onClickSubmitEditArticle(){
       )
       console.log("success")
     }else {
-
+      $('#spinner').addClass('d-none');
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
