@@ -56,4 +56,26 @@ export class immoService {
   immoRapport(data:any ): Observable<Object> {
     return this.http.post(`${this.url}/immo-rapport`, data);
   }
+
+
+
+  saveRepation(data:any ): Observable<Object> {
+    return this.http.post(`${this.url}/reparation`, data);
+  }
+
+  getAllReapartion(): Observable<any> {
+    return this.http.get<any>(`${this.url}/reparation`);
+  }
+
+  editReparation(data:any): Observable<any> {
+    return this.http.put<any>(`${this.url}/reparation/${data.id}`, data);
+  }
+
+  deleteRepartion(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/reparation/${data.id}`);
+  }
+
+
+
+
 }

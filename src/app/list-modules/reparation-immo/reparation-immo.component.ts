@@ -22,23 +22,23 @@ import {immoService} from "../../core/services/immo/immo.service";
 
 @Component({
   selector: 'app-banque',
-  templateUrl: './entree-immo.component.html',
-  styleUrls: ['./entree-immo.component.scss']
+  templateUrl: './reparation-immo.component.html',
+  styleUrls: ['./reparation-immo.component.scss']
 })
-export class EntreeImmoComponent implements OnInit {
+export class ReparationImmoComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
   public lstPst: Array<any>=[];
 
 
-  public lstEntreeImmo: Array<any> = [];
+  public lstReparationImmo: Array<any> = [];
   stockDisponible=0;
   lstCategorie:any;
   lstForuniseur:any;
   lstEmployer:any;
   lstBureau:any;
-  lstArticel:any;
+  lstImmo:any;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
   // pagination variables
@@ -55,14 +55,16 @@ export class EntreeImmoComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
   article_id:any;
-  public addEntreeImmoForm!: FormGroup ;
-  public editEntreeImmoForm!: FormGroup
-  public deleteEntreeImmoForm!: FormGroup
+  public addReparationImmoForm!: FormGroup ;
+  public editReparationImmoForm!: FormGroup
+  public deleteReparationImmoForm!: FormGroup
 
   showAlert=false;
   messageAlert=""
 
   isDisabledBtn=false
+
+  selectedImmo: any;
 
   constructor(private formBuilder: FormBuilder,public router: Router,
               private articleService:articleService,
@@ -79,38 +81,31 @@ export class EntreeImmoComponent implements OnInit {
    // this.getFournisseur();
     this.getBureau();
    this.getEmploye();
-   this.getArticle();
+   this.getImmo();
 
-    this.addEntreeImmoForm = this.formBuilder.group({
+    this.addReparationImmoForm = this.formBuilder.group({
 
       date_mouvement: ["", [Validators.required]],
-      code: ["", [Validators.required]],
-      designation: ["", [Validators.required]],
-      duree_amorti: ["", [Validators.required,Validators.min(0)]],
-
-      bureau_id:['',[Validators.required]],
-      employe_id:['',[]],
-
-      montant_ttc: ["",  [Validators.required,Validators.min(0)]],
-      etat: ["",  [Validators.required]],
+      immo_id:['',[Validators.required]],
+      immo:['',[Validators.required]],
+      panne:['',[Validators.required]],
+      cout:['',[Validators.required]],
       observation: ["",  [ ]],
+
    });
 
-   this.editEntreeImmoForm = this.formBuilder.group({
+   this.editReparationImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
      date_mouvement: ["", [Validators.required]],
-     code: ["", [Validators.required]],
-     designation: ["", [Validators.required]],
-     duree_amorti: ["", [Validators.required, Validators.min(0)]],
-
+     immo_id:['',[Validators.required]],
+     immo:['',[Validators.required]],
+     old_bureau:['',[Validators.required]],
+     old_employe:['',[Validators.required]],
      bureau_id:['',[Validators.required]],
-     employe_id:['',[]],
-
-     montant_ttc: ["", [Validators.required,Validators.min(0)]],
-     etat: ["",  [Validators.required]],
-     observation: ["",  [ ]],
+     employe_id:['',[Validators.required]],
+     Observation: ["",  [ ]],
   });
-   this.deleteEntreeImmoForm = this.formBuilder.group({
+   this.deleteReparationImmoForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
  }
@@ -124,9 +119,20 @@ export class EntreeImmoComponent implements OnInit {
     this.showAlert = true;
   }
 
+
+  selectedImmoChange(){
+
+
+    console.log(this.selectedImmo);
+    this.addReparationImmoForm.get("immo_id")?.setValue(this.selectedImmo.id)
+
+
+
+  }
+
   changeQte(){
 
-    var t=this.stockDisponible-this.addEntreeImmoForm.get('qte')?.value
+    var t=this.stockDisponible-this.addReparationImmoForm.get('qte')?.value
     if(t<0 ){
 
       this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
@@ -140,14 +146,14 @@ export class EntreeImmoComponent implements OnInit {
   changeArtice(){
 
     this.immoService.getSockByArticle({
-      article_id:this.addEntreeImmoForm.get('article_id')?.value
+      article_id:this.addReparationImmoForm.get('article_id')?.value
     }).subscribe(
       (resp:any)=>{
 
         // alert(resp.data.qte)
         this.stockDisponible=resp.data.qte;
 
-        this.addEntreeImmoForm.get('qte')?.setValue('')
+        this.addReparationImmoForm.get('qte')?.setValue('')
 
       }
     )
@@ -215,13 +221,12 @@ export class EntreeImmoComponent implements OnInit {
 
   }
 
-  getArticle(){
+  getImmo(){
 
-    this.articleService.getAll().subscribe(
+    this.immoService.getAll().subscribe(
       (res: any) => {
-
         // alert(JSON.stringify(res.data.data))
-        this.lstArticel=res.data.data
+        this.lstImmo=res.data.data
 
     },
       (error:any)=>{
@@ -231,19 +236,17 @@ export class EntreeImmoComponent implements OnInit {
 
   }
 
- onClickSubmitAddImmo(){
+ onClickSubmitAddReaparationImmo(){
 
-  console.log(this.addEntreeImmoForm.value)
+  console.log(this.addReparationImmoForm.value)
 
-  if (this.addEntreeImmoForm.valid){
-    $('#spinnerr').removeClass('d-none');
-    this.immoService.save(this.addEntreeImmoForm.value).subscribe(
+  if (this.addReparationImmoForm.valid){
+    this.immoService.saveRepation(this.addReparationImmoForm.value).subscribe(
       (data:any)=>{
-        location.reload();
+          location.reload();
       }
     )
   }else {
-    $('#spinnerr').addClass('d-none');
     this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
     this.showAlert=true;
 
@@ -254,30 +257,29 @@ export class EntreeImmoComponent implements OnInit {
 }
 
 onClickSubmitEditArticle(){
-  console.log(this.editEntreeImmoForm.value)
+  console.log(this.editReparationImmoForm.value)
 
-    if (this.editEntreeImmoForm.valid){
-      const id = this.editEntreeImmoForm.value.id;
-      $('#spinner').removeClass('d-none');
-      this.immoService.edit(this.editEntreeImmoForm.value).subscribe(
+    if (this.editReparationImmoForm.valid){
+      const id = this.editReparationImmoForm.value.id;
+      this.immoService.edit(this.editReparationImmoForm.value).subscribe(
         (data:any)=>{
           location.reload();
         }
       )
       console.log("success")
     }else {
-      $('#spinner').addClass('d-none');
+
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
 }
 
-onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeImmoForm.value)
+onClickSubmitDeleteReparation(){
+  console.log(this.deleteReparationImmoForm.value)
 
-    if (this.deleteEntreeImmoForm.valid){
-      const id = this.deleteEntreeImmoForm.value.id;
-      this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
+    if (this.deleteReparationImmoForm.valid){
+      const id = this.deleteReparationImmoForm.value.id;
+      this.immoService.deleteRepartion(this.deleteReparationImmoForm.value).subscribe(
         (data:any)=>{
 
           // alert(JSON.stringify(data))
@@ -295,34 +297,28 @@ onClickSubmitDeleteBanque(){
 
 
 getEditForm(row: any){
-
-  this.editEntreeImmoForm.patchValue({
+  this.editReparationImmoForm.patchValue({
    id:row.id,
+    article_id:row.article_id,
     date_mouvement: row.date_mouvement,
+    qte:row.qte,
     code: row.code,
-    designation: row.designation,
-    duree_amorti: row.duree_amorti,
-    bureau_id: row.bureau_id,
-    employe_id: row.employe_id,
-    montant_ttc: row.montant_ttc,
-    etat: row.etat,
-    observation: row.observation,
-
+    fournisseur: row.fournisseur,
   })
 }
 
 getDeleteForm(row: any){
-  this.deleteEntreeImmoForm.patchValue({
+  this.deleteReparationImmoForm.patchValue({
    id:row.id,
   })
 }
 
 
   private getTableData(): void {
-    this.lstEntreeImmo = [];
+    this.lstReparationImmo = [];
     this.serialNumberArray = [];
 
-    this.immoService.getAll().subscribe((res: any) => {
+    this.immoService.getAllReapartion().subscribe((res: any) => {
       this.totalData = res.data.total;
       res.data.data.map((res: any, index: number) => {
         const serialNumber = index + 1;
@@ -331,15 +327,15 @@ getDeleteForm(row: any){
 
           // alert(res.type);
 
-            this.lstEntreeImmo.push(res);
+            this.lstReparationImmo.push(res);
 
             this.serialNumberArray.push(serialNumber);
 
 
         }
       });
-      console.log(this.lstEntreeImmo);
-      this.dataSource = new MatTableDataSource<any>(this.lstEntreeImmo);
+      console.log(this.lstReparationImmo);
+      this.dataSource = new MatTableDataSource<any>(this.lstReparationImmo);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -399,13 +395,13 @@ getDeleteForm(row: any){
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstEntreeImmo.slice();
+    const data = this.lstReparationImmo.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstEntreeImmo = data;
+      this.lstReparationImmo = data;
     } else {
-      this.lstEntreeImmo = data.sort((a: any, b: any) => {
+      this.lstReparationImmo = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -415,7 +411,7 @@ getDeleteForm(row: any){
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstEntreeImmo = this.dataSource.filteredData;
+    this.lstReparationImmo = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

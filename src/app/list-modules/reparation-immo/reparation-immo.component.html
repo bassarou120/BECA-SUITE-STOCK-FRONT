@@ -7,10 +7,10 @@
       <div class="page-header">
           <div class="row align-items-center">
               <div class="col">
-                  <h3 class="page-title">Liste des sorties de stock</h3>
+                  <h3 class="page-title">Liste des   les réparations ou interventions </h3>
                   <ul class="breadcrumb">
                       <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                      <li class="breadcrumb-item active">Stock</li>
+                      <li class="breadcrumb-item active">Réparations</li>
                   </ul>
               </div>
 
@@ -29,7 +29,7 @@
 
               <div class="col-auto float-end ms-auto">
                   <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                          class="fa-solid fa-plus"></i> Ajouter une sortie</a>
+                          class="fa-solid fa-plus"></i> Ajouter </a>
               </div>
           </div>
       </div>
@@ -61,25 +61,31 @@
                       <thead>
                           <tr>
                               <th style="width: 30px;">#</th>
-                              <th mat-sort-header="departmentName">Article</th>
-                              <th mat-sort-header="departmentName">Categorie</th>
-                              <th mat-sort-header="departmentName">Qté</th>
-                              <th mat-sort-header="departmentName">Date</th>
-                              <th mat-sort-header="departmentName">Bureau</th>
-                              <th mat-sort-header="departmentName">Employé</th>
+
+                              <th mat-sort-header="departmentName">CODE</th>
+                              <th mat-sort-header="departmentName">DESIGNATION</th>
+                              <th mat-sort-header="departmentName">PANNE REPAREE</th>
+                              <th mat-sort-header="departmentName">COUT REAPARTION</th>
+
+                              <th mat-sort-header="departmentName">DATE</th>
+                            <th mat-sort-header="departmentName">OBSERVATION </th>
                               <th class="text-end" id="exclusion-1">Actions</th>
                           </tr>
                       </thead>
                       <tbody>
-                          <tr *ngFor="let item of lstSortieStock; let i = index;">
+                          <tr *ngFor="let item of lstReparationImmo; let i = index;">
                               <td>{{i+1}}</td>
-                              <td>{{ item.article.libelle }}</td>
-                              <td>{{item.article.categorie.libelle}}</td>
+                              <td>{{ item.immo.code}}</td>
+                              <td>{{item.immo.designation}}</td>
 
-                              <td>{{item.qte}}</td>
+                              <td>{{item.panne }}</td>
+                              <td>{{item.cout}}</td>
+
                               <td>{{item.date_mouvement    | date : "dd-MM-YYYY"}}</td>
-                              <td>{{item.affectation.bureau.libelle}}</td>
-                              <td>{{item.affectation.employe.prenom}} {{item.affectation.employe.nom}}</td>
+                              <td>{{item.observation  }}</td>
+
+
+
                               <td class="text-end" id="exclusion-2">
                                   <div class="dropdown dropdown-action">
                                       <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -95,7 +101,7 @@
                                   </div>
                               </td>
                           </tr>
-                          <tr *ngIf="lstSortieStock.length === 0">
+                          <tr *ngIf="lstReparationImmo.length === 0">
                               <td colspan="10">
                                   <h5 style="text-align: center;">Aucun Résultat</h5>
                               </td>
@@ -162,7 +168,7 @@
                             disabled:
                               currentPage ===
                                 pageNumberArray[pageNumberArray.length - 1] ||
-                              lstSortieStock.length === 0
+                              lstReparationImmo.length === 0
                           }">
                                   <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
                                   </a>
@@ -180,106 +186,76 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title">Ajouter une sortie de stock</h5>
+                  <h5 class="modal-title">Réparation/Intervention</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
               </div>
               <div class="modal-body">
-                <form [formGroup]="addEntreeStockForm" (ngSubmit)="onClickSubmitAddEntreeStock()" novalidate>
+                <form [formGroup]="addReparationImmoForm" (ngSubmit)="onClickSubmitAddReaparationImmo()" novalidate>
 
 
                   <div class="input-block mb-3">
                     <label class="col-form-label" for="">Date<span class="text-danger">*</span></label>
                     <input class="form-control" type="date"
-                        [class.invalid]="addEntreeStockForm.get('date_mouvement')?.invalid && addEntreeStockForm.get('date_mouvement')?.touched"
+                        [class.invalid]="addReparationImmoForm.get('date_mouvement')?.invalid && addReparationImmoForm.get('date_mouvement')?.touched"
                         formControlName="date_mouvement">
                     <div
-                        *ngIf="addEntreeStockForm.get('date_mouvement')?.invalid && addEntreeStockForm.get('date_mouvement')?.touched">
+                        *ngIf="addReparationImmoForm.get('date_mouvement')?.invalid && addReparationImmoForm.get('date_mouvement')?.touched">
                         <small
-                            *ngIf="addEntreeStockForm.get('date_mouvement')?.invalid && addEntreeStockForm.get('date_mouvement')?.touched"
+                            *ngIf="addReparationImmoForm.get('date_mouvement')?.invalid && addReparationImmoForm.get('date_mouvement')?.touched"
                             class="text-danger"> *la date est obligatoire</small>
                     </div>
                 </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Article<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Designation<span class="text-danger">*</span></label>
 
-                    <mat-select  class="select mat-cust-select form-control"  (ngModelChange)="changeArtice()"
-
-                                 [class.invalid]="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched"
-                                 formControlName="article_id" placeholder="Selectionner l'article">
-                      <mat-option *ngFor="let item of lstArticel" [disabled]="false" [value]="item.id"
-                                  >{{ item.libelle }}   </mat-option>
-                    </mat-select>
-                    <div
-                        *ngIf="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched">
-                        <small
-                            *ngIf="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched"
-                            class="text-danger"> *l'article est obligatoire</small>
-                    </div>
-                </div>
-
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Quantité<span class="text-danger">*  </span></label><br>
-                    <label class="col-form-label" for=""> <span class="fa-text-slash">  Stock disponible  : {{stockDisponible}} </span></label>
-                    <input class="form-control" type="number" (ngModelChange)="changeQte()"
-                           [class.invalid]="addEntreeStockForm.get('qte')?.invalid && addEntreeStockForm.get('qte')?.touched"
-                           formControlName="qte">
-                    <div
-                      *ngIf="addEntreeStockForm.get('qte')?.invalid && addEntreeStockForm.get('qte')?.touched">
-                      <small *ngIf="addEntreeStockForm.get('qte')?.hasError('min')" class="text-danger">
-                        *la quantité  doit etre supérieur ou égale à 0.</small>
-                      <small *ngIf="addEntreeStockForm.get('qte')?.hasError('required')" class="text-danger">
-                        *la quantité  est obligatoire.</small>
-                    </div>
-                  </div>
-
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Bureau<span class="text-danger">*</span></label>
-
+                    <input type="hidden"    formControlName="immo_id">
                     <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="addEntreeStockForm.get('bureau_id')?.invalid && addEntreeStockForm.get('bureau_id')?.touched"
-                                 formControlName="bureau_id" placeholder="Selectionner le bureau">
-                      <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
-                      >{{ item.libelle }}   </mat-option>
+                                 [(ngModel)]="selectedImmo"
+                                 formControlName="immo"
+                                 (selectionChange)="selectedImmoChange()"
+                                 [class.invalid]="addReparationImmoForm.get('immo')?.invalid && addReparationImmoForm.get('immo')?.touched"
+                                placeholder="Selectionner  ">
+
+                      <mat-option *ngFor="let item of lstImmo" [disabled]="false" [value]="item">{{ item.designation }}   </mat-option>
                     </mat-select>
-                    <div
-                        *ngIf="addEntreeStockForm.get('bureau_id')?.invalid && addEntreeStockForm.get('bureau_id')?.touched">
-                        <small
-                            *ngIf="addEntreeStockForm.get('bureau_id')?.invalid && addEntreeStockForm.get('bureau_id')?.touched"
-                            class="text-danger"> *le bureau est obligatoire</small>
-                    </div>
 
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Employé<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">PANNE REAPAREE<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text"
+                           [class.invalid]="addReparationImmoForm.get('panne')?.invalid && addReparationImmoForm.get('panne')?.touched"
+                           formControlName="panne">
 
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="addEntreeStockForm.get('employe_id')?.invalid && addEntreeStockForm.get('employe_id')?.touched"
-                                 formControlName="employe_id" placeholder="Selectionner l'employé">
-                      <mat-option *ngFor="let item of lstEmployer" [disabled]="false" [value]="item.id"
-                      >{{ item.nom }} {{ item.prenom }}    </mat-option>
-                    </mat-select>
-                    <div
-                        *ngIf="addEntreeStockForm.get('employe_id')?.invalid && addEntreeStockForm.get('employe_id')?.touched">
-                        <small
-                            *ngIf="addEntreeStockForm.get('employe_id')?.invalid && addEntreeStockForm.get('employe_id')?.touched"
-                            class="text-danger"> *l'employe est obligatoire</small>
-                    </div>
+                   </div>
+
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">COUT DE LA REPARATION<span class="text-danger">*</span></label>
+                    <input class="form-control" type="number"
+                           [class.invalid]="addReparationImmoForm.get('cout')?.invalid && addReparationImmoForm.get('cout')?.touched"
+                           formControlName="cout">
 
                   </div>
 
 
+                  <div class="input-block mb-3">
+                    <label class="col-form-label" for="">OBSERVATION<span class="text-danger"></span></label>
+
+                    <textarea class="form-control" name="" id="" cols="30" rows="3"
+                              [class.invalid]="addReparationImmoForm.get('observation')?.invalid && addReparationImmoForm.get('observation')?.touched"
+                              formControlName="observation">
+
+                    </textarea>
 
 
+                  </div>
 
 
                   <div class="submit-section">
-                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
+                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                     </div>
                 </form>
               </div>
@@ -293,76 +269,30 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title">Modifier la Sortie</h5>
+                  <h5 class="modal-title">Modifier </h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
               </div>
               <div class="modal-body">
-                <form [formGroup]="editEntreeStockForm" (ngSubmit)="onClickSubmitEditArticle()" novalidate>
+                <form [formGroup]="editReparationImmoForm" (ngSubmit)="onClickSubmitEditArticle()" novalidate>
 
                   <input type="hidden" formControlName="id">
 
                   <div class="input-block mb-3">
                     <label class="col-form-label" for="">Date<span class="text-danger">*</span></label>
                     <input class="form-control" type="date"
-                           [class.invalid]="editEntreeStockForm.get('date_mouvement')?.invalid && editEntreeStockForm.get('date_mouvement')?.touched"
+                           [class.invalid]="editReparationImmoForm.get('date_mouvement')?.invalid && editReparationImmoForm.get('date_mouvement')?.touched"
                            formControlName="date_mouvement">
-                    <div
-                      *ngIf="editEntreeStockForm.get('date_mouvement')?.invalid && editEntreeStockForm.get('date_mouvement')?.touched">
+                    <div *ngIf="editReparationImmoForm.get('date_mouvement')?.invalid && editReparationImmoForm.get('date_mouvement')?.touched">
                       <small
-                        *ngIf="editEntreeStockForm.get('date_mouvement')?.invalid && editEntreeStockForm.get('date_mouvement')?.touched"
-                        class="text-danger"> *la date est obligatoire</small>
+                        *ngIf="editReparationImmoForm.get('date_mouvement')?.invalid && editReparationImmoForm.get('date_mouvement')?.touched"
+                        class="text-danger"> *le code est obligatoire</small>
                     </div>
                   </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Article<span class="text-danger">*</span></label>
-
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="editEntreeStockForm.get('article_id')?.invalid && editEntreeStockForm.get('article_id')?.touched"
-                                 formControlName="article_id" placeholder="Selectionner l'articel">
-                      <mat-option *ngFor="let item of lstArticel" [disabled]="false" [value]="item.id"
-                      >{{ item.libelle }}   </mat-option>
-                    </mat-select>
-
-
-                  </div>
-
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Quantité<span class="text-danger">*</span></label>
-                    <input class="form-control" type="number"
-                           [class.invalid]="editEntreeStockForm.get('qte')?.invalid && editEntreeStockForm.get('qte')?.touched"
-                           formControlName="qte">
-                    <div
-                      *ngIf="editEntreeStockForm.get('qte')?.invalid && editEntreeStockForm.get('qte')?.touched">
-                      <small *ngIf="editEntreeStockForm.get('qte')?.hasError('min')" class="text-danger">
-                        *la quantité  doit etre supérieur ou égale à 0.</small>
-                      <small *ngIf="editEntreeStockForm.get('qte')?.hasError('required')" class="text-danger">
-                        *la quantité  est obligatoire.</small>
-                    </div>
-                  </div>
-
-
-<!--                  <div class="input-block mb-3">-->
-<!--                    <label class="col-form-label" for="">Fournisseur<span class="text-danger">*</span></label>-->
-
-<!--                    <mat-select  class="select mat-cust-select form-control"-->
-<!--                                 [class.invalid]="editReparationImmoForm.get('fournisseur')?.invalid && editReparationImmoForm.get('fournisseur')?.touched"-->
-<!--                                 formControlName="fournisseur" placeholder="Selectionner le fournisseur">-->
-<!--                      <mat-option *ngFor="let item of lstForuniseur" [disabled]="false" [value]="item.nom"-->
-<!--                      >{{ item.nom }}   </mat-option>-->
-<!--                    </mat-select>-->
-
-
-<!--                  </div>-->
-
-
-
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
                     </div>
                 </form>
               </div>
@@ -377,15 +307,15 @@
           <div class="modal-content">
               <div class="modal-body">
                   <div class="form-header">
-                      <h3>Supprimer l'article</h3>
+                      <h3>Supprimer la réparation</h3>
                       <p>Êtes-vous sûr de vouloir supprimer ?</p>
                   </div>
                   <div class="modal-btn delete-action">
                       <div class="row">
                           <div class="col-6">
-                            <form [formGroup]="deleteEntreeStockForm" (ngSubmit)="onClickSubmitDeleteBanque()">
+                            <form [formGroup]="deleteReparationImmoForm" (ngSubmit)="onClickSubmitDeleteReparation()">
                               <input type="hidden" formControlName="id">
-                              <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteBanque()">Supprimer</a>
+                              <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteReparation()">Supprimer</a>
                             </form>
                           </div>
                           <div class="col-6">

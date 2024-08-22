@@ -142,7 +142,7 @@ export class  SortieStockComponent implements OnInit {
       }
     )
 
-    // alert(this.addTransfertImmoForm.get('article_id')?.value)
+    // alert(this.addReparationImmoForm.get('article_id')?.value)
   }
 
 

@@ -11,6 +11,7 @@ import {EntreeImmoComponent} from "./entree-immo/entree-immo.component";
 import {TransfertImmoComponent} from "./transfert-immo/transfert-immo.component";
 import {rapportImmoComponent} from "./rapportatge-immo/rapport-immo.component";
 import {rapportStockComponent} from "./rapportatge-stock/rapport-stock.component";
+import {ReparationImmoComponent} from "./reparation-immo/reparation-immo.component";
 
 
 
@@ -94,6 +95,12 @@ const routes: Routes = [
       {
         path: 'transfert-immo',
         component: TransfertImmoComponent,
+        canActivate: [GRHGuard],
+      },
+
+      {
+        path: 'repartion-immo',
+        component: ReparationImmoComponent,
         canActivate: [GRHGuard],
       },
 

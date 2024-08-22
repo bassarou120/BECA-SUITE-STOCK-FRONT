@@ -23,6 +23,7 @@ import { TransfertImmoComponent } from './transfert-immo/transfert-immo.componen
 
 import {rapportImmoComponent} from './rapportatge-immo/rapport-immo.component'
 import {rapportStockComponent} from './rapportatge-stock/rapport-stock.component'
+import {ReparationImmoComponent} from './reparation-immo/reparation-immo.component'
 
 import  {AlertComponent} from './common/alert/alert.component'
 
@@ -46,7 +47,8 @@ import  {AlertComponent} from './common/alert/alert.component'
     EntreeImmoComponent,
     TransfertImmoComponent,
     rapportImmoComponent,
-    rapportStockComponent
+    rapportStockComponent,
+    ReparationImmoComponent
 
 
   ],
