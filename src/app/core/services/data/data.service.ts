@@ -102,7 +102,7 @@ export class DataService {
               haseSubSubMenu: false,
             },
             {
-              menuValue: 'Tranfert',
+              menuValue: 'Transfert',
               route: "transfert-immo",
               base: 'demandes',
               haseSubSubMenu: false,
