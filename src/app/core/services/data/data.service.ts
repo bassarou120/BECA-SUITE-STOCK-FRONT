@@ -31,6 +31,8 @@ export class DataService {
           icon: 'dashboard',
           base: 'dashboard',
           materialicons: 'home',
+          dot: false,
+          isActive: false,
           subMenus: [
             {
               menuValue: 'Admin Dashboard',
@@ -59,27 +61,28 @@ export class DataService {
           showSubRoute: false,
           icon: 'box-open',
           base: 'employees',
-          dot: true,
+          dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Entrées de stock',
               route: "entree-stock",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'entree-stock',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Sorties de stock',
               route: "sortie-stock",
-              base: 'demandes',
+              base: 'sortie-stock',
               haseSubSubMenu: false,
             },
 
             {
               menuValue: 'Etat Stock',
               route: "etat-stock",
-              base: 'demandes',
+              base: 'etat-stock',
               haseSubSubMenu: false,
             }
           ]
@@ -92,25 +95,26 @@ export class DataService {
           showSubRoute: false,
           icon: 'digital-tachograph',
           base: 'employees',
-          dot: true,
+          dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Immo/Enregistrement',
               route: 'entree-immo',
-              base: 'mes-contrats',
+              base: 'entree-immo',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Transfert',
               route: "transfert-immo",
-              base: 'demandes',
+              base: 'transfert-immo',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Réparations',
               route: "repartion-immo",
-              base: 'demandes',
+              base: 'repartion-immo',
               haseSubSubMenu: false,
             },
 
@@ -142,20 +146,21 @@ export class DataService {
           icon: 'file',
           base: 'employees',
           dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Rapport stock',
               route: "rapport-stock",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'rapport-stock',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Rapport Immo.',
               route: "rapport-immo",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'rapport-immo',
               haseSubSubMenu: false,
             },
 
@@ -179,31 +184,33 @@ export class DataService {
           showSubRoute: false,
           icon: 'tools',
           base: 'payroll',
+          dot: false,
+          isActive: false,
           materialicons: 'request_quote',
           subMenus: [
             {
               menuValue: 'Liste des bureaux',
               route: "parametrage/bureau",
-              base: 'attribution-role',
+              base: 'parametrage/bureau',
               haseSubSubMenu: false,
             },
 
             {
               menuValue: 'Categorie Articles',
               route: "parametrage/categorie-article",
-              base: 'attribution-role',
+              base: 'parametrage/categorie-article',
               haseSubSubMenu: false,
             },
          {
               menuValue: 'Les Articles',
               route: "parametrage/article",
-              base: 'attribution-role',
+              base: 'parametrage/article',
               haseSubSubMenu: false,
             },
      {
               menuValue: 'Les Fournisseurs',
               route: "parametrage/fournisseur",
-              base: 'attribution-role',
+              base: 'parametrage/fournisseur',
               haseSubSubMenu: false,
             },
             {
@@ -593,6 +600,8 @@ export class DataService {
           icon: 'dashboard',
           base: 'dashboard',
           materialicons: 'home',
+          dot: false,
+          isActive: false,
           subMenus: [
             {
               menuValue: 'Admin Dashboard',
@@ -621,27 +630,28 @@ export class DataService {
           showSubRoute: false,
           icon: 'box-open',
           base: 'employees',
-          dot: true,
+          dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Entrées de stock',
               route: "entree-stock",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'entree-stock',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Sorties de stock',
               route: "sortie-stock",
-              base: 'demandes',
+              base: 'sortie-stock',
               haseSubSubMenu: false,
             },
 
             {
               menuValue: 'Etat Stock',
               route: "etat-stock",
-              base: 'demandes',
+              base: 'etat-stock',
               haseSubSubMenu: false,
             }
           ]
@@ -654,25 +664,26 @@ export class DataService {
           showSubRoute: false,
           icon: 'digital-tachograph',
           base: 'employees',
-          dot: true,
+          dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Immo/Enregistrement',
               route: 'entree-immo',
-              base: 'mes-contrats',
+              base: 'entree-immo',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Tranfert',
               route: "transfert-immo",
-              base: 'demandes',
+              base: 'transfert-immo',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Réparations',
               route: "repartion-immo",
-              base: 'demandes',
+              base: 'repartion-immo',
               haseSubSubMenu: false,
             },
 
@@ -704,20 +715,21 @@ export class DataService {
           icon: 'file',
           base: 'employees',
           dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Rapport stock',
               route: "rapport-stock",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'rapport-stock',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Rapport Immo.',
               route: "rapport-immo",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'rapport-immo',
               haseSubSubMenu: false,
             },
 
@@ -741,31 +753,33 @@ export class DataService {
           showSubRoute: false,
           icon: 'tools',
           base: 'payroll',
+          dot: false,
+          isActive: false,
           materialicons: 'request_quote',
           subMenus: [
             {
               menuValue: 'Liste des bureaux',
               route: "parametrage/bureau",
-              base: 'attribution-role',
+              base: 'parametrage/bureau',
               haseSubSubMenu: false,
             },
 
             {
               menuValue: 'Categorie Articles',
               route: "parametrage/categorie-article",
-              base: 'attribution-role',
+              base: 'parametrage/categorie-article',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Les Articles',
               route: "parametrage/article",
-              base: 'attribution-role',
+              base: 'parametrage/article',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Les Fournisseur',
               route: "parametrage/fournisseur",
-              base: 'attribution-role',
+              base: 'parametrage/fournisseur',
               haseSubSubMenu: false,
             },
             // {
@@ -1155,6 +1169,8 @@ export class DataService {
           icon: 'dashboard',
           base: 'dashboard',
           materialicons: 'home',
+          dot: false,
+          isActive: false,
           subMenus: [
             {
               menuValue: 'Admin Dashboard',
@@ -1183,27 +1199,28 @@ export class DataService {
           showSubRoute: false,
           icon: 'box-open',
           base: 'employees',
-          dot: true,
+          dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Entrées de stock',
               route: "entree-stock",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'entree-stock',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Sorties de stock',
               route: "sortie-stock",
-              base: 'demandes',
+              base: 'sortie-stock',
               haseSubSubMenu: false,
             },
 
             {
               menuValue: 'Etat Stock',
               route: "etat-stock",
-              base: 'demandes',
+              base: 'etat-stock',
               haseSubSubMenu: false,
             }
           ]
@@ -1216,25 +1233,26 @@ export class DataService {
           showSubRoute: false,
           icon: 'digital-tachograph',
           base: 'employees',
-          dot: true,
+          dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Immo/Enregistrement',
               route: 'entree-immo',
-              base: 'mes-contrats',
+              base: 'entree-immo',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Tranfert',
               route: "transfert-immo",
-              base: 'demandes',
+              base: 'transfert-immo',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Réparations',
               route: "repartion-immo",
-              base: 'demandes',
+              base: 'repartion-immo',
               haseSubSubMenu: false,
             },
 
@@ -1266,20 +1284,21 @@ export class DataService {
           icon: 'file',
           base: 'employees',
           dot: false,
+          isActive: false,
           materialicons: 'people',
           subMenus: [
             {
               menuValue: 'Rapport stock',
               route: "rapport-stock",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'rapport-stock',
               haseSubSubMenu: false,
             },
             {
               menuValue: 'Rapport Immo.',
               route: "rapport-immo",
               // route: routes.mes_contrats,
-              base: 'mes-contrats',
+              base: 'rapport-immo',
               haseSubSubMenu: false,
             },
 

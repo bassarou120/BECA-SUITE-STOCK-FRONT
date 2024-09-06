@@ -26,6 +26,7 @@ export interface SideBarMenu {
   subMenus?: SubMenu[];
   dot?: boolean;
   changeLogVersion?: boolean;
+  isActive?: boolean,
 }
 
 export interface SubMenu {
@@ -43,6 +44,7 @@ export interface SubMenu {
   SubSubMenu?: SubSubMenu[];
   showSubSubRoute?: boolean;
   currentActive?: boolean;
+  isActive?: boolean,
 }
 
 export interface SubSubMenu {
