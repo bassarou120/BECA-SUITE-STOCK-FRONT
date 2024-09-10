@@ -208,7 +208,7 @@
                 </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Designation<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Désignation<span class="text-danger">*</span></label>
 
                     <input type="hidden"    formControlName="immo_id">
                     <mat-select  class="select mat-cust-select form-control"
@@ -216,7 +216,7 @@
                                  formControlName="immo"
                                  (selectionChange)="selectedImmoChange()"
                                  [class.invalid]="addTransfertImmoForm.get('immo')?.invalid && addTransfertImmoForm.get('immo')?.touched"
-                                placeholder="Selectionner  ">
+                                placeholder="Sélectionner  ">
                       <mat-option *ngFor="let item of lstImmo" [disabled]="false" [value]="item"
                       >{{ item.designation }}   </mat-option>
                     </mat-select>
@@ -303,7 +303,7 @@
 
 
                   <div class="submit-section">
-                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
+                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégistrer <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
                     </div>
                 </form>
               </div>
@@ -362,7 +362,7 @@
 
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégistrer</button>
                     </div>
                 </form>
               </div>

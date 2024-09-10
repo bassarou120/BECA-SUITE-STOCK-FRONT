@@ -204,7 +204,7 @@
 
                     <mat-select  class="select mat-cust-select form-control"
                                  [class.invalid]="addEntreeStockForm.get('article_id')?.invalid && addEntreeStockForm.get('article_id')?.touched"
-                                 formControlName="article_id" placeholder="Selectionner l'article">
+                                 formControlName="article_id" placeholder="Sélectionner l'article">
                       <mat-option *ngFor="let item of lstArticel" [disabled]="false" [value]="item.id"
                                   >{{ item.libelle }}   </mat-option>
                     </mat-select>
@@ -254,7 +254,7 @@
 
 
                   <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégistrer <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
                     </div>
                 </form>
               </div>
@@ -337,7 +337,7 @@
 
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégistrer <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
                     </div>
                 </form>
               </div>

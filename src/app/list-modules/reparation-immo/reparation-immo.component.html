@@ -209,7 +209,7 @@
                 </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Designation<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">Désignation<span class="text-danger">*</span></label>
 
                     <input type="hidden"    formControlName="immo_id">
                     <mat-select  class="select mat-cust-select form-control"
@@ -217,7 +217,7 @@
                                  formControlName="immo"
                                  (selectionChange)="selectedImmoChange()"
                                  [class.invalid]="addReparationImmoForm.get('immo')?.invalid && addReparationImmoForm.get('immo')?.touched"
-                                placeholder="Selectionner  ">
+                                placeholder="Sélectionner  ">
 
                       <mat-option *ngFor="let item of lstImmo" [disabled]="false" [value]="item">{{ item.designation }}   </mat-option>
                     </mat-select>
@@ -225,7 +225,7 @@
                   </div>
 
                   <div class="input-block mb-3">
-                    <label class="col-form-label" for="">PANNE REAPAREE<span class="text-danger">*</span></label>
+                    <label class="col-form-label" for="">PANNE REPAREE<span class="text-danger">*</span></label>
                     <input class="form-control" type="text"
                            [class.invalid]="addReparationImmoForm.get('panne')?.invalid && addReparationImmoForm.get('panne')?.touched"
                            formControlName="panne">
@@ -255,7 +255,7 @@
 
 
                   <div class="submit-section">
-                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégistrer</button>
                     </div>
                 </form>
               </div>
@@ -292,7 +292,7 @@
                   </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
+                        <button class="btn btn-primary submit-btn" type="submit">Enrégistrer</button>
                     </div>
                 </form>
               </div>
