@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators,FormArray } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
+import {ExportsService, routes, banqueService, getBanque, getFournisseur, getArticle} from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -49,9 +49,12 @@ export class EntreeStockComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
+  articles: getArticle[] = [];
+
   public addEntreeStockForm!: FormGroup ;
-  public editEntreeStockForm!: FormGroup
-  public deleteEntreeStockForm!: FormGroup
+  public editEntreeStockForm!: FormGroup;
+  public deleteEntreeStockForm!: FormGroup;
+  public addEntreeMultipleForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder,public router: Router,
               private articleService:articleService,
@@ -66,13 +69,27 @@ export class EntreeStockComponent implements OnInit {
    this.getFournisseur();
     this.getArticle();
 
-    this.addEntreeStockForm = this.formBuilder.group({
-      article_id: ["", [Validators.required]],
+  //   this.addEntreeStockForm = this.formBuilder.group({
+  //     date_mouvement: ["", [Validators.required]],
+  //     type: ["ENTREE", []],
+  //     fournisseur: ["",  []],
+  //     articles: this.formBuilder.array([
+  //       this.createArticleFormGroup()
+  //     ])
+  //  });
+
+  //  Formulaire pour ajout multiple
+    this.addEntreeMultipleForm = this.formBuilder.group({
       date_mouvement: ["", [Validators.required]],
       type: ["ENTREE", []],
-      qte: ["", [Validators.required,Validators.min(0)]],
-      fournisseur: ["",  []],
-   });
+      fournisseur: ['',  []],
+      articles: this.formBuilder.array([
+        this.createArticleFormGroup()
+      ])
+    });
+
+
+
 
    this.editEntreeStockForm = this.formBuilder.group({
     id: [0, [Validators.required]],
@@ -80,12 +97,32 @@ export class EntreeStockComponent implements OnInit {
      date_mouvement: ["", [Validators.required]],
      type: ["ENTREE", []],
      qte: ["", [Validators.required,Validators.min(0)]],
-     fourniseur: ["",  []],
+     fournisseur: ["",  []],
   });
    this.deleteEntreeStockForm = this.formBuilder.group({
     id: [0, [Validators.required]],
   });
  }
+
+ // Crée un nouveau FormGroup pour un article
+  createArticleFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      article_id: ["", [Validators.required]],
+      qte: ["", [Validators.required,Validators.min(0)]],
+    });
+  }
+  get articlesArray(): FormArray {
+    return this.addEntreeMultipleForm.get('articles') as FormArray;
+  }
+   // Ajoute un nouvel article au FormArray
+  addArticle(): void {
+    this.articlesArray.push(this.createArticleFormGroup());
+  }
+
+  // Supprime un article du FormArray
+  removeArticle(index: number): void {
+    this.articlesArray.removeAt(index);
+  }
 
 
   getCategorie(){
@@ -138,11 +175,11 @@ export class EntreeStockComponent implements OnInit {
 
  onClickSubmitAddEntreeStock(){
 
-  console.log(this.addEntreeStockForm.value)
+  console.log(this.addEntreeMultipleForm.value)
 
-  if (this.addEntreeStockForm.valid){
+  if (this.addEntreeMultipleForm.valid){
     $('#spinnerr').removeClass('d-none');
-    this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
+    this.entreeSortieStockService.saveMultipleMouvementStockEntree(this.addEntreeMultipleForm.value).subscribe(
       (data:any)=>{
         location.reload();
       }
@@ -151,8 +188,6 @@ export class EntreeStockComponent implements OnInit {
     $('#spinnerr').addClass('d-none');
     alert("desole le formulaire n'est pas bien renseigné")
   }
-
-
 }
 
 onClickSubmitEditArticle(){

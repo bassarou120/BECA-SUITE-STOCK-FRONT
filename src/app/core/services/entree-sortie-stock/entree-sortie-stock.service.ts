@@ -19,6 +19,10 @@ export class entreeSortieStockService {
   saveEntree(data:any ): Observable<Object> {
     return this.http.post(`${this.url}/mouvement_stock`, data);
   }
+  // Nouvelle méthode pour l'ajout multiple
+  saveMultipleMouvementStockEntree(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.url}/mouvement_stock/store-multiple`, formData);
+  }
   save(data:any ): Observable<Object> {
     return this.http.post(`${this.url}/article`, data);
   }

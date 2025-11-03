@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { SideBarService } from 'src/app/core/services/side-bar/side-bar.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { WebStorage } from 'src/app/core/services/storage/web.storage';
 import { routes } from 'src/app/core/helpers/routes/routes';
+import { ExportsService, InfosDeBaseService } from 'src/app/core/core.index';
 
 @Component({
   selector: 'app-header-one',
   templateUrl: './header-one.component.html',
   styleUrls: ['./header-one.component.scss'],
 })
-export class HeaderOneComponent {
+export class HeaderOneComponent implements OnInit {
+  nomEntreprise: string | null = null;
   public loggedUserData = this.getLoggedUserData();
   public base = '';
   public page = '';
@@ -20,7 +22,8 @@ export class HeaderOneComponent {
   constructor(
     private sideBar: SideBarService,
     private router: Router,
-    private web: WebStorage
+    private web: WebStorage,
+    private data: InfosDeBaseService,
   ) {
     this.sideBar.toggleSideBar.subscribe((res: string) => {
       if (res === 'true') {
@@ -52,6 +55,20 @@ export class HeaderOneComponent {
     } else {
       this.baricon = false;
     }
+  }
+
+  ngOnInit(): void {
+    this.data.getAllInfoDeBases().subscribe(response => {
+      if (response.success && response.data && response.data.data) {
+        const infoDeBases = response.data.data;
+        const nomEntreParam = infoDeBases.find((param: { cle: string; valeur_txt: string }) => param.cle === 'NOM_ENTREPRISE');
+        this.nomEntreprise = nomEntreParam ? nomEntreParam.valeur_txt : 'Nom Entreprise';
+      } else {
+        console.error('Erreur dans la réponse de l\'API:', response);
+      }
+    }, error => {
+      console.error('Erreur lors de la récupération des données:', error);
+    });
   }
 
   private getLoggedUserData() {
