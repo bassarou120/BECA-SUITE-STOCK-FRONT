@@ -28,8 +28,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   showloader = false;
   form = new UntypedFormGroup({
-    email: new UntypedFormControl('admin@admin.com', [Validators.required]),
-    password: new UntypedFormControl('123456', [Validators.required]),
+    email: new UntypedFormControl('admin2@gmail.com', [Validators.required]),
+    password: new UntypedFormControl('MotDePasse123', [Validators.required]),
   });
 
   get f() {
@@ -54,50 +54,92 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.showloader = true; // alert(JSON.stringify(this.form.value));
+    this.showloader = true;
+    $('#spinner').removeClass('d-none');
+    this.errorMessage = ''; // Optionnel: Réinitialiser le message d'erreur
 
     this.authservice.login(this.form.value).subscribe(
-      (data: any) => {
-        // alert(JSON.stringify(data));
+        // --- Gestion de la réponse réussie (Code HTTP 200) ---
+        (data: any) => {
+            // Le backend renvoie toujours un code 200 en cas de succès et utilise 'success: true'
+            // ou 'success: false' si le compte est inactif mais les identifiants sont corrects.
+            // Il est plus sûr de vérifier 'success: true' dans le corps.
 
-        if (data.message == 'User login successfully.') {
-          console.log(data);
+            if (data.success === true) {
+                console.log(data);
 
-          this.Loginvalue.next('Login success');
+                // La structure de la donnée est maintenant dans data.data
+                const loginData = data.data;
 
-          localStorage.setItem('LoginData', data.data.token);
-          localStorage.setItem('LoginToken', data.data.token);
-          localStorage.setItem('userData', data.data.user);
-          localStorage.setItem(
-            'userDataString',
-            JSON.stringify(data.data.user)
-          );
-          localStorage.setItem('logintime', Date());
-          setTimeout(() => {
-            // this.router.navigateByUrl('/dashboard/admin');
+                this.Loginvalue.next('Login success');
+
+                // Stockage des données (adaptation aux nouvelles clés si nécessaire)
+                // Note : Vous stockiez LoginData et LoginToken avec la même valeur (token) - j'ai gardé cela
+                localStorage.setItem('LoginData', loginData.token);
+                localStorage.setItem('LoginToken', loginData.token);
+
+                // Le détail de l'utilisateur est maintenant dans loginData.user
+                localStorage.setItem('userData', loginData.user); // Stocke l'objet User comme une chaîne [Object object]
+                localStorage.setItem(
+                    'userDataString',
+                    JSON.stringify(loginData.user) // Recommandé: Stocker l'objet JSON sérialisé
+                );
+
+                // Vous pouvez aussi stocker les permissions si vous en avez besoin plus tard
+                localStorage.setItem(
+                    'userPermissions',
+                    JSON.stringify(loginData.perm)
+                );
+
+                localStorage.setItem('logintime', Date());
+
+                // Affichage et redirection
+                setTimeout(() => {
+                    this.showloader = false;
+                    $('#spinner').addClass('d-none');
+                    this.router.navigate(['/dashboard/admin']);
+                }, 100);
+
+                this.Loginvalue.next(0);
+
+            } else {
+                // Ce bloc ne devrait théoriquement pas être atteint si le backend renvoie
+                // un code HTTP 200 uniquement pour 'success: true', mais il est là pour la robustesse.
+                // Selon votre backend, un compte inactif peut renvoyer 200 avec success: false
+                // ou un 403, auquel cas cela serait géré dans le bloc d'erreur.
+                this.showloader = false;
+                $('#spinner').addClass('d-none');
+                alert(data.message || 'Échec de la connexion.');
+            }
+        },
+
+        // --- Gestion des erreurs (Codes HTTP 4xx, 5xx) ---
+        (error: any) => {
+            $('#spinner').addClass('d-none');
             this.showloader = false;
-            this.router.navigate(['/dashboard/admin']);
-          }, 100);
-          // this.router.navigate(['/dashboard/admin']);
-          this.Loginvalue.next(0);
-        } else {
-          this.showloader = false;
-          alert(alert(JSON.stringify(data.message)));
-        }
-      },
-      (error: any) => {
-        this.showloader = false;
-        if (error.error.message == 'Unauthorised.') {
-          // this.router.navigate(['/dashboard/admin']);
-          this.errorMessage ="E-mail ou mot de passe incorrect !";
 
+            console.error("Erreur de connexion:", error);
+
+            // Vérifier le statut HTTP et le corps de l'erreur
+            if (error.status === 401) {
+                // Code 401: Non autorisé (Identifiants incorrects)
+                this.errorMessage = "Identifiants incorrects (E-mail ou mot de passe) !";
+                // Vous pouvez aussi utiliser le message du backend : error.error.message
+                // this.errorMessage = error.error.message;
+            } else if (error.status === 403) {
+                // Code 403: Interdit (Compte inactif)
+                // Le message d'erreur est disponible dans error.error.message ou error.error.errors.failed
+                this.errorMessage = error.error.message || "Compte inactif. Veuillez contacter un administrateur.";
+            } else {
+                // Autres erreurs (ex: 500 Internal Server Error, erreur réseau, etc.)
+                this.errorMessage = "Une erreur est survenue lors de la connexion. Veuillez réessayer.";
+            }
+
+            // Note : Si vous voulez afficher une pop-up :
+            // alert(this.errorMessage);
         }
-        // alert(JSON.stringify(error.error.message));
-      }
     );
-
-    // this.storage.Login(this.form.value);
-  }
+}
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
