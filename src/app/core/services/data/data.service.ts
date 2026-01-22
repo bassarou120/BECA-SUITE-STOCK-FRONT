@@ -1371,13 +1371,16 @@ export class DataService {
   ];
 
 
-
-
-  public sideBar = this.authService.userRole && this.authService.userRole == 1
+public sideBar =
+    this.authService.userRole && this.authService.userRole <= 3
       ? this.adminSideBar
-      :
-    this.authService.userRole && this.authService.userRole == 5 ?
-    this.gsmSideBar:this.asgsmSideBar;
+      : this.gsmSideBar;
+
+  // public sideBar = this.authService.userRole && this.authService.userRole == 1
+  //     ? this.adminSideBar
+  //     :
+  //   this.authService.userRole && this.authService.userRole == 5 ?
+  //   this.gsmSideBar:this.asgsmSideBar;
 
   public getSideBarData: BehaviorSubject<Array<SideBar>> = new BehaviorSubject<
     Array<SideBar>

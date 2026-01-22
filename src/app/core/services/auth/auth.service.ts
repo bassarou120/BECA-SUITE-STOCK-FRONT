@@ -30,8 +30,21 @@ export class AuthService {
   get userRole(): number | null {
     const userDataString = localStorage.getItem('userDataString');
     if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      return userData.role.niveau;
+      try {
+        const userData = JSON.parse(userDataString);
+
+        // VÉRIFIEZ CECI : Si le nouveau rôle_id doit remplacer l'ancien niveau.
+        // La nouvelle structure est : userData.role.id
+        // L'ancien était : userData.role.niveau
+        if (userData && userData.role && userData.role.id) {
+            return userData.role.id;
+        }
+
+        return null; // Retourne null si la structure n'est pas trouvée
+      } catch (e) {
+        console.error("Erreur de parsing de userDataString", e);
+        return null;
+      }
     }
     return null;
   }
