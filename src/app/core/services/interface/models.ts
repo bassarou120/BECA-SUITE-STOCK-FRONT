@@ -953,6 +953,21 @@ export interface getBureau {
   libelle: string;
   description: string;
 }
+export interface getFamille {
+  id: number;
+  code: string;
+  intitule: string;
+}
+export interface getSite {
+  id: number;
+  nom_site: string;
+}
+
+export interface getDirectionCentre {
+  id: number;
+  code: string;
+  intitule: string;
+}
 
 
 
