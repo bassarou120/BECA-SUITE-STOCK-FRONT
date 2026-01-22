@@ -19,6 +19,7 @@ import {DepartmentsComponent} from "./departments/departments.component";
 import {CategorieArticleComponent} from "./categorie-article/categorie-article.component";
 import {ArticleComponent} from "./article/article.component";
 import {FournisseurComponent} from "./fournisseur/fournisseur.component";
+import {CategorieFournisseurComponent} from "./categorie-fournisseur/categorie-fournisseur.component";
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import {FournisseurComponent} from "./fournisseur/fournisseur.component";
     AttributionRoleComponent,
     CategorieArticleComponent,
     ArticleComponent,
-    FournisseurComponent
+    FournisseurComponent,
+    CategorieFournisseurComponent,
   ],
   imports: [
     CommonModule,

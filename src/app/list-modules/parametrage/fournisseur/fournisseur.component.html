@@ -5,33 +5,21 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Liste des fourniseurs </h3>
+                <h3 class="page-title">Liste des fournisseurs</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                    <li class="breadcrumb-item active">fourniseur</li>
+                    <li class="breadcrumb-item active">fournisseur</li>
                 </ul>
             </div>
 
-<!--            <div class="col-auto row">-->
-<!--              <div class="col-auto">-->
-<!--                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF-->
-<!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>-->
-<!--                </a>-->
-<!--              </div>-->
-<!--              <div class="col-auto">-->
-<!--                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL-->
-<!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
-
             <div class="col-auto float-end ms-auto">
                 <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                        class="fa-solid fa-plus"></i> Ajouter un fourniseur</a>
+                        class="fa-solid fa-plus"></i> Ajouter un fournisseur</a>
             </div>
         </div>
     </div>
     <!-- /Page Header -->
+
     <div class="row">
         <div class="col-md-12">
             <div class="table_header">
@@ -39,7 +27,7 @@
                     <div class="col-sm-12 col-md-6">
                         <div class="dataTables_length">
                             <label class="col-form-label" for="">
-                              Afficher
+                                Afficher
                                 <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
                                     class="form-control form-control-sm">
                                     <option value="10">10</option>
@@ -59,18 +47,18 @@
                     <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
-                            <th mat-sort-header="departmentName">Nom</th>
-                            <th mat-sort-header="departmentName">Téléphone</th>
-                            <th mat-sort-header="departmentName">Adresse</th>
+                            <th mat-sort-header="code">Code</th>
+                            <th mat-sort-header="intitule">Intitulé</th>
+                            <th mat-sort-header="categorie">Catégorie</th>
                             <th class="text-end" id="exclusion-1">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of lstFournisseur; let i = index;">
                             <td>{{i+1}}</td>
-                            <td>{{item.nom}}</td>
-                            <td>{{item.telephone}}</td>
-                            <td>{{item.adresse}}</td>
+                            <td><span class="badge bg-inverse-info">{{item.code}}</span></td>
+                            <td>{{item.intitule}}</td>
+                            <td>{{item.categorie?.intitule || 'N/A'}}</td>
                             <td class="text-end" id="exclusion-2">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -87,21 +75,18 @@
                             </td>
                         </tr>
                         <tr *ngIf="lstFournisseur.length === 0">
-                            <td colspan="10">
+                            <td colspan="5">
                                 <h5 style="text-align: center;">Aucun Résultat</h5>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <br />
-        <br />
-        <br />
             </div>
             <div class="table_footer">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_info">
-                      Affichage de {{ serialNumberArray[0] }} à
-                        {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+                        Affichage de {{ serialNumberArray[0] || 0 }} à
+                        {{ serialNumberArray[serialNumberArray.length - 1] || 0 }} sur
                         {{ totalData }} Entrées
                     </div>
                 </div>
@@ -109,54 +94,19 @@
                 <div class="col-sm-12 col-md-7">
                     <div class="pagination_section">
                         <ul class="pagination">
-                            <li class="page-item" [ngClass]="{
-                          disabled: currentPage === 1
-                        }">
+                            <li class="page-item" [ngClass]="{ disabled: currentPage === 1 }">
                                 <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
                                     tabindex="-1">Précédent</a>
                             </li>
-
                             <ng-container *ngFor="let item of pageNumberArray; let i = index">
-                                <li class="page-item" [class.active]="item === currentPage" [ngClass]="
-                            (pageNumberArray[currentPage - 2] > item &&
-                              item !== 1 &&
-                              pageNumberArray.length > 6) ||
-                            (pageNumberArray[currentPage] < item &&
-                              item !== 1 &&
-                              pageNumberArray.length > 6 &&
-                              pageNumberArray.length !== item)
-                              ? 'hide-page-no'
-                              : 'show-page-no'
-                          ">
+                                <li class="page-item" [class.active]="item === currentPage">
                                     <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
                                         {{ item }}
                                     </a>
                                 </li>
-                                <li class="page-item" *ngIf="
-                            i === 0 && pageNumberArray.length > 6 && currentPage > 2
-                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
-                                    <a class="page-link" href="javascript:void(0);"> ... </a>
-                                </li>
-                                <li *ngIf="
-                            i === pageNumberArray.length - 2 &&
-                            pageNumberArray.length > 6
-                          " [hidden]="
-                            currentPage >=
-                              pageNumberArray[pageNumberArray.length - 2] ||
-                            totalData < serialNumberArray[serialNumberArray.length - 1]
-                          " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
-                                    <a class="page-link" href="javascript:void(0);"> ... </a>
-                                </li>
                             </ng-container>
-
-                            <li class="page-item" [ngClass]="{
-                          disabled:
-                            currentPage ===
-                              pageNumberArray[pageNumberArray.length - 1] ||
-                            lstFournisseur.length === 0
-                        }">
-                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
-                                </a>
+                            <li class="page-item" [ngClass]="{ disabled: currentPage === totalPages || lstFournisseur.length === 0 }">
+                                <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant</a>
                             </li>
                         </ul>
                     </div>
@@ -165,8 +115,8 @@
         </div>
     </div>
 </div>
-<!-- /Page Content -->
-<!-- Add Poste Modal -->
+
+<!-- Add Modal -->
 <div id="add_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -177,61 +127,39 @@
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="addFournisseurForm" (ngSubmit)="onClickSubmitAddBanque()" novalidate>
+                <form [formGroup]="addFournisseurForm" (ngSubmit)="onClickSubmitAddBanque()">
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Code <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" formControlName="code" placeholder="Ex: F001">
+                    </div>
 
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Nom du fournisseur<span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="addFournisseurForm.get('nom')?.invalid && addFournisseurForm.get('nom')?.touched"
-                      formControlName="nom">
-                  <div
-                      *ngIf="addFournisseurForm.get('nom')?.invalid && addFournisseurForm.get('nom')?.touched">
-                      <small
-                          *ngIf="addFournisseurForm.get('nom')?.invalid && addFournisseurForm.get('nom')?.touched"
-                          class="text-danger"> *le nom est obligatoire</small>
-                  </div>
-              </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Intitulé / Nom <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" formControlName="intitule">
+                    </div>
 
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Catégorie <span class="text-danger">*</span></label>
+                        <select class="form-select form-control" formControlName="categorie_fournisseur_id">
+                            <option value="">-- Sélectionner une catégorie --</option>
+                            <option *ngFor="let cat of lstCategorie" [value]="cat.id">
+                                {{cat.intitule}}
+                            </option>
+                        </select>
+                    </div>
 
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Téléphone<span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="addFournisseurForm.get('telephone')?.invalid && addFournisseurForm.get('telephone')?.touched"
-                      formControlName="telephone">
-                  <div
-                      *ngIf="addFournisseurForm.get('telephone')?.invalid && addFournisseurForm.get('telephone')?.touched">
-                      <small
-                          *ngIf="addFournisseurForm.get('telephone')?.invalid && addFournisseurForm.get('telephone')?.touched"
-                          class="text-danger"> *le telephone est obligatoire</small>
-                  </div>
-              </div>
-
-
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Adresse<span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="addFournisseurForm.get('adresse')?.invalid && addFournisseurForm.get('adresse')?.touched"
-                      formControlName="adresse">
-                  <div
-                      *ngIf="addFournisseurForm.get('adresse')?.invalid && addFournisseurForm.get('adresse')?.touched">
-                      <small
-                          *ngIf="addFournisseurForm.get('adresse')?.invalid && addFournisseurForm.get('adresse')?.touched"
-                          class="text-danger"> *l'adresse est obligatoire</small>
-                  </div>
-              </div>
-
-
-                  <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
-                  </div>
-              </form>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Enregistrer 
+                            <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-<!-- /Add Poste Modal -->
 
-<!-- Edit poste Modal -->
+<!-- Edit Modal -->
 <div id="edit_department" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -242,84 +170,55 @@
                 </button>
             </div>
             <div class="modal-body">
-              <form [formGroup]="editFournisseurForm" (ngSubmit)="onClickSubmitEditBanque()" novalidate>
+                <form [formGroup]="editFournisseurForm" (ngSubmit)="onClickSubmitEditBanque()">
+                    <input type="hidden" formControlName="id">
+                    
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Code <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" formControlName="code">
+                    </div>
 
-                <div class="input-block mb-3">
-                  <input type="hidden" formControlName="id">
-                  <label class="col-form-label" for="">Nom du fournisseur <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                      [class.invalid]="editFournisseurForm.get('nom')?.invalid && editFournisseurForm.get('nom')?.touched"
-                      formControlName="nom">
-                  <div
-                      *ngIf="editFournisseurForm.get('nom')?.invalid && editFournisseurForm.get('nom')?.touched">
-                      <small
-                          *ngIf="editFournisseurForm.get('nom')?.invalid && editFournisseurForm.get('nom')?.touched"
-                          class="text-danger"> *le libellé est obligatoire</small>
-                  </div>
-              </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Intitulé / Nom <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" formControlName="intitule">
+                    </div>
 
-                <div class="input-block mb-3">
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Catégorie <span class="text-danger">*</span></label>
+                        <select class="form-select form-control" formControlName="categorie_fournisseur_id">
+                            <option *ngFor="let cat of lstCategorie" [value]="cat.id">
+                                {{cat.intitule}}
+                            </option>
+                        </select>
+                    </div>
 
-                  <label class="col-form-label" for="">Téléphone <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                         [class.invalid]="editFournisseurForm.get('telephone')?.invalid && editFournisseurForm.get('telephone')?.touched"
-                         formControlName="telephone">
-                  <div
-                    *ngIf="editFournisseurForm.get('telephone')?.invalid && editFournisseurForm.get('telephone')?.touched">
-                    <small
-                      *ngIf="editFournisseurForm.get('telephone')?.invalid && editFournisseurForm.get('telephone')?.touched"
-                      class="text-danger"> *le telephoneest obligatoire</small>
-                  </div>
-                </div>
-
-
-              <div class="input-block mb-3">
-
-                  <label class="col-form-label" for="">Adresse <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text"
-                         [class.invalid]="editFournisseurForm.get('adresse')?.invalid && editFournisseurForm.get('adresse')?.touched"
-                         formControlName="adresse">
-                  <div
-                    *ngIf="editFournisseurForm.get('adresse')?.invalid && editFournisseurForm.get('adresse')?.touched">
-                    <small
-                      *ngIf="editFournisseurForm.get('adresse')?.invalid && editFournisseurForm.get('adresse')?.touched"
-                      class="text-danger"> *l'adresse est obligatoire</small>
-                  </div>
-                </div>
-
-
-
-
-                <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
-                  </div>
-              </form>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Enregistrer 
+                            <span class="fa fa-spinner fa-spin d-none" id="spinner"></span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-<!-- /Edit Department Modal -->
 
-<!-- Delete Department Modal -->
+<!-- Delete Modal -->
 <div class="modal custom-modal fade" id="delete_department" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Supprimer le bureau</h3>
-                    <p>Êtes-vous sûr de vouloir supprimer ?</p>
+                    <h3>Supprimer le fournisseur</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer ce fournisseur ?</p>
                 </div>
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                          <form [formGroup]="deleteFournisseurForm" (ngSubmit)="onClickSubmitDeleteBanque()">
-                            <input type="hidden" formControlName="id">
-                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteBanque()">Supprimer</a>
-                          </form>
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn" (click)="onClickSubmitDeleteBanque()">Supprimer</a>
                         </div>
                         <div class="col-6">
-                            <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Annuler</a>
+                            <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Annuler</a>
                         </div>
                     </div>
                 </div>
@@ -327,4 +226,3 @@
         </div>
     </div>
 </div>
-<!-- /Delete Department Modal -->
