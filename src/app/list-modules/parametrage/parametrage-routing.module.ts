@@ -10,6 +10,9 @@ import { BanqueComponent } from './banque/banque.component';
 import { RoleComponent } from './role/role.component';
 import { ParametrageComponent } from './parametrage.component';
 import {BureauComponent} from "./bureau/bureau.component";
+import {FamilleComponent} from "./famille/famille.component";
+import {SiteComponent} from "./site/site.component";
+import {DirectionCentreComponent} from "./directionCentre/directionCentre.component";
 import {CategorieArticleComponent} from "./categorie-article/categorie-article.component";
 import {ArticleComponent} from "./article/article.component";
 import {FournisseurComponent} from "./fournisseur/fournisseur.component";
@@ -27,6 +30,9 @@ const routes: Routes = [
     { path: "postes", component: PostesComponent },
     { path: "banque", component: BanqueComponent },
     { path: "bureau", component: BureauComponent },
+    { path: "famille", component: FamilleComponent },
+    { path: "site", component: SiteComponent },
+    { path: "directionCentre", component: DirectionCentreComponent },
     { path: "categorie-article", component: CategorieArticleComponent },
     { path: "article", component: ArticleComponent },
     { path: "fournisseur", component: FournisseurComponent },

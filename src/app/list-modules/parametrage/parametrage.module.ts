@@ -11,6 +11,9 @@ import { ParametrageRoutingModule } from './parametrage-routing.module';
 import {ParametrageComponent} from "./parametrage.component";
 
 import {BureauComponent} from "./bureau/bureau.component";
+import {FamilleComponent} from "./famille/famille.component";
+import {SiteComponent} from "./site/site.component";
+import {DirectionCentreComponent} from "./directionCentre/directionCentre.component";
 import {RoleComponent} from "./role/role.component";
 import {PostesComponent} from "./postes/postes.component";
 
@@ -39,6 +42,9 @@ import {FournisseurComponent} from "./fournisseur/fournisseur.component";
     // TypeDepartComponent,
 
     BureauComponent,
+    DirectionCentreComponent,
+    FamilleComponent,
+    SiteComponent,
     AttributionRoleComponent,
     CategorieArticleComponent,
     ArticleComponent,

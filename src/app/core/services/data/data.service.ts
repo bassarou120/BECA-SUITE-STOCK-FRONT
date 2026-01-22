@@ -188,19 +188,37 @@ export class DataService {
           isActive: false,
           materialicons: 'request_quote',
           subMenus: [
+            // {
+            //   menuValue: 'Liste des bureaux',
+            //   route: "parametrage/bureau",
+            //   base: 'parametrage/bureau',
+            //   haseSubSubMenu: false,
+            // },
             {
-              menuValue: 'Liste des bureaux',
-              route: "parametrage/bureau",
-              base: 'parametrage/bureau',
+              menuValue: 'Liste des Familles',
+              route: "parametrage/famille",
+              base: 'parametrage/famille',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Liste des Sites',
+              route: "parametrage/site",
+              base: 'parametrage/site',
+              haseSubSubMenu: false,
+            },
+            {
+              menuValue: 'Directions/Centres de Consommation',
+              route: "parametrage/directionCentre",
+              base: 'parametrage/directionCentre',
               haseSubSubMenu: false,
             },
 
-            {
-              menuValue: 'Categorie Articles',
-              route: "parametrage/categorie-article",
-              base: 'parametrage/categorie-article',
-              haseSubSubMenu: false,
-            },
+            // {
+            //   menuValue: 'Categorie Articles',
+            //   route: "parametrage/categorie-article",
+            //   base: 'parametrage/categorie-article',
+            //   haseSubSubMenu: false,
+            // },
          {
               menuValue: 'Les Articles',
               route: "parametrage/article",
