@@ -1,0 +1,138 @@
+<div class="page-wrapper">
+    <!-- Page Content -->
+    <div class="content container-fluid">
+  
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="page-title">État réel des stocks</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+              <li class="breadcrumb-item active">Stock actuel</li>
+            </ul>
+          </div>
+  
+          <div class="col-auto float-end ms-auto">
+            <div class="btn-group">
+              <button class="btn btn-white" (click)="exportToXLSX()">
+                <i class="fa-solid fa-file-excel text-success me-1"></i> Excel
+                <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>
+              </button>
+              <button class="btn btn-primary" (click)="getTableData()">
+                <i class="fa-solid fa-rotate"></i> Actualiser
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Page Header -->
+  
+      <!-- Search Filter -->
+      <div class="row filter-row mb-4">
+        <div class="col-sm-6 col-md-9">
+          <div class="input-block mb-3 form-focus">
+            <input type="text" class="form-control floating" (keyup)="searchData(searchDataValue)" [(ngModel)]="searchDataValue">
+            <label class="focus-label">Rechercher un article ou une catégorie...</label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="dataTables_length">
+            <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()" class="form-control form-control-sm">
+              <option [value]="10">10 lignes</option>
+              <option [value]="25">25 lignes</option>
+              <option [value]="50">50 lignes</option>
+              <option [value]="100">100 lignes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- /Search Filter -->
+  
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card shadow-sm">
+            <div id="to_export" class="table-responsive">
+              <table matSort (matSortChange)="sortData($event)" class="table table-hover custom-table mb-0">
+                <thead>
+                  <tr class="bg-light">
+                    <th style="width: 30px;">#</th>
+                    <th mat-sort-header="article_code">Code</th>
+                    <th mat-sort-header="designation">Désignation Article</th>
+                    <th mat-sort-header="famille">Catégorie</th>
+                    <th mat-sort-header="quantite" class="text-center">Quantité en Stock</th>
+                    <th mat-sort-header="stock_alert" class="text-center">Seuil d'Alerte</th>
+                    <th class="text-center">Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of lstEtatStock; let i = index;">
+                    <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                    <td><span class="badge badge-soft-secondary">{{ item.article?.code || 'N/A' }}</span></td>
+                    <td>
+                      <h2 class="table-avatar">
+                        <a href="javascript:void(0);">{{ item.designation }}</a>
+                      </h2>
+                    </td>
+                    <td>{{ item.famille }}</td>
+                    
+                    <!-- Cellule Quantité avec couleur dynamique -->
+                    <td class="text-center">
+                      <span [class]="item.quantite <= item.article?.stock_alert ? 'text-danger fw-bold' : 'text-success fw-bold'">
+                        {{ item.quantite }}
+                      </span>
+                    </td>
+  
+                    <td class="text-center text-muted">{{ item.article?.stock_alert || 0 }}</td>
+  
+                    <!-- Badge Statut -->
+                    <td class="text-center">
+                      <span *ngIf="item.quantite <= 0" class="badge bg-inverse-danger">Rupture</span>
+                      <span *ngIf="item.quantite > 0 && item.quantite <= item.article?.stock_alert" class="badge bg-inverse-warning">Stock Faible</span>
+                      <span *ngIf="item.quantite > item.article?.stock_alert" class="badge bg-inverse-success">Optimal</span>
+                    </td>
+                  </tr>
+                  
+                  <tr *ngIf="lstEtatStock.length === 0">
+                    <td colspan="7" class="text-center py-5">
+                      <i class="fa-solid fa-box-open fa-3x text-muted mb-3"></i>
+                      <h5 class="text-muted">Aucun article trouvé dans l'inventaire</h5>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+  
+          <!-- Table Footer / Pagination -->
+          <div class="table_footer">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info">
+                Affichage de {{ skip + 1 }} à {{ (skip + pageSize > totalData) ? totalData : skip + pageSize }} sur {{ totalData }} articles
+              </div>
+            </div>
+  
+            <div class="col-sm-12 col-md-7">
+              <div class="pagination_section">
+                <ul class="pagination">
+                  <li class="page-item" [ngClass]="{ disabled: currentPage === 1 }">
+                    <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);">Précédent</a>
+                  </li>
+  
+                  <ng-container *ngFor="let item of pageNumberArray">
+                    <li class="page-item" [class.active]="item === currentPage">
+                      <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">{{ item }}</a>
+                    </li>
+                  </ng-container>
+  
+                  <li class="page-item" [ngClass]="{ disabled: currentPage === totalPages || lstEtatStock.length === 0 }">
+                    <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

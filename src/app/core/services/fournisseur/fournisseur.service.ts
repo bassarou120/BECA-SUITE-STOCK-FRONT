@@ -12,25 +12,47 @@ import {environment} from "../../../../environments/environment";
   providedIn: 'root',
 })
 export class fournisseurService {
-  allAppliedCandidates!: Array<object>;
-  url: string = environment.backend ;
+  
+  // URL de base pointant vers la nouvelle ressource API
+  private url: string = `${environment.backend}/fournisseurs-stock`;
+
   constructor(private http: HttpClient) {}
 
-  save(data:any ): Observable<Object> {
-    return this.http.post(`${this.url}/fournisseur`, data);
+  /**
+   * Créer un nouveau fournisseur
+   * @param data { code, intitule, categorie_fournisseur_id }
+   */
+  save(data: any): Observable<any> {
+    return this.http.post<any>(this.url, data);
   }
 
+  /**
+   * Récupérer la liste de tous les fournisseurs
+   */
   getAll(): Observable<any> {
-    return this.http.get<any>(`${this.url}/fournisseur`);
+    return this.http.get<any>(this.url);
   }
 
-
-  edit(data:any): Observable<any> {
-    return this.http.put<any>(`${this.url}/fournisseur/${data.id}`, data);
+  /**
+   * Mettre à jour un fournisseur existant
+   * @param data l'objet contenant l'id et les champs à modifier
+   */
+  edit(data: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/${data.id}`, data);
   }
 
-  delete(data:any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/fournisseur/${data.id}`);
+  /**
+   * Supprimer un fournisseur
+   * @param id l'identifiant du fournisseur
+   */
+  delete(id: number | string): Observable<any> {
+    return this.http.delete<any>(`${this.url}/${id}`);
   }
 
+  /**
+   * Optionnel: Récupérer un seul fournisseur par son ID
+   */
+  getById(id: number | string): Observable<any> {
+    return this.http.get<any>(`${this.url}/${id}`);
+  }
 }

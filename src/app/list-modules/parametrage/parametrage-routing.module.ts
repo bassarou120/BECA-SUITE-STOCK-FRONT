@@ -16,6 +16,7 @@ import {DirectionCentreComponent} from "./directionCentre/directionCentre.compon
 import {CategorieArticleComponent} from "./categorie-article/categorie-article.component";
 import {ArticleComponent} from "./article/article.component";
 import {FournisseurComponent} from "./fournisseur/fournisseur.component";
+import { CategorieFournisseurComponent } from './categorie-fournisseur/categorie-fournisseur.component';
 
 
 
@@ -36,6 +37,7 @@ const routes: Routes = [
     { path: "categorie-article", component: CategorieArticleComponent },
     { path: "article", component: ArticleComponent },
     { path: "fournisseur", component: FournisseurComponent },
+    { path: "categorie-fournisseur", component: CategorieFournisseurComponent },
 
     { path: "role", component: RoleComponent },
 

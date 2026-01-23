@@ -1,42 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
+import { routes } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
+declare var $: any;
 
-import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
-import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
-import {articleService} from "../../core/services/article/article.service";
-import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
-
-
+import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
+import { articleService } from "../../core/services/article/article.service";
+import { fournisseurService } from "../../core/services/fournisseur/fournisseur.service";
 
 @Component({
-  selector: 'app-banque',
+  selector: 'app-entree-stock',
   templateUrl: './entree-stock.component.html',
   styleUrls: ['./entree-stock.component.scss']
 })
 export class EntreeStockComponent implements OnInit {
   public routes = routes;
-  selected = 'option1';
-
-  public lstPst: Array<any>=[];
-
 
   public lstEntreeStock: Array<any> = [];
-  lstCategorie:any;
-  lstForuniseur:any;
-  lstArticel:any;
+  public lstFournisseur: any[] = [];
+  public lstArticle: any[] = [];
+  
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
+
   // pagination variables
-  public lastIndex = 0;
   public pageSize = 10;
   public totalData = 0;
   public skip = 0;
@@ -45,263 +36,93 @@ export class EntreeStockComponent implements OnInit {
   public serialNumberArray: Array<number> = [];
   public currentPage = 1;
   public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<pageSelection> = [];
+  public pageSelection: Array<any> = [];
   public totalPages = 0;
-  //** / pagination variables
 
-  public addEntreeStockForm!: FormGroup ;
-  public editEntreeStockForm!: FormGroup
-  public deleteEntreeStockForm!: FormGroup
+  public addEntreeStockForm!: FormGroup;
+  public editEntreeStockForm!: FormGroup;
+  public deleteEntreeStockForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,public router: Router,
-              private articleService:articleService,
-              private fournisseurService: fournisseurService,
-              private entreeSortieStockService: entreeSortieStockService,
-              private categorieService: categorieArticleService,
-              private exp: ExportsService) {}
-
+  constructor(
+    private formBuilder: FormBuilder,
+    public router: Router,
+    private articleService: articleService,
+    private fournisseurService: fournisseurService,
+    private entreeSortieStockService: entreeSortieStockService
+  ) {}
 
   ngOnInit(): void {
+    this.initForms();
     this.getTableData();
-   this.getFournisseur();
-    this.getArticle();
+    this.getFournisseurs();
+    this.getArticles();
+  }
 
+  private initForms(): void {
     this.addEntreeStockForm = this.formBuilder.group({
       article_id: ["", [Validators.required]],
+      famille_id: ["", [Validators.required]],
+      fournisseur_id: ["", [Validators.required]],
+      reference: ["", [Validators.required]],
+      date_mouvement: [new Date().toISOString().split('T')[0], [Validators.required]],
+      quantite: ["", [Validators.required, Validators.min(1)]],
+      prix_unitaire: ["", [Validators.required, Validators.min(0)]],
+      taux_tva: [0, [Validators.min(0)]],
+      description: ["Entrée de stock"]
+    });
+
+    this.editEntreeStockForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
+      article_id: ["", [Validators.required]],
+      famille_id: ["", [Validators.required]],
+      fournisseur_id: ["", [Validators.required]],
+      reference: ["", [Validators.required]],
       date_mouvement: ["", [Validators.required]],
-      type: ["ENTREE", []],
-      qte: ["", [Validators.required,Validators.min(0)]],
-      fournisseur: ["",  []],
-   });
-
-   this.editEntreeStockForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-     article_id: ["", [Validators.required]],
-     date_mouvement: ["", [Validators.required]],
-     type: ["ENTREE", []],
-     qte: ["", [Validators.required,Validators.min(0)]],
-     fourniseur: ["",  []],
-  });
-   this.deleteEntreeStockForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
- }
-
-
-  getCategorie(){
-
-    this.categorieService.getAll().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data.data))
-        this.lstCategorie=res.data.data
-
-    },
-      (error:any)=>{
-
+      quantite: ["", [Validators.required, Validators.min(1)]],
+      prix_unitaire: ["", [Validators.required, Validators.min(0)]],
+      taux_tva: [0, [Validators.min(0)]],
+      description: [""]
     });
 
-
-  }
-
-  getFournisseur(){
-
-    this.fournisseurService.getAll().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data.data))
-        this.lstForuniseur=res.data.data
-
-    },
-      (error:any)=>{
-
+    this.deleteEntreeStockForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
     });
-
-
   }
 
-  getArticle(){
+  // --- LOGIQUE DE PAGINATION ---
 
-    this.articleService.getAll().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data.data))
-        this.lstArticel=res.data.data
-
-    },
-      (error:any)=>{
-
-    });
-
-
+  public changePageSize(): void {
+    this.pageIndex = 0;
+    this.currentPage = 1;
+    this.skip = 0;
+    this.getTableData();
   }
 
- onClickSubmitAddEntreeStock(){
-
-  console.log(this.addEntreeStockForm.value)
-
-  if (this.addEntreeStockForm.valid){
-    $('#spinnerr').removeClass('d-none');
-    this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
-      (data:any)=>{
-        location.reload();
-      }
-    )
-  }else {
-    $('#spinnerr').addClass('d-none');
-    alert("desole le formulaire n'est pas bien renseigné")
-  }
-
-
-}
-
-onClickSubmitEditArticle(){
-  console.log(this.editEntreeStockForm.value)
-
-    if (this.editEntreeStockForm.valid){
-      const id = this.editEntreeStockForm.value.id;
-      $('#spinner').removeClass('d-none');
-      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe(
-        (data:any)=>{
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-      $('#spinner').addClass('d-none');
-      alert("desole le formulaire n'est pas bien renseigné")
+  public getMoreData(event: string): void {
+    if (event === 'next') {
+      this.currentPage++;
+    } else if (event === 'previous') {
+      this.currentPage--;
     }
-
-}
-
-onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeStockForm.value)
-
-    if (this.deleteEntreeStockForm.valid){
-      const id = this.deleteEntreeStockForm.value.id;
-      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe(
-        (data:any)=>{
-
-          // alert(JSON.stringify(data))
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-
-
-getEditForm(row: any){
-  this.editEntreeStockForm.patchValue({
-   id:row.id,
-    article_id:row.article_id,
-    date_mouvement: row.date_mouvement,
-    qte:row.qte,
-    code: row.code,
-    fournisseur: row.fournisseur,
-  })
-}
-
-getDeleteForm(row: any){
-  this.deleteEntreeStockForm.patchValue({
-   id:row.id,
-  })
-}
-
-
-  private getTableData(): void {
-    this.lstEntreeStock = [];
-    this.serialNumberArray = [];
-
-    this.entreeSortieStockService.getAll().subscribe((res: any) => {
-      this.totalData = res.data.total;
-      res.data.data.map((res: any, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-
-          // alert(res.type);
-          if(res.type=="ENTREE"){
-            this.lstEntreeStock.push(res);
-
-            this.serialNumberArray.push(serialNumber);
-          }
-
-        }
-      });
-      console.log(this.lstEntreeStock);
-      this.dataSource = new MatTableDataSource<any>(this.lstEntreeStock);
-      this.calculateTotalPages(this.totalData, this.pageSize);
-    });
-
-
+    this.pageIndex = this.currentPage - 1;
+    this.skip = this.pageSize * this.pageIndex;
+    this.getTableData();
   }
 
-
-
-  exportToPDF() {
-    $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportBanques().subscribe(
-      (response: any) => {
-        $('#spinner_pdf').addClass('d-none');
-        window.open(response.data, '_blank');
-      },
-      (error: any) => {
-        $('#spinner_pdf').addClass('d-none');
-        alert(JSON.stringify(error));
-      }
-    );
+  public moveToPage(pageNumber: number): void {
+    this.currentPage = pageNumber;
+    this.skip = (pageNumber - 1) * this.pageSize;
+    this.getTableData();
   }
 
-  exportToXLSX() {
-    $('#spinner_xlsx').removeClass('d-none');
-    setTimeout(() => {
-      const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Les Bureau.xlsx";
-
-      if (table) {
-        const wb = XLSX.utils.book_new();
-        const tableCopy = table.cloneNode(true) as HTMLElement;
-
-        const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-        idsToExclude.forEach(id => {
-          const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
-          elementsToRemove.forEach(element => {
-            const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
-            const rows = tableCopy.querySelectorAll('tr');
-            rows.forEach(row => {
-              if (row.children[columnIndex]) {
-                row.removeChild(row.children[columnIndex]);
-              }
-            });
-          });
-        });
-
-        const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Les Bureau");
-
-        XLSX.writeFile(wb, filename);
-        $('#spinner_xlsx').addClass('d-none');
-      } else {
-        console.error("L'Id spécifié n'a pas été trouvé.");
-        $('#spinner_xlsx').addClass('d-none');
-      }
-    }, 10);
-  }
+  // --- LOGIQUE DE TRI ---
 
   public sortData(sort: Sort) {
     const data = this.lstEntreeStock.slice();
-
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
       this.lstEntreeStock = data;
     } else {
-      this.lstEntreeStock = data.sort((a: any, b: any) => {
+      this.lstEntreeStock = data.sort((a, b) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -309,53 +130,130 @@ getDeleteForm(row: any){
     }
   }
 
+  // --- APPELS SERVICES ---
+
+  private getTableData(): void {
+    this.lstEntreeStock = [];
+    this.serialNumberArray = [];
+    
+    // Correction : Utilisation de getAll() conformément au service
+    this.entreeSortieStockService.getAll().subscribe((res: any) => {
+      const data = res.data?.data || res.data || [];
+      this.totalData = res.data?.total || data.length;
+      
+      this.lstEntreeStock = data;
+      this.dataSource = new MatTableDataSource<any>(this.lstEntreeStock);
+      this.calculateTotalPages(this.totalData, this.pageSize);
+    });
+  }
+
+  getFournisseurs(): void {
+    this.fournisseurService.getAll().subscribe((res: any) => {
+      this.lstFournisseur = res.data?.data || res.data || res;
+    });
+  }
+
+  getArticles(): void {
+    this.articleService.getAll().subscribe((res: any) => {
+      this.lstArticle = res.data?.data || res.data || res;
+    });
+  }
+
+  onClickSubmitAddEntreeStock(): void {
+    if (this.addEntreeStockForm.valid) {
+      $('#spinnerr').removeClass('d-none');
+      this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe({
+        next: () => location.reload(),
+        error: (err) => {
+          $('#spinnerr').addClass('d-none');
+          alert(err.error?.message || "Erreur lors de l'enregistrement");
+        }
+      });
+    }
+  }
+
+  onClickSubmitEditEntree(): void {
+    if (this.editEntreeStockForm.valid) {
+      $('#spinner').removeClass('d-none'); // Affiche le spinner de chargement
+  
+      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe({
+        next: (res: any) => {
+          // 1. Rafraîchir les données de la liste principale
+          this.getTableData();
+  
+          // 2. Cacher le spinner
+          $('#spinner').addClass('d-none');
+  
+          // 3. Fermeture automatique du modal de modification
+          const modalElement = document.getElementById('edit_department');
+          const closeBtn = modalElement?.querySelector('.btn-close') as HTMLElement;
+          
+          if (closeBtn) {
+            closeBtn.click(); // Simule le clic sur la croix de fermeture
+          } else {
+            $('#edit_department').modal('hide'); // Repli sur jQuery si nécessaire
+          }
+  
+          alert("Mouvement mis à jour avec succès !");
+        },
+        error: (err) => {
+          $('#spinner').addClass('d-none');
+          console.error(err);
+          alert(err.error?.message || "Erreur lors de la modification");
+        }
+      });
+    }
+  }
+
+  onClickSubmitDelete(): void {
+    if (this.deleteEntreeStockForm.valid) {
+      // Correction : Utilisation de delete() conformément au service
+      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe({
+        next: () => location.reload(),
+        error: (err) => alert("Erreur lors de la suppression")
+      });
+    }
+  }
+
+  // --- UTILITAIRES ---
+
+  onArticleChange(event: any, formType: 'add' | 'edit'): void {
+    const articleId = event.target.value;
+    const selectedArticle = this.lstArticle.find(a => a.id == articleId);
+    if (selectedArticle && selectedArticle.famille_id) {
+      const form = formType === 'add' ? this.addEntreeStockForm : this.editEntreeStockForm;
+      form.patchValue({ famille_id: selectedArticle.famille_id });
+    }
+  }
+
+  getEditForm(row: any): void {
+    this.editEntreeStockForm.patchValue({
+      id: row.id,
+      article_id: row.article_id,
+      famille_id: row.famille_id,
+      fournisseur_id: row.fournisseur_id,
+      reference: row.reference,
+      date_mouvement: row.date_mouvement,
+      quantite: row.quantite,
+      prix_unitaire: row.prix_unitaire,
+      taux_tva: row.taux_tva,
+      description: row.description
+    });
+  }
+
+  getDeleteForm(row: any): void {
+    this.deleteEntreeStockForm.patchValue({ id: row.id });
+  }
+
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.lstEntreeStock = this.dataSource.filteredData;
   }
 
-  public getMoreData(event: string): void {
-    if (event === 'next') {
-      this.currentPage++;
-      this.pageIndex = this.currentPage - 1;
-      this.limit += this.pageSize;
-      this.skip = this.pageSize * this.pageIndex;
-      this.getTableData();
-    } else if (event === 'previous') {
-      this.currentPage--;
-      this.pageIndex = this.currentPage - 1;
-      this.limit -= this.pageSize;
-      this.skip = this.pageSize * this.pageIndex;
-      this.getTableData();
-    }
-  }
-
-  public moveToPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
-    this.skip = this.pageSelection[pageNumber - 1].skip;
-    this.limit = this.pageSelection[pageNumber - 1].limit;
-    if (pageNumber > this.currentPage) {
-      this.pageIndex = pageNumber - 1;
-    } else if (pageNumber < this.currentPage) {
-      this.pageIndex = pageNumber + 1;
-    }
-    this.getTableData();
-  }
-
-  public changePageSize(): void {
-    this.pageSelection = [];
-    this.limit = this.pageSize;
-    this.skip = 0;
-    this.currentPage = 1;
-    this.getTableData();
-  }
-
   private calculateTotalPages(totalData: number, pageSize: number): void {
     this.pageNumberArray = [];
-    this.totalPages = totalData / pageSize;
-    if (this.totalPages % 1 !== 0) {
-      this.totalPages = Math.trunc(this.totalPages + 1);
-    }
+    this.pageSelection = [];
+    this.totalPages = Math.ceil(totalData / pageSize);
     for (let i = 1; i <= this.totalPages; i++) {
       const limit = pageSize * i;
       const skip = limit - pageSize;
@@ -363,8 +261,90 @@ getDeleteForm(row: any){
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
-}
-export interface pageSelection {
-  skip: number;
-  limit: number;
+
+  // Liste temporaire pour stocker les lignes avant envoi
+  articlesAAjouter: any[] = [];
+
+  ajouterLigneALaListe() {
+    const formValues = this.addEntreeStockForm.value;
+    
+    // Trouver l'article sélectionné pour récupérer son nom et sa famille
+    const selectedArticle = this.lstArticle.find(a => a.id == formValues.article_id);
+  
+    if (!selectedArticle || !formValues.quantite || !formValues.prix_unitaire) {
+      alert("Veuillez sélectionner un article, une quantité et un prix.");
+      return;
+    }
+  
+    const nouvelleLigne = {
+      article_id: formValues.article_id,
+      designation: selectedArticle.designation, // Pour l'affichage dans le tableau HTML
+      fournisseur_id: formValues.fournisseur_id,
+      date_mouvement: formValues.date_mouvement,
+      reference: formValues.reference,
+      quantite: formValues.quantite,
+      prix_unitaire: formValues.prix_unitaire,
+      famille_id: selectedArticle.famille_id, // On prend la vraie famille de l'article
+      taux_tva: formValues.taux_tva || 0,
+      description: formValues.description || 'Entrée groupée'
+    };
+  
+    this.articlesAAjouter.push(nouvelleLigne);
+    
+    // On reset uniquement les champs de saisie d'article pour le suivant
+    this.addEntreeStockForm.patchValue({
+      article_id: '',
+      quantite: '',
+      prix_unitaire: ''
+    });
+  }
+
+  retirerLigne(index: number) {
+    this.articlesAAjouter.splice(index, 1);
+  }
+
+  validerToutLeStock() {
+    if (this.articlesAAjouter.length === 0) {
+      alert("La liste est vide !");
+      return;
+    }
+  
+    const estValide = this.articlesAAjouter.every(item => item.fournisseur_id && item.reference);
+  
+    if (!estValide) {
+      alert("Certaines lignes n'ont pas de fournisseur ou de référence. Veuillez recommencer l'ajout.");
+      return;
+    }
+  
+    this.entreeSortieStockService.saveEntree(this.articlesAAjouter).subscribe({
+      next: (res: any) => {
+        this.getTableData();
+        this.articlesAAjouter = [];
+  
+        this.addEntreeStockForm.reset({
+          date_mouvement: new Date().toISOString().split('T')[0],
+          taux_tva: 0,
+          description: "Entrée de stock"
+        });
+  
+        // --- SOLUTION DE FERMETURE ROBUSTE ---
+        // On cherche le bouton de fermeture à l'intérieur du modal d'ajout
+        const modalElement = document.getElementById('add_department');
+        const closeBtn = modalElement?.querySelector('.btn-close') as HTMLElement;
+        
+        if (closeBtn) {
+          closeBtn.click(); // Simule le clic sur la croix
+        } else {
+          // Repli sur jQuery si le bouton n'est pas trouvé
+          $('#add_department').modal('hide');
+        }
+        
+        alert("Stock enregistré avec succès !");
+      },
+      error: (err: any) => {
+        console.error(err);
+        alert("Erreur serveur : " + (err.error?.message || "Vérifiez vos données"));
+      }
+    });
+  }
 }

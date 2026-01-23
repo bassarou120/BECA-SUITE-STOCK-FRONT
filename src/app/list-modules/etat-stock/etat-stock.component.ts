@@ -1,43 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
-
+import { routes } from 'src/app/core/core.index';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
-import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
-import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
-import {articleService} from "../../core/services/article/article.service";
-import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
+declare var $: any;
 
+import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
 
 
 @Component({
-  selector: 'app-banque',
+  selector: 'app-etat-stock',
   templateUrl: './etat-stock.component.html',
   styleUrls: ['./etat-stock.component.scss']
 })
 export class EtatStockComponent implements OnInit {
   public routes = routes;
-  selected = 'option1';
 
-  public lstPst: Array<any>=[];
-
-
-  public lstEntreeStock: Array<any> = [];
-  lstEtatStock:any;
-  lstCategorie:any;
-  lstForuniseur:any;
-  lstArticel:any;
+  // Liste des données
+  public lstEtatStock: Array<any> = [];
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
-  // pagination variables
-  public lastIndex = 0;
+
+  // Pagination
   public pageSize = 10;
   public totalData = 0;
   public skip = 0;
@@ -46,324 +32,99 @@ export class EtatStockComponent implements OnInit {
   public serialNumberArray: Array<number> = [];
   public currentPage = 1;
   public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<pageSelection> = [];
+  public pageSelection: Array<any> = [];
   public totalPages = 0;
-  //** / pagination variables
 
-  public addEntreeStockForm!: FormGroup ;
-  public editEntreeStockForm!: FormGroup
-  public deleteEntreeStockForm!: FormGroup
-
-  constructor(private formBuilder: FormBuilder,public router: Router,
-              private articleService:articleService,
-              private fournisseurService: fournisseurService,
-              private entreeSortieStockService: entreeSortieStockService,
-              private categorieService: categorieArticleService,
-              private exp: ExportsService) {}
-
+  constructor(
+    public router: Router,
+    private entreeSortieStockService: entreeSortieStockService
+  ) {}
 
   ngOnInit(): void {
     this.getTableData();
-   // this.getFournisseur();
-   //  this.getArticle();
-
-    this.addEntreeStockForm = this.formBuilder.group({
-      article_id: ["", [Validators.required]],
-      date_mouvement: ["", [Validators.required]],
-      type: ["ENTREE", []],
-      qte: ["", [Validators.required]],
-      fournisseur: ["",  [Validators.required]],
-   });
-
-   this.editEntreeStockForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-     article_id: ["", [Validators.required]],
-     date_mouvement: ["", [Validators.required]],
-     type: ["ENTREE", []],
-     qte: ["", [Validators.required]],
-     fourniseur: ["",  []],
-  });
-   this.deleteEntreeStockForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
- }
-
-
-  // getCategorie(){
-  //
-  //   this.categorieService.getAll().subscribe(
-  //     (res: any) => {
-  //
-  //       // alert(JSON.stringify(res.data.data))
-  //       this.lstCategorie=res.data.data
-  //
-  //   },
-  //     (error:any)=>{
-  //
-  //   });
-  //
-  //
-  // }
-  //
-  // getFournisseur(){
-  //
-  //   this.fournisseurService.getAll().subscribe(
-  //     (res: any) => {
-  //
-  //       // alert(JSON.stringify(res.data.data))
-  //       this.lstForuniseur=res.data.data
-  //
-  //   },
-  //     (error:any)=>{
-  //
-  //   });
-  //
-  //
-  // }
-  //
-  // getArticle(){
-  //
-  //   this.articleService.getAll().subscribe(
-  //     (res: any) => {
-  //
-  //       // alert(JSON.stringify(res.data.data))
-  //       this.lstImmo=res.data.data
-  //
-  //   },
-  //     (error:any)=>{
-  //
-  //   });
-  //
-  //
-  // }
-
- onClickSubmitAddEntreeStock(){
-
-  console.log(this.addEntreeStockForm.value)
-
-  if (this.addEntreeStockForm.valid){
-    this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
-      (data:any)=>{
-        location.reload();
-      }
-    )
-  }else {
-
-    alert("desole le formulaire n'est pas bien renseigné")
   }
 
-
-}
-
-onClickSubmitEditArticle(){
-  console.log(this.editEntreeStockForm.value)
-
-    if (this.editEntreeStockForm.valid){
-      const id = this.editEntreeStockForm.value.id;
-      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe(
-        (data:any)=>{
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeStockForm.value)
-
-    if (this.deleteEntreeStockForm.valid){
-      const id = this.deleteEntreeStockForm.value.id;
-      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe(
-        (data:any)=>{
-
-          // alert(JSON.stringify(data))
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-
-
-getEditForm(row: any){
-  this.editEntreeStockForm.patchValue({
-   id:row.id,
-    article_id:row.article_id,
-    date_mouvement: row.date_mouvement,
-    qte:row.qte,
-    code: row.code,
-    fournisseur: row.fournisseur,
-  })
-}
-
-getDeleteForm(row: any){
-  this.deleteEntreeStockForm.patchValue({
-   id:row.id,
-  })
-}
-
-
-  private getTableData(): void {
+  public getTableData(): void {
     this.lstEtatStock = [];
     this.serialNumberArray = [];
 
-    this.entreeSortieStockService.getAllStock().subscribe((res: any) => {
-      this.totalData = res.data.total;
-      res.data.data.map((res: any, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
+    // On utilise la méthode qui pointe vers 'get-etat-stock' dans Laravel
+    this.entreeSortieStockService.getAllStock().subscribe({
+      next: (res: any) => {
+        // Selon votre PostResource Laravel, les données sont dans res.data
+        const data = res.data || [];
+        this.totalData = data.length;
 
-          // alert(res.type);
-
-            this.lstEtatStock.push(res);
-
-            this.serialNumberArray.push(serialNumber);
-
-
-        }
-      });
-      console.log(this.lstEtatStock);
-      this.dataSource = new MatTableDataSource<any>(this.lstEtatStock);
-      this.calculateTotalPages(this.totalData, this.pageSize);
-    });
-
-
-  }
-
-
-
-  exportToPDF() {
-    $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportBanques().subscribe(
-      (response: any) => {
-        $('#spinner_pdf').addClass('d-none');
-        window.open(response.data, '_blank');
+        this.lstEtatStock = data;
+        this.dataSource = new MatTableDataSource<any>(this.lstEtatStock);
+        this.calculateTotalPages(this.totalData, this.pageSize);
       },
-      (error: any) => {
-        $('#spinner_pdf').addClass('d-none');
-        alert(JSON.stringify(error));
-      }
-    );
+      error: (err) => console.error("Erreur lors de la récupération du stock", err)
+    });
   }
 
+  // --- LOGIQUE DE RECHERCHE ---
+  public searchData(value: string): void {
+    this.dataSource.filter = value.trim().toLowerCase();
+    this.lstEtatStock = this.dataSource.filteredData;
+  }
+
+  // --- EXPORT EXCEL ---
   exportToXLSX() {
     $('#spinner_xlsx').removeClass('d-none');
-    setTimeout(() => {
-      const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Les Bureau.xlsx";
+    const table: HTMLElement | null = document.getElementById('to_export');
+    if (table) {
+      const ws = XLSX.utils.table_to_sheet(table);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Etat_Stock");
+      XLSX.writeFile(wb, "Etat_du_Stock_" + new Date().toLocaleDateString() + ".xlsx");
+      $('#spinner_xlsx').addClass('d-none');
+    }
+  }
 
-      if (table) {
-        const wb = XLSX.utils.book_new();
-        const tableCopy = table.cloneNode(true) as HTMLElement;
+  // --- PAGINATION (Simplifiée) ---
+  public changePageSize(): void {
+    this.pageIndex = 0;
+    this.currentPage = 1;
+    this.skip = 0;
+    this.getTableData();
+  }
+  public getMoreData(event: string): void {
+    if (event === 'next') {
+      this.currentPage++;
+    } else {
+      this.currentPage--;
+    }
+    this.pageIndex = this.currentPage - 1;
+    this.skip = this.pageSize * this.pageIndex;
+    this.getTableData();
+  }
 
-        const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-        idsToExclude.forEach(id => {
-          const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
-          elementsToRemove.forEach(element => {
-            const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
-            const rows = tableCopy.querySelectorAll('tr');
-            rows.forEach(row => {
-              if (row.children[columnIndex]) {
-                row.removeChild(row.children[columnIndex]);
-              }
-            });
-          });
-        });
+  public moveToPage(pageNumber: number): void {
+    this.currentPage = pageNumber;
+    this.skip = (pageNumber - 1) * this.pageSize;
+    this.getTableData();
+  }
 
-        const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Les Bureau");
-
-        XLSX.writeFile(wb, filename);
-        $('#spinner_xlsx').addClass('d-none');
-      } else {
-        console.error("L'Id spécifié n'a pas été trouvé.");
-        $('#spinner_xlsx').addClass('d-none');
-      }
-    }, 10);
+  private calculateTotalPages(totalData: number, pageSize: number): void {
+    this.pageNumberArray = [];
+    this.totalPages = Math.ceil(totalData / pageSize);
+    for (let i = 1; i <= this.totalPages; i++) {
+      this.pageNumberArray.push(i);
+      this.pageSelection.push({ skip: (i - 1) * pageSize, limit: i * pageSize });
+    }
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstEntreeStock.slice();
-
-    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const data = this.lstEtatStock.slice();
     if (!sort.active || sort.direction === '') {
-      this.lstEntreeStock = data;
+      this.lstEtatStock = data;
     } else {
-      this.lstEntreeStock = data.sort((a: any, b: any) => {
+      this.lstEtatStock = data.sort((a, b) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
       });
     }
   }
-
-  public searchData(value: string): void {
-    this.dataSource.filter = value.trim().toLowerCase();
-    this.lstEntreeStock = this.dataSource.filteredData;
-  }
-
-  public getMoreData(event: string): void {
-    if (event === 'next') {
-      this.currentPage++;
-      this.pageIndex = this.currentPage - 1;
-      this.limit += this.pageSize;
-      this.skip = this.pageSize * this.pageIndex;
-      this.getTableData();
-    } else if (event === 'previous') {
-      this.currentPage--;
-      this.pageIndex = this.currentPage - 1;
-      this.limit -= this.pageSize;
-      this.skip = this.pageSize * this.pageIndex;
-      this.getTableData();
-    }
-  }
-
-  public moveToPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
-    this.skip = this.pageSelection[pageNumber - 1].skip;
-    this.limit = this.pageSelection[pageNumber - 1].limit;
-    if (pageNumber > this.currentPage) {
-      this.pageIndex = pageNumber - 1;
-    } else if (pageNumber < this.currentPage) {
-      this.pageIndex = pageNumber + 1;
-    }
-    this.getTableData();
-  }
-
-  public changePageSize(): void {
-    this.pageSelection = [];
-    this.limit = this.pageSize;
-    this.skip = 0;
-    this.currentPage = 1;
-    this.getTableData();
-  }
-
-  private calculateTotalPages(totalData: number, pageSize: number): void {
-    this.pageNumberArray = [];
-    this.totalPages = totalData / pageSize;
-    if (this.totalPages % 1 !== 0) {
-      this.totalPages = Math.trunc(this.totalPages + 1);
-    }
-    for (let i = 1; i <= this.totalPages; i++) {
-      const limit = pageSize * i;
-      const skip = limit - pageSize;
-      this.pageNumberArray.push(i);
-      this.pageSelection.push({ skip: skip, limit: limit });
-    }
-  }
-}
-export interface pageSelection {
-  skip: number;
-  limit: number;
 }

@@ -232,6 +232,12 @@ export class DataService {
               haseSubSubMenu: false,
             },
             {
+              menuValue: 'Catégorie Fournisseurs',
+              route: "parametrage/categorie-fournisseur",
+              base: 'parametrage/categorie-fournisseur',
+              haseSubSubMenu: false,
+            },
+            {
               menuValue: 'Attribution des rôles',
               route: routes.attribution_roles,
               base: 'attribution-role',
