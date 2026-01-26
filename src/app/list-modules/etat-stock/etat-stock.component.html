@@ -67,10 +67,10 @@
                   <tbody>
                     <tr *ngFor="let item of lstEtatStock; let i = index;">
                       <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                      <td><span class="text-center">{{ item.code || 'N/A' }}</span></td>
+                      <td><span class="text-center">{{ item.code_article || 'N/A' }}</span></td>
                       <td>
                         <h2 class="table-avatar">
-                          <a href="javascript:void(0);">{{ item.designation }}</a>
+                          <a href="javascript:void(0);">{{ item.article }}</a>
                         </h2>
                       </td>
                       <!-- Cellule Quantité avec couleur dynamique -->
