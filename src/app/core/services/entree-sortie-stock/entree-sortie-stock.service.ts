@@ -35,8 +35,13 @@ export class entreeSortieStockService {
   }
 
 
-  edit(data:any): Observable<any> {
-    return this.http.put<any>(`${this.url}/mouvement_stock/${data.id}`, data);
+  edit(data: FormData): Observable<any> {
+    // On récupère l'ID depuis le FormData (car data n'est plus un objet simple)
+    const id = data.get('id'); 
+    
+    // On utilise POST au lieu de PUT pour supporter les fichiers
+    // Laravel comprendra que c'est un PUT grâce au champ '_method' que nous avons ajouté dans le composant
+    return this.http.post<any>(`${this.url}/mouvement_stock/${id}`, data);
   }
 
   delete(data:any): Observable<any> {
