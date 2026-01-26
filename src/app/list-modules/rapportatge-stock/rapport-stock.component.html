@@ -1,31 +1,24 @@
-<!-- Page Wrapper -->
-
 <div class="page-wrapper">
-  <!-- Page Content -->
   <div class="content container-fluid">
-    <!-- Page Header -->
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
           <h3 class="page-title">Gestion des Rapports des stocks</h3>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a>Tableau de bord</a>
-            </li>
+            <li class="breadcrumb-item"><a>Tableau de bord</a></li>
             <li class="breadcrumb-item active">Rapports Stock</li>
           </ul>
         </div>
-        <div class="col-auto float-end ms-auto"></div>
       </div>
     </div>
-    <!-- /Page Header -->
 
     <div class="container">
-      <div class="card profile-box flex-fill">
+      <div class="card shadow-sm">
         <div class="card-body">
-          <h3 class="card-title">Générer un rapport</h3>
+          <h3 class="card-title">Paramètres du rapport</h3>
 
-          <div id="loader-wrapper_bassarou" *ngIf="showloader == true">
+          <!-- Loader -->
+          <div id="loader-wrapper_bassarou" *ngIf="showloader">
             <div id="loader">
               <div class="loader-ellips">
                 <span class="loader-ellips__dot"></span>
@@ -36,136 +29,94 @@
             </div>
           </div>
 
-          <form
-            [formGroup]="rapportImmoForm"
-            (ngSubmit)="onClickSubmitRapportImmo()"
-          >
+          <form [formGroup]="rapportStockForm">
             <div class="row">
               <div class="col-md-4">
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Type de rapport </label>
-
-                  <mat-select
-                    [(ngModel)]="selectedType"
-                    class="user-assets select form-control"
-                    placeholder="Selectionner le type de rapport"
-
-                    formControlName="type_rapport"
-                  >
-                    <mat-option  value="rapport_entree"  >
-                      RAPPORT DES ENTREES
-                    </mat-option>
-
-                    <mat-option  value="rapport_sortie"  >
-                      RAPPORT DES SORTIES
-                    </mat-option>
-
-                    <mat-option  value="rapport_etat"  >
-                      RAPPORT ETAT DU STOCK
-                    </mat-option>
-
-
-
+                  <label class="col-form-label">Type de rapport</label>
+                  <mat-select class="select form-control" formControlName="type_rapport" placeholder="Sélectionner un rapport">
+                  <mat-option value="rapport_entree">RAPPORT DES ENTREES</mat-option>
+                  <mat-option value="rapport_sortie">RAPPORT DES SORTIES</mat-option>
+                  <mat-option value="rapport_etat">RAPPORT ETAT DU STOCK</mat-option>
                   </mat-select>
                 </div>
               </div>
 
-
-              <div class="col-md-4" *ngIf="selectedType=='fiche_mise_dispo'">
+              <div class="col-md-4" *ngIf="rapportStockForm.get('type_rapport')?.value !== 'rapport_etat'">
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Localisation</label>
-
-                  <mat-select  class="select mat-cust-select form-control"
-
-                               formControlName="bureau_id" placeholder="Selectionner le bureau">
-                    <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
-                    >{{ item.libelle }}   </mat-option>
-                  </mat-select>
-                </div>
-              </div>
-              <div class="col-md-4" *ngIf="selectedType=='fiche_mise_dispo'">
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Utilisateur</label>
-
-                  <mat-select  class="select mat-cust-select form-control"
-
-                               formControlName="employe_id" placeholder="Selectionner l'employé">
-                    <mat-option *ngFor="let item of lstEmployer" [disabled]="false" [value]="item.id"
-                    >{{ item.nom }} {{ item.prenom }}    </mat-option>
-                  </mat-select>
+                  <label class="col-form-label">Date de début</label>
+                  <input type="date" class="form-control" formControlName="date_debut">
                 </div>
               </div>
 
               <div class="col-md-4">
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Date de debut </label>
-
-                  <input type="date"  class="user-assets select form-control"
-                         placeholder=""
-
-                         formControlName="date_debut">
-
+                  <label class="col-form-label">Date de fin</label>
+                  <input type="date" class="form-control" formControlName="date_fin">
                 </div>
               </div>
+            </div>
 
-              <div class="col-md-4">
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Date de fin </label>
-
-                  <input type="date"  class="user-assets select form-control"
-                         placeholder=""
-
-                         formControlName="date_fin">
-
-                </div>
-              </div>
-
-
-
-              <div class="submit-section">
-                <button class="btn btn-primary submit-btn">Valider <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
+            <div class="row mt-3 text-center">
+              <div class="col-md-12">
+                <!-- Bouton 1 : On charge la liste -->
+                <button class="btn btn-info me-2" type="button" (click)="onClickSubmitRapportStock()">
+                  <i class="fa fa-list"></i> Afficher la liste
+                </button>
+                
+                <!-- Bouton 2 : Apparaît si la liste est chargée -->
+                <button *ngIf="lstMouvements.length > 0" class="btn btn-primary" type="button" (click)="telechargerPdf()">
+                  <i class="fa fa-file-pdf-o"></i> Télécharger le PDF
+                  <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span>
+                </button>
               </div>
             </div>
           </form>
 
-          <br />
+          <!-- Tableau des résultats -->
 
-          <div
-            *ngIf="ordreVierementData.length != 0"
-            class="table-responsive table-newdatatable"
-          >
-            <div class="row">
-              <a
-                (click)="telechargerOrdreVirement()"
-                class="btn btn-success w-2"
-              >
-                Télécharger
-              </a>
-            </div>
-
-            <table class="table table-new custom-table mb-0 datatable">
+          <div class="table-responsive mt-4" *ngIf="lstMouvements && lstMouvements.length > 0">
+            <table class="table table-striped custom-table mb-0">
               <thead>
                 <tr>
-                  <th class="tg-i68j">Nº</th>
-                  <th class="tg-nxfp">Nom et prénoms</th>
-                  <th class="tg-nxfp">Nº compte</th>
-                  <th class="tg-gljr">Montant</th>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Référence</th>
+                  <th>Article</th>
+                  <th>Fournisseur</th>
+                  <th class="text-center">Qté</th>
+                  <th class="text-end">P.U HT</th>
+                  <th class="text-end">Total</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let c of ordreVierementData; let i = index">
+                <tr *ngFor="let m of lstMouvements; let i = index">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ c.employe }}</td>
-                  <td>{{ c.rib }}</td>
-                  <td>{{ c.salaire_net | number }}</td>
+                  <td>{{ m.date_mouvement | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                  <span class="badge bg-inverse-info">{{ m.reference }}</span>
+                  </td>
+                  <!-- Modification ici pour utiliser l'alias du contrôleur -->
+                  <td>{{ m.article_nom }}</td>
+                  <td>{{ m.fournisseur_nom }}</td>
+                  <td class="text-center">{{ m.quantite }}</td>
+                  <td class="text-end">{{ m.prix_unitaire | number }}</td>
+                  <td class="text-end fw-bold">
+                  {{ (m.quantite * m.prix_unitaire) | number }} FCFA
+                  </td>
                 </tr>
               </tbody>
             </table>
-            <br /><br /><br />
           </div>
+          
+          <!-- Message si aucun résultat -->
+          
+          <div class="alert alert-info mt-4 text-center" *ngIf="lstMouvements && lstMouvements.length === 0">
+          Aucun mouvement trouvé pour cette période.
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- /Page Wrapper -->

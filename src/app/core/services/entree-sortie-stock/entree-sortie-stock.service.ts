@@ -6,7 +6,7 @@ import {
   apiResultFormat,
   routes,
 } from '../../core.index';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {environment} from "../../../../environments/environment";
 @Injectable({
   providedIn: 'root',
@@ -51,5 +51,31 @@ export class entreeSortieStockService {
 
   getSockByArticle(data:any ): Observable<Object> {
     return this.http.post(`${this.url}/getSockByArticle`, data);
+  }
+
+  /**
+   * Récupère les données du rapport d'entrées (JSON)
+   * @param filters {date_debut, date_fin}
+   */
+  getRapportEntreesData(filters: any): Observable<any> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+    
+    return this.http.get<any>(`${this.url}/rapports/entrees/data`, { params });
+  }
+
+  /**
+   * Génère l'URL pour le téléchargement du PDF des entrées
+   * @param filters {date_debut, date_fin}
+   */
+  exportPdfEntrees(filters: any): Observable<any> {
+    // Dans votre architecture, le backend semble retourner un JSON contenant l'URL du fichier généré
+    // ou bien on construit l'URL directement si le backend télécharge le flux.
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+
+    return this.http.get<any>(`${this.url}/rapports/entrees/pdf`, { params });
   }
 }
