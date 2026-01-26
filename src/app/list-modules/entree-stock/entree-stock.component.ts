@@ -24,6 +24,10 @@ export class EntreeStockComponent implements OnInit {
   public lstEntreeStock: Array<any> = [];
   public lstFournisseur: any[] = [];
   public lstArticle: any[] = [];
+
+  // Variables pour le regroupement
+  public lstDetailsArrivage: any[] = [];
+  public refSelectionnee: string = '';
   
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
@@ -142,13 +146,34 @@ export class EntreeStockComponent implements OnInit {
     }
   }
 
+  // --- GESTION DU REGROUPEMENT ET DÉTAILS ---
+
+  /**
+   * Récupère les détails d'un arrivage spécifique par sa référence
+   * Appelée lors du clic sur "Voir détails"
+   */
+  voirDetailsArrivage(reference: string) {
+    this.refSelectionnee = reference;
+    this.lstDetailsArrivage = [];
+    
+    // On utilise le service pour récupérer les lignes spécifiques à cette référence
+    // Note: Assurez-vous que cette méthode getDétailsParRéférence existe dans votre service
+    this.entreeSortieStockService.getDétailsParRéférence(reference).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.lstDetailsArrivage = res.data;
+        }
+      },
+      error: (err) => console.error("Erreur détails arrivage", err)
+    });
+  }
   // --- APPELS SERVICES ---
 
   private getTableData(): void {
     this.lstEntreeStock = [];
     this.serialNumberArray = [];
     
-    // Correction : Utilisation de getAll() conformément au service
+    // Le backend renvoie maintenant des données groupées via indexEntree()
     this.entreeSortieStockService.getAll().subscribe((res: any) => {
       const data = res.data?.data || res.data || [];
       this.totalData = res.data?.total || data.length;
