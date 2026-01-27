@@ -1,537 +1,948 @@
 <div class="page-wrapper">
-<!-- Page Content -->
+  <!-- Page Content -->
   <div class="content container-fluid">
+    <app-alert
+      [message]="messageAlert"
+      [show]="showAlert"
+      [onClose]="hideAlert.bind(this)"
+    ></app-alert>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Liste des immobilisations</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item active">Immobilisation</li>
+          </ul>
+        </div>
 
-    <app-alert [message]="messageAlert" [show]="showAlert" [onClose]="hideAlert.bind(this)"></app-alert>
-      <!-- Page Header -->
-      <div class="page-header">
-          <div class="row align-items-center">
-              <div class="col">
-                  <h3 class="page-title">Liste des immobilisations</h3>
-                  <ul class="breadcrumb">
-                      <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                      <li class="breadcrumb-item active">Immobilisation</li>
-                  </ul>
-              </div>
+        <!--            <div class="col-auto row">-->
+        <!--              <div class="col-auto">-->
+        <!--                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF-->
+        <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>-->
+        <!--                </a>-->
+        <!--              </div>-->
+        <!--              <div class="col-auto">-->
+        <!--                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL-->
+        <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>-->
+        <!--                </a>-->
+        <!--              </div>-->
+        <!--            </div>-->
 
-  <!--            <div class="col-auto row">-->
-  <!--              <div class="col-auto">-->
-  <!--                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF-->
-  <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>-->
-  <!--                </a>-->
-  <!--              </div>-->
-  <!--              <div class="col-auto">-->
-  <!--                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL-->
-  <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>-->
-  <!--                </a>-->
-  <!--              </div>-->
-  <!--            </div>-->
-
-              <div class="col-auto float-end ms-auto">
-                  <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                          class="fa-solid fa-plus"></i> Ajouter </a>
-              </div>
-          </div>
+        <div class="col-auto float-end ms-auto">
+          <a
+            class="btn add-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#add_immo"
+            ><i class="fa-solid fa-plus"></i> Ajouter
+          </a>
+        </div>
       </div>
-      <!-- /Page Header -->
-      <div class="row">
-          <div class="col-md-12">
-              <div class="table_header">
-                  <div class="row">
-                      <div class="col-sm-12 col-md-6">
-                          <div class="dataTables_length">
-                              <label class="col-form-label" for="">
-                                Afficher
-                                  <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
-                                      class="form-control form-control-sm">
-                                      <option value="10">10</option>
-                                      <option value="25">25</option>
-                                      <option value="50">50</option>
-                                      <option value="100">100</option>
-                                  </select>
-                                  Entrées
-                              </label>
-                          </div>
-                      </div>
-                  </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table_header">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length">
+                <label class="col-form-label" for="">
+                  Afficher
+                  <select
+                    [(ngModel)]="pageSize"
+                    (ngModelChange)="changePageSize()"
+                    class="form-control form-control-sm"
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  Entrées
+                </label>
               </div>
-              <div id="to_export" class="table-responsive">
-                  <table matSort (matSortChange)="sortData($event)"
-                      class="table table-striped custom-table datatable mb-0">
-                      <thead>
-                          <tr>
-                              <th style="width: 30px;">#</th>
-                              <th mat-sort-header="departmentName">CODE</th>
-                              <th mat-sort-header="departmentName">DESIGNATION</th>
-                              <th mat-sort-header="departmentName">LOCALISATION</th>
-                              <th mat-sort-header="departmentName">EMPLOYE</th>
-                              <th mat-sort-header="departmentName">DATE</th>
-                              <th mat-sort-header="departmentName">ETAT</th>
-                              <th mat-sort-header="departmentName">MONTANT</th>
-                              <th mat-sort-header="departmentName"> AMORTI.</th>
-                              <th class="text-end" id="exclusion-1">Actions</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr *ngFor="let item of lstEntreeImmo; let i = index;">
-                              <td>{{i+1}}</td>
-                              <td>{{ item.code}}</td>
-                              <td>{{item.designation}}</td>
+            </div>
+          </div>
+        </div>
+        <div id="to_export" class="table-responsive">
+          <table
+            matSort
+            (matSortChange)="sortData($event)"
+            class="table table-striped custom-table datatable mb-0"
+          >
+            <thead>
+              <tr>
+                <th style="width: 30px">#</th>
+                <th mat-sort-header="code">CODE</th>
+                <th mat-sort-header="designation">DESIGNATION</th>
+                <th mat-sort-header="date_entree">DATE D'ENTREE</th>
+                <th mat-sort-header="valeur_origine">VALEUR ORIGINE</th>
+                <th mat-sort-header="duree_amortissement">
+                  DUREE AMORTISSEMENT
+                </th>
+                <th mat-sort-header="duree_amortissement">
+                  DUREE AMORTISSEMENT
+                </th>
+                <th mat-sort-header="localisation">SITE</th>
+                <th mat-sort-header="localisation">LOCALISATION</th>
+                <th mat-sort-header="etat">ETAT</th>
+                <th class="text-end" id="exclusion-1">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lstEntreeImmo; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.code }}</td>
+                <td>{{ item.designation }}</td>
+                <td>{{ item.date_entree }}</td>
+                <td>{{ item.valeur_origine }}</td>
+                <td>{{ item.duree_amortissement }}</td>
+                <td>{{ item.date_fin_amortissement }}</td>
+                <td>{{ item.localisation.site.nom_site }}</td>
+                <td>{{ item.localisation.nom_localisation }}</td>
+                <td>{{ item.etat }}</td>
 
-                              <td>{{item.bureau.libelle}}</td>
-                            <td>{{item.employe.prenom}} {{item.employe.nom}}</td>
-                              <td>{{item.date_mouvement    | date : "dd-MM-YYYY"}}</td>
-                              <td>{{item.etat}}</td>
-                              <td>{{item.montant_ttc}}</td>
-                              <td>{{item.duree_amorti}}</td>
-
-                              <td class="text-end" id="exclusion-2">
-                                  <div class="dropdown dropdown-action">
-                                      <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                          aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                      <div class="dropdown-menu dropdown-menu-right">
-                                          <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                                              data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
-                                              Modifier</a>
-                                          <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                                              data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                              Supprimer</a>
-                                      </div>
-                                  </div>
-                              </td>
-                          </tr>
-                          <tr *ngIf="lstEntreeImmo.length === 0">
-                              <td colspan="10">
-                                  <h5 style="text-align: center;">Aucun Résultat</h5>
-                              </td>
-                          </tr>
-                      </tbody>
-                  </table>
-                  <br />
+                <td class="text-end" id="exclusion-2">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a
+                        class="dropdown-item"
+                        data-bs-toggle="modal"
+                        (click)="getEditForm(item)"
+                        data-bs-target="#edit_immo"
+                        ><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        data-bs-toggle="modal"
+                        (click)="getDeleteForm(item)"
+                        data-bs-target="#delete_immo"
+                        ><i class="fa-regular fa-trash-can m-r-5"></i>
+                        Supprimer</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="lstEntreeImmo.length === 0">
+                <td colspan="10">
+                  <h5 style="text-align: center">Aucun Résultat</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <br />
           <br />
-              </div>
-              <div class="table_footer">
-                  <div class="col-sm-12 col-md-5">
-                      <div class="dataTables_info">
-                        Affichage de {{ serialNumberArray[0] }} à
-                          {{ serialNumberArray[serialNumberArray.length - 1] }} sur
-                          {{ totalData }} Entrées
-                      </div>
-                  </div>
-
-                  <div class="col-sm-12 col-md-7">
-                      <div class="pagination_section">
-                          <ul class="pagination">
-                              <li class="page-item" [ngClass]="{
-                            disabled: currentPage === 1
-                          }">
-                                  <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
-                                      tabindex="-1">Précédent</a>
-                              </li>
-
-                              <ng-container *ngFor="let item of pageNumberArray; let i = index">
-                                  <li class="page-item" [class.active]="item === currentPage" [ngClass]="
-                              (pageNumberArray[currentPage - 2] > item &&
-                                item !== 1 &&
-                                pageNumberArray.length > 6) ||
-                              (pageNumberArray[currentPage] < item &&
-                                item !== 1 &&
-                                pageNumberArray.length > 6 &&
-                                pageNumberArray.length !== item)
-                                ? 'hide-page-no'
-                                : 'show-page-no'
-                            ">
-                                      <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
-                                          {{ item }}
-                                      </a>
-                                  </li>
-                                  <li class="page-item" *ngIf="
-                              i === 0 && pageNumberArray.length > 6 && currentPage > 2
-                            " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
-                                      <a class="page-link" href="javascript:void(0);"> ... </a>
-                                  </li>
-                                  <li *ngIf="
-                              i === pageNumberArray.length - 2 &&
-                              pageNumberArray.length > 6
-                            " [hidden]="
-                              currentPage >=
-                                pageNumberArray[pageNumberArray.length - 2] ||
-                              totalData < serialNumberArray[serialNumberArray.length - 1]
-                            " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
-                                      <a class="page-link" href="javascript:void(0);"> ... </a>
-                                  </li>
-                              </ng-container>
-
-                              <li class="page-item" [ngClass]="{
-                            disabled:
-                              currentPage ===
-                                pageNumberArray[pageNumberArray.length - 1] ||
-                              lstEntreeImmo.length === 0
-                          }">
-                                  <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
-                                  </a>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-              </div>
+          <br />
+        </div>
+        <div class="table_footer">
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info">
+              Affichage de {{ serialNumberArray[0] }} à
+              {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+              {{ totalData }} Entrées
+            </div>
           </div>
+
+          <div class="col-sm-12 col-md-7">
+            <div class="pagination_section">
+              <ul class="pagination">
+                <li
+                  class="page-item"
+                  [ngClass]="{
+                    disabled: currentPage === 1,
+                  }"
+                >
+                  <a
+                    (click)="getMoreData('previous')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    tabindex="-1"
+                    >Précédent</a
+                  >
+                </li>
+
+                <ng-container
+                  *ngFor="let item of pageNumberArray; let i = index"
+                >
+                  <li
+                    class="page-item"
+                    [class.active]="item === currentPage"
+                    [ngClass]="
+                      (pageNumberArray[currentPage - 2] > item &&
+                        item !== 1 &&
+                        pageNumberArray.length > 6) ||
+                      (pageNumberArray[currentPage] < item &&
+                        item !== 1 &&
+                        pageNumberArray.length > 6 &&
+                        pageNumberArray.length !== item)
+                        ? 'hide-page-no'
+                        : 'show-page-no'
+                    "
+                  >
+                    <a
+                      (click)="moveToPage(item)"
+                      class="page-link"
+                      href="javascript:void(0);"
+                    >
+                      {{ item }}
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    *ngIf="
+                      i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                    "
+                    [hidden]="currentPage === 1"
+                    (click)="moveToPage(currentPage - 2)"
+                    (keydown.enter)="moveToPage(currentPage - 2)"
+                    tabindex="0"
+                  >
+                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                  </li>
+                  <li
+                    *ngIf="
+                      i === pageNumberArray.length - 2 &&
+                      pageNumberArray.length > 6
+                    "
+                    [hidden]="
+                      currentPage >=
+                        pageNumberArray[pageNumberArray.length - 2] ||
+                      totalData <
+                        serialNumberArray[serialNumberArray.length - 1]
+                    "
+                    class="page-item"
+                    (click)="moveToPage(currentPage + 2)"
+                    (keydown.enter)="moveToPage(currentPage + 2)"
+                    tabindex="0"
+                  >
+                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                  </li>
+                </ng-container>
+
+                <li
+                  class="page-item"
+                  [ngClass]="{
+                    disabled:
+                      currentPage ===
+                        pageNumberArray[pageNumberArray.length - 1] ||
+                      lstEntreeImmo.length === 0,
+                  }"
+                >
+                  <a
+                    (click)="getMoreData('next')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    >Suivant
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Page Content -->
   <!-- Add Poste Modal -->
-  <div id="add_department" class="modal custom-modal fade" role="dialog">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Enregister un materiel</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
+  <div id="add_immo" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Enregister un materiel</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+            [formGroup]="addEntreeImmoForm"
+            (ngSubmit)="onClickSubmitAddImmo()"
+            novalidate
+          >
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Code<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  addEntreeImmoForm.get('code')?.invalid &&
+                  addEntreeImmoForm.get('code')?.touched
+                "
+                formControlName="code"
+              />
+              <div
+                *ngIf="
+                  addEntreeImmoForm.get('code')?.invalid &&
+                  addEntreeImmoForm.get('code')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addEntreeImmoForm.get('code')?.invalid &&
+                    addEntreeImmoForm.get('code')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *le code est obligatoire</small
+                >
               </div>
-              <div class="modal-body">
-                <form [formGroup]="addEntreeImmoForm" (ngSubmit)="onClickSubmitAddImmo()" novalidate>
-
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Date<span class="text-danger">*</span></label>
-                    <input class="form-control" type="date"
-                        [class.invalid]="addEntreeImmoForm.get('date_mouvement')?.invalid && addEntreeImmoForm.get('date_mouvement')?.touched"
-                        formControlName="date_mouvement">
-                    <div
-                        *ngIf="addEntreeImmoForm.get('date_mouvement')?.invalid && addEntreeImmoForm.get('date_mouvement')?.touched">
-                        <small
-                            *ngIf="addEntreeImmoForm.get('date_mouvement')?.invalid && addEntreeImmoForm.get('date_mouvement')?.touched"
-                            class="text-danger"> *la date est obligatoire</small>
-                    </div>
-                </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Code<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text"
-                           [class.invalid]="addEntreeImmoForm.get('code')?.invalid && addEntreeImmoForm.get('code')?.touched"
-                           formControlName="code">
-                    <div
-                      *ngIf="addEntreeImmoForm.get('code')?.invalid && addEntreeImmoForm.get('code')?.touched">
-                      <small
-                        *ngIf="addEntreeImmoForm.get('code')?.invalid && addEntreeImmoForm.get('code')?.touched"
-                        class="text-danger"> *le code  est obligatoire</small>
-                    </div>
-
-                </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Designation<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text"
-                           [class.invalid]="addEntreeImmoForm.get('designation')?.invalid && addEntreeImmoForm.get('designation')?.touched"
-                           formControlName="designation">
-                    <div
-                      *ngIf="addEntreeImmoForm.get('designation')?.invalid && addEntreeImmoForm.get('designation')?.touched">
-                      <small
-                        *ngIf="addEntreeImmoForm.get('designation')?.invalid && addEntreeImmoForm.get('designation')?.touched"
-                        class="text-danger"> *la designation  est obligatoire</small>
-                    </div>
-
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span> (en FCFA)</label>
-                    <input class="form-control" type="text"
-                           [class.invalid]="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched"
-                           formControlName="montant_ttc">
-                    <div
-                      *ngIf="addEntreeImmoForm.get('montant_ttc')?.invalid && addEntreeImmoForm.get('montant_ttc')?.touched">
-                      <small *ngIf="addEntreeImmoForm.get('montant_ttc')?.hasError('min')" class="text-danger">
-                        *le montant TTC doit etre supérieur ou égale à 0.</small>
-                      <small *ngIf="addEntreeImmoForm.get('montant_ttc')?.hasError('required')" class="text-danger">
-                        *le montant TTC  est obligatoire.</small>
-                    </div>
-
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Etat<span class="text-danger">*</span></label>
-                    <mat-select
-
-                      class="user-assets select form-control"
-                      placeholder="Selectionner l'etat "
-
-                      formControlName="etat"
-                    >
-                      <mat-option  value="Fonctionnel"  >Fonctionnel</mat-option>
-                      <mat-option  value="Moyen"  > Moyen </mat-option>
-                      <mat-option  value="Défectueux"  > Défectueux </mat-option>
-                      <mat-option  value="Mis au rebus"  > Mis au rebus </mat-option>
-
-                    </mat-select>
-                    <div
-                        *ngIf="addEntreeImmoForm.get('etat')?.invalid && addEntreeImmoForm.get('etat')?.touched">
-                        <small
-                            *ngIf="addEntreeImmoForm.get('etat')?.invalid && addEntreeImmoForm.get('etat')?.touched"
-                            class="text-danger"> *l'etat est obligatoire</small>
-                    </div>
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">* </span> (en Année)</label><br>
-
-                    <input class="form-control" type="number" (ngModelChange)="changeQte()"
-                           [class.invalid]="addEntreeImmoForm.get('duree_amorti')?.invalid && addEntreeImmoForm.get('duree_amorti')?.touched"
-                           formControlName="duree_amorti">
-                    <div
-                      *ngIf="addEntreeImmoForm.get('duree_amorti')?.invalid && addEntreeImmoForm.get('duree_amorti')?.touched">
-                      <small *ngIf="addEntreeImmoForm.get('duree_amorti')?.hasError('min')" class="text-danger">
-                        *la duree d'amortissement doit etre supérieur ou égale à 0.</small>
-                      <small *ngIf="addEntreeImmoForm.get('duree_amorti')?.hasError('required')" class="text-danger">
-                        *la duree d'amortissement  est obligatoire.</small>
-                    </div>
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="bureau"> Bureau<span class="text-danger">*</span></label>
-
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="addEntreeImmoForm.get('bureau_id')?.invalid && addEntreeImmoForm.get('bureau_id')?.touched"
-                                 formControlName="bureau_id" placeholder="Selectionner le bureau">
-                      <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
-                      >{{ item.libelle }}   </mat-option>
-                    </mat-select>
-                    <div
-                        *ngIf="addEntreeImmoForm.get('bureau_id')?.invalid && addEntreeImmoForm.get('bureau_id')?.touched">
-                        <small
-                            *ngIf="addEntreeImmoForm.get('bureau_id')?.invalid && addEntreeImmoForm.get('bureau_id')?.touched"
-                            class="text-danger"> *le bureau obligatoire</small>
-                    </div>
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="employe_id" >Employé<span class="text-danger"></span></label>
-
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="addEntreeImmoForm.get('employe_id')?.invalid && addEntreeImmoForm.get('employe_id')?.touched"
-                                 formControlName="employe_id" placeholder="Selectionner l'employé">
-                      <mat-option *ngFor="let item of lstEmployer" [disabled]="false" [value]="item.id"
-                      >{{ item.nom }} {{ item.prenom }}    </mat-option>
-                    </mat-select>
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="obs">Observations<span class="text-danger">  </span></label><br>
-
-                    <input class="form-control" type="text"
-                           [class.invalid]="addEntreeImmoForm.get('observation')?.invalid && addEntreeImmoForm.get('observation')?.touched"
-                           formControlName="observation">
-
-                  </div>
-
-
-                  <div class="submit-section">
-                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
-                    </div>
-                </form>
+            </div>
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Désignation<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  addEntreeImmoForm.get('designation')?.invalid &&
+                  addEntreeImmoForm.get('designation')?.touched
+                "
+                formControlName="designation"
+              />
+              <div
+                *ngIf="
+                  addEntreeImmoForm.get('designation')?.invalid &&
+                  addEntreeImmoForm.get('designation')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addEntreeImmoForm.get('designation')?.invalid &&
+                    addEntreeImmoForm.get('designation')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *la designation est obligatoire</small
+                >
               </div>
-          </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Date d'entrée<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="date"
+                [class.invalid]="
+                  addEntreeImmoForm.get('date_entree')?.invalid &&
+                  addEntreeImmoForm.get('date_entree')?.touched
+                "
+                formControlName="date_entree"
+              />
+              <div
+                *ngIf="
+                  addEntreeImmoForm.get('date_entree')?.invalid &&
+                  addEntreeImmoForm.get('date_entree')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addEntreeImmoForm.get('date_entree')?.invalid &&
+                    addEntreeImmoForm.get('date_entree')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *la date est obligatoire</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Valeur d'origine<span class="text-danger">*</span> (en
+                FCFA)</label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  addEntreeImmoForm.get('valeur_origine')?.invalid &&
+                  addEntreeImmoForm.get('valeur_origine')?.touched
+                "
+                formControlName="valeur_origine"
+              />
+              <div
+                *ngIf="
+                  addEntreeImmoForm.get('valeur_origine')?.invalid &&
+                  addEntreeImmoForm.get('valeur_origine')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addEntreeImmoForm.get('valeur_origine')?.hasError('min')
+                  "
+                  class="text-danger"
+                >
+                  *la valeur d'origine doit etre supérieur ou égale à 0.</small
+                >
+                <small
+                  *ngIf="
+                    addEntreeImmoForm
+                      .get('valeur_origine')
+                      ?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  *la valeur d'origine est obligatoire.</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label"
+                >Bien amortissable ? <span class="text-danger">*</span></label
+              >
+              <mat-select
+                class="select form-control"
+                formControlName="bien_amortissable"
+              >
+                <mat-option value="oui">Oui</mat-option>
+                <mat-option value="non">Non</mat-option>
+              </mat-select>
+            </div>
+
+            <div
+              *ngIf="
+                addEntreeImmoForm.get('bien_amortissable')?.value === 'oui'
+              "
+            >
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Durée amortissement<span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="number"
+                  [class.invalid]="
+                    addEntreeImmoForm.get('duree_amortissement')?.invalid &&
+                    addEntreeImmoForm.get('duree_amortissement')?.touched
+                  "
+                  formControlName="duree_amortissement"
+                />
+                <div
+                  *ngIf="
+                    addEntreeImmoForm.get('duree_amortissement')?.invalid &&
+                    addEntreeImmoForm.get('duree_amortissement')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEntreeImmoForm
+                        .get('duree_amortissement')
+                        ?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    *la durée d'amortissement est obligatoire.
+                  </small>
+                  <small
+                    *ngIf="
+                      addEntreeImmoForm
+                        .get('duree_amortissement')
+                        ?.hasError('min')
+                    "
+                    class="text-danger"
+                  >
+                    *la durée d'amortissement doit être supérieure ou égale à 1.
+                  </small>
+                </div>
+              </div>
+              <div class="input-block mb-3">
+                <label class="col-form-label" for=""
+                  >Date fin amortissement<span class="text-danger"
+                    >*</span
+                  ></label
+                >
+                <input
+                  class="form-control"
+                  type="date"
+                  [class.invalid]="
+                    addEntreeImmoForm.get('date_fin_amortissement')?.invalid &&
+                    addEntreeImmoForm.get('date_fin_amortissement')?.touched
+                  "
+                  formControlName="date_fin_amortissement"
+                />
+                <div
+                  *ngIf="
+                    addEntreeImmoForm.get('date_fin_amortissement')?.invalid &&
+                    addEntreeImmoForm.get('date_fin_amortissement')?.touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      addEntreeImmoForm
+                        .get('date_fin_amortissement')
+                        ?.hasError('required')
+                    "
+                    class="text-danger"
+                  >
+                    *la date est obligatoire.
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Etat<span class="text-danger">*</span></label
+              >
+              <mat-select
+                class="user-assets select form-control"
+                placeholder="Selectionner l'etat "
+                formControlName="etat"
+              >
+                <mat-option value="Fonctionnel">Fonctionnel</mat-option>
+                <mat-option value="Moyen"> Moyen </mat-option>
+                <mat-option value="Défectueux"> Défectueux </mat-option>
+                <mat-option value="Mis au rebus"> Mis au rebus </mat-option>
+              </mat-select>
+              <div
+                *ngIf="
+                  addEntreeImmoForm.get('etat')?.invalid &&
+                  addEntreeImmoForm.get('etat')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addEntreeImmoForm.get('etat')?.invalid &&
+                    addEntreeImmoForm.get('etat')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *l'etat est obligatoire</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for="localisation">
+                Localisation<span class="text-danger">*</span></label
+              >
+
+              <mat-select
+                class="select mat-cust-select form-control"
+                [class.invalid]="
+                  addEntreeImmoForm.get('localisation_id')?.invalid &&
+                  addEntreeImmoForm.get('localisation_id')?.touched
+                "
+                formControlName="localisation_id"
+                placeholder="Selectionner la localisation"
+              >
+                <mat-option
+                  *ngFor="let item of lstLocalisation"
+                  [disabled]="false"
+                  [value]="item.id"
+                  >{{ item.nom_localisation }} ({{ item.site.nom_site }})
+                </mat-option>
+              </mat-select>
+              <div
+                *ngIf="
+                  addEntreeImmoForm.get('localisation_id')?.invalid &&
+                  addEntreeImmoForm.get('localisation_id')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    addEntreeImmoForm.get('localisation_id')?.invalid &&
+                    addEntreeImmoForm.get('localisation_id')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *le localisation obligatoire</small
+                >
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button
+                [disabled]="isDisabledBtn"
+                class="btn btn-primary submit-btn"
+                type="submit"
+              >
+                Enrégister
+                <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Add Poste Modal -->
 
   <!-- Edit poste Modal -->
-  <div id="edit_department" class="modal custom-modal fade" role="dialog">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Modifier  </h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
+  <div id="edit_immo" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+            [formGroup]="editEntreeImmoForm"
+            (ngSubmit)="onClickSubmitEditArticle()"
+            novalidate
+          >
+            <input type="hidden" formControlName="id" />
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Code<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  editEntreeImmoForm.get('code')?.invalid &&
+                  editEntreeImmoForm.get('code')?.touched
+                "
+                formControlName="code"
+              />
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('code')?.invalid &&
+                  editEntreeImmoForm.get('code')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm.get('code')?.invalid &&
+                    editEntreeImmoForm.get('code')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *le code est obligatoire</small
+                >
               </div>
-              <div class="modal-body">
-                <form [formGroup]="editEntreeImmoForm" (ngSubmit)="onClickSubmitEditArticle()" novalidate>
+            </div>
 
-                  <input type="hidden" formControlName="id">
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Date<span class="text-danger">*</span></label>
-                    <input class="form-control" type="date"
-                           [class.invalid]="editEntreeImmoForm.get('date_mouvement')?.invalid && editEntreeImmoForm.get('date_mouvement')?.touched"
-                           formControlName="date_mouvement">
-                    <div
-                      *ngIf="editEntreeImmoForm.get('date_mouvement')?.invalid && editEntreeImmoForm.get('date_mouvement')?.touched">
-                      <small
-                        *ngIf="editEntreeImmoForm.get('date_mouvement')?.invalid && editEntreeImmoForm.get('date_mouvement')?.touched"
-                        class="text-danger"> *la date est obligatoire</small>
-                    </div>
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Code<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text"
-                           [class.invalid]="editEntreeImmoForm.get('code')?.invalid && editEntreeImmoForm.get('code')?.touched"
-                           formControlName="code">
-                    <div
-                      *ngIf="editEntreeImmoForm.get('code')?.invalid && editEntreeImmoForm.get('code')?.touched">
-                      <small
-                        *ngIf="editEntreeImmoForm.get('code')?.invalid && editEntreeImmoForm.get('code')?.touched"
-                        class="text-danger"> *le code  est obligatoire</small>
-                    </div>
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Designation<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text"
-                           [class.invalid]="editEntreeImmoForm.get('designation')?.invalid && editEntreeImmoForm.get('designation')?.touched"
-                           formControlName="designation">
-                    <div
-                      *ngIf="editEntreeImmoForm.get('designation')?.invalid && editEntreeImmoForm.get('designation')?.touched">
-                      <small
-                        *ngIf="editEntreeImmoForm.get('designation')?.invalid && editEntreeImmoForm.get('designation')?.touched"
-                        class="text-danger"> *la designation  est obligatoire</small>
-                    </div>
-
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Montant TTC<span class="text-danger">*</span> (en FCFA)</label>
-                    <input class="form-control" type="text"
-                           [class.invalid]="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched"
-                           formControlName="montant_ttc">
-                    <div
-                      *ngIf="editEntreeImmoForm.get('montant_ttc')?.invalid && editEntreeImmoForm.get('montant_ttc')?.touched">
-                      <small *ngIf="editEntreeImmoForm.get('montant_ttc')?.hasError('min')" class="text-danger">
-                        *le montant TTC doit etre supérieur ou égale à 0.</small>
-                      <small *ngIf="editEntreeImmoForm.get('montant_ttc')?.hasError('required')" class="text-danger">
-                        *le montant TTC  est obligatoire.</small>
-                    </div>
-
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Etat<span class="text-danger">*</span></label>
-                    <mat-select
-
-                      class="user-assets select form-control"
-                      placeholder="Selectionner l'etat "
-
-                      formControlName="etat"
-                    >
-                      <mat-option  value="Fonctionnel"  >Fonctionnel</mat-option>
-                      <mat-option  value="Moyen"  > Moyen </mat-option>
-                      <mat-option  value="Défectueux"  > Défectueux </mat-option>
-                      <mat-option  value="Mis au rebus"  > Mis au rebus </mat-option>
-
-                    </mat-select>
-                    <div
-                        *ngIf="editEntreeImmoForm.get('etat')?.invalid && editEntreeImmoForm.get('etat')?.touched">
-                        <small
-                            *ngIf="editEntreeImmoForm.get('etat')?.invalid && editEntreeImmoForm.get('etat')?.touched"
-                            class="text-danger"> *l'etat est obligatoire</small>
-                    </div>
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Duree d'amortissement <span class="text-danger">*</span> (en Année)</label><br>
-
-                    <input class="form-control" type="number"
-                           [class.invalid]="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched"
-                           formControlName="duree_amorti">
-                    <div
-                      *ngIf="editEntreeImmoForm.get('duree_amorti')?.invalid && editEntreeImmoForm.get('duree_amorti')?.touched">
-                      <small *ngIf="editEntreeImmoForm.get('duree_amorti')?.hasError('min')" class="text-danger">
-                        *la duree d'amortissement doit etre supérieur ou égale à 0.</small>
-                      <small *ngIf="editEntreeImmoForm.get('duree_amorti')?.hasError('required')" class="text-danger">
-                        *la duree d'amortissement  est obligatoire.</small>
-                    </div>
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="bureau"> Bureau<span class="text-danger">*</span></label>
-
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="editEntreeImmoForm.get('bureau_id')?.invalid && editEntreeImmoForm.get('bureau_id')?.touched"
-                                 formControlName="bureau_id" placeholder="Selectionner le bureau">
-                      <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
-                      >{{ item.libelle }}   </mat-option>
-                    </mat-select>
-                    <div
-                        *ngIf="editEntreeImmoForm.get('bureau_id')?.invalid && editEntreeImmoForm.get('bureau_id')?.touched">
-                        <small
-                            *ngIf="editEntreeImmoForm.get('bureau_id')?.invalid && editEntreeImmoForm.get('bureau_id')?.touched"
-                            class="text-danger"> *le bureau est obligatoire</small>
-                    </div>
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="employe_id" >Employé<span class="text-danger"></span></label>
-
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [class.invalid]="editEntreeImmoForm.get('employe_id')?.invalid && editEntreeImmoForm.get('employe_id')?.touched"
-                                 formControlName="employe_id" placeholder="Selectionner l'employé">
-                      <mat-option *ngFor="let item of lstEmployer" [disabled]="false" [value]="item.id"
-                      >{{ item.nom }} {{ item.prenom }}    </mat-option>
-                    </mat-select>
-
-                  </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="obs">Observations<span class="text-danger">  </span></label><br>
-
-                    <input class="form-control" type="text"
-                           [class.invalid]="editEntreeImmoForm.get('observation')?.invalid && editEntreeImmoForm.get('observation')?.touched"
-                           formControlName="observation">
-
-                  </div>
-
-
-
-
-
-                  <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister <span class="fa fa-spinner fa-spin d-none" id="spinner"></span></button>
-                    </div>
-                </form>
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Désignation<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  editEntreeImmoForm.get('designation')?.invalid &&
+                  editEntreeImmoForm.get('designation')?.touched
+                "
+                formControlName="designation"
+              />
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('designation')?.invalid &&
+                  editEntreeImmoForm.get('designation')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm.get('designation')?.invalid &&
+                    editEntreeImmoForm.get('designation')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *la designation est obligatoire</small
+                >
               </div>
-          </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Date d'entrée<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="date"
+                [class.invalid]="
+                  editEntreeImmoForm.get('date_entree')?.invalid &&
+                  editEntreeImmoForm.get('date_entree')?.touched
+                "
+                formControlName="date_entree"
+              />
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('date_entree')?.invalid &&
+                  editEntreeImmoForm.get('date_entree')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm.get('date_entree')?.invalid &&
+                    editEntreeImmoForm.get('date_entree')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *la date est obligatoire</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Valeur d'origine<span class="text-danger">*</span> (en
+                FCFA)</label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  editEntreeImmoForm.get('valeur_origine')?.invalid &&
+                  editEntreeImmoForm.get('valeur_origine')?.touched
+                "
+                formControlName="valeur_origine"
+              />
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('valeur_origine')?.invalid &&
+                  editEntreeImmoForm.get('valeur_origine')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm.get('valeur_origine')?.hasError('min')
+                  "
+                  class="text-danger"
+                >
+                  *la valeur d'origine doit etre supérieur ou égale à 0.</small
+                >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm
+                      .get('valeur_origine')
+                      ?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  *la valeur d'origine est obligatoire.</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Durée amortissement<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                [class.invalid]="
+                  editEntreeImmoForm.get('duree_amortissement')?.invalid &&
+                  editEntreeImmoForm.get('duree_amortissement')?.touched
+                "
+                formControlName="duree_amortissement"
+              />
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('duree_amortissement')?.invalid &&
+                  editEntreeImmoForm.get('duree_amortissement')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm
+                      .get('duree_amortissement')
+                      ?.hasError('min')
+                  "
+                  class="text-danger"
+                >
+                  *la durée d'amortissement doit etre supérieur ou égale à
+                  0.</small
+                >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm
+                      .get('duree_amortissement')
+                      ?.hasError('required')
+                  "
+                  class="text-danger"
+                >
+                  *la durée d'amortissement est obligatoire.</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Date fin amortissement<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="date"
+                [class.invalid]="
+                  editEntreeImmoForm.get('date_fin_amortissement')?.invalid &&
+                  editEntreeImmoForm.get('date_fin_amortissement')?.touched
+                "
+                formControlName="date_fin_amortissement"
+              />
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('date_fin_amortissement')?.invalid &&
+                  editEntreeImmoForm.get('date_fin_amortissement')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm.get('date_fin_amortissement')?.invalid &&
+                    editEntreeImmoForm.get('date_fin_amortissement')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *la date est obligatoire</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Etat<span class="text-danger">*</span></label
+              >
+              <mat-select
+                class="user-assets select form-control"
+                placeholder="Selectionner l'etat "
+                formControlName="etat"
+              >
+                <mat-option value="Fonctionnel">Fonctionnel</mat-option>
+                <mat-option value="Moyen"> Moyen </mat-option>
+                <mat-option value="Défectueux"> Défectueux </mat-option>
+                <mat-option value="Mis au rebus"> Mis au rebus </mat-option>
+              </mat-select>
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('etat')?.invalid &&
+                  editEntreeImmoForm.get('etat')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm.get('etat')?.invalid &&
+                    editEntreeImmoForm.get('etat')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *l'etat est obligatoire</small
+                >
+              </div>
+            </div>
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for="localisation">
+                Localisation<span class="text-danger">*</span></label
+              >
+
+              <mat-select
+                class="select mat-cust-select form-control"
+                [class.invalid]="
+                  editEntreeImmoForm.get('localisation_id')?.invalid &&
+                  editEntreeImmoForm.get('localisation_id')?.touched
+                "
+                formControlName="localisation_id"
+                placeholder="Selectionner la localisation"
+              >
+                <mat-option
+                  *ngFor="let item of lstLocalisation"
+                  [disabled]="false"
+                  [value]="item.id"
+                  >{{ item.nom_localisation }} ({{ item.site.nom_site }})
+                </mat-option>
+              </mat-select>
+              <div
+                *ngIf="
+                  editEntreeImmoForm.get('localisation_id')?.invalid &&
+                  editEntreeImmoForm.get('localisation_id')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editEntreeImmoForm.get('localisation_id')?.invalid &&
+                    editEntreeImmoForm.get('localisation_id')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *le localisation obligatoire</small
+                >
+              </div>
+            </div>
+
+            <div class="submit-section">
+              <button class="btn btn-primary submit-btn" type="submit">
+                Enrégister
+                <span class="fa fa-spinner fa-spin d-none" id="spinner"></span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Edit Department Modal -->
 
   <!-- Delete Department Modal -->
-  <div class="modal custom-modal fade" id="delete_department" role="dialog">
-      <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-body">
-                  <div class="form-header">
-                      <h3>Supprimer l'article</h3>
-                      <p>Êtes-vous sûr de vouloir supprimer ?</p>
-                  </div>
-                  <div class="modal-btn delete-action">
-                      <div class="row">
-                          <div class="col-6">
-                            <form [formGroup]="deleteEntreeImmoForm" (ngSubmit)="onClickSubmitDeleteBanque()">
-                              <input type="hidden" formControlName="id">
-                              <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteBanque()">Supprimer</a>
-                            </form>
-                          </div>
-                          <div class="col-6">
-                              <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                  class="btn btn-primary cancel-btn">Annuler</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+  <div class="modal custom-modal fade" id="delete_immo" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Supprimer l'article</h3>
+            <p>Êtes-vous sûr de vouloir supprimer ?</p>
           </div>
+          <div class="modal-btn delete-action">
+            <div class="row">
+              <div class="col-6">
+                <form
+                  [formGroup]="deleteEntreeImmoForm"
+                  (ngSubmit)="onClickSubmitDeleteImmo()"
+                >
+                  <input type="hidden" formControlName="id" />
+                  <a
+                    href="javascript:void(0);"
+                    class="btn btn-primary continue-btn"
+                    type="submit"
+                    (click)="onClickSubmitDeleteImmo()"
+                    >Supprimer</a
+                  >
+                </form>
+              </div>
+              <div class="col-6">
+                <a
+                  href="javascript:void(0);"
+                  data-bs-dismiss="modal"
+                  class="btn btn-primary cancel-btn"
+                  >Annuler</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Delete Department Modal -->
 </div>

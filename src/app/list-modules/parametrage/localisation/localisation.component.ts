@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import { ExportsService, routes, banqueService, getBanque, getFournisseur } from 'src/app/core/core.index';
+import {ExportsService, routes, getLocalisation, getSite} from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,29 +9,27 @@ import { MatTableDataSource } from '@angular/material/table';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
-import { bureauService } from "../../../core/services/bureau/bureau.service";
-import { articleService } from "../../../core/services/article/article.service";
-import { FamilleService } from "../../../core/services/famille/famille.service";
-import { categorieArticleService } from "../../../core/services/categorie-article/categorie-article.service";
+import {LocalisationService} from "../../../core/services/localisation/localisation.service";
+import {SiteService} from "../../../core/services/site/site.service";
 
 
 
 @Component({
-  selector: 'app-banque',
-  templateUrl: './article.component.html',
-  styleUrls: ['./article.component.scss']
+  selector: 'app-localisation',
+  templateUrl: './localisation.component.html',
+  styleUrls: ['./localisation.component.scss']
 })
-export class ArticleComponent implements OnInit {
+export class LocalisationComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstPst: Array<any> = [];
+  public lstPst: Array<any>=[];
 
 
-  public lstArticle: Array<any> = [];
-  lstFamille: any;
+  public lstLocalisation: Array<getLocalisation> = [];
+  public lstSite: Array<getSite> = [];
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<any>;
+  dataSource!: MatTableDataSource<getLocalisation>;
   // pagination variables
   public lastIndex = 0;
   public pageSize = 10;
@@ -46,46 +44,106 @@ export class ArticleComponent implements OnInit {
   public totalPages = 0;
   //** / pagination variables
 
-  public addArticleForm!: FormGroup;
-  public editArticleForm!: FormGroup
-  public deleteArticleForm!: FormGroup
+  public addLocalisationForm!: FormGroup ;
+  public editLocalisationForm!: FormGroup
+  public deleteLocalisationForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder, public router: Router,
-    private articleService: articleService,
-    private categorieService: categorieArticleService,
-    private familleService: FamilleService,
-    private exp: ExportsService) { }
+  constructor(private formBuilder: FormBuilder,public router: Router, private data: LocalisationService, private siteService: SiteService, private exp: ExportsService) {}
 
   ngOnInit(): void {
     this.getTableData();
-    this.getFamille();
+    this.getSite();
+    this.addLocalisationForm = this.formBuilder.group({
+      site_id: ["", [Validators.required]],
+      nom_localisation: ["", [Validators.required]],
+   });
+   this.editLocalisationForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+     site_id: ["", [Validators.required]],
+      nom_localisation: ["", [Validators.required]],
+  });
+   this.deleteLocalisationForm = this.formBuilder.group({
+    id: [0, [Validators.required]],
+  });
+ }
 
-    this.addArticleForm = this.formBuilder.group({
-      famille_id: ["", [Validators.required]],
-      code: ["", [Validators.required]],
-      designation: ["", [Validators.required]],
-      description: ["", []],
-    });
-    this.editArticleForm = this.formBuilder.group({
-      id: [0, [Validators.required]],
-      famille_id: ["", [Validators.required]],
-      code: ["", [Validators.required]],
-      designation: ["", [Validators.required]],
-      description: ["", []],
-    });
-    this.deleteArticleForm = this.formBuilder.group({
-      id: [0, [Validators.required]],
-    });
+ onClickSubmitAddLocalisation(){
+
+  console.log(this.addLocalisationForm.value)
+
+  if (this.addLocalisationForm.valid){
+    $('#spinnerr').removeClass('d-none');
+    this.data.save(this.addLocalisationForm.value).subscribe(
+      (data:any)=>{
+        location.reload();
+      }
+    )
+  }else {
+    $('#spinnerr').addClass('d-none');
+    alert("desole le formulaire n'est pas bien renseigné")
   }
 
 
-  getFamille() {
+}
 
-    this.familleService.getAll().subscribe(
+onClickSubmitEditLocalisation(){
+  console.log(this.editLocalisationForm.value)
+
+    if (this.editLocalisationForm.valid){
+      $('#spinner').removeClass('d-none');
+      const id = this.editLocalisationForm.value.id;
+      this.data.edit(this.editLocalisationForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+      $('#spinner').addClass('d-none');
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+onClickSubmitDeleteLocalisation(){
+  console.log(this.deleteLocalisationForm.value)
+
+    if (this.deleteLocalisationForm.valid){
+      const id = this.deleteLocalisationForm.value.id;
+      this.data.delete(this.deleteLocalisationForm.value).subscribe(
+        (data:any)=>{
+          location.reload();
+        }
+      )
+      console.log("success")
+    }else {
+
+      alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+}
+
+getEditForm(row: any){
+  this.editLocalisationForm.patchValue({
+   id:row.id,
+   site_id:row.site_id,
+   nom_localisation:row.nom_localisation
+  })
+}
+
+getDeleteForm(row: any){
+  this.deleteLocalisationForm.patchValue({
+   id:row.id,
+  })
+}
+
+getSite() {
+
+    this.siteService.getAll().subscribe(
       (res: any) => {
 
         // alert(JSON.stringify(res.data.data))
-        this.lstFamille = res.data.data
+        this.lstSite = res.data.data
 
       },
       (error: any) => {
@@ -95,99 +153,21 @@ export class ArticleComponent implements OnInit {
 
   }
 
-  onClickSubmitAddArticle() {
-
-    console.log("les entree", this.addArticleForm.value)
-
-    if (this.addArticleForm.valid) {
-      $('#spinnerr').removeClass('d-none');
-      this.articleService.save(this.addArticleForm.value).subscribe(
-        (data: any) => {
-          // location.reload();
-        }
-      )
-    } else {
-      $('#spinnerr').addClass('d-none');
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-
-  }
-
-  onClickSubmitEditArticle() {
-    console.log(this.editArticleForm.value)
-
-    if (this.editArticleForm.valid) {
-      $('#spinner').removeClass('d-none');
-      const id = this.editArticleForm.value.id;
-      this.articleService.edit(this.editArticleForm.value).subscribe(
-        (data: any) => {
-          location.reload();
-        }
-      )
-      console.log("success")
-    } else {
-      $('#spinner').addClass('d-none');
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-  }
-
-  onClickSubmitDeleteBanque() {
-    console.log(this.deleteArticleForm.value)
-
-    if (this.deleteArticleForm.valid) {
-      const id = this.deleteArticleForm.value.id;
-      this.articleService.delete(this.deleteArticleForm.value).subscribe(
-        (data: any) => {
-
-          // alert(JSON.stringify(data))
-          location.reload();
-        }
-      )
-      console.log("success")
-    } else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-  }
-
-  getEditForm(row: any) {
-    this.editArticleForm.patchValue({
-      id: row.id,
-      code: row.code,
-      famille_id: row.famille_id,
-      description: row.description,
-      designation: row.designation,
-    })
-  }
-
-  getDeleteForm(row: any) {
-    this.deleteArticleForm.patchValue({
-      id: row.id,
-    })
-  }
-
-
   private getTableData(): void {
-    this.lstArticle = [];
+    this.lstLocalisation = [];
     this.serialNumberArray = [];
 
-    this.articleService.getAll().subscribe((res: any) => {
+    this.data.getAll().subscribe((res: any) => {
       this.totalData = res.data.total;
-      res.data.data.map((res: any, index: number) => {
+      res.data.data.map((res: getLocalisation, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
           res.id;// = serialNumber;
-          this.lstArticle.push(res);
-
-
+          this.lstLocalisation.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      console.log(this.lstArticle);
-      this.dataSource = new MatTableDataSource<any>(this.lstArticle);
+      this.dataSource = new MatTableDataSource<getLocalisation>(this.lstLocalisation);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
 
@@ -214,7 +194,7 @@ export class ArticleComponent implements OnInit {
     $('#spinner_xlsx').removeClass('d-none');
     setTimeout(() => {
       const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Les Articles.xlsx";
+      const filename = "Les Sites.xlsx";
 
       if (table) {
         const wb = XLSX.utils.book_new();
@@ -235,7 +215,7 @@ export class ArticleComponent implements OnInit {
         });
 
         const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Les Articles");
+        XLSX.utils.book_append_sheet(wb, ws1, "Les Famille");
 
         XLSX.writeFile(wb, filename);
         $('#spinner_xlsx').addClass('d-none');
@@ -247,13 +227,13 @@ export class ArticleComponent implements OnInit {
   }
 
   public sortData(sort: Sort) {
-    const data = this.lstArticle.slice();
+    const data = this.lstLocalisation.slice();
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
-      this.lstArticle = data;
+      this.lstLocalisation = data;
     } else {
-      this.lstArticle = data.sort((a: any, b: any) => {
+      this.lstLocalisation = data.sort((a: any, b: any) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -263,7 +243,7 @@ export class ArticleComponent implements OnInit {
 
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
-    this.lstArticle = this.dataSource.filteredData;
+    this.lstLocalisation = this.dataSource.filteredData;
   }
 
   public getMoreData(event: string): void {

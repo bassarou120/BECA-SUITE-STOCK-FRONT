@@ -20,7 +20,7 @@ export class immoService {
     return this.http.post(`${this.url}/mouvement_stock`, data);
   }
   save(data:any ): Observable<Object> {
-    return this.http.post(`${this.url}/immo`, data);
+    return this.http.post(`${this.url}/immobilisation`, data);
   }
 
   saveTransfert(data:any ): Observable<Object> {
@@ -32,7 +32,7 @@ export class immoService {
   }
 
   getAll(): Observable<any> {
-    return this.http.get<any>(`${this.url}/immo`);
+    return this.http.get<any>(`${this.url}/immobilisation`);
   }
   getAllStock(): Observable<any> {
     return this.http.get<any>(`${this.url}/stock`);
