@@ -207,6 +207,12 @@ export class DataService {
               haseSubSubMenu: false,
             },
             {
+              menuValue: 'Liste des Localisations',
+              route: "parametrage/localisation",
+              base: 'parametrage/localisation',
+              haseSubSubMenu: false,
+            },
+            {
               menuValue: 'Directions/Centres de Consommation',
               route: "parametrage/directionCentre",
               base: 'parametrage/directionCentre',

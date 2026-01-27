@@ -962,6 +962,12 @@ export interface getSite {
   id: number;
   nom_site: string;
 }
+export interface getLocalisation {
+  id: number;
+  site_id: number;
+  nom_localisation: string;
+  site: getSite;
+}
 
 export interface getDirectionCentre {
   id: number;

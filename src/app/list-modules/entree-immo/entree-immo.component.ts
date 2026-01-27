@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
+import { ExportsService, routes } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,13 +10,8 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
-import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
-import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
-import {articleService} from "../../core/services/article/article.service";
-import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
-import {EmployeService} from "../../core/services/employe/employe.service";
-import {bureauService} from "../../core/services/bureau/bureau.service";
-import {immoService} from "../../core/services/immo/immo.service";
+import { LocalisationService } from "../../core/services/localisation/localisation.service";
+import { immoService } from "../../core/services/immo/immo.service";
 
 
 
@@ -29,16 +24,13 @@ export class EntreeImmoComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstPst: Array<any>=[];
+  public lstPst: Array<any> = [];
 
 
   public lstEntreeImmo: Array<any> = [];
-  stockDisponible=0;
-  lstCategorie:any;
-  lstForuniseur:any;
-  lstEmployer:any;
-  lstBureau:any;
-  lstArticel:any;
+
+  lstLocalisation: any;
+
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
   // pagination variables
@@ -54,66 +46,56 @@ export class EntreeImmoComponent implements OnInit {
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
   //** / pagination variables
-  article_id:any;
-  public addEntreeImmoForm!: FormGroup ;
+  article_id: any;
+  public addEntreeImmoForm!: FormGroup;
   public editEntreeImmoForm!: FormGroup
   public deleteEntreeImmoForm!: FormGroup
 
-  showAlert=false;
-  messageAlert=""
+  showAlert = false;
+  messageAlert = ""
 
-  isDisabledBtn=false
+  isDisabledBtn = false
 
-  constructor(private formBuilder: FormBuilder,public router: Router,
-              private articleService:articleService,
-              private employeService:EmployeService,
-              private  bureauService:bureauService,
-              private fournisseurService: fournisseurService,
-              private immoService: immoService,
-              private categorieService: categorieArticleService,
-              private exp: ExportsService) {}
+  constructor(private formBuilder: FormBuilder, public router: Router,
+    private localisationService: LocalisationService,
+    private immoService: immoService,
+    private exp: ExportsService) { }
 
 
   ngOnInit(): void {
     this.getTableData();
-   // this.getFournisseur();
-    this.getBureau();
-   this.getEmploye();
-   this.getArticle();
+    this.getLocalisation();
 
     this.addEntreeImmoForm = this.formBuilder.group({
 
-      date_mouvement: ["", [Validators.required]],
-      code: ["", [Validators.required]],
       designation: ["", [Validators.required]],
-      duree_amorti: ["", [Validators.required,Validators.min(0)]],
+      date_entree: ["", [Validators.required]],
+      valeur_origine: ["", [Validators.required]],
+      duree_amortissement: [""],
+      date_fin_amortissement: [""],
+      code: ["", [Validators.required]],
+      localisation_id: ["", [Validators.required]],
+      etat: ["", [Validators.required]],
+      bien_amortissable: ["oui", [Validators.required]],
+    });
 
-      bureau_id:['',[Validators.required]],
-      employe_id:['',[]],
-
-      montant_ttc: ["",  [Validators.required,Validators.min(0)]],
-      etat: ["",  [Validators.required]],
-      observation: ["",  [ ]],
-   });
-
-   this.editEntreeImmoForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-     date_mouvement: ["", [Validators.required]],
-     code: ["", [Validators.required]],
-     designation: ["", [Validators.required]],
-     duree_amorti: ["", [Validators.required, Validators.min(0)]],
-
-     bureau_id:['',[Validators.required]],
-     employe_id:['',[]],
-
-     montant_ttc: ["", [Validators.required,Validators.min(0)]],
-     etat: ["",  [Validators.required]],
-     observation: ["",  [ ]],
-  });
-   this.deleteEntreeImmoForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
- }
+    this.editEntreeImmoForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
+      designation: ["", [Validators.required]],
+      date_entree: ["", [Validators.required]],
+      valeur_origine: ["", [Validators.required]],
+      duree_amortissement: ["", [Validators.required]],
+      date_fin_amortissement: ["", [Validators.required]],
+      code: ["", [Validators.required]],
+      localisation_id: ["", [Validators.required]],
+      etat: ["", [Validators.required]],
+    });
+    this.deleteEntreeImmoForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
+    });
+    this.initBienAmortissableListener();
+    this.applyBienAmortissableValidators();
+  }
 
   hideAlert() {
     this.showAlert = false;
@@ -124,198 +106,154 @@ export class EntreeImmoComponent implements OnInit {
     this.showAlert = true;
   }
 
-  changeQte(){
+  private applyBienAmortissableValidators(): void {
+  const val = this.addEntreeImmoForm.get('bien_amortissable')?.value;
+  const duree = this.addEntreeImmoForm.get('duree_amortissement');
+  const dateFin = this.addEntreeImmoForm.get('date_fin_amortissement');
 
-    var t=this.stockDisponible-this.addEntreeImmoForm.get('qte')?.value
-    if(t<0 ){
+  if (val === 'oui') {
+    duree?.setValidators([Validators.required, Validators.min(1)]);
+    dateFin?.setValidators([Validators.required]);
+  } else {
+    duree?.clearValidators();
+    dateFin?.clearValidators();
+    duree?.setValue(null);
+    dateFin?.setValue(null);
+  }
 
-      this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
-      this.showAlert=true;
-      this.isDisabledBtn=true
-  // alert('Vous ne pouvez pas sortir ce article au dela de '+this.stockDisponible)
-    }else {
-      this.isDisabledBtn=false
+  duree?.updateValueAndValidity();
+  dateFin?.updateValueAndValidity();
+}
+
+  private initBienAmortissableListener(): void {
+  this.addEntreeImmoForm.get('bien_amortissable')?.valueChanges.subscribe(val => {
+    const duree = this.addEntreeImmoForm.get('duree_amortissement');
+    const dateFin = this.addEntreeImmoForm.get('date_fin_amortissement');
+
+    if (val === 'oui') {
+      duree?.setValidators([Validators.required, Validators.min(1)]);
+      dateFin?.setValidators([Validators.required]);
+    } else {
+      duree?.clearValidators();
+      dateFin?.clearValidators();
+      duree?.setValue(null);
+      dateFin?.setValue(null);
     }
-  }
-  changeArtice(){
 
-    this.immoService.getSockByArticle({
-      article_id:this.addEntreeImmoForm.get('article_id')?.value
-    }).subscribe(
-      (resp:any)=>{
+    // ⚡ Mise à jour des validateurs
+    duree?.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+    dateFin?.updateValueAndValidity({ onlySelf: true, emitEvent: true });
 
-        // alert(resp.data.qte)
-        this.stockDisponible=resp.data.qte;
-
-        this.addEntreeImmoForm.get('qte')?.setValue('')
-
-      }
-    )
-
-    // alert(this.addReparationImmoForm.get('article_id')?.value)
-  }
+    // ⚡ Marquer comme touché pour déclencher les messages
+    duree?.markAsTouched();
+    dateFin?.markAsTouched();
+  });
+}
 
 
- getEmploye(){
 
-   this.employeService.getAllEmploye().subscribe(
-     (res: any) => {
 
-         // alert(JSON.stringify(res.data ))
-       this.lstEmployer=res.data
 
-     },
-     (error:any)=>{
+  getLocalisation() {
 
-     });
- }
-
-  getBureau(){
-
-    this.bureauService.getAll().subscribe(
+    this.localisationService.getAll().subscribe(
       (res: any) => {
+
         // alert(JSON.stringify(res.data ))
-        this.lstBureau=res.data.data
+        this.lstLocalisation = res.data.data
 
       },
-      (error:any)=>{
+      (error: any) => {
 
       });
   }
 
-  getCategorie(){
-
-    this.categorieService.getAll().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data.data))
-        this.lstCategorie=res.data.data
-
-    },
-      (error:any)=>{
-
-    });
 
 
-  }
 
-  getFournisseur(){
+  onClickSubmitAddImmo() {
 
-    this.fournisseurService.getAll().subscribe(
-      (res: any) => {
+    console.log(this.addEntreeImmoForm.value)
 
-        // alert(JSON.stringify(res.data.data))
-        this.lstForuniseur=res.data.data
+    if (this.addEntreeImmoForm.valid) {
+      $('#spinnerr').removeClass('d-none');
+      this.immoService.save(this.addEntreeImmoForm.value).subscribe(
+        (data: any) => {
+          location.reload();
+        }
+      )
+    } else {
+      $('#spinnerr').addClass('d-none');
+      this.messageAlert = "Attention ! Desolé le formulaire n'est pas bien renseigné"
+      this.showAlert = true;
 
-    },
-      (error:any)=>{
-
-    });
+      // alert("desole le formulaire n'est pas bien renseigné")
+    }
 
 
   }
 
-  getArticle(){
+  onClickSubmitEditArticle() {
+    console.log(this.editEntreeImmoForm.value)
 
-    this.articleService.getAll().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data.data))
-        this.lstArticel=res.data.data
-
-    },
-      (error:any)=>{
-
-    });
-
-
-  }
-
- onClickSubmitAddImmo(){
-
-  console.log(this.addEntreeImmoForm.value)
-
-  if (this.addEntreeImmoForm.valid){
-    $('#spinnerr').removeClass('d-none');
-    this.immoService.save(this.addEntreeImmoForm.value).subscribe(
-      (data:any)=>{
-        location.reload();
-      }
-    )
-  }else {
-    $('#spinnerr').addClass('d-none');
-    this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
-    this.showAlert=true;
-
-    // alert("desole le formulaire n'est pas bien renseigné")
-  }
-
-
-}
-
-onClickSubmitEditArticle(){
-  console.log(this.editEntreeImmoForm.value)
-
-    if (this.editEntreeImmoForm.valid){
+    if (this.editEntreeImmoForm.valid) {
       const id = this.editEntreeImmoForm.value.id;
       $('#spinner').removeClass('d-none');
       this.immoService.edit(this.editEntreeImmoForm.value).subscribe(
-        (data:any)=>{
+        (data: any) => {
           location.reload();
         }
       )
       console.log("success")
-    }else {
+    } else {
       $('#spinner').addClass('d-none');
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
-}
+  }
 
-onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeImmoForm.value)
+  onClickSubmitDeleteImmo() {
+    console.log(this.deleteEntreeImmoForm.value)
 
-    if (this.deleteEntreeImmoForm.valid){
+    if (this.deleteEntreeImmoForm.valid) {
       const id = this.deleteEntreeImmoForm.value.id;
       this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
-        (data:any)=>{
+        (data: any) => {
 
           // alert(JSON.stringify(data))
           location.reload();
         }
       )
       console.log("success")
-    }else {
+    } else {
 
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
-}
+  }
 
 
 
-getEditForm(row: any){
-
+  getEditForm(row: any) {
   this.editEntreeImmoForm.patchValue({
-   id:row.id,
-    date_mouvement: row.date_mouvement,
-    code: row.code,
+    id: row.id,
     designation: row.designation,
-    duree_amorti: row.duree_amorti,
-    bureau_id: row.bureau_id,
-    employe_id: row.employe_id,
-    montant_ttc: row.montant_ttc,
+    date_entree: row.date_entree,
+    valeur_origine: row.valeur_origine,
+    duree_amortissement: row.duree_amortissement,
+    date_fin_amortissement: row.date_fin_amortissement,
+    code: row.code,
+    localisation_id: row.localisation_id,
     etat: row.etat,
-    observation: row.observation,
-
-  })
+  });
 }
 
-getDeleteForm(row: any){
-  this.deleteEntreeImmoForm.patchValue({
-   id:row.id,
-  })
-}
+
+  getDeleteForm(row: any) {
+    this.deleteEntreeImmoForm.patchValue({
+      id: row.id,
+    })
+  }
 
 
   private getTableData(): void {
@@ -331,9 +269,9 @@ getDeleteForm(row: any){
 
           // alert(res.type);
 
-            this.lstEntreeImmo.push(res);
+          this.lstEntreeImmo.push(res);
 
-            this.serialNumberArray.push(serialNumber);
+          this.serialNumberArray.push(serialNumber);
 
 
         }
