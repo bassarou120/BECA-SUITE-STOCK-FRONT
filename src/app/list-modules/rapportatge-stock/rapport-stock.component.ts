@@ -1,13 +1,9 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ContratService } from 'src/app/core/services/contrat/contrat.service';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
-import { FichepaieService } from 'src/app/core/services/fiche-paie/fichepaie.service';
 import { bureauService } from "../../core/services/bureau/bureau.service";
 import { immoService } from "../../core/services/immo/immo.service";
 import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service"; 
-import * as bootstrap from 'bootstrap';
 import * as $ from 'jquery';
 
 @Component({
@@ -19,10 +15,12 @@ export class rapportStockComponent implements OnInit {
   public showloader = false;
   public rapportStockForm!: FormGroup;
   
-  // NOUVELLES VARIABLES POUR LE TABLEAU ET LES ERREURS
-  public lstMouvements: any[] = []; // Pour stocker la liste affichée dans le tableau
+  // Liste pour stocker les données du tableau
+  public lstMouvements: any[] = []; 
   
-  // Listes pour les sélecteurs
+  // Statistiques optionnelles pour l'affichage (valeur stock, etc.)
+  public stats: any = null;
+
   public listAnnee: any;
   public lstEmployer: any;
   public lstBureau: any;
@@ -49,85 +47,131 @@ export class rapportStockComponent implements OnInit {
   }
 
   initForm() {
-    const currentDate = new Date();
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-
     this.rapportStockForm = this.formBuilder.group({
       type_rapport: ['', [Validators.required]],
-      date_debut: ['', [Validators.required]],
-      date_fin: ['', [Validators.required]],
+      date_debut: [''],
+      date_fin: [''],
+    });
+
+    /**
+     * ECOUTEUR DE CHANGEMENT DE TYPE DE RAPPORT
+     * Correction : Réinitialise les données dès que l'utilisateur change de type
+     */
+    this.rapportStockForm.get('type_rapport')?.valueChanges.subscribe(value => {
+      // 1. On vide le tableau immédiatement pour un aspect "pro"
+      this.lstMouvements = [];
+      this.stats = null;
+
+      const dateDebut = this.rapportStockForm.get('date_debut');
+      const dateFin = this.rapportStockForm.get('date_fin');
+
+      // 2. Gestion dynamique des validations
+      if (value === 'rapport_entree' || value === 'rapport_sortie') {
+        dateDebut?.setValidators([Validators.required]);
+        dateFin?.setValidators([Validators.required]);
+      } else {
+        // Pour l'état de stock, on vide aussi les champs dates
+        dateDebut?.clearValidators();
+        dateFin?.clearValidators();
+        dateDebut?.setValue('');
+        dateFin?.setValue('');
+      }
+      dateDebut?.updateValueAndValidity();
+      dateFin?.updateValueAndValidity();
     });
   }
 
   /**
-   * ACTION 1 : AFFICHER LA LISTE DANS LE TABLEAU
-   * Cette méthode récupère les données JSON pour l'aperçu
+   * RECHERCHE / AFFICHAGE DES DONNÉES
    */
   onClickSubmitRapportStock() {
     if (this.rapportStockForm.invalid) {
-      alert('Veuillez remplir tous les champs obligatoires');
+      alert('Veuillez remplir les champs requis (Type et Dates si nécessaire)');
       return;
     }
 
     this.showloader = true;
-    this.lstMouvements = []; // On vide la liste précédente
+    this.lstMouvements = []; // Sécurité : on vide à nouveau avant l'appel
 
     const params = this.rapportStockForm.value;
 
-    // Appel au service pour récupérer les données (JSON)
-    this.stockService.getRapportEntreesData(params).subscribe({
-      next: (res: any) => {
-        this.showloader = false;
-        // On stocke les données reçues dans lstMouvements pour le HTML
-        this.lstMouvements = res.data || res; 
-        if (this.lstMouvements.length === 0) {
-           alert("Aucune donnée trouvée pour cette période");
-        }
-      },
-      error: (err: any) => {
-        this.showloader = false;
-        console.error(err);
-        alert("Erreur lors de la récupération des données.");
-      }
-    });
+    if (params.type_rapport === 'rapport_etat') {
+      this.stockService.getRapportEtatStockData().subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || [];
+          this.stats = res.statistiques; // On stocke les stats si besoin d'affichage
+          if (this.lstMouvements.length === 0) alert("Aucun article en stock trouvé");
+        },
+        error: (err) => this.handleError(err)
+      });
+    } else {
+      this.stockService.getRapportEntreesData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || []; 
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucune donnée trouvée pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
   }
 
   /**
-   * ACTION 2 : TELECHARGER LE PDF
-   * Cette méthode est appelée après l'affichage du tableau
+   * GENERATION PDF
    */
   telechargerPdf() {
+    if (this.rapportStockForm.invalid) return;
+    if (this.lstMouvements.length === 0) {
+      alert("Veuillez d'abord afficher les données avant de télécharger le PDF");
+      return;
+    }
+
     this.showloader = true;
     $('#spinnerr').removeClass('d-none');
 
     const params = this.rapportStockForm.value;
+    
+    const exportObservable = (params.type_rapport === 'rapport_etat') 
+      ? this.stockService.exportPdfEtatStock() 
+      : this.stockService.exportPdfEntrees(params);
 
-    this.stockService.exportPdfEntrees(params).subscribe({
+    exportObservable.subscribe({
         next: (res: any) => {
             $('#spinnerr').addClass('d-none');
             this.showloader = false;
 
-            // Tentative d'extraction de l'URL selon différentes structures possibles (res.url, res.data.url, etc.)
-            const url = res.success ? (res.data?.url || res.url) : (res.url || res.data?.url || res.data);
+            const url = res.success ? (res.url || res.data?.url) : null;
             
             if (url) {
-                window.open(url, '_blank');
+                // Utilisation d'un lien temporaire pour forcer le téléchargement si possible
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';
+                link.download = url.split('/').pop();
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             } else {
-                console.error("Structure de réponse inattendue :", res);
-                alert("Impossible de trouver l'URL du PDF dans la réponse du serveur.");
+                alert("Erreur: URL du PDF introuvable.");
             }
         },
         error: (err: any) => {
             $('#spinnerr').addClass('d-none');
             this.showloader = false;
-            console.error("Erreur lors du téléchargement", err);
-            alert("Erreur serveur lors de la génération du PDF.");
+            alert("Erreur lors de la génération du PDF.");
         }
     });
-}
+  }
 
-  // --- Helpers ---
+  private handleError(err: any) {
+    this.showloader = false;
+    console.error(err);
+    alert("Erreur de récupération : " + (err.error?.message || "Serveur injoignable"));
+  }
+
+  // --- Chargement des données de base ---
 
   getEmploye() {
     this.employeService.getAllEmploye().subscribe({
@@ -141,11 +185,5 @@ export class rapportStockComponent implements OnInit {
       next: (res: any) => this.lstBureau = res.data?.data || res.data,
       error: (err) => console.error(err)
     });
-  }
-
-  formatDate(date: any) {
-    if (!date) return '';
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
   }
 }

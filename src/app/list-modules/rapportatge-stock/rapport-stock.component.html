@@ -35,36 +35,44 @@
                 <div class="input-block mb-3">
                   <label class="col-form-label">Type de rapport</label>
                   <mat-select class="select form-control" formControlName="type_rapport" placeholder="Sélectionner un rapport">
-                  <mat-option value="rapport_entree">RAPPORT DES ENTREES</mat-option>
-                  <mat-option value="rapport_sortie">RAPPORT DES SORTIES</mat-option>
-                  <mat-option value="rapport_etat">RAPPORT ETAT DU STOCK</mat-option>
+                    <mat-option value="rapport_entree">RAPPORT DES ENTREES</mat-option>
+                    <mat-option value="rapport_sortie">RAPPORT DES SORTIES</mat-option>
+                    <mat-option value="rapport_etat">RAPPORT ETAT DU STOCK (ACTUEL)</mat-option>
                   </mat-select>
                 </div>
               </div>
 
-              <div class="col-md-4" *ngIf="rapportStockForm.get('type_rapport')?.value !== 'rapport_etat'">
-                <div class="input-block mb-3">
-                  <label class="col-form-label">Date de début</label>
-                  <input type="date" class="form-control" formControlName="date_debut">
+              <!-- Les dates ne s'affichent que pour les entrées/sorties -->
+              <ng-container *ngIf="rapportStockForm.get('type_rapport')?.value !== 'rapport_etat'">
+                <div class="col-md-4">
+                  <div class="input-block mb-3">
+                    <label class="col-form-label">Date de début</label>
+                    <input type="date" class="form-control" formControlName="date_debut">
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-md-4">
-                <div class="input-block mb-3">
-                  <label class="col-form-label">Date de fin</label>
-                  <input type="date" class="form-control" formControlName="date_fin">
+                <div class="col-md-4">
+                  <div class="input-block mb-3">
+                    <label class="col-form-label">Date de fin</label>
+                    <input type="date" class="form-control" formControlName="date_fin">
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Message informatif pour l'état de stock -->
+              <div class="col-md-8" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_etat'">
+                <div class="alert alert-light border mt-2">
+                  <i class="fa fa-info-circle text-info"></i> Ce rapport affiche la situation réelle de votre inventaire à l'instant T avec la valorisation au CUMP.
                 </div>
               </div>
             </div>
 
             <div class="row mt-3 text-center">
               <div class="col-md-12">
-                <!-- Bouton 1 : On charge la liste -->
                 <button class="btn btn-info me-2" type="button" (click)="onClickSubmitRapportStock()">
                   <i class="fa fa-list"></i> Afficher la liste
                 </button>
                 
-                <!-- Bouton 2 : Apparaît si la liste est chargée -->
                 <button *ngIf="lstMouvements.length > 0" class="btn btn-primary" type="button" (click)="telechargerPdf()">
                   <i class="fa fa-file-pdf-o"></i> Télécharger le PDF
                   <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span>
@@ -73,13 +81,44 @@
             </div>
           </form>
 
-          <!-- Tableau des résultats -->
-
+          <!-- TABLEAU DYNAMIQUE -->
           <div class="table-responsive mt-4" *ngIf="lstMouvements && lstMouvements.length > 0">
-            <table class="table table-striped custom-table mb-0">
+            
+            <!-- CAS 1 : TABLEAU ETAT DE STOCK -->
+            <table class="table table-striped custom-table mb-0" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_etat'">
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th>Code</th>
+                  <th>Désignation Article</th>
+                  <th class="text-center">Stock Actuel</th>
+                  <th class="text-end">CUMP</th>
+                  <th class="text-end">Valeur Stock</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of lstMouvements">
+                  <td>{{ s.article_code }}</td>
+                  <td class="fw-bold">{{ s.article_nom }}</td>
+                  <td class="text-center">
+                    <span [class.text-danger]="s.qte_actuel <= s.stock_alert" [class.fw-bold]="s.qte_actuel <= s.stock_alert">
+                      {{ s.qte_actuel }}
+                    </span>
+                  </td>
+                  <td class="text-end text-muted">{{ s.cump | number:'1.2-2' }}</td>
+                  <td class="text-end fw-bold">{{ (s.qte_actuel * s.cump) | number }} FCFA</td>
+                  <td>
+                    <span class="badge bg-inverse-danger" *ngIf="s.qte_actuel <= s.stock_alert">ALERTE</span>
+                    <span class="badge bg-inverse-success" *ngIf="s.qte_actuel > s.stock_alert">OK</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- CAS 2 : TABLEAU MOUVEMENTS (ENTREES/SORTIES) -->
+            <table class="table table-striped custom-table mb-0" *ngIf="rapportStockForm.get('type_rapport')?.value !== 'rapport_etat'">
+              <thead>
+                <tr>
                   <th>Date</th>
                   <th>Référence</th>
                   <th>Article</th>
@@ -90,29 +129,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let m of lstMouvements; let i = index">
-                  <td>{{ i + 1 }}</td>
+                <tr *ngFor="let m of lstMouvements">
                   <td>{{ m.date_mouvement | date:'dd/MM/yyyy' }}</td>
-                  <td>
-                  <span class="badge bg-inverse-info">{{ m.reference }}</span>
-                  </td>
-                  <!-- Modification ici pour utiliser l'alias du contrôleur -->
+                  <td><span class="badge bg-inverse-info">{{ m.reference }}</span></td>
                   <td>{{ m.article_nom }}</td>
                   <td>{{ m.fournisseur_nom }}</td>
                   <td class="text-center">{{ m.quantite }}</td>
                   <td class="text-end">{{ m.prix_unitaire | number }}</td>
-                  <td class="text-end fw-bold">
-                  {{ (m.quantite * m.prix_unitaire) | number }} FCFA
-                  </td>
+                  <td class="text-end fw-bold">{{ (m.quantite * m.prix_unitaire) | number }} FCFA</td>
                 </tr>
               </tbody>
             </table>
           </div>
           
-          <!-- Message si aucun résultat -->
-          
-          <div class="alert alert-info mt-4 text-center" *ngIf="lstMouvements && lstMouvements.length === 0">
-          Aucun mouvement trouvé pour cette période.
+          <div class="alert alert-info mt-4 text-center" *ngIf="lstMouvements && lstMouvements.length === 0 && !showloader">
+            Sélectionnez les paramètres et cliquez sur "Afficher la liste" pour visualiser les données.
           </div>
 
         </div>

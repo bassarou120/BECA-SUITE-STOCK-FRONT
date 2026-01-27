@@ -61,6 +61,7 @@
                       <th mat-sort-header="article_code">Code</th>
                       <th mat-sort-header="designation">Désignation Article</th>
                       <th mat-sort-header="quantite" class="text-center">Quantité en Stock</th>
+                      <th mat-sort-header="cump" class="text-end">P.U Moyen (CUMP)</th>
                       <!-- <th class="text-center">Statut</th> -->
                     </tr>
                   </thead>
@@ -78,6 +79,10 @@
                         <span [class]="item.quantite <= item.article?.stock_alert ? 'text-danger fw-bold' : 'text-success fw-bold'">
                           {{ item.quantite }}
                         </span>
+                      </td>
+                      <!-- Colonne CUMP -->
+                      <td class="text-avatar text-muted">
+                        {{ item.cump | number:'1.0-2' }} <small>FCFA</small>
                       </td>
                       <!-- Badge Statut -->
                       <!-- <td class="text-center">

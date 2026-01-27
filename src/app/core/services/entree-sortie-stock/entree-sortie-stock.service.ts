@@ -79,4 +79,18 @@ export class entreeSortieStockService {
 
     return this.http.get<any>(`${this.url}/rapports/entrees/pdf`, { params });
   }
+
+  /**
+   * Récupère les données de l'état du stock actuel (JSON)
+   */
+  getRapportEtatStockData(): Observable<any> {
+    return this.http.get<any>(`${this.url}/rapports/etat-stock/data`);
+  }
+
+  /**
+   * Génère l'URL pour le téléchargement du PDF de l'état du stock
+   */
+  exportPdfEtatStock(): Observable<any> {
+    return this.http.get<any>(`${this.url}/rapports/etat-stock/pdf`);
+  }
 }
