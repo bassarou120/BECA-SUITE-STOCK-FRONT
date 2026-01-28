@@ -122,7 +122,10 @@
                   <th>Date</th>
                   <th>Référence</th>
                   <th>Article</th>
-                  <th>Fournisseur</th>
+                  <!-- Colonne dynamique Entrée vs Sortie -->
+                  <th *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree'">Fournisseur</th>
+                  <th *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_sortie'">Bénéficiaire / Bureau</th>
+                  
                   <th class="text-center">Qté</th>
                   <th class="text-end">P.U HT</th>
                   <th class="text-end">Total</th>
@@ -133,7 +136,16 @@
                   <td>{{ m.date_mouvement | date:'dd/MM/yyyy' }}</td>
                   <td><span class="badge bg-inverse-info">{{ m.reference }}</span></td>
                   <td>{{ m.article_nom }}</td>
-                  <td>{{ m.fournisseur_nom }}</td>
+                  
+                  <!-- Données Fournisseur pour Entrées -->
+                  <td *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree'">{{ m.fournisseur_nom || 'N/A' }}</td>
+                  
+                  <!-- Données Employé/Bureau pour Sorties -->
+                  <td *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_sortie'">
+                    {{ m.employe_nom }} <br>
+                    <small class="text-muted">{{ m.bureau_nom }}</small>
+                  </td>
+
                   <td class="text-center">{{ m.quantite }}</td>
                   <td class="text-end">{{ m.prix_unitaire | number }}</td>
                   <td class="text-end fw-bold">{{ (m.quantite * m.prix_unitaire) | number }} FCFA</td>

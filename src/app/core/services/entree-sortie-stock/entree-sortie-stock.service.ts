@@ -54,8 +54,8 @@ export class entreeSortieStockService {
     return this.http.delete<any>(`${this.url}/mouvement_stock/${data.id}`);
   }
 
-  getSockByArticle(data: any): Observable<Object> {
-    return this.http.post(`${this.url}/getSockByArticle`, data);
+  getStockByArticle(data: any): Observable<Object> {
+    return this.http.post(`${this.url}/getStockByArticle`, data);
   }
 
   /**
@@ -92,5 +92,65 @@ export class entreeSortieStockService {
    */
   exportPdfEtatStock(): Observable<any> {
     return this.http.get<any>(`${this.url}/rapports/etat-stock/pdf`);
+  }
+
+  // --- NOUVELLES MÉTHODES (Sorties & Rapports Sorties) ---
+
+  /**
+   * Enregistrer une sortie de stock
+   */
+  saveSortie(data: any): Observable<any> {
+    return this.http.post(`${this.url}/mouvement_stock/sortie`, data);
+  }
+
+  /**
+   * Récupérer la liste des sorties
+   */
+  getAllSorties(): Observable<any> {
+    return this.http.get<any>(`${this.url}/mouvement_stock/sortie`);
+  }
+
+  /**
+   * Supprimer/Annuler une sortie
+   */
+  deleteSortie(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/mouvement_stock/sortie/${id}`);
+  }
+
+  /**
+   * Supprimer TOUT un bon de sortie par sa référence
+   */
+  deleteSortieByRef(reference: string): Observable<any> {
+    return this.http.delete<any>(`${this.url}/mouvement_stock/sortie/reference/${reference}`);
+  }
+
+  /**
+   * Récupérer les détails d'un bon de sortie par sa référence
+   */
+  getDetailsSortie(reference: string): Observable<any> {
+    return this.http.get<any>(`${this.url}/mouvement_stock/sortie/details/${reference}`);
+  }
+
+  /**
+   * Récupère les données du rapport de sorties (JSON)
+   * Utilisé pour l'affichage dans le tableau avant export
+   */
+  getRapportSortiesData(filters: any): Observable<any> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+    
+    return this.http.get<any>(`${this.url}/mouvement_stock/sortie/rapport/data`, { params });
+  }
+
+  /**
+   * Génère l'URL pour le téléchargement du PDF des sorties
+   */
+  exportPdfSorties(filters: any): Observable<any> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+
+    return this.http.get<any>(`${this.url}/mouvement-stock/sortie/pdf`, { params });
   }
 }

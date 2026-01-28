@@ -15,10 +15,7 @@ export class rapportStockComponent implements OnInit {
   public showloader = false;
   public rapportStockForm!: FormGroup;
   
-  // Liste pour stocker les données du tableau
   public lstMouvements: any[] = []; 
-  
-  // Statistiques optionnelles pour l'affichage (valeur stock, etc.)
   public stats: any = null;
 
   public listAnnee: any;
@@ -53,24 +50,17 @@ export class rapportStockComponent implements OnInit {
       date_fin: [''],
     });
 
-    /**
-     * ECOUTEUR DE CHANGEMENT DE TYPE DE RAPPORT
-     * Correction : Réinitialise les données dès que l'utilisateur change de type
-     */
     this.rapportStockForm.get('type_rapport')?.valueChanges.subscribe(value => {
-      // 1. On vide le tableau immédiatement pour un aspect "pro"
       this.lstMouvements = [];
       this.stats = null;
 
       const dateDebut = this.rapportStockForm.get('date_debut');
       const dateFin = this.rapportStockForm.get('date_fin');
 
-      // 2. Gestion dynamique des validations
       if (value === 'rapport_entree' || value === 'rapport_sortie') {
         dateDebut?.setValidators([Validators.required]);
         dateFin?.setValidators([Validators.required]);
       } else {
-        // Pour l'état de stock, on vide aussi les champs dates
         dateDebut?.clearValidators();
         dateFin?.clearValidators();
         dateDebut?.setValue('');
@@ -81,9 +71,6 @@ export class rapportStockComponent implements OnInit {
     });
   }
 
-  /**
-   * RECHERCHE / AFFICHAGE DES DONNÉES
-   */
   onClickSubmitRapportStock() {
     if (this.rapportStockForm.invalid) {
       alert('Veuillez remplir les champs requis (Type et Dates si nécessaire)');
@@ -91,7 +78,7 @@ export class rapportStockComponent implements OnInit {
     }
 
     this.showloader = true;
-    this.lstMouvements = []; // Sécurité : on vide à nouveau avant l'appel
+    this.lstMouvements = []; 
 
     const params = this.rapportStockForm.value;
 
@@ -100,12 +87,27 @@ export class rapportStockComponent implements OnInit {
         next: (res: any) => {
           this.showloader = false;
           this.lstMouvements = res.data || [];
-          this.stats = res.statistiques; // On stocke les stats si besoin d'affichage
+          this.stats = res.statistiques;
           if (this.lstMouvements.length === 0) alert("Aucun article en stock trouvé");
         },
         error: (err) => this.handleError(err)
       });
-    } else {
+    } 
+    // AJOUT DE LA LOGIQUE POUR LES SORTIES
+    else if (params.type_rapport === 'rapport_sortie') {
+      this.stockService.getRapportSortiesData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || []; 
+          
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucune sortie trouvée pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // LOGIQUE EXISTANTE POUR LES ENTREES
+    else {
       this.stockService.getRapportEntreesData(params).subscribe({
         next: (res: any) => {
           this.showloader = false;
@@ -118,9 +120,6 @@ export class rapportStockComponent implements OnInit {
     }
   }
 
-  /**
-   * GENERATION PDF
-   */
   telechargerPdf() {
     if (this.rapportStockForm.invalid) return;
     if (this.lstMouvements.length === 0) {
@@ -133,9 +132,15 @@ export class rapportStockComponent implements OnInit {
 
     const params = this.rapportStockForm.value;
     
-    const exportObservable = (params.type_rapport === 'rapport_etat') 
-      ? this.stockService.exportPdfEtatStock() 
-      : this.stockService.exportPdfEntrees(params);
+    // LOGIQUE DE SELECTION DE L'OBSERVABLE D'EXPORT (AVEC SORTIE)
+    let exportObservable;
+    if (params.type_rapport === 'rapport_etat') {
+        exportObservable = this.stockService.exportPdfEtatStock();
+    } else if (params.type_rapport === 'rapport_sortie') {
+        exportObservable = this.stockService.exportPdfSorties(params);
+    } else {
+        exportObservable = this.stockService.exportPdfEntrees(params);
+    }
 
     exportObservable.subscribe({
         next: (res: any) => {
@@ -145,7 +150,6 @@ export class rapportStockComponent implements OnInit {
             const url = res.success ? (res.url || res.data?.url) : null;
             
             if (url) {
-                // Utilisation d'un lien temporaire pour forcer le téléchargement si possible
                 const link = document.createElement('a');
                 link.href = url;
                 link.target = '_blank';
@@ -170,8 +174,6 @@ export class rapportStockComponent implements OnInit {
     console.error(err);
     alert("Erreur de récupération : " + (err.error?.message || "Serveur injoignable"));
   }
-
-  // --- Chargement des données de base ---
 
   getEmploye() {
     this.employeService.getAllEmploye().subscribe({
