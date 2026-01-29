@@ -135,22 +135,15 @@ export class entreeSortieStockService {
    * Récupère les données du rapport de sorties (JSON)
    * Utilisé pour l'affichage dans le tableau avant export
    */
-  getRapportSortiesData(filters: any): Observable<any> {
-    let params = new HttpParams()
-      .set('date_debut', filters.date_debut)
-      .set('date_fin', filters.date_fin);
-    
-    return this.http.get<any>(`${this.url}/mouvement_stock/sortie/rapport/data`, { params });
-  }
+  getRapportSortiesData(params: any): Observable<any> {
+    return this.http.get(`${this.url}/rapports/sorties/data`, { params });
+}
 
   /**
    * Génère l'URL pour le téléchargement du PDF des sorties
    */
-  exportPdfSorties(filters: any): Observable<any> {
-    let params = new HttpParams()
-      .set('date_debut', filters.date_debut)
-      .set('date_fin', filters.date_fin);
-
-    return this.http.get<any>(`${this.url}/mouvement-stock/sortie/pdf`, { params });
+  // Lancer la génération du PDF côté serveur
+  exportPdfSorties(params: any): Observable<any> {
+    return this.http.get(`${this.url}/rapports/sorties/pdf`, { params });
   }
 }

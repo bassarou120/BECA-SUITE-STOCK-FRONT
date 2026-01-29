@@ -1,5 +1,6 @@
 <div class="page-wrapper">
   <div class="content container-fluid">
+    <!-- Header -->
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
@@ -42,7 +43,7 @@
                 </div>
               </div>
 
-              <!-- Les dates ne s'affichent que pour les entrées/sorties -->
+              <!-- Dates pour entrées/sorties -->
               <ng-container *ngIf="rapportStockForm.get('type_rapport')?.value !== 'rapport_etat'">
                 <div class="col-md-4">
                   <div class="input-block mb-3">
@@ -59,7 +60,6 @@
                 </div>
               </ng-container>
 
-              <!-- Message informatif pour l'état de stock -->
               <div class="col-md-8" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_etat'">
                 <div class="alert alert-light border mt-2">
                   <i class="fa fa-info-circle text-info"></i> Ce rapport affiche la situation réelle de votre inventaire à l'instant T avec la valorisation au CUMP.
@@ -84,7 +84,7 @@
           <!-- TABLEAU DYNAMIQUE -->
           <div class="table-responsive mt-4" *ngIf="lstMouvements && lstMouvements.length > 0">
             
-            <!-- CAS 1 : TABLEAU ETAT DE STOCK -->
+            <!-- CAS 1 : ETAT DE STOCK -->
             <table class="table table-striped custom-table mb-0" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_etat'">
               <thead>
                 <tr>
@@ -101,12 +101,12 @@
                   <td>{{ s.article_code }}</td>
                   <td class="fw-bold">{{ s.article_nom }}</td>
                   <td class="text-center">
-                    <span [class.text-danger]="s.qte_actuel <= s.stock_alert" [class.fw-bold]="s.qte_actuel <= s.stock_alert">
+                    <span [class.text-danger]="s.qte_actuel <= s.stock_alert">
                       {{ s.qte_actuel }}
                     </span>
                   </td>
-                  <td class="text-end text-muted">{{ s.cump | number:'1.2-2' }}</td>
-                  <td class="text-end fw-bold">{{ (s.qte_actuel * s.cump) | number }} FCFA</td>
+                  <td class="text-end">{{ s.cump | number:'1.2-2' }}</td>
+                  <td class="text-end fw-bold">{{ (s.qte_actuel * s.cump) | number }}</td>
                   <td>
                     <span class="badge bg-inverse-danger" *ngIf="s.qte_actuel <= s.stock_alert">ALERTE</span>
                     <span class="badge bg-inverse-success" *ngIf="s.qte_actuel > s.stock_alert">OK</span>
@@ -115,16 +115,17 @@
               </tbody>
             </table>
 
-            <!-- CAS 2 : TABLEAU MOUVEMENTS (ENTREES/SORTIES) -->
+            <!-- CAS 2 : MOUVEMENTS (ENTREES/SORTIES) -->
             <table class="table table-striped custom-table mb-0" *ngIf="rapportStockForm.get('type_rapport')?.value !== 'rapport_etat'">
               <thead>
                 <tr>
                   <th>Date</th>
                   <th>Référence</th>
                   <th>Article</th>
-                  <!-- Colonne dynamique Entrée vs Sortie -->
+                  
+                  <!-- Entête dynamique -->
                   <th *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree'">Fournisseur</th>
-                  <th *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_sortie'">Bénéficiaire / Bureau</th>
+                  <th *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_sortie'">Destination (Direction / Localisation)</th>
                   
                   <th class="text-center">Qté</th>
                   <th class="text-end">P.U HT</th>
@@ -137,25 +138,47 @@
                   <td><span class="badge bg-inverse-info">{{ m.reference }}</span></td>
                   <td>{{ m.article_nom }}</td>
                   
-                  <!-- Données Fournisseur pour Entrées -->
-                  <td *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree'">{{ m.fournisseur_nom || 'N/A' }}</td>
+                  <!-- Fournisseur pour Entrées -->
+                  <td *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree'">
+                    {{ m.fournisseur_nom || 'N/A' }}
+                  </td>
                   
-                  <!-- Données Employé/Bureau pour Sorties -->
+                  <!-- Destination pour Sorties -->
                   <td *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_sortie'">
-                    {{ m.employe_nom }} <br>
-                    <small class="text-muted">{{ m.bureau_nom }}</small>
+                    <span class="fw-bold text-indigo">{{ m.direction_nom || 'N/A' }}</span> <br>
+                    <small class="text-muted"><i class="fa fa-map-marker"></i> {{ m.bureau_nom || 'N/A' }}</small>
                   </td>
 
                   <td class="text-center">{{ m.quantite }}</td>
                   <td class="text-end">{{ m.prix_unitaire | number }}</td>
-                  <td class="text-end fw-bold">{{ (m.quantite * m.prix_unitaire) | number }} FCFA</td>
+                  <td class="text-end fw-bold">{{ (m.quantite * m.prix_unitaire) | number }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
+
+          <!-- Statistiques en bas de page -->
+          <div class="row mt-4" *ngIf="stats && lstMouvements.length > 0">
+            <div class="col-md-4">
+              <div class="card bg-light">
+                <div class="card-body py-2">
+                  <small class="text-muted">Total Quantité</small>
+                  <h4 class="mb-0">{{ stats.total_quantite | number }}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-light">
+                <div class="card-body py-2">
+                  <small class="text-muted">Valeur Totale HT</small>
+                  <h4 class="mb-0 text-primary">{{ stats.total_valeur_ht | number }} FCFA</h4>
+                </div>
+              </div>
+            </div>
+          </div>
           
           <div class="alert alert-info mt-4 text-center" *ngIf="lstMouvements && lstMouvements.length === 0 && !showloader">
-            Sélectionnez les paramètres et cliquez sur "Afficher la liste" pour visualiser les données.
+            Aucun mouvement trouvé pour cette période.
           </div>
 
         </div>
