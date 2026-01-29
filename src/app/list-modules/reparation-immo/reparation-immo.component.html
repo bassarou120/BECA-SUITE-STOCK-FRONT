@@ -1,332 +1,524 @@
 <div class="page-wrapper">
-<!-- Page Content -->
+  <!-- Page Content -->
   <div class="content container-fluid">
+    <app-alert
+      [message]="messageAlert"
+      [show]="showAlert"
+      [onClose]="hideAlert.bind(this)"
+    ></app-alert>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Liste des les réparations ou interventions</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+            </li>
+            <li class="breadcrumb-item active">Réparations</li>
+          </ul>
+        </div>
 
-    <app-alert [message]="messageAlert" [show]="showAlert" [onClose]="hideAlert.bind(this)"></app-alert>
-      <!-- Page Header -->
-      <div class="page-header">
-          <div class="row align-items-center">
-              <div class="col">
-                  <h3 class="page-title">Liste des   les réparations ou interventions </h3>
-                  <ul class="breadcrumb">
-                      <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
-                      <li class="breadcrumb-item active">Réparations</li>
-                  </ul>
-              </div>
+        <!--            <div class="col-auto row">-->
+        <!--              <div class="col-auto">-->
+        <!--                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF-->
+        <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>-->
+        <!--                </a>-->
+        <!--              </div>-->
+        <!--              <div class="col-auto">-->
+        <!--                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL-->
+        <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>-->
+        <!--                </a>-->
+        <!--              </div>-->
+        <!--            </div>-->
 
-  <!--            <div class="col-auto row">-->
-  <!--              <div class="col-auto">-->
-  <!--                <a class="btn btn-primary continue-btn small-btn" (click)="exportToPDF()">Exporter PDF-->
-  <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_pdf"></span>-->
-  <!--                </a>-->
-  <!--              </div>-->
-  <!--              <div class="col-auto">-->
-  <!--                <a data-bs-dismiss="modal" class="btn btn-primary cancel-btn small-btn" (click)="exportToXLSX()">Exporter EXCEL-->
-  <!--                  <span class="fa fa-spinner fa-spin d-none" id="spinner_xlsx"></span>-->
-  <!--                </a>-->
-  <!--              </div>-->
-  <!--            </div>-->
-
-              <div class="col-auto float-end ms-auto">
-                  <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i
-                          class="fa-solid fa-plus"></i> Ajouter </a>
-              </div>
-          </div>
+        <div class="col-auto float-end ms-auto">
+          <a
+            class="btn add-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#add_reparation_immo"
+            ><i class="fa-solid fa-plus"></i> Ajouter
+          </a>
+        </div>
       </div>
-      <!-- /Page Header -->
-      <div class="row">
-          <div class="col-md-12">
-              <div class="table_header">
-                  <div class="row">
-                      <div class="col-sm-12 col-md-6">
-                          <div class="dataTables_length">
-                              <label class="col-form-label" for="">
-                                Afficher
-                                  <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()"
-                                      class="form-control form-control-sm">
-                                      <option value="10">10</option>
-                                      <option value="25">25</option>
-                                      <option value="50">50</option>
-                                      <option value="100">100</option>
-                                  </select>
-                                  Entrées
-                              </label>
-                          </div>
-                      </div>
-                  </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table_header">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length">
+                <label class="col-form-label" for="">
+                  Afficher
+                  <select
+                    [(ngModel)]="pageSize"
+                    (ngModelChange)="changePageSize()"
+                    class="form-control form-control-sm"
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  Entrées
+                </label>
               </div>
-              <div id="to_export" class="table-responsive">
-                  <table matSort (matSortChange)="sortData($event)"
-                      class="table table-striped custom-table datatable mb-0">
+            </div>
+          </div>
+        </div>
+        <div id="to_export" class="table-responsive">
+          <table
+            matSort
+            class="table table-striped custom-table datatable mb-0"
+          >
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>RÉFÉRENCE</th>
+                <th>DATE</th>
+                <th>TYPE</th>
+                <th>DESCRIPTION</th>
+                <th>COÛT TOTAL</th>
+                <th class="">Details</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- Ligne principale -->
+              <ng-container
+                *ngFor="let item of lstReparationImmo; let i = index"
+              >
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.reference }}</td>
+                  <td>{{ item.date_intervention | date: "dd-MM-yyyy" }}</td>
+                  <td>{{ item.type }}</td>
+                  <td>{{ item.description }}</td>
+                  <td>{{ item.cout_total | number: "1.0-0" }}</td>
+                  <td class="">
+                    <button
+                      class="btn btn-sm btn-info"
+                      (click)="toggleDetails(item)"
+                    >
+                      Voir détails
+                    </button>
+                  </td>
+                  <td class="text-end" id="exclusion-2">
+                    <div class="dropdown dropdown-action">
+                      <a
+                        class="action-icon dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="material-icons">more_vert</i></a
+                      >
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          (click)="getEditForm(item)"
+                          data-bs-target="#edit_reparation_imm"
+                          ><i class="fa-solid fa-pencil m-r-5"></i> Modifier</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          (click)="getDeleteForm(item)"
+                          data-bs-target="#delete_reparation_immo"
+                          ><i class="fa-regular fa-trash-can m-r-5"></i>
+                          Supprimer</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Sous-table des immos réparées -->
+                <tr *ngIf="item.showDetails">
+                  <td colspan="7">
+                    <table class="table table-sm table-bordered mt-2 mb-0">
                       <thead>
-                          <tr>
-                              <th style="width: 30px;">#</th>
-
-                              <th mat-sort-header="departmentName">CODE</th>
-                              <th mat-sort-header="departmentName">DESIGNATION</th>
-                              <th mat-sort-header="departmentName">PANNE REPAREE</th>
-                              <th mat-sort-header="departmentName">COUT REAPARTION</th>
-
-                              <th mat-sort-header="departmentName">DATE</th>
-                            <th mat-sort-header="departmentName">OBSERVATION </th>
-                              <th class="text-end" id="exclusion-1">Actions</th>
-                          </tr>
+                        <tr class="table-light">
+                          <th>#</th>
+                          <th>CODE IMMO</th>
+                          <th>DÉSIGNATION</th>
+                          <th>VALEUR D'ORIGINE</th>
+                          <th>DATE D'ENTREE</th>
+                          <th>BIEN AMORTISSABLE</th>
+                        </tr>
                       </thead>
+
                       <tbody>
-                          <tr *ngFor="let item of lstReparationImmo; let i = index;">
-                              <td>{{i+1}}</td>
-                              <td>{{ item.immo.code}}</td>
-                              <td>{{item.immo.designation}}</td>
-
-                              <td>{{item.panne }}</td>
-                              <td>{{item.cout}}</td>
-
-                              <td>{{item.date_mouvement    | date : "dd-MM-YYYY"}}</td>
-                              <td>{{item.observation  }}</td>
-
-
-
-                              <td class="text-end" id="exclusion-2">
-                                  <div class="dropdown dropdown-action">
-                                      <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
-                                          aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                      <div class="dropdown-menu dropdown-menu-right">
-                                          <a class="dropdown-item" data-bs-toggle="modal" (click)="getEditForm(item)"
-                                              data-bs-target="#edit_department"><i class="fa-solid fa-pencil m-r-5"></i>
-                                              Modifier</a>
-                                          <a class="dropdown-item" data-bs-toggle="modal" (click)="getDeleteForm(item)"
-                                              data-bs-target="#delete_department"><i class="fa-regular fa-trash-can m-r-5"></i>
-                                              Supprimer</a>
-                                      </div>
-                                  </div>
-                              </td>
-                          </tr>
-                          <tr *ngIf="lstReparationImmo.length === 0">
-                              <td colspan="10">
-                                  <h5 style="text-align: center;">Aucun Résultat</h5>
-                              </td>
-                          </tr>
+                        <tr
+                          *ngFor="
+                            let immo of item.immobilisations;
+                            let j = index
+                          "
+                        >
+                          <td>{{ j + 1 }}</td>
+                          <td>{{ immo.code }}</td>
+                          <td>{{ immo.designation }}</td>
+                          <td>{{ immo.valeur_origine }}</td>
+                          <td>{{ immo.date_entree }}</td>
+                          <td>{{ immo.bien_amortissable }}</td>
+                        </tr>
                       </tbody>
-                  </table>
-                  <br />
+                    </table>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <!-- Aucun résultat -->
+              <tr *ngIf="lstReparationImmo.length === 0">
+                <td colspan="7" class="text-center">Aucun Résultat</td>
+              </tr>
+            </tbody>
+          </table>
+
           <br />
           <br />
-              </div>
-              <div class="table_footer">
-                  <div class="col-sm-12 col-md-5">
-                      <div class="dataTables_info">
-                        Affichage de {{ serialNumberArray[0] }} à
-                          {{ serialNumberArray[serialNumberArray.length - 1] }} sur
-                          {{ totalData }} Entrées
-                      </div>
-                  </div>
-
-                  <div class="col-sm-12 col-md-7">
-                      <div class="pagination_section">
-                          <ul class="pagination">
-                              <li class="page-item" [ngClass]="{
-                            disabled: currentPage === 1
-                          }">
-                                  <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
-                                      tabindex="-1">Précédent</a>
-                              </li>
-
-                              <ng-container *ngFor="let item of pageNumberArray; let i = index">
-                                  <li class="page-item" [class.active]="item === currentPage" [ngClass]="
-                              (pageNumberArray[currentPage - 2] > item &&
-                                item !== 1 &&
-                                pageNumberArray.length > 6) ||
-                              (pageNumberArray[currentPage] < item &&
-                                item !== 1 &&
-                                pageNumberArray.length > 6 &&
-                                pageNumberArray.length !== item)
-                                ? 'hide-page-no'
-                                : 'show-page-no'
-                            ">
-                                      <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
-                                          {{ item }}
-                                      </a>
-                                  </li>
-                                  <li class="page-item" *ngIf="
-                              i === 0 && pageNumberArray.length > 6 && currentPage > 2
-                            " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)" (keydown.enter)="moveToPage(currentPage - 2)" tabindex="0">
-                                      <a class="page-link" href="javascript:void(0);"> ... </a>
-                                  </li>
-                                  <li *ngIf="
-                              i === pageNumberArray.length - 2 &&
-                              pageNumberArray.length > 6
-                            " [hidden]="
-                              currentPage >=
-                                pageNumberArray[pageNumberArray.length - 2] ||
-                              totalData < serialNumberArray[serialNumberArray.length - 1]
-                            " class="page-item" (click)="moveToPage(currentPage + 2)" (keydown.enter)="moveToPage(currentPage + 2)" tabindex="0">
-                                      <a class="page-link" href="javascript:void(0);"> ... </a>
-                                  </li>
-                              </ng-container>
-
-                              <li class="page-item" [ngClass]="{
-                            disabled:
-                              currentPage ===
-                                pageNumberArray[pageNumberArray.length - 1] ||
-                              lstReparationImmo.length === 0
-                          }">
-                                  <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant
-                                  </a>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-              </div>
+          <br />
+        </div>
+        <div class="table_footer">
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info">
+              Affichage de {{ serialNumberArray[0] }} à
+              {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+              {{ totalData }} Entrées
+            </div>
           </div>
+
+          <div class="col-sm-12 col-md-7">
+            <div class="pagination_section">
+              <ul class="pagination">
+                <li
+                  class="page-item"
+                  [ngClass]="{
+                    disabled: currentPage === 1,
+                  }"
+                >
+                  <a
+                    (click)="getMoreData('previous')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    tabindex="-1"
+                    >Précédent</a
+                  >
+                </li>
+
+                <ng-container
+                  *ngFor="let item of pageNumberArray; let i = index"
+                >
+                  <li
+                    class="page-item"
+                    [class.active]="item === currentPage"
+                    [ngClass]="
+                      (pageNumberArray[currentPage - 2] > item &&
+                        item !== 1 &&
+                        pageNumberArray.length > 6) ||
+                      (pageNumberArray[currentPage] < item &&
+                        item !== 1 &&
+                        pageNumberArray.length > 6 &&
+                        pageNumberArray.length !== item)
+                        ? 'hide-page-no'
+                        : 'show-page-no'
+                    "
+                  >
+                    <a
+                      (click)="moveToPage(item)"
+                      class="page-link"
+                      href="javascript:void(0);"
+                    >
+                      {{ item }}
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    *ngIf="
+                      i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                    "
+                    [hidden]="currentPage === 1"
+                    (click)="moveToPage(currentPage - 2)"
+                    (keydown.enter)="moveToPage(currentPage - 2)"
+                    tabindex="0"
+                  >
+                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                  </li>
+                  <li
+                    *ngIf="
+                      i === pageNumberArray.length - 2 &&
+                      pageNumberArray.length > 6
+                    "
+                    [hidden]="
+                      currentPage >=
+                        pageNumberArray[pageNumberArray.length - 2] ||
+                      totalData <
+                        serialNumberArray[serialNumberArray.length - 1]
+                    "
+                    class="page-item"
+                    (click)="moveToPage(currentPage + 2)"
+                    (keydown.enter)="moveToPage(currentPage + 2)"
+                    tabindex="0"
+                  >
+                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                  </li>
+                </ng-container>
+
+                <li
+                  class="page-item"
+                  [ngClass]="{
+                    disabled:
+                      currentPage ===
+                        pageNumberArray[pageNumberArray.length - 1] ||
+                      lstReparationImmo.length === 0,
+                  }"
+                >
+                  <a
+                    (click)="getMoreData('next')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    >Suivant
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Page Content -->
   <!-- Add Poste Modal -->
-  <div id="add_department" class="modal custom-modal fade" role="dialog">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Réparation/Intervention</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                <form [formGroup]="addReparationImmoForm" (ngSubmit)="onClickSubmitAddReaparationImmo()" novalidate>
+  <div id="add_reparation_immo" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Réparation/Intervention</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+  [formGroup]="addReparationImmoForm"
+  (ngSubmit)="onClickSubmitAddReaparationImmo()"
+  novalidate
+>
+  <!-- Référence -->
+  <div class="input-block mb-3">
+    <label class="col-form-label">Référence <span class="text-danger">*</span></label>
+    <input
+      class="form-control"
+      type="text"
+      formControlName="reference"
+      [class.invalid]="addReparationImmoForm.get('reference')?.invalid && addReparationImmoForm.get('reference')?.touched"
+    />
+    <small *ngIf="addReparationImmoForm.get('reference')?.invalid && addReparationImmoForm.get('reference')?.touched"
+      class="text-danger">* La référence est obligatoire</small>
+  </div>
+
+  <!-- Date -->
+  <div class="input-block mb-3">
+    <label class="col-form-label">Date intervention <span class="text-danger">*</span></label>
+    <input
+      class="form-control"
+      type="date"
+      formControlName="date_intervention"
+      [class.invalid]="addReparationImmoForm.get('date_intervention')?.invalid && addReparationImmoForm.get('date_intervention')?.touched"
+    />
+    <small *ngIf="addReparationImmoForm.get('date_intervention')?.invalid && addReparationImmoForm.get('date_intervention')?.touched"
+      class="text-danger">* La date est obligatoire</small>
+  </div>
+
+  <!-- Type -->
+  <div class="input-block mb-3">
+  <label class="col-form-label">Type <span class="text-danger">*</span></label>
+  <mat-form-field class="w-100">
+    <mat-select
+      placeholder="Sélectionner"
+      formControlName="type"
+      [class.invalid]="addReparationImmoForm.get('type')?.invalid && addReparationImmoForm.get('type')?.touched"
+    >
+      <mat-option value="Réparation">Réparation</mat-option>
+      <mat-option value="Maintenance">Maintenance</mat-option>
+      <mat-option value="Contrôle">Contrôle</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <small *ngIf="addReparationImmoForm.get('type')?.invalid && addReparationImmoForm.get('type')?.touched"
+    class="text-danger">* Le type est obligatoire</small>
+</div>
 
 
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Date<span class="text-danger">*</span></label>
-                    <input class="form-control" type="date"
-                        [class.invalid]="addReparationImmoForm.get('date_mouvement')?.invalid && addReparationImmoForm.get('date_mouvement')?.touched"
-                        formControlName="date_mouvement">
-                    <div
-                        *ngIf="addReparationImmoForm.get('date_mouvement')?.invalid && addReparationImmoForm.get('date_mouvement')?.touched">
-                        <small
-                            *ngIf="addReparationImmoForm.get('date_mouvement')?.invalid && addReparationImmoForm.get('date_mouvement')?.touched"
-                            class="text-danger"> *la date est obligatoire</small>
-                    </div>
-                </div>
+  <!-- Description -->
+  <div class="input-block mb-3">
+    <label class="col-form-label">Description</label>
+    <textarea
+      class="form-control"
+      rows="3"
+      formControlName="description"
+    ></textarea>
+  </div>
 
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Designation<span class="text-danger">*</span></label>
+  <!-- Coût total -->
+  <div class="input-block mb-3">
+    <label class="col-form-label">Coût total</label>
+    <input
+      class="form-control"
+      type="number"
+      formControlName="cout_total"
+    />
+  </div>
 
-                    <input type="hidden"    formControlName="immo_id">
-                    <mat-select  class="select mat-cust-select form-control"
-                                 [(ngModel)]="selectedImmo"
-                                 formControlName="immo"
-                                 (selectionChange)="selectedImmoChange()"
-                                 [class.invalid]="addReparationImmoForm.get('immo')?.invalid && addReparationImmoForm.get('immo')?.touched"
-                                placeholder="Selectionner  ">
+  <!-- Immobilisations -->
+  <div class="input-block mb-3">
+    <label class="col-form-label">Immobilisations concernées <span class="text-danger">*</span></label>
 
-                      <mat-option *ngFor="let item of lstImmo" [disabled]="false" [value]="item">{{ item.designation }}   </mat-option>
-                    </mat-select>
+    <mat-select
+      multiple
+      class="select mat-cust-select form-control"
+      formControlName="immobilisations"
+      [class.invalid]="addReparationImmoForm.get('immobilisations')?.invalid && addReparationImmoForm.get('immobilisations')?.touched"
+      placeholder="Sélectionner les immos"
+    >
+      <mat-option *ngFor="let item of lstImmo" [value]="item.id">
+        {{ item.code }} - {{ item.designation }}
+      </mat-option>
+    </mat-select>
 
-                  </div>
+    <small *ngIf="addReparationImmoForm.get('immobilisations')?.invalid && addReparationImmoForm.get('immobilisations')?.touched"
+      class="text-danger">* Sélectionne au moins une immobilisation</small>
+  </div>
 
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">PANNE REAPAREE<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text"
-                           [class.invalid]="addReparationImmoForm.get('panne')?.invalid && addReparationImmoForm.get('panne')?.touched"
-                           formControlName="panne">
+  <!-- Submit -->
+  <div class="submit-section">
+    <button
+      [disabled]="isDisabledBtn"
+      class="btn btn-primary submit-btn"
+      type="submit"
+    >
+      Enregistrer
+    </button>
+  </div>
+</form>
 
-                   </div>
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">COUT DE LA REPARATION<span class="text-danger">*</span></label>
-                    <input class="form-control" type="number"
-                           [class.invalid]="addReparationImmoForm.get('cout')?.invalid && addReparationImmoForm.get('cout')?.touched"
-                           formControlName="cout">
-
-                  </div>
-
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">OBSERVATION<span class="text-danger"></span></label>
-
-                    <textarea class="form-control" name="" id="" cols="30" rows="3"
-                              [class.invalid]="addReparationImmoForm.get('observation')?.invalid && addReparationImmoForm.get('observation')?.touched"
-                              formControlName="observation">
-
-                    </textarea>
-
-
-                  </div>
-
-
-                  <div class="submit-section">
-                        <button [disabled]="isDisabledBtn" class="btn btn-primary submit-btn" type="submit">Enrégister</button>
-                    </div>
-                </form>
-              </div>
-          </div>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Add Poste Modal -->
 
   <!-- Edit poste Modal -->
-  <div id="edit_department" class="modal custom-modal fade" role="dialog">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Modifier </h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
+  <div id="edit_reparation_immo" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+            [formGroup]="editReparationImmoForm"
+            (ngSubmit)="onClickSubmitEditArticle()"
+            novalidate
+          >
+            <input type="hidden" formControlName="id" />
+
+            <div class="input-block mb-3">
+              <label class="col-form-label" for=""
+                >Date<span class="text-danger">*</span></label
+              >
+              <input
+                class="form-control"
+                type="date"
+                [class.invalid]="
+                  editReparationImmoForm.get('date_mouvement')?.invalid &&
+                  editReparationImmoForm.get('date_mouvement')?.touched
+                "
+                formControlName="date_mouvement"
+              />
+              <div
+                *ngIf="
+                  editReparationImmoForm.get('date_mouvement')?.invalid &&
+                  editReparationImmoForm.get('date_mouvement')?.touched
+                "
+              >
+                <small
+                  *ngIf="
+                    editReparationImmoForm.get('date_mouvement')?.invalid &&
+                    editReparationImmoForm.get('date_mouvement')?.touched
+                  "
+                  class="text-danger"
+                >
+                  *le code est obligatoire</small
+                >
               </div>
-              <div class="modal-body">
-                <form [formGroup]="editReparationImmoForm" (ngSubmit)="onClickSubmitEditArticle()" novalidate>
+            </div>
 
-                  <input type="hidden" formControlName="id">
-
-                  <div class="input-block mb-3">
-                    <label class="col-form-label" for="">Date<span class="text-danger">*</span></label>
-                    <input class="form-control" type="date"
-                           [class.invalid]="editReparationImmoForm.get('date_mouvement')?.invalid && editReparationImmoForm.get('date_mouvement')?.touched"
-                           formControlName="date_mouvement">
-                    <div *ngIf="editReparationImmoForm.get('date_mouvement')?.invalid && editReparationImmoForm.get('date_mouvement')?.touched">
-                      <small
-                        *ngIf="editReparationImmoForm.get('date_mouvement')?.invalid && editReparationImmoForm.get('date_mouvement')?.touched"
-                        class="text-danger"> *le code est obligatoire</small>
-                    </div>
-                  </div>
-
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">Enrégister</button>
-                    </div>
-                </form>
-              </div>
-          </div>
+            <div class="submit-section">
+              <button class="btn btn-primary submit-btn" type="submit">
+                Enrégister
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Edit Department Modal -->
 
   <!-- Delete Department Modal -->
-  <div class="modal custom-modal fade" id="delete_department" role="dialog">
-      <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-body">
-                  <div class="form-header">
-                      <h3>Supprimer la réparation</h3>
-                      <p>Êtes-vous sûr de vouloir supprimer ?</p>
-                  </div>
-                  <div class="modal-btn delete-action">
-                      <div class="row">
-                          <div class="col-6">
-                            <form [formGroup]="deleteReparationImmoForm" (ngSubmit)="onClickSubmitDeleteReparation()">
-                              <input type="hidden" formControlName="id">
-                              <a href="javascript:void(0);" class="btn btn-primary continue-btn" type="submit" (click)="onClickSubmitDeleteReparation()">Supprimer</a>
-                            </form>
-                          </div>
-                          <div class="col-6">
-                              <a href="javascript:void(0);" data-bs-dismiss="modal"
-                                  class="btn btn-primary cancel-btn">Annuler</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+  <div class="modal custom-modal fade" id="delete_reparation_immo" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Supprimer la réparation</h3>
+            <p>Êtes-vous sûr de vouloir supprimer ?</p>
           </div>
+          <div class="modal-btn delete-action">
+            <div class="row">
+              <div class="col-6">
+                <form
+                  [formGroup]="deleteReparationImmoForm"
+                  (ngSubmit)="onClickSubmitDeleteReparation()"
+                >
+                  <input type="hidden" formControlName="id" />
+                  <a
+                    href="javascript:void(0);"
+                    class="btn btn-primary continue-btn"
+                    type="submit"
+                    (click)="onClickSubmitDeleteReparation()"
+                    >Supprimer</a
+                  >
+                </form>
+              </div>
+              <div class="col-6">
+                <a
+                  href="javascript:void(0);"
+                  data-bs-dismiss="modal"
+                  class="btn btn-primary cancel-btn"
+                  >Annuler</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /Delete Department Modal -->
 </div>

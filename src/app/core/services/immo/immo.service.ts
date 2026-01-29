@@ -38,10 +38,22 @@ export class immoService {
     return this.http.get<any>(`${this.url}/stock`);
   }
 
+  getLastTransfertByImmo(immoId: number): Observable<any> {
+    return this.http.get(`${this.url}/transferts/last/${immoId}`);
+  }
+
+  deleteTransfertImmo(data:any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/transfert-immo/${data.id}`);
+  }
+
 
 
   edit(data:any): Observable<any> {
     return this.http.put<any>(`${this.url}/immo/${data.id}`, data);
+  }
+  
+  editTransfert(data:any): Observable<any> {
+    return this.http.put<any>(`${this.url}/transfert-immo/${data.id}`, data);
   }
 
   delete(data:any): Observable<any> {
@@ -60,19 +72,19 @@ export class immoService {
 
 
   saveRepation(data:any ): Observable<Object> {
-    return this.http.post(`${this.url}/reparation`, data);
+    return this.http.post(`${this.url}/interventions`, data);
   }
 
   getAllReapartion(): Observable<any> {
-    return this.http.get<any>(`${this.url}/reparation`);
+    return this.http.get<any>(`${this.url}/interventions`);
   }
 
   editReparation(data:any): Observable<any> {
-    return this.http.put<any>(`${this.url}/reparation/${data.id}`, data);
+    return this.http.put<any>(`${this.url}/interventions/${data.id}`, data);
   }
 
   deleteRepartion(data:any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/reparation/${data.id}`);
+    return this.http.delete<any>(`${this.url}/interventions/${data.id}`);
   }
 
 

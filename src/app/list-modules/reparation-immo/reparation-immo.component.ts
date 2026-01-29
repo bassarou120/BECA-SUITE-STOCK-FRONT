@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
+import { ExportsService, routes, banqueService, getBanque, getFournisseur } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,13 +10,13 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
-import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
-import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
-import {articleService} from "../../core/services/article/article.service";
-import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
-import {EmployeService} from "../../core/services/employe/employe.service";
-import {bureauService} from "../../core/services/bureau/bureau.service";
-import {immoService} from "../../core/services/immo/immo.service";
+import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
+import { categorieArticleService } from "../../core/services/categorie-article/categorie-article.service";
+import { articleService } from "../../core/services/article/article.service";
+import { fournisseurService } from "../../core/services/fournisseur/fournisseur.service";
+import { EmployeService } from "../../core/services/employe/employe.service";
+import { bureauService } from "../../core/services/bureau/bureau.service";
+import { immoService } from "../../core/services/immo/immo.service";
 
 
 
@@ -29,16 +29,16 @@ export class ReparationImmoComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstPst: Array<any>=[];
+  public lstPst: Array<any> = [];
 
 
   public lstReparationImmo: Array<any> = [];
-  stockDisponible=0;
-  lstCategorie:any;
-  lstForuniseur:any;
-  lstEmployer:any;
-  lstBureau:any;
-  lstImmo:any;
+  stockDisponible = 0;
+  lstCategorie: any;
+  lstForuniseur: any;
+  lstEmployer: any;
+  lstBureau: any;
+  lstImmo: any;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
   // pagination variables
@@ -54,61 +54,68 @@ export class ReparationImmoComponent implements OnInit {
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
   //** / pagination variables
-  article_id:any;
-  public addReparationImmoForm!: FormGroup ;
+  article_id: any;
+  public addReparationImmoForm!: FormGroup;
   public editReparationImmoForm!: FormGroup
   public deleteReparationImmoForm!: FormGroup
 
-  showAlert=false;
-  messageAlert=""
+  showAlert = false;
+  messageAlert = ""
 
-  isDisabledBtn=false
+  isDisabledBtn = false
 
   selectedImmo: any;
 
-  constructor(private formBuilder: FormBuilder,public router: Router,
-              private articleService:articleService,
-              private employeService:EmployeService,
-              private  bureauService:bureauService,
-              private fournisseurService: fournisseurService,
-              private immoService: immoService,
-              private categorieService: categorieArticleService,
-              private exp: ExportsService) {}
+  constructor(private formBuilder: FormBuilder, public router: Router,
+    private articleService: articleService,
+    private employeService: EmployeService,
+    private bureauService: bureauService,
+    private fournisseurService: fournisseurService,
+    private immoService: immoService,
+    private categorieService: categorieArticleService,
+    private exp: ExportsService) { }
 
 
   ngOnInit(): void {
     this.getTableData();
-   // this.getFournisseur();
+    // this.getFournisseur();
     this.getBureau();
-   this.getEmploye();
-   this.getImmo();
+    this.getEmploye();
+    this.getImmo();
+
+    console.log(this.lstReparationImmo);
 
     this.addReparationImmoForm = this.formBuilder.group({
 
+      reference: ['', Validators.required],
+      date_intervention: ['', Validators.required],
+      type: ['', Validators.required],
+      description: [''],
+      cout_total: [''],
+      immobilisations: [[], Validators.required]
+
+    });
+
+    this.editReparationImmoForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
       date_mouvement: ["", [Validators.required]],
-      immo_id:['',[Validators.required]],
-      immo:['',[Validators.required]],
-      panne:['',[Validators.required]],
-      cout:['',[Validators.required]],
-      observation: ["",  [ ]],
+      immo_id: ['', [Validators.required]],
+      immo: ['', [Validators.required]],
+      old_bureau: ['', [Validators.required]],
+      old_employe: ['', [Validators.required]],
+      bureau_id: ['', [Validators.required]],
+      employe_id: ['', [Validators.required]],
+      Observation: ["", []],
+    });
+    this.deleteReparationImmoForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
+    });
+  }
 
-   });
+  toggleDetails(item: any) {
+    item.showDetails = !item.showDetails;
+  }
 
-   this.editReparationImmoForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-     date_mouvement: ["", [Validators.required]],
-     immo_id:['',[Validators.required]],
-     immo:['',[Validators.required]],
-     old_bureau:['',[Validators.required]],
-     old_employe:['',[Validators.required]],
-     bureau_id:['',[Validators.required]],
-     employe_id:['',[Validators.required]],
-     Observation: ["",  [ ]],
-  });
-   this.deleteReparationImmoForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
- }
 
   hideAlert() {
     this.showAlert = false;
@@ -120,7 +127,7 @@ export class ReparationImmoComponent implements OnInit {
   }
 
 
-  selectedImmoChange(){
+  selectedImmoChange() {
 
 
     console.log(this.selectedImmo);
@@ -130,28 +137,28 @@ export class ReparationImmoComponent implements OnInit {
 
   }
 
-  changeQte(){
+  changeQte() {
 
-    var t=this.stockDisponible-this.addReparationImmoForm.get('qte')?.value
-    if(t<0 ){
+    var t = this.stockDisponible - this.addReparationImmoForm.get('qte')?.value
+    if (t < 0) {
 
-      this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
-      this.showAlert=true;
-      this.isDisabledBtn=true
-  // alert('Vous ne pouvez pas sortir ce article au dela de '+this.stockDisponible)
-    }else {
-      this.isDisabledBtn=false
+      this.messageAlert = "Attention ! Vous ne pouvez pas sortir ce article au dela de " + this.stockDisponible
+      this.showAlert = true;
+      this.isDisabledBtn = true
+      // alert('Vous ne pouvez pas sortir ce article au dela de '+this.stockDisponible)
+    } else {
+      this.isDisabledBtn = false
     }
   }
-  changeArtice(){
+  changeArtice() {
 
     this.immoService.getSockByArticle({
-      article_id:this.addReparationImmoForm.get('article_id')?.value
+      article_id: this.addReparationImmoForm.get('article_id')?.value
     }).subscribe(
-      (resp:any)=>{
+      (resp: any) => {
 
         // alert(resp.data.qte)
-        this.stockDisponible=resp.data.qte;
+        this.stockDisponible = resp.data.qte;
 
         this.addReparationImmoForm.get('qte')?.setValue('')
 
@@ -162,156 +169,156 @@ export class ReparationImmoComponent implements OnInit {
   }
 
 
- getEmploye(){
+  getEmploye() {
 
-   this.employeService.getAllEmploye().subscribe(
-     (res: any) => {
-
-         // alert(JSON.stringify(res.data ))
-       this.lstEmployer=res.data
-
-     },
-     (error:any)=>{
-
-     });
- }
-
-  getBureau(){
-
-    this.bureauService.getAll().subscribe(
+    this.employeService.getAllEmploye().subscribe(
       (res: any) => {
+
         // alert(JSON.stringify(res.data ))
-        this.lstBureau=res.data.data
+        this.lstEmployer = res.data
 
       },
-      (error:any)=>{
+      (error: any) => {
 
       });
   }
 
-  getCategorie(){
+  getBureau() {
+
+    this.bureauService.getAll().subscribe(
+      (res: any) => {
+        // alert(JSON.stringify(res.data ))
+        this.lstBureau = res.data.data
+
+      },
+      (error: any) => {
+
+      });
+  }
+
+  getCategorie() {
 
     this.categorieService.getAll().subscribe(
       (res: any) => {
 
         // alert(JSON.stringify(res.data.data))
-        this.lstCategorie=res.data.data
+        this.lstCategorie = res.data.data
 
-    },
-      (error:any)=>{
+      },
+      (error: any) => {
 
-    });
+      });
 
 
   }
 
-  getFournisseur(){
+  getFournisseur() {
 
     this.fournisseurService.getAll().subscribe(
       (res: any) => {
 
         // alert(JSON.stringify(res.data.data))
-        this.lstForuniseur=res.data.data
+        this.lstForuniseur = res.data.data
 
-    },
-      (error:any)=>{
+      },
+      (error: any) => {
 
-    });
+      });
 
 
   }
 
-  getImmo(){
+  getImmo() {
 
     this.immoService.getAll().subscribe(
       (res: any) => {
         // alert(JSON.stringify(res.data.data))
-        this.lstImmo=res.data.data
+        this.lstImmo = res.data.data
 
-    },
-      (error:any)=>{
+      },
+      (error: any) => {
 
-    });
+      });
 
 
   }
 
- onClickSubmitAddReaparationImmo(){
+  onClickSubmitAddReaparationImmo() {
 
-  console.log(this.addReparationImmoForm.value)
+    console.log(this.addReparationImmoForm.value)
 
-  if (this.addReparationImmoForm.valid){
-    this.immoService.saveRepation(this.addReparationImmoForm.value).subscribe(
-      (data:any)=>{
+    if (this.addReparationImmoForm.valid) {
+      this.immoService.saveRepation(this.addReparationImmoForm.value).subscribe(
+        (data: any) => {
           location.reload();
-      }
-    )
-  }else {
-    this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
-    this.showAlert=true;
+        }
+      )
+    } else {
+      this.messageAlert = "Attention ! Desolé le formulaire n'est pas bien renseigné"
+      this.showAlert = true;
 
-    // alert("desole le formulaire n'est pas bien renseigné")
+      // alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+
   }
 
+  onClickSubmitEditArticle() {
+    console.log(this.editReparationImmoForm.value)
 
-}
-
-onClickSubmitEditArticle(){
-  console.log(this.editReparationImmoForm.value)
-
-    if (this.editReparationImmoForm.valid){
+    if (this.editReparationImmoForm.valid) {
       const id = this.editReparationImmoForm.value.id;
       this.immoService.edit(this.editReparationImmoForm.value).subscribe(
-        (data:any)=>{
+        (data: any) => {
           location.reload();
         }
       )
       console.log("success")
-    }else {
+    } else {
 
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
-}
+  }
 
-onClickSubmitDeleteReparation(){
-  console.log(this.deleteReparationImmoForm.value)
+  onClickSubmitDeleteReparation() {
+    console.log(this.deleteReparationImmoForm.value)
 
-    if (this.deleteReparationImmoForm.valid){
+    if (this.deleteReparationImmoForm.valid) {
       const id = this.deleteReparationImmoForm.value.id;
       this.immoService.deleteRepartion(this.deleteReparationImmoForm.value).subscribe(
-        (data:any)=>{
+        (data: any) => {
 
           // alert(JSON.stringify(data))
           location.reload();
         }
       )
       console.log("success")
-    }else {
+    } else {
 
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
-}
+  }
 
 
 
-getEditForm(row: any){
-  this.editReparationImmoForm.patchValue({
-   id:row.id,
-    article_id:row.article_id,
-    date_mouvement: row.date_mouvement,
-    qte:row.qte,
-    code: row.code,
-    fournisseur: row.fournisseur,
-  })
-}
+  getEditForm(row: any) {
+    this.editReparationImmoForm.patchValue({
+      id: row.id,
+      article_id: row.article_id,
+      date_mouvement: row.date_mouvement,
+      qte: row.qte,
+      code: row.code,
+      fournisseur: row.fournisseur,
+    })
+  }
 
-getDeleteForm(row: any){
-  this.deleteReparationImmoForm.patchValue({
-   id:row.id,
-  })
-}
+  getDeleteForm(row: any) {
+    this.deleteReparationImmoForm.patchValue({
+      id: row.id,
+    })
+  }
 
 
   private getTableData(): void {
@@ -319,28 +326,23 @@ getDeleteForm(row: any){
     this.serialNumberArray = [];
 
     this.immoService.getAllReapartion().subscribe((res: any) => {
-      this.totalData = res.data.total;
-      res.data.data.map((res: any, index: number) => {
+      const data = res.data;
+
+      this.totalData = data.length;
+
+      data.forEach((item: any, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-
-          // alert(res.type);
-
-            this.lstReparationImmo.push(res);
-
-            this.serialNumberArray.push(serialNumber);
-
-
+          this.lstReparationImmo.push(item);
+          this.serialNumberArray.push(serialNumber);
         }
       });
-      console.log(this.lstReparationImmo);
+
       this.dataSource = new MatTableDataSource<any>(this.lstReparationImmo);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
-
-
   }
+
 
 
 

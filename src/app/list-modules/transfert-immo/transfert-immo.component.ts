@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
+import { ExportsService, routes, banqueService, getBanque, getFournisseur } from 'src/app/core/core.index';
 
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,13 +10,14 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 
-import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
-import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
-import {articleService} from "../../core/services/article/article.service";
-import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
-import {EmployeService} from "../../core/services/employe/employe.service";
-import {bureauService} from "../../core/services/bureau/bureau.service";
-import {immoService} from "../../core/services/immo/immo.service";
+import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
+import { categorieArticleService } from "../../core/services/categorie-article/categorie-article.service";
+import { articleService } from "../../core/services/article/article.service";
+import { fournisseurService } from "../../core/services/fournisseur/fournisseur.service";
+import { EmployeService } from "../../core/services/employe/employe.service";
+import { LocalisationService } from "../../core/services/localisation/localisation.service";
+import { immoService } from "../../core/services/immo/immo.service";
+import { DirectionCentreService } from "../../core/services/directionCentre/directionCentre.service";
 
 
 
@@ -29,16 +30,17 @@ export class TransfertImmoComponent implements OnInit {
   public routes = routes;
   selected = 'option1';
 
-  public lstPst: Array<any>=[];
+  public lstPst: Array<any> = [];
 
 
   public lstTransfertImmo: Array<any> = [];
-  stockDisponible=0;
-  lstCategorie:any;
-  lstForuniseur:any;
-  lstEmployer:any;
-  lstBureau:any;
-  lstImmo:any;
+  stockDisponible = 0;
+  lstCategorie: any;
+  lstForuniseur: any;
+  lstEmployer: any;
+  lstLocalisation: any;
+  lstImmo: any;
+  lstDirection: any;
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
   // pagination variables
@@ -54,63 +56,74 @@ export class TransfertImmoComponent implements OnInit {
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
   //** / pagination variables
-  article_id:any;
-  public addTransfertImmoForm!: FormGroup ;
-  public editTrensfertImmoForm!: FormGroup
+  article_id: any;
+  public addTransfertImmoForm!: FormGroup;
+  public editTransfertImmoForm!: FormGroup
   public deleteEntreeImmoForm!: FormGroup
 
-  showAlert=false;
-  messageAlert=""
+  showAlert = false;
+  messageAlert = ""
 
-  isDisabledBtn=false
+  isDisabledBtn = false
 
   selectedImmo: any;
 
-  constructor(private formBuilder: FormBuilder,public router: Router,
-              private articleService:articleService,
-              private employeService:EmployeService,
-              private  bureauService:bureauService,
-              private fournisseurService: fournisseurService,
-              private immoService: immoService,
-              private categorieService: categorieArticleService,
-              private exp: ExportsService) {}
+  constructor(private formBuilder: FormBuilder, public router: Router,
+    private articleService: articleService,
+    private employeService: EmployeService,
+    private localisationService: LocalisationService,
+    private fournisseurService: fournisseurService,
+    private immoService: immoService,
+    private directionCentreService: DirectionCentreService,
+    private categorieService: categorieArticleService,
+    private exp: ExportsService) { }
 
 
   ngOnInit(): void {
     this.getTableData();
-   // this.getFournisseur();
-    this.getBureau();
-   this.getEmploye();
-   this.getImmo();
+    // this.getFournisseur();
+    this.getLocalisation();
+    this.getDirection();
+    this.getEmploye();
+    this.getImmo();
 
     this.addTransfertImmoForm = this.formBuilder.group({
+      date_transfert: ['', Validators.required],
+      immobilisation_id: ['', Validators.required],
 
-      date_mouvement: ["", [Validators.required]],
-      immo_id:['',[Validators.required]],
-      immo:['',[Validators.required]],
-      old_bureau:['',[Validators.required]],
-      old_employe:['',[Validators.required]],
-      bureau_id:['',[Validators.required]],
-      employe_id:['',[Validators.required]],
-      Observation: ["",  [ ]],
+      ancien_utilisateur_id: [''],
+      ancienne_localisation_id: [''],
+      ancienne_direction_id: [''],
 
-   });
+      nouveau_utilisateur_id: ['', Validators.required],
+      nouvelle_localisation_id: ['', Validators.required],
+      nouvelle_direction_id: ['', Validators.required],
 
-   this.editTrensfertImmoForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-     date_mouvement: ["", [Validators.required]],
-     immo_id:['',[Validators.required]],
-     immo:['',[Validators.required]],
-     old_bureau:['',[Validators.required]],
-     old_employe:['',[Validators.required]],
-     bureau_id:['',[Validators.required]],
-     employe_id:['',[Validators.required]],
-     Observation: ["",  [ ]],
-  });
-   this.deleteEntreeImmoForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
- }
+      observation: ['']
+    });
+
+
+    this.editTransfertImmoForm = this.formBuilder.group({
+  id: [null, Validators.required],
+  date_transfert: ['', Validators.required],
+  immobilisation_id: ['', Validators.required],
+
+  ancien_utilisateur_id: [''],
+  ancienne_localisation_id: [''],
+  ancienne_direction_id: [''],
+
+  nouveau_utilisateur_id: ['', Validators.required],
+  nouvelle_localisation_id: ['', Validators.required],
+  nouvelle_direction_id: ['', Validators.required],
+
+  observation: ['']
+});
+
+
+    this.deleteEntreeImmoForm = this.formBuilder.group({
+      id: [0, [Validators.required]],
+    });
+  }
 
   hideAlert() {
     this.showAlert = false;
@@ -121,38 +134,81 @@ export class TransfertImmoComponent implements OnInit {
     this.showAlert = true;
   }
 
+  onImmoChange(immoId: number) {
+  console.log("Immobilisation sélectionnée ID :", immoId);
 
-  selectedImmoChange(){
+  // On patch d'abord l'immobilisation sélectionnée
+  this.addTransfertImmoForm.patchValue({ immobilisation_id: immoId });
+
+  // Récupération du dernier transfert
+  this.immoService.getLastTransfertByImmo(immoId).subscribe((res: any) => {
+    const last = res.data;
+
+    if (last) {
+      this.addTransfertImmoForm.patchValue({
+        ancien_utilisateur_id: last.nouveau_utilisateur_id,
+        ancienne_localisation_id: last.nouvelle_localisation_id,
+        ancienne_direction_id: last.nouvelle_direction_id,
+      });
+
+      // On met à jour selectedImmo pour afficher les readonly
+      this.selectedImmo = {
+        ancien_utilisateur: last.nouveau_utilisateur,
+        ancienne_localisation: last.nouvelle_localisation,
+        ancienne_direction: last.nouvelle_direction
+      };
+    } else {
+      // Premier transfert → tout est null
+      this.addTransfertImmoForm.patchValue({
+        ancien_utilisateur_id: null,
+        ancienne_localisation_id: null,
+        ancienne_direction_id: null,
+      });
+
+      this.selectedImmo = {
+        ancien_utilisateur: null,
+        ancienne_localisation: null,
+        ancienne_direction: null
+      };
+    }
+  });
+}
+
+
+
+
+
+  selectedImmoChange() {
 
     this.addTransfertImmoForm.get("immo_id")?.setValue(this.selectedImmo.id)
     this.addTransfertImmoForm.get("old_bureau")?.setValue(this.selectedImmo.bureau.libelle)
-    this.addTransfertImmoForm.get("old_employe")?.setValue(this.selectedImmo.employe.nom+" "+this.selectedImmo.employe.prenom)
+    this.addTransfertImmoForm.get("old_employe")?.setValue(this.selectedImmo.employe.nom + " " + this.selectedImmo.employe.prenom)
     console.log(this.selectedImmo);
 
   }
 
-  changeQte(){
+  changeQte() {
 
-    var t=this.stockDisponible-this.addTransfertImmoForm.get('qte')?.value
-    if(t<0 ){
+    var t = this.stockDisponible - this.addTransfertImmoForm.get('qte')?.value
+    if (t < 0) {
 
-      this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
-      this.showAlert=true;
-      this.isDisabledBtn=true
-  // alert('Vous ne pouvez pas sortir ce article au dela de '+this.stockDisponible)
-    }else {
-      this.isDisabledBtn=false
+      this.messageAlert = "Attention ! Vous ne pouvez pas sortir ce article au dela de " + this.stockDisponible
+      this.showAlert = true;
+      this.isDisabledBtn = true
+      // alert('Vous ne pouvez pas sortir ce article au dela de '+this.stockDisponible)
+    } else {
+      this.isDisabledBtn = false
     }
   }
-  changeArtice(){
+  changeArtice() {
 
     this.immoService.getSockByArticle({
-      article_id:this.addTransfertImmoForm.get('article_id')?.value
+      article_id: this.addTransfertImmoForm.get('article_id')?.value
     }).subscribe(
-      (resp:any)=>{
+      (resp: any) => {
 
         // alert(resp.data.qte)
-        this.stockDisponible=resp.data.qte;
+        this.stockDisponible = resp.data.qte;
 
         this.addTransfertImmoForm.get('qte')?.setValue('')
 
@@ -163,188 +219,249 @@ export class TransfertImmoComponent implements OnInit {
   }
 
 
- getEmploye(){
+  getEmploye() {
 
-   this.employeService.getAllEmploye().subscribe(
-     (res: any) => {
-
-         // alert(JSON.stringify(res.data ))
-       this.lstEmployer=res.data
-
-     },
-     (error:any)=>{
-
-     });
- }
-
-  getBureau(){
-
-    this.bureauService.getAll().subscribe(
+    this.employeService.getAllEmploye().subscribe(
       (res: any) => {
+
         // alert(JSON.stringify(res.data ))
-        this.lstBureau=res.data.data
+        this.lstEmployer = res.data
 
       },
-      (error:any)=>{
+      (error: any) => {
 
       });
   }
 
-  getCategorie(){
+  getLocalisation() {
 
-    this.categorieService.getAll().subscribe(
+    this.localisationService.getAll().subscribe(
+      (res: any) => {
+        // alert(JSON.stringify(res.data ))
+        this.lstLocalisation = res.data.data
+
+      },
+      (error: any) => {
+
+      });
+  }
+  
+
+  getDirection() {
+
+    this.directionCentreService.getAll().subscribe(
       (res: any) => {
 
         // alert(JSON.stringify(res.data.data))
-        this.lstCategorie=res.data.data
+        this.lstDirection = res.data.data
 
-    },
-      (error:any)=>{
+      },
+      (error: any) => {
 
-    });
+      });
 
 
   }
 
-  getFournisseur(){
+  getFournisseur() {
 
     this.fournisseurService.getAll().subscribe(
       (res: any) => {
 
         // alert(JSON.stringify(res.data.data))
-        this.lstForuniseur=res.data.data
+        this.lstForuniseur = res.data.data
 
-    },
-      (error:any)=>{
+      },
+      (error: any) => {
 
-    });
+      });
 
 
   }
 
-  getImmo(){
+  getImmo() {
 
     this.immoService.getAll().subscribe(
       (res: any) => {
 
         // alert(JSON.stringify(res.data.data))
-        this.lstImmo=res.data.data
+        this.lstImmo = res.data.data
 
-    },
-      (error:any)=>{
+      },
+      (error: any) => {
 
-    });
+      });
 
 
   }
 
- onClickSubmitAddImmo(){
+  onClickSubmitAddImmo() {
 
-  console.log(this.addTransfertImmoForm.value)
+    console.log(this.addTransfertImmoForm.value)
 
-  if (this.addTransfertImmoForm.valid){
-    $('#spinnerr').removeClass('d-none');
-    this.immoService.saveTransfert(this.addTransfertImmoForm.value).subscribe(
-      (data:any)=>{
-        location.reload();
-      }
-    )
-  }else {
-    $('#spinnerr').addClass('d-none');
-    this.messageAlert="Attention ! Desolé le formulaire n'est pas bien renseigné"
-    this.showAlert=true;
+    if (this.addTransfertImmoForm.valid) {
+      $('#spinnerr').removeClass('d-none');
+      this.immoService.saveTransfert(this.addTransfertImmoForm.value).subscribe(
+        (data: any) => {
+          location.reload();
+        }
+      )
+    } else {
+      $('#spinnerr').addClass('d-none');
+      this.messageAlert = "Attention ! Desolé le formulaire n'est pas bien renseigné"
+      this.showAlert = true;
 
-    // alert("desole le formulaire n'est pas bien renseigné")
+      // alert("desole le formulaire n'est pas bien renseigné")
+    }
+
+
   }
 
+  onImmoChangeEdit(immoId: number) {
+  this.immoService.getLastTransfertByImmo(immoId).subscribe((res: any) => {
+    const last = res.data;
 
+    if (last) {
+      this.editTransfertImmoForm.patchValue({
+        ancien_utilisateur_id: last.nouveau_utilisateur_id,
+        ancienne_localisation_id: last.nouvelle_localisation_id,
+        ancienne_direction_id: last.nouvelle_direction_id,
+      });
+    } else {
+      // Premier transfert → tout est null
+      this.editTransfertImmoForm.patchValue({
+        ancien_utilisateur_id: null,
+        ancienne_localisation_id: null,
+        ancienne_direction_id: null,
+      });
+    }
+  });
 }
 
-onClickSubmitEditArticle(){
-  console.log(this.editTrensfertImmoForm.value)
 
-    if (this.editTrensfertImmoForm.valid){
-      const id = this.editTrensfertImmoForm.value.id;
-      this.immoService.edit(this.editTrensfertImmoForm.value).subscribe(
-        (data:any)=>{
+  onClickSubmitEditTransfert() {
+    console.log(this.editTransfertImmoForm.value)
+
+    if (this.editTransfertImmoForm.valid) {
+      const id = this.editTransfertImmoForm.value.id;
+      this.immoService.editTransfert(this.editTransfertImmoForm.value).subscribe(
+        (data: any) => {
           location.reload();
         }
       )
       console.log("success")
-    }else {
+    } else {
 
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
-}
+  }
 
-onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeImmoForm.value)
+  onClickSubmitDeleteTransfert() {
+    console.log(this.deleteEntreeImmoForm.value)
 
-    if (this.deleteEntreeImmoForm.valid){
+    if (this.deleteEntreeImmoForm.valid) {
       const id = this.deleteEntreeImmoForm.value.id;
-      this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
-        (data:any)=>{
+      this.immoService.deleteTransfertImmo(this.deleteEntreeImmoForm.value).subscribe(
+        (data: any) => {
 
           // alert(JSON.stringify(data))
           location.reload();
         }
       )
       console.log("success")
-    }else {
+    } else {
 
       alert("desole le formulaire n'est pas bien renseigné")
     }
 
+  }
+
+
+
+  getEditForm(row: any) {
+  this.editTransfertImmoForm.patchValue({
+    id: row.id,
+    date_transfert: row.date_transfert,
+    immobilisation_id: row.immobilisation_id,
+
+    ancien_utilisateur_id: row.ancien_utilisateur_id,
+    ancienne_localisation_id: row.ancienne_localisation_id,
+    ancienne_direction_id: row.ancienne_direction_id,
+
+    nouveau_utilisateur_id: row.nouveau_utilisateur_id,
+    nouvelle_localisation_id: row.nouvelle_localisation_id,
+    nouvelle_direction_id: row.nouvelle_direction_id,
+
+    observation: row.observation
+  });
+
+  // Pour afficher les readonly
+  this.selectedImmo = {
+    ancien_utilisateur: row.ancien_utilisateur,
+    ancienne_localisation: row.ancienne_localisation,
+    ancienne_direction: row.ancienne_direction
+  };
 }
 
 
-
-getEditForm(row: any){
-  this.editTrensfertImmoForm.patchValue({
-   id:row.id,
-    article_id:row.article_id,
-    date_mouvement: row.date_mouvement,
-    qte:row.qte,
-    code: row.code,
-    fournisseur: row.fournisseur,
-  })
-}
-
-getDeleteForm(row: any){
-  this.deleteEntreeImmoForm.patchValue({
-   id:row.id,
-  })
-}
-
+  getDeleteForm(row: any) {
+    this.deleteEntreeImmoForm.patchValue({
+      id: row.id,
+    })
+  }
 
   private getTableData(): void {
     this.lstTransfertImmo = [];
     this.serialNumberArray = [];
 
     this.immoService.getAllTransfer().subscribe((res: any) => {
-      this.totalData = res.data.total;
-      res.data.data.map((res: any, index: number) => {
+      const data = res.data || [];
+
+      this.totalData = data.length;
+
+      data.map((item: any, index: number) => {
         const serialNumber = index + 1;
+
         if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-
-          // alert(res.type);
-
-            this.lstTransfertImmo.push(res);
-
-            this.serialNumberArray.push(serialNumber);
-
-
+          this.lstTransfertImmo.push(item);
+          this.serialNumberArray.push(serialNumber);
         }
       });
+
       console.log(this.lstTransfertImmo);
       this.dataSource = new MatTableDataSource<any>(this.lstTransfertImmo);
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
-
-
   }
+
+
+
+  // private getTableData(): void {
+  //   this.lstTransfertImmo = [];
+  //   this.serialNumberArray = [];
+
+  //   this.immoService.getAllTransfer().subscribe((res: any) => {
+  //     this.totalData = res.data.total;
+  //     res.data.data.map((res: any, index: number) => {
+  //       const serialNumber = index + 1;
+  //       if (index >= this.skip && serialNumber <= this.limit) {
+  //         res.id;// = serialNumber;
+
+  //         // alert(res.type);
+
+  //           this.lstTransfertImmo.push(res);
+
+  //           this.serialNumberArray.push(serialNumber);
+
+
+  //       }
+  //     });
+  //     console.log(this.lstTransfertImmo);
+  //     this.dataSource = new MatTableDataSource<any>(this.lstTransfertImmo);
+  //     this.calculateTotalPages(this.totalData, this.pageSize);
+  //   });
+  // }
 
 
 
