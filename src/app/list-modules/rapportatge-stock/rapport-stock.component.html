@@ -93,7 +93,7 @@
                   <th class="text-center">Stock Actuel</th>
                   <th class="text-end">CUMP</th>
                   <th class="text-end">Valeur Stock</th>
-                  <th>Statut</th>
+                  <!-- <th>Statut</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -107,10 +107,10 @@
                   </td>
                   <td class="text-end">{{ s.cump | number:'1.2-2' }}</td>
                   <td class="text-end fw-bold">{{ (s.qte_actuel * s.cump) | number }}</td>
-                  <td>
+                  <!-- <td>
                     <span class="badge bg-inverse-danger" *ngIf="s.qte_actuel <= s.stock_alert">ALERTE</span>
                     <span class="badge bg-inverse-success" *ngIf="s.qte_actuel > s.stock_alert">OK</span>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
             </table>
@@ -157,8 +157,8 @@
             </table>
           </div>
 
-          <!-- Statistiques en bas de page -->
-          <div class="row mt-4" *ngIf="stats && lstMouvements.length > 0">
+          <!-- Statistiques en bas de page (Masquées si c'est un rapport d'état) -->
+          <div class="row mt-4" *ngIf="stats && lstMouvements.length > 0 && rapportStockForm.get('type_rapport')?.value !== 'rapport_etat'">
             <div class="col-md-4">
               <div class="card bg-light">
                 <div class="card-body py-2">
@@ -167,7 +167,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4"> 
               <div class="card bg-light">
                 <div class="card-body py-2">
                   <small class="text-muted">Valeur Totale HT</small>
