@@ -1,392 +1,220 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
-import {ExportsService, routes, banqueService, getBanque, getFournisseur} from 'src/app/core/core.index';
-
-import { Sort } from '@angular/material/sort';
+import { routes } from 'src/app/core/core.index';
 import { MatTableDataSource } from '@angular/material/table';
+import { Sort } from '@angular/material/sort';
 
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
+import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
+import { articleService } from "../../core/services/article/article.service";
+import { DirectionCentreService } from "../../../../src/app/core/services/directionCentre/directionCentre.service";
+import { LocalisationService } from "../../../../src/app/core/services/localisation/localisation.service";
 
-import {entreeSortieStockService} from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
-import {categorieArticleService} from "../../core/services/categorie-article/categorie-article.service";
-import {articleService} from "../../core/services/article/article.service";
-import {fournisseurService} from "../../core/services/fournisseur/fournisseur.service";
-import {EmployeService} from "../../core/services/employe/employe.service";
-import {bureauService} from "../../core/services/bureau/bureau.service";
-
-
+import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-banque',
+  selector: 'app-sortie-stock',
   templateUrl: './sortie-stock.component.html',
   styleUrls: ['./sortie-stock.component.scss']
 })
-export class  SortieStockComponent implements OnInit {
+export class SortieStockComponent implements OnInit {
   public routes = routes;
-  selected = 'option1';
 
-  public lstPst: Array<any>=[];
+  
+  // Listes de données pour les dropdowns
+  public lstSortieStock: Array<any> = []; // Liste groupée par référence
+  public lstArticles: any[] = [];
+  public lstLocalisations: any[] = [];
+  public lstDirections: any[] = [];
+  
+  
+  // Liste temporaire pour le bon de sortie en cours de création
+  public lstArticlesAajouter: any[] = [];
+  
+  // Détails pour la vue "Détails"
+  public lstArticlesDetails: any[] = [];
+  public refSelectionnee = "";
 
+  public stockDisponible = 0;
+  public showloader = false;
+  
+  // Formulaires
+  public addSortieForm!: FormGroup;
+  public itemToDelete: any;
 
-  public lstSortieStock: Array<any> = [];
-  stockDisponible=0;
-  lstCategorie:any;
-  lstForuniseur:any;
-  lstEmployer:any;
-  lstBureau:any;
-  lstArticel:any;
+  // Table & Pagination
+  public dataSource!: MatTableDataSource<any>;
   public searchDataValue = '';
-  dataSource!: MatTableDataSource<any>;
-  // pagination variables
-  public lastIndex = 0;
   public pageSize = 10;
   public totalData = 0;
-  public skip = 0;
-  public limit: number = this.pageSize;
-  public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
-  public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<pageSelection> = [];
-  public totalPages = 0;
-  //** / pagination variables
-  article_id:any;
-  public addEntreeStockForm!: FormGroup ;
-  public editEntreeStockForm!: FormGroup
-  public deleteEntreeStockForm!: FormGroup
 
-  showAlert=false;
-  messageAlert=""
+  // Alertes
+  public showAlert = false;
+  public messageAlert = "";
+  public isDisabledBtn = false;
 
-  isDisabledBtn=false
-
-  constructor(private formBuilder: FormBuilder,public router: Router,
-              private articleService:articleService,
-              private employeService:EmployeService,
-              private  bureauService:bureauService,
-              private fournisseurService: fournisseurService,
-              private entreeSortieStockService: entreeSortieStockService,
-              private categorieService: categorieArticleService,
-              private exp: ExportsService) {}
-
+  constructor(
+    private formBuilder: FormBuilder,
+    public router: Router,
+    private articleService: articleService,
+    private directionService: DirectionCentreService,
+    private localisationService: LocalisationService,
+    private stockService: entreeSortieStockService
+  ) {}
 
   ngOnInit(): void {
+    this.initForms();
+    this.loadInitialData();
     this.getTableData();
-   // this.getFournisseur();
-    this.getBureau();
-   this.getEmploye();
-   this.getArticle();
-
-    this.addEntreeStockForm = this.formBuilder.group({
-      article_id: ["", [Validators.required]],
-      date_mouvement: ["", [Validators.required]],
-      type: ["SORTIE", []],
-      bureau_id:['',[Validators.required]],
-      employe_id:['',[Validators.required]],
-      qte: ["", [Validators.required,Validators.min(0)]],
-      fournisseur: ["",  [ ]],
-   });
-
-   this.editEntreeStockForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-     article_id: ["", [Validators.required]],
-     date_mouvement: ["", [Validators.required]],
-     type: ["SORTIE", []],
-     qte: ["", [Validators.required,Validators.min(0)]],
-     bureau_id:['',[]],
-     employe_id:['',[]],
-     fourniseur: ["",  []],
-  });
-   this.deleteEntreeStockForm = this.formBuilder.group({
-    id: [0, [Validators.required]],
-  });
- }
-
-  hideAlert() {
-    this.showAlert = false;
   }
 
-  resetAlert() {
-    // Utilisez cette méthode pour réinitialiser l'alerte si nécessaire
-    this.showAlert = true;
+  private initForms() {
+    this.addSortieForm = this.formBuilder.group({
+      reference: ['', [Validators.required]],
+      date_mouvement: [new Date().toISOString().split('T')[0], [Validators.required]],
+      localisation_id: ['', [Validators.required]],
+      direction_id: ['', [Validators.required]],
+      // Champs pour l'ajout d'une ligne d'article
+      temp_article_id: [''],
+      temp_quantite: [1],
+      temp_description: ['Sortie de stock']
+    });
   }
 
-  changeQte(){
+  private loadInitialData() {
+    // Articles
+    this.articleService.getAll().subscribe(res => this.lstArticles = res.data?.data || res.data);
+    
+    // Localisations
+    this.localisationService.getAll().subscribe(res => this.lstLocalisations = res.data?.data || res.data);
 
-    var t=this.stockDisponible-this.addEntreeStockForm.get('qte')?.value
-    if(t<0 ){
+    // Directions
+    this.directionService.getAll().subscribe(res => this.lstDirections = res.data?.data || res.data);
+  }
 
-      this.messageAlert="Attention ! Vous ne pouvez pas sortir ce article au dela de "+this.stockDisponible
-      this.showAlert=true;
-      this.isDisabledBtn=true
-  // alert('Vous ne pouvez pas sortir ce article au dela de '+this.stockDisponible)
-    }else {
-      this.isDisabledBtn=false
+  /**
+   * Vérifie le stock lors du choix d'un article dans le modal
+   */
+  onChangeArticle() {
+    const articleId = this.addSortieForm.get('temp_article_id')?.value;
+    if (!articleId) return;
+
+    this.stockService.getStockByArticle({ article_id: articleId }).subscribe((resp: any) => {
+      this.stockDisponible = resp.data?.qte_actuel || 0;
+    });
+  }
+
+  /**
+   * Ajoute un article à la liste temporaire du bon de sortie
+   */
+  ajouterArticleALaListe() {
+    const artId = this.addSortieForm.get('temp_article_id')?.value;
+    const qte = this.addSortieForm.get('temp_quantite')?.value;
+    const desc = this.addSortieForm.get('temp_description')?.value;
+
+    if (!artId || qte <= 0) {
+      alert("Sélectionnez un article et une quantité valide.");
+      return;
     }
-  }
-  changeArtice(){
 
-    this.entreeSortieStockService.getSockByArticle({
-      article_id:this.addEntreeStockForm.get('article_id')?.value
-    }).subscribe(
-      (resp:any)=>{
+    if (qte > this.stockDisponible) {
+      alert(`Stock insuffisant ! Disponible : ${this.stockDisponible}`);
+      return;
+    }
 
-        // alert(resp.data.qte)
-        this.stockDisponible=resp.data.qte;
+    const articleComplet = this.lstArticles.find(a => a.id == artId);
 
-        this.addEntreeStockForm.get('qte')?.setValue('')
-
-      }
-    )
-
-    // alert(this.addReparationImmoForm.get('article_id')?.value)
-  }
-
-
- getEmploye(){
-
-   this.employeService.getAllEmploye().subscribe(
-     (res: any) => {
-
-         // alert(JSON.stringify(res.data ))
-       this.lstEmployer=res.data
-
-     },
-     (error:any)=>{
-
-     });
- }
-
-  getBureau(){
-
-    this.bureauService.getAll().subscribe(
-      (res: any) => {
-        // alert(JSON.stringify(res.data ))
-        this.lstBureau=res.data.data
-
-      },
-      (error:any)=>{
-
-      });
-  }
-
-  getCategorie(){
-
-    this.categorieService.getAll().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data.data))
-        this.lstCategorie=res.data.data
-
-    },
-      (error:any)=>{
-
+    // Ajouter à la liste locale
+    this.lstArticlesAajouter.push({
+      article_id: artId,
+      code: articleComplet?.code,
+      designation: articleComplet?.designation,
+      quantite: qte,
+      description: desc
     });
 
-
+    // Reset les champs temporaires
+    this.addSortieForm.patchValue({ temp_article_id: '', temp_quantite: 1 });
+    this.stockDisponible = 0;
   }
 
-  getFournisseur(){
-
-    this.fournisseurService.getAll().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data.data))
-        this.lstForuniseur=res.data.data
-
-    },
-      (error:any)=>{
-
-    });
-
-
+  retirerArticle(index: number) {
+    this.lstArticlesAajouter.splice(index, 1);
   }
 
-  getArticle(){
+  /**
+   * Enregistrement final du bon de sortie au backend
+   */
+  onClickSubmitAddSortie() {
+    if (this.addSortieForm.invalid) {
+      alert("Veuillez remplir les informations du bon (Réf, Date, Direction, Localisation).");
+      return;
+    }
 
-    this.articleService.getAll().subscribe(
-      (res: any) => {
+    if (this.lstArticlesAajouter.length === 0) {
+      alert("Ajoutez au moins un article au bon de sortie.");
+      return;
+    }
 
-        // alert(JSON.stringify(res.data.data))
-        this.lstArticel=res.data.data
-
-    },
-      (error:any)=>{
-
-    });
-
-
-  }
-
- onClickSubmitAddEntreeStock(){
-
-  console.log(this.addEntreeStockForm.value)
-
-  if (this.addEntreeStockForm.valid){
+    this.showloader = true;
     $('#spinnerr').removeClass('d-none');
-    this.entreeSortieStockService.saveEntree(this.addEntreeStockForm.value).subscribe(
-      (data:any)=>{
+
+    // Récupération explicite des valeurs pour éviter les 'null'
+    const payload = {
+      reference: this.addSortieForm.get('reference')?.value,
+      date_mouvement: this.addSortieForm.get('date_mouvement')?.value,
+      localisation_id: this.addSortieForm.get('localisation_id')?.value, // Vérifiez que le select HTML utilise bien ce nom
+      direction_id: this.addSortieForm.get('direction_id')?.value,       // Vérifiez que le select HTML utilise bien ce nom
+      articles: this.lstArticlesAajouter.map(a => ({
+        article_id: a.article_id,
+        quantite: a.quantite,
+        description: a.description
+      }))
+    };
+
+    // Note: On ne fait plus JSON.stringify ici si le service s'en charge ou si le backend attend du JSON pur
+    this.stockService.saveSortie(payload).subscribe({
+      next: () => {
+        $('#spinnerr').addClass('d-none');
+        this.lstArticlesAajouter = [];
         location.reload();
-      }
-    )
-  }else {
-    $('#spinnerr').addClass('d-none');
-    alert("desole le formulaire n'est pas bien renseigné")
-  }
-
-
-}
-
-onClickSubmitEditArticle(){
-  console.log(this.editEntreeStockForm.value)
-
-    if (this.editEntreeStockForm.valid){
-      $('#spinner').removeClass('d-none');
-      const id = this.editEntreeStockForm.value.id;
-      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe(
-        (data:any)=>{
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-      $('#spinner').addClass('d-none');
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-onClickSubmitDeleteBanque(){
-  console.log(this.deleteEntreeStockForm.value)
-
-    if (this.deleteEntreeStockForm.valid){
-      const id = this.deleteEntreeStockForm.value.id;
-      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe(
-        (data:any)=>{
-
-          // alert(JSON.stringify(data))
-          location.reload();
-        }
-      )
-      console.log("success")
-    }else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
-    }
-
-}
-
-
-
-getEditForm(row: any){
-  this.editEntreeStockForm.patchValue({
-   id:row.id,
-    article_id:row.article_id,
-    date_mouvement: row.date_mouvement,
-    qte:row.qte,
-    code: row.code,
-    fournisseur: row.fournisseur,
-  })
-}
-
-getDeleteForm(row: any){
-  this.deleteEntreeStockForm.patchValue({
-   id:row.id,
-  })
-}
-
-
-  private getTableData(): void {
-    this.lstSortieStock = [];
-    this.serialNumberArray = [];
-
-    this.entreeSortieStockService.getAll().subscribe((res: any) => {
-      this.totalData = res.data.total;
-      res.data.data.map((res: any, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= this.skip && serialNumber <= this.limit) {
-          res.id;// = serialNumber;
-
-          // alert(res.type);
-          if(res.type=="SORTIE"){
-            this.lstSortieStock.push(res);
-
-            this.serialNumberArray.push(serialNumber);
-          }
-
-        }
-      });
-      console.log(this.lstSortieStock);
-      this.dataSource = new MatTableDataSource<any>(this.lstSortieStock);
-      this.calculateTotalPages(this.totalData, this.pageSize);
-    });
-
-
-  }
-
-
-
-  exportToPDF() {
-    $('#spinner_pdf').removeClass('d-none');
-    this.exp.exportBanques().subscribe(
-      (response: any) => {
-        $('#spinner_pdf').addClass('d-none');
-        window.open(response.data, '_blank');
       },
-      (error: any) => {
-        $('#spinner_pdf').addClass('d-none');
-        alert(JSON.stringify(error));
+      error: (err) => {
+        $('#spinnerr').addClass('d-none');
+        this.showloader = false;
+        alert(err.error?.message || "Erreur lors de l'enregistrement.");
       }
-    );
+    });
+}
+  /**
+   * Liste des bons de sortie groupés
+   */
+  getTableData(): void {
+    this.stockService.getAllSorties().subscribe((res: any) => {
+      this.lstSortieStock = res.data?.data || res.data || [];
+      this.dataSource = new MatTableDataSource<any>(this.lstSortieStock);
+      this.totalData = this.lstSortieStock.length;
+    });
   }
 
-  exportToXLSX() {
-    $('#spinner_xlsx').removeClass('d-none');
-    setTimeout(() => {
-      const table: HTMLElement | null = document.getElementById('to_export');
-      const filename = "Les Bureau.xlsx";
-
-      if (table) {
-        const wb = XLSX.utils.book_new();
-        const tableCopy = table.cloneNode(true) as HTMLElement;
-
-        const idsToExclude: string[] = ['exclusion-1', 'exclusion-2'];
-        idsToExclude.forEach(id => {
-          const elementsToRemove = tableCopy.querySelectorAll(`#${id}`);
-          elementsToRemove.forEach(element => {
-            const columnIndex = Array.from(element.parentElement!.children).indexOf(element);
-            const rows = tableCopy.querySelectorAll('tr');
-            rows.forEach(row => {
-              if (row.children[columnIndex]) {
-                row.removeChild(row.children[columnIndex]);
-              }
-            });
-          });
-        });
-
-        const ws1 = XLSX.utils.table_to_sheet(tableCopy);
-        XLSX.utils.book_append_sheet(wb, ws1, "Les Bureau");
-
-        XLSX.writeFile(wb, filename);
-        $('#spinner_xlsx').addClass('d-none');
-      } else {
-        console.error("L'Id spécifié n'a pas été trouvé.");
-        $('#spinner_xlsx').addClass('d-none');
-      }
-    }, 10);
+  /**
+   * Voir les articles d'un bon spécifique
+   */
+  voirDetails(reference: string) {
+    this.refSelectionnee = reference;
+    this.stockService.getDetailsSortie(reference).subscribe((res: any) => {
+      this.lstArticlesDetails = res.data;
+    });
   }
+
+  // --- NOUVELLES MÉTHODES POUR CORRIGER LES ERREURS ---
 
   public sortData(sort: Sort) {
     const data = this.lstSortieStock.slice();
-
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     if (!sort.active || sort.direction === '') {
       this.lstSortieStock = data;
     } else {
-      this.lstSortieStock = data.sort((a: any, b: any) => {
+      this.lstSortieStock = data.sort((a, b) => {
         const aValue = (a as any)[sort.active];
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
@@ -394,62 +222,77 @@ getDeleteForm(row: any){
     }
   }
 
+  public getDeleteForm(item: any) {
+    this.itemToDelete = item;
+  }
+
+  public onClickSubmitDelete() {
+    if (!this.itemToDelete) return;
+  
+    const reference = this.itemToDelete.reference;
+    this.showloader = true;
+  
+    // On lance la suppression via le service
+    this.stockService.deleteSortieByRef(reference).subscribe({
+      next: (res) => {
+        // --- ÉTAPE 1 : FERMETURE MANUELLE DU MODAL ---
+        // On récupère l'élément par son ID (celui défini dans votre HTML)
+        const modalElement = document.getElementById('delete_sortie');
+        
+        if (modalElement) {
+          // On retire les classes Bootstrap qui affichent le modal
+          modalElement.classList.remove('show');
+          modalElement.style.display = 'none';
+          modalElement.setAttribute('aria-hidden', 'true');
+        }
+  
+        // --- ÉTAPE 2 : NETTOYAGE DU BACKDROP (LE VOILE NOIR) ---
+        // C'est souvent lui qui bloque l'écran si on ne le supprime pas
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => backdrop.remove());
+  
+        // On redonne au corps de la page la possibilité de scroller
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+  
+        // --- ÉTAPE 3 : MISE À JOUR DE LA VUE ---
+        // On rafraîchit la liste des données immédiatement
+        this.getTableData();
+        
+        this.showloader = false;
+        console.log("Suppression réussie et interface nettoyée.");
+      },
+      error: (err) => {
+        this.showloader = false;
+        console.error("Erreur lors de la suppression", err);
+        // Optionnel : afficher un message d'erreur à l'utilisateur ici
+      }
+    });
+  }
+
   public searchData(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.lstSortieStock = this.dataSource.filteredData;
   }
 
-  public getMoreData(event: string): void {
-    if (event === 'next') {
-      this.currentPage++;
-      this.pageIndex = this.currentPage - 1;
-      this.limit += this.pageSize;
-      this.skip = this.pageSize * this.pageIndex;
-      this.getTableData();
-    } else if (event === 'previous') {
-      this.currentPage--;
-      this.pageIndex = this.currentPage - 1;
-      this.limit -= this.pageSize;
-      this.skip = this.pageSize * this.pageIndex;
-      this.getTableData();
-    }
-  }
-
-  public moveToPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
-    this.skip = this.pageSelection[pageNumber - 1].skip;
-    this.limit = this.pageSelection[pageNumber - 1].limit;
-    if (pageNumber > this.currentPage) {
-      this.pageIndex = pageNumber - 1;
-    } else if (pageNumber < this.currentPage) {
-      this.pageIndex = pageNumber + 1;
-    }
-    this.getTableData();
-  }
-
-  public changePageSize(): void {
-    this.pageSelection = [];
-    this.limit = this.pageSize;
-    this.skip = 0;
-    this.currentPage = 1;
-    this.getTableData();
-  }
-
-  private calculateTotalPages(totalData: number, pageSize: number): void {
-    this.pageNumberArray = [];
-    this.totalPages = totalData / pageSize;
-    if (this.totalPages % 1 !== 0) {
-      this.totalPages = Math.trunc(this.totalPages + 1);
-    }
-    for (let i = 1; i <= this.totalPages; i++) {
-      const limit = pageSize * i;
-      const skip = limit - pageSize;
-      this.pageNumberArray.push(i);
-      this.pageSelection.push({ skip: skip, limit: limit });
-    }
-  }
+  /**
+ * Retrouve l'intitulé de la direction à partir de son ID
+ */
+getDirectionLibelle(id: any): string {
+  if (!id) return 'Non définie';
+  // On cherche dans la liste des directions chargée au début
+  const found = this.lstDirections.find(d => d.id == id);
+  return found ? found.intitule : 'Non définie';
 }
-export interface pageSelection {
-  skip: number;
-  limit: number;
+
+/**
+* Retrouve le nom de la localisation à partir de son ID
+*/
+getLocalisationLibelle(id: any): string {
+  if (!id) return 'Non définie';
+  // On cherche dans la liste des localisations chargée au début
+  const found = this.lstLocalisations.find(l => l.id == id);
+  return found ? found.nom_localisation : 'Non définie';
+}
 }
