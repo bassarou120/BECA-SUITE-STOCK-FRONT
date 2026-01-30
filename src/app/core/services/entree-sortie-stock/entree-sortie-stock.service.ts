@@ -161,13 +161,6 @@ export class entreeSortieStockService {
     return this.http.get<any>(`${this.url}/rapports/etat-stock-consolide/data`);
   }
 
-  /**
-   * Génère l'URL pour le téléchargement du PDF de l'état consolidé
-   */
-  // exportPdfEtatConsolide(): Observable<any> {
-  //   return this.http.get<any>(`${this.url}/rapports/etat-stock-consolide/pdf`);
-  // }
-
   exportPdfEtatConsolide(): Observable<any> {
     // L'ajout de responseType: 'blob' empêche l'erreur de parsing JSON (status 200 ok: false)
     return this.http.get(`${this.url}/rapports/etat-stock-consolide/pdf`, {
