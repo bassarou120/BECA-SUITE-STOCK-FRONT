@@ -43,15 +43,22 @@ export class entreeSortieStockService {
   }
 
   /**
-   * Modifie un mouvement existant (via FormData pour supporter les fichiers)
-   */
+ * Modifie un mouvement (supporte FormData pour les fichiers)
+ */
   edit(data: FormData): Observable<any> {
-    const id = data.get('id'); 
-    return this.http.post<any>(`${this.url}/mouvement_stock/${id}`, data);
+    const id = data.get('id'); // L'ID doit être présent dans le FormData
+    // On utilise POST car on a ajouté _method: PUT dans le FormData côté composant
+    return this.http.post<any>(`${this.url}/mouvements/entrees/${id}`, data);
   }
 
-  delete(data: any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/mouvement_stock/${data.id}`);
+  /**
+  * Supprime un mouvement
+  * @param id L'identifiant numérique directement
+  */
+  delete(id: any): Observable<any> {
+    // Si l'ID arrive en tant qu'objet {id: 25}, on extrait la valeur
+    const numericId = typeof id === 'object' ? id.id : id;
+    return this.http.delete<any>(`${this.url}/mouvements/entrees/${numericId}`);
   }
 
   getStockByArticle(data: any): Observable<Object> {

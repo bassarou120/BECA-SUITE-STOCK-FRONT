@@ -213,34 +213,38 @@ export class EntreeStockComponent implements OnInit {
     if (this.editEntreeStockForm.valid) {
       $('#spinner').removeClass('d-none');
   
-      // Utilisation de FormData pour permettre l'envoi de fichier en modification
       const formData = new FormData();
       const formValues = this.editEntreeStockForm.value;
 
-      // On boucle sur les clés du formulaire pour les ajouter au FormData
+      // On ajoute l'ID dans le FormData
+      formData.append('id', formValues.id);
+
       Object.keys(formValues).forEach(key => {
-        if (formValues[key] !== null && key !== 'piece_jointe') {
+        if (formValues[key] !== null && key !== 'piece_jointe' && key !== 'id') {
           formData.append(key, formValues[key]);
         }
       });
 
-      // Ajout du nouveau fichier si sélectionné
       if (this.selectedFile) {
         formData.append('piece_jointe', this.selectedFile);
       }
 
-      // Note: Votre service 'edit' doit être capable de recevoir FormData ou vous devez appeler une méthode spécifique
+      // Simulation de PUT pour Laravel via POST
+      formData.append('_method', 'PUT');
+
+      // On n'envoie qu'UN SEUL argument (formData) pour respecter la signature du service
       this.entreeSortieStockService.edit(formData).subscribe({
         next: (res: any) => {
-          this.getTableData();
           $('#spinner').addClass('d-none');
           this.closeModal('edit_department');
+          this.getTableData();
           this.selectedFile = null;
           alert("Mouvement mis à jour avec succès !");
         },
         error: (err) => {
           $('#spinner').addClass('d-none');
-          alert(err.error?.message || "Erreur lors de la modification");
+          console.error(err);
+          alert("Erreur lors de la modification. Vérifiez que votre service accepte le FormData.");
         }
       });
     }
@@ -248,12 +252,18 @@ export class EntreeStockComponent implements OnInit {
 
   onClickSubmitDelete(): void {
     if (this.deleteEntreeStockForm.valid) {
-      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe({
+      // CORRECTION 404 : Envoyer l'ID numérique uniquement
+      const idToDelete = this.deleteEntreeStockForm.value.id;
+      
+      this.entreeSortieStockService.delete(idToDelete).subscribe({
         next: () => {
            this.closeModal('delete_department');
            this.getTableData();
         },
-        error: (err) => alert("Erreur lors de la suppression")
+        error: (err) => {
+          console.error(err);
+          alert("Erreur lors de la suppression (Code 404 - ID introuvable)");
+        }
       });
     }
   }
@@ -415,34 +425,23 @@ export class EntreeStockComponent implements OnInit {
   }
 
   private closeModal(id: string) {
-    // 1. Méthode la plus fiable : Simuler un clic sur le bouton de fermeture "X" du modal
+    // 1. Clic sur le bouton de fermeture natif pour laisser Bootstrap gérer le nettoyage
     const modalElement = document.getElementById(id);
     if (modalElement) {
-        const closeBtn = modalElement.querySelector('.btn-close') as HTMLElement;
+        const closeBtn = modalElement.querySelector('[data-bs-dismiss="modal"]') as HTMLElement;
         if (closeBtn) {
             closeBtn.click();
         } else {
-            // Si pas de btn-close, on essaie via jQuery
+            // Fallback jQuery si le bouton n'est pas trouvé
             $(`#${id}`).modal('hide');
         }
     }
 
-    // 2. Sécurité via JS natif Bootstrap
-    if (modalElement && (window as any).bootstrap) {
-        const modalInstance = (window as any).bootstrap.Modal.getInstance(modalElement);
-        if (modalInstance) {
-            modalInstance.hide();
-        }
-    }
-
-    // 3. Nettoyage forcé des résidus visuels pour éviter l'écran gelé
+    // 2. Nettoyage forcé de sécurité pour éviter le gel de l'écran (Backdrop persistant)
     setTimeout(() => {
       $('.modal-backdrop').remove();
       $('body').removeClass('modal-open');
-      $('body').css({
-        'overflow': 'auto',
-        'padding-right': '0'
-      });
-    }, 150);
+      $('body').css({ 'overflow': 'auto', 'padding-right': '0' });
+    }, 300);
   }
 }
