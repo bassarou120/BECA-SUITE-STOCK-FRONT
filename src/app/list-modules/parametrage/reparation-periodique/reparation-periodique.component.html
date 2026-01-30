@@ -1,0 +1,301 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Liste des Site</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+          </li>
+          <li class="breadcrumb-item active">Site</li>
+        </ul>
+      </div>
+
+      <div class="col-auto float-end ms-auto">
+        <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_site"
+          ><i class="fa-solid fa-plus"></i> Ajouter un Site</a
+        >
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table_header">
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <div class="dataTables_length">
+              <label class="col-form-label" for="">
+                Afficher
+                <select
+                  [(ngModel)]="pageSize"
+                  (ngModelChange)="changePageSize()"
+                  class="form-control form-control-sm"
+                >
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                Entrées
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="to_export" class="table-responsive">
+        <table
+          matSort
+          (matSortChange)="sortData($event)"
+          class="table table-striped custom-table datatable mb-0"
+        >
+          <thead>
+            <tr>
+              <th style="width: 30px">#</th>
+              <th mat-sort-header="nom_reparation">Nom réparation</th>
+              <th mat-sort-header="frequence">Fréquence</th>
+              <th mat-sort-header="prochaine_date">Prochaine date</th>
+              <th class="text-end" id="exclusion-1">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of lstSite; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.nom_reparation }}</td>
+              <td>{{ item.frequence }}</td>
+              <td>{{ item.prochaine_date | date:'dd/MM/yyyy' }}</td>
+              <td class="text-end" id="exclusion-2">
+                <div class="dropdown dropdown-action">
+                  <a
+                    class="action-icon dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    ><i class="material-icons">more_vert</i></a
+                  >
+                  <div class="dropdown-menu dropdown-menu-right">
+
+                    <a
+                      class="dropdown-item"
+                      data-bs-toggle="modal"
+                      (click)="getDeleteForm(item)"
+                      data-bs-target="#delete_site"
+                      ><i class="fa-regular fa-trash-can m-r-5"></i>
+                      Supprimer</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="lstSite.length === 0">
+              <td colspan="10">
+                <h5 style="text-align: center">Aucun Résultat</h5>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+        <br />
+        <br />
+      </div>
+      <div class="table_footer">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info">
+            Affichage de {{ serialNumberArray[0] }} à
+            {{ serialNumberArray[serialNumberArray.length - 1] }} sur
+            {{ totalData }} Entrées
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-7">
+          <div class="pagination_section">
+            <ul class="pagination">
+              <li
+                class="page-item"
+                [ngClass]="{
+                  disabled: currentPage === 1,
+                }"
+              >
+                <a
+                  (click)="getMoreData('previous')"
+                  class="page-link"
+                  href="javascript:void(0);"
+                  tabindex="-1"
+                  >Précédent</a
+                >
+              </li>
+
+              <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                <li
+                  class="page-item"
+                  [class.active]="item === currentPage"
+                  [ngClass]="
+                    (pageNumberArray[currentPage - 2] > item &&
+                      item !== 1 &&
+                      pageNumberArray.length > 6) ||
+                    (pageNumberArray[currentPage] < item &&
+                      item !== 1 &&
+                      pageNumberArray.length > 6 &&
+                      pageNumberArray.length !== item)
+                      ? 'hide-page-no'
+                      : 'show-page-no'
+                  "
+                >
+                  <a
+                    (click)="moveToPage(item)"
+                    class="page-link"
+                    href="javascript:void(0);"
+                  >
+                    {{ item }}
+                  </a>
+                </li>
+                <li
+                  class="page-item"
+                  *ngIf="
+                    i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                  "
+                  [hidden]="currentPage === 1"
+                  (click)="moveToPage(currentPage - 2)"
+                  (keydown.enter)="moveToPage(currentPage - 2)"
+                  tabindex="0"
+                >
+                  <a class="page-link" href="javascript:void(0);"> ... </a>
+                </li>
+                <li
+                  *ngIf="
+                    i === pageNumberArray.length - 2 &&
+                    pageNumberArray.length > 6
+                  "
+                  [hidden]="
+                    currentPage >=
+                      pageNumberArray[pageNumberArray.length - 2] ||
+                    totalData < serialNumberArray[serialNumberArray.length - 1]
+                  "
+                  class="page-item"
+                  (click)="moveToPage(currentPage + 2)"
+                  (keydown.enter)="moveToPage(currentPage + 2)"
+                  tabindex="0"
+                >
+                  <a class="page-link" href="javascript:void(0);"> ... </a>
+                </li>
+              </ng-container>
+
+              <li
+                class="page-item"
+                [ngClass]="{
+                  disabled:
+                    currentPage ===
+                      pageNumberArray[pageNumberArray.length - 1] ||
+                    lstSite.length === 0,
+                }"
+              >
+                <a
+                  (click)="getMoreData('next')"
+                  class="page-link"
+                  href="javascript:void(0);"
+                  >Suivant
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Page Content -->
+<!-- Add Poste Modal -->
+<div id="add_site" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter un site</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form [formGroup]="addForm" (ngSubmit)="onClickSubmitAddSite()">
+
+          <div class="input-block mb-3">
+            <label>Nom réparation <span class="text-danger">*</span></label>
+            <input class="form-control" formControlName="nom_reparation">
+            <small *ngIf="addForm.get('nom_reparation')?.invalid && addForm.get('nom_reparation')?.touched" class="text-danger">
+              Champ obligatoire
+            </small>
+          </div>
+
+          <div class="input-block mb-3">
+            <label>Fréquence <span class="text-danger">*</span></label>
+            <select class="form-control" formControlName="frequence">
+              <option value="">-- Sélectionner --</option>
+              <option value="1_mois">Tous les mois</option>
+              <option value="3_mois">Tous les 3 mois</option>
+              <option value="6_mois">Tous les 6 mois</option>
+              <option value="1_an">Tous les ans</option>
+            </select>
+            <small *ngIf="addForm.get('frequence')?.invalid && addForm.get('frequence')?.touched" class="text-danger">
+              Champ obligatoire
+            </small>
+          </div>
+
+          <div class="submit-section">
+            <button class="btn btn-primary submit-btn" type="submit">Enregistrer</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add Poste Modal -->
+
+
+
+<!-- Delete Site Modal -->
+<div class="modal custom-modal fade" id="delete_site" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-header">
+          <h3>Supprimer le site</h3>
+          <p>Êtes-vous sûr de vouloir supprimer ?</p>
+        </div>
+        <div class="modal-btn delete-action">
+          <div class="row">
+            <div class="col-6">
+              <form
+                [formGroup]="deleteSiteForm"
+                (ngSubmit)="onClickSubmitDeleteSite()"
+              >
+                <input type="hidden" formControlName="id" />
+                <a
+                  href="javascript:void(0);"
+                  class="btn btn-primary continue-btn"
+                  type="submit"
+                  (click)="onClickSubmitDeleteSite()"
+                  >Supprimer</a
+                >
+              </form>
+            </div>
+            <div class="col-6">
+              <a
+                href="javascript:void(0);"
+                data-bs-dismiss="modal"
+                class="btn btn-primary cancel-btn"
+                >Annuler</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Delete Famille Modal -->
