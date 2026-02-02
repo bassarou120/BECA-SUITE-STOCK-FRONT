@@ -168,4 +168,14 @@ export class entreeSortieStockService {
     });
   }
   
+  getRapportAchatsData(params: any): Observable<any> {
+    return this.http.post(`${this.url}/rapports/rapport-achats-data`, params);
+  }
+
+  // 2. Exportation du PDF (BLOB)
+  exportPdfAchatsParArticle(params: any): Observable<Blob> {
+    return this.http.post(`${this.url}/rapports/export-pdf-achats`, params, {
+      responseType: 'blob'
+    });
+  }
 }

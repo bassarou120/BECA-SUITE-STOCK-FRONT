@@ -38,14 +38,17 @@
                   <mat-select class="select form-control" formControlName="type_rapport" placeholder="Sélectionner un rapport">
                     <mat-option value="rapport_entree">RAPPORT DES ENTREES</mat-option>
                     <mat-option value="rapport_sortie">RAPPORT DES SORTIES</mat-option>
+                    <mat-option value="rapport_achat_article">ACHATS DÉTAILLÉS PAR ARTICLE</mat-option>
                     <mat-option value="rapport_etat">RAPPORT ETAT DU STOCK (ACTUEL)</mat-option>
                     <mat-option value="rapport_consolide">ÉTAT CONSOLIDÉ DU STOCK (AVEC FAMILLES)</mat-option>
                   </mat-select>
                 </div>
               </div>
 
-              <!-- Dates pour entrées/sorties uniquement -->
-              <ng-container *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree' || rapportStockForm.get('type_rapport')?.value === 'rapport_sortie'">
+              <!-- Dates pour entrées, sorties et achats par article -->
+              <ng-container *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree' || 
+                                  rapportStockForm.get('type_rapport')?.value === 'rapport_sortie' || 
+                                  rapportStockForm.get('type_rapport')?.value === 'rapport_achat_article'">
                 <div class="col-md-4">
                   <div class="input-block mb-3">
                     <label class="col-form-label">Date de début</label>
@@ -61,12 +64,15 @@
                 </div>
               </ng-container>
 
-              <!-- Messages d'info pour les rapports d'état (sans dates) -->
-              <div class="col-md-8" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_etat' || rapportStockForm.get('type_rapport')?.value === 'rapport_consolide'">
+              <!-- Messages d'info -->
+              <div class="col-md-8" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_etat' || 
+                                          rapportStockForm.get('type_rapport')?.value === 'rapport_consolide' ||
+                                          rapportStockForm.get('type_rapport')?.value === 'rapport_achat_article'">
                 <div class="alert alert-light border mt-2">
                   <i class="fa fa-info-circle text-info"></i> 
                   <span *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_etat'">Ce rapport affiche la situation réelle de votre inventaire à l'instant T.</span>
                   <span *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_consolide'">Ce rapport regroupe vos articles par <strong>Famille</strong> avec la valorisation actuelle.</span>
+                  <span *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_achat_article'">Historique détaillé des <strong>Entrées en stock</strong> groupé par article.</span>
                 </div>
               </div>
             </div>
@@ -128,9 +134,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let c of lstMouvements">
-                  <td>
-                    <span class="badge bg-dark">{{ c.famille || 'Non classé' }}</span>
-                  </td>
+                  <td><span class="badge bg-dark">{{ c.famille || 'Non classé' }}</span></td>
                   <td>{{ c.code_article }}</td>
                   <td class="fw-bold">{{ c.designation }}</td>
                   <td class="text-center">{{ c.qte_actuel }}</td>
@@ -146,7 +150,74 @@
               </tfoot>
             </table>
 
-            <!-- CAS 3 : MOUVEMENTS (ENTREES/SORTIES) -->
+            <!-- CAS 3 : ACHATS DÉTAILLÉS PAR ARTICLE (FORMAT GROUPÉ) -->
+            <div class="purchase-report-details" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_achat_article'">
+              
+              <!-- On boucle sur chaque article groupé -->
+              <div *ngFor="let groupe of lstMouvements" class="mb-4 shadow-sm border rounded overflow-hidden">
+                
+                <!-- Barre d'entête de l'article (Gris clair) -->
+                <div class="bg-light p-2 border-bottom fw-bold text-uppercase" style="font-size: 0.9rem;">
+                  Article <{{ groupe.code }}> {{ groupe.designation }}
+                </div>
+                
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered mb-0" style="font-size: 0.85rem;">
+                    <thead class="bg-secondary text-white text-center">
+                      <tr>
+                        <th style="width: 100px;">Date</th>
+                        <th style="width: 80px;">Heure</th>
+                        <th style="width: 120px;">Référence</th>
+                        <th>Origine ou destination</th>
+                        <th style="width: 80px;">Qté</th>
+                        <th style="width: 100px;">P.U.</th>
+                        <th style="width: 120px;">Valeur</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- On boucle sur les lignes de mouvements contenues dans 'details' renvoyé par le back -->
+                      <tr *ngFor="let ligne of groupe.details">
+                        <td class="text-center">{{ ligne.date_mouvement | date:'dd/MM/yyyy' }}</td>
+                        <td class="text-center text-muted">{{ ligne.created_at | date:'HH:mm:ss' }}</td>
+                        <td class="text-center">{{ ligne.reference }}</td>
+                        <td>{{ ligne.fournisseur_nom || 'MADER' }}</td>
+                        <td class="text-center fw-bold">{{ ligne.quantite | number }}</td>
+                        <td class="text-end">{{ ligne.prix_unitaire | number }}</td>
+                        <td class="text-end">{{ (ligne.quantite * ligne.prix_unitaire) | number }}</td>
+                      </tr>
+                    </tbody>
+                    <!-- Pied de tableau pour l'article en question -->
+                    <tfoot class="bg-light fw-bold">
+                      <tr>
+                        <td colspan="4" class="text-end">Total pour {{ groupe.designation }}</td>
+                        <td class="text-center">{{ groupe.total_qte | number }}</td>
+                        <td class="text-end text-muted small" style="font-style: italic;">
+                          Moy: {{ (groupe.total_valeur / groupe.total_qte) | number:'1.0-0' }}
+                        </td>
+                        <td class="text-end text-primary">{{ groupe.total_valeur | number }}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+
+              <!-- RÉCAPITULATIF GÉNÉRAL (En bas de liste) -->
+              <div class="card bg-dark text-white shadow" *ngIf="stats">
+                <div class="card-body py-3">
+                  <div class="row align-items-center">
+                    <div class="col-md-6">
+                      <h5 class="mb-0">TOTAL GÉNÉRAL DES ACHATS</h5>
+                    </div>
+                    <div class="col-md-6 text-end">
+                      <span class="me-4">Volume total: <strong>{{ stats.total_general_quantite | number }}</strong> units</span>
+                      <span>Valeur globale: <strong class="text-warning" style="font-size: 1.2rem;">{{ stats.total_general_valeur | number }} FCFA</strong></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CAS 4 : MOUVEMENTS (ENTREES/SORTIES) -->
             <table class="table table-striped custom-table mb-0" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_entree' || rapportStockForm.get('type_rapport')?.value === 'rapport_sortie'">
               <thead>
                 <tr>
@@ -178,8 +249,11 @@
             </table>
           </div>
 
-          <!-- Statistiques (Masquées pour l'état simple car déjà géré ou inclus) -->
-          <div class="row mt-4" *ngIf="stats && lstMouvements.length > 0 && rapportStockForm.get('type_rapport')?.value !== 'rapport_etat' && rapportStockForm.get('type_rapport')?.value !== 'rapport_consolide'">
+          <!-- Statistiques (Affichage conditionnel) -->
+          <div class="row mt-4" *ngIf="stats && lstMouvements.length > 0 && 
+                                      rapportStockForm.get('type_rapport')?.value !== 'rapport_etat' && 
+                                      rapportStockForm.get('type_rapport')?.value !== 'rapport_consolide' &&
+                                      rapportStockForm.get('type_rapport')?.value !== 'rapport_achat_article'">
             <div class="col-md-4">
               <div class="card bg-light">
                 <div class="card-body py-2 text-center">
@@ -192,7 +266,7 @@
               <div class="card bg-light border-primary">
                 <div class="card-body py-2 text-center">
                   <small class="text-muted uppercase">Valeur Totale HT</small>
-                  <h4 class="mb-0 text-primary">{{ stats.total_valeur_ht | number }} FCFA</h4>
+                  <h4 class="mb-0 text-primary">{{ (stats.total_valeur_ht || stats.total_general_valeur) | number }} FCFA</h4>
                 </div>
               </div>
             </div>

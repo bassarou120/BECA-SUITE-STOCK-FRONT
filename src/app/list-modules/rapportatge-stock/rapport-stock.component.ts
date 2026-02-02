@@ -78,13 +78,13 @@ export class rapportStockComponent implements OnInit {
       alert('Veuillez remplir les champs requis (Type et Dates si nécessaire)');
       return;
     }
-
+  
     this.showloader = true;
     this.lstMouvements = []; 
-
+  
     const params = this.rapportStockForm.value;
-
-    // --- NOUVEAU : ETAT CONSOLIDE (AVEC FAMILLE) ---
+  
+    // --- 1. ETAT CONSOLIDE ---
     if (params.type_rapport === 'rapport_consolide') {
       this.stockService.getRapportEtatConsolideData().subscribe({
         next: (res: any) => {
@@ -96,7 +96,7 @@ export class rapportStockComponent implements OnInit {
         error: (err) => this.handleError(err)
       });
     } 
-    // --- ETAT DE STOCK SIMPLE ---
+    // --- 2. ETAT DE STOCK SIMPLE ---
     else if (params.type_rapport === 'rapport_etat') {
       this.stockService.getRapportEtatStockData().subscribe({
         next: (res: any) => {
@@ -108,7 +108,7 @@ export class rapportStockComponent implements OnInit {
         error: (err) => this.handleError(err)
       });
     } 
-    // --- RAPPORT DES SORTIES ---
+    // --- 3. RAPPORT DES SORTIES ---
     else if (params.type_rapport === 'rapport_sortie') {
       this.stockService.getRapportSortiesData(params).subscribe({
         next: (res: any) => {
@@ -120,14 +120,28 @@ export class rapportStockComponent implements OnInit {
         error: (err) => this.handleError(err)
       });
     }
-    // --- RAPPORT DES ENTREES ---
+    // --- 4. NOUVEAU : RAPPORT DES ACHATS PAR ARTICLE ---
+    else if (params.type_rapport === 'rapport_achat_article') {
+      // Note: Assurez-vous d'avoir créé cette méthode dans votre stockService
+      this.stockService.getRapportAchatsData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          // Ici, res.data contient les articles groupés avec leurs 'details'
+          this.lstMouvements = res.data || []; 
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucun achat trouvé pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 5. RAPPORT DES ENTREES (PAR DÉFAUT) ---
     else {
       this.stockService.getRapportEntreesData(params).subscribe({
         next: (res: any) => {
           this.showloader = false;
           this.lstMouvements = res.data || []; 
           this.stats = res.statistiques;
-          if (this.lstMouvements.length === 0) alert("Aucune donnée trouvée pour cette période");
+          if (this.lstMouvements.length === 0) alert("Aucune donnée trouvée");
         },
         error: (err) => this.handleError(err)
       });
@@ -185,6 +199,72 @@ export class rapportStockComponent implements OnInit {
   //       }
   //   });
   // }
+//  telechargerPdf() {
+//     if (this.rapportStockForm.invalid) return;
+//     if (this.lstMouvements.length === 0) {
+//       alert("Veuillez d'abord afficher les données avant de télécharger le PDF");
+//       return;
+//     }
+
+//     this.showloader = true;
+//     $('#spinnerr').removeClass('d-none');
+
+//     const params = this.rapportStockForm.value;
+//     let exportObservable: Observable<any>;
+    
+//     // Sélection de l'observable
+//     if (params.type_rapport === 'rapport_achat_article') {
+//       exportObservable = this.stockService.exportPdfAchatsParArticle(params);
+//   } else if (params.type_rapport === 'rapport_consolide') {
+//       exportObservable = this.stockService.exportPdfEtatConsolide(); 
+//   } else if (params.type_rapport === 'rapport_etat') {
+//       exportObservable = this.stockService.exportPdfEtatStock();
+//   } else if (params.type_rapport === 'rapport_sortie') {
+//       exportObservable = this.stockService.exportPdfSorties(params);
+//   } else {
+//       exportObservable = this.stockService.exportPdfEntrees(params);
+//   }
+
+//     exportObservable.subscribe({
+//         next: (res: any) => {
+//             $('#spinnerr').addClass('d-none');
+//             this.showloader = false;
+
+//             // CAS 1 : C'est un BLOB (Nouveau rapport consolidé)
+//             if (res instanceof Blob) {
+//                 const url = window.URL.createObjectURL(res);
+//                 const link = document.createElement('a');
+//                 link.href = url;
+//                 link.download = `Rapport_Consolide_${new Date().getTime()}.pdf`;
+//                 document.body.appendChild(link);
+//                 link.click();
+//                 document.body.removeChild(link);
+//                 window.URL.revokeObjectURL(url);
+//             } 
+//             // CAS 2 : C'est du JSON avec une URL (Tes anciens rapports)
+//             else {
+//                 const url = res.success ? (res.url || res.data?.url) : null;
+//                 if (url) {
+//                     const link = document.createElement('a');
+//                     link.href = url;
+//                     link.target = '_blank';
+//                     link.download = url.split('/').pop();
+//                     document.body.appendChild(link);
+//                     link.click();
+//                     document.body.removeChild(link);
+//                 } else {
+//                     alert("Erreur: URL du PDF introuvable.");
+//                 }
+//             }
+//         },
+//         error: (err: any) => {
+//             $('#spinnerr').addClass('d-none');
+//             this.showloader = false;
+//             console.error(err);
+//             alert("Erreur lors de la génération du PDF.");
+//         }
+//     });
+// }
 
   telechargerPdf() {
     if (this.rapportStockForm.invalid) return;
@@ -199,9 +279,10 @@ export class rapportStockComponent implements OnInit {
     const params = this.rapportStockForm.value;
     let exportObservable: Observable<any>;
     
-    // Sélection de l'observable
-    if (params.type_rapport === 'rapport_consolide') {
-        // Pour celui-ci, on force le type blob dans l'appel
+    // Sélection de l'observable selon le type de rapport
+    if (params.type_rapport === 'rapport_achat_article') {
+        exportObservable = this.stockService.exportPdfAchatsParArticle(params);
+    } else if (params.type_rapport === 'rapport_consolide') {
         exportObservable = this.stockService.exportPdfEtatConsolide(); 
     } else if (params.type_rapport === 'rapport_etat') {
         exportObservable = this.stockService.exportPdfEtatStock();
@@ -216,18 +297,19 @@ export class rapportStockComponent implements OnInit {
             $('#spinnerr').addClass('d-none');
             this.showloader = false;
 
-            // CAS 1 : C'est un BLOB (Nouveau rapport consolidé)
+            // Détection du type de réponse (Blob pour les nouveaux rapports, URL JSON pour les anciens)
             if (res instanceof Blob) {
                 const url = window.URL.createObjectURL(res);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `Rapport_Consolide_${new Date().getTime()}.pdf`;
+                // Nom de fichier dynamique selon le type
+                const fileName = params.type_rapport === 'rapport_achat_article' ? 'Achats_Par_Article' : 'Rapport_Stock';
+                link.download = `${fileName}_${new Date().getTime()}.pdf`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
                 window.URL.revokeObjectURL(url);
             } 
-            // CAS 2 : C'est du JSON avec une URL (Tes anciens rapports)
             else {
                 const url = res.success ? (res.url || res.data?.url) : null;
                 if (url) {
@@ -250,7 +332,8 @@ export class rapportStockComponent implements OnInit {
             alert("Erreur lors de la génération du PDF.");
         }
     });
-}
+  }
+ 
 
   private handleError(err: any) {
     this.showloader = false;
