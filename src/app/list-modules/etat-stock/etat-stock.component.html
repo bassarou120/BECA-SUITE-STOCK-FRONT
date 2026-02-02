@@ -61,16 +61,17 @@
                       <th mat-sort-header="article_code">Code</th>
                       <th mat-sort-header="designation">Désignation Article</th>
                       <th mat-sort-header="quantite" class="text-center">Quantité en Stock</th>
+                      <th mat-sort-header="cump" class="text-end">P.U Moyen (CUMP)</th>
                       <!-- <th class="text-center">Statut</th> -->
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of lstEtatStock; let i = index;">
                       <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-                      <td><span class="text-center">{{ item.code || 'N/A' }}</span></td>
+                      <td><span class="text-center">{{ item.code_article || 'N/A' }}</span></td>
                       <td>
                         <h2 class="table-avatar">
-                          <a href="javascript:void(0);">{{ item.designation }}</a>
+                          <a href="javascript:void(0);">{{ item.article }}</a>
                         </h2>
                       </td>
                       <!-- Cellule Quantité avec couleur dynamique -->
@@ -78,6 +79,10 @@
                         <span [class]="item.quantite <= item.article?.stock_alert ? 'text-danger fw-bold' : 'text-success fw-bold'">
                           {{ item.quantite }}
                         </span>
+                      </td>
+                      <!-- Colonne CUMP -->
+                      <td class="text-avatar text-muted">
+                        {{ item.cump | number:'1.0-2' }} <small>FCFA</small>
                       </td>
                       <!-- Badge Statut -->
                       <!-- <td class="text-center">

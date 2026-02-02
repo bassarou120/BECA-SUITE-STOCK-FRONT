@@ -1,282 +1,357 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ContratService } from 'src/app/core/services/contrat/contrat.service';
 import { EmployeService } from 'src/app/core/services/employe/employe.service';
-import { FichepaieService } from 'src/app/core/services/fiche-paie/fichepaie.service';
-import { TypeContratService } from 'src/app/core/services/typeContrat/typeContrat.service';
-import {bureauService} from "../../core/services/bureau/bureau.service";
-import {immoService} from "../../core/services/immo/immo.service";
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import * as bootstrap from 'bootstrap';
+import { bureauService } from "../../core/services/bureau/bureau.service";
+import { immoService } from "../../core/services/immo/immo.service";
+import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service"; 
+import { Observable } from 'rxjs';
 import * as $ from 'jquery';
+
 @Component({
-  selector: 'app-ordrevirement',
+  selector: 'app-rapport-stock',
   templateUrl: './rapport-stock.component.html',
   styleUrls: ['./rapport-stock.component.scss'],
 })
 export class rapportStockComponent implements OnInit {
-  curentEmploye: any;
-  idEmploye: any;
+  public showloader = false;
+  public rapportStockForm!: FormGroup;
+  
+  public lstMouvements: any[] = []; 
+  public stats: any = null;
 
-  employes_who_has_no_fiche: any;
-  employes_who_has_fiche: any;
-  list_banque: any;
+  public listAnnee: any;
+  public lstEmployer: any;
+  public lstBureau: any;
 
-  selectedEmp: any;
-  selectedFiche: any;
-
-  showloader = false;
-
-  editMode = false;
-
-  ordreVierementData: any = [];
-  urlOrdrevirement: any;
-
-  public addEmployeFichePaieForm!: FormGroup;
-  public valideFichepaieForm!: FormGroup;
-  public rapportImmoForm!: FormGroup;
-  listAnnee: any;
-  listMois = [
-    { id: 1, name: 'Janvier' },
-    { id: 2, name: 'Février' },
-    { id: 3, name: 'Mars' },
-    { id: 4, name: 'Avril' },
-    { id: 5, name: 'Mai' },
-    { id: 6, name: 'Juin' },
-    { id: 7, name: 'Jueillet' },
-    { id: 8, name: 'Août' },
-    { id: 9, name: 'Septemnbre' },
-    { id: 10, name: 'Octobre' },
-    { id: 11, name: 'Novemvre' },
-    { id: 12, name: 'Decembre' },
-  ];
-
-  lstEmployer:any;
-  lstBureau:any;
-
-  selectedType:any;
   constructor(
     private ngZone: NgZone,
     private formBuilder: FormBuilder,
-    private employeservice: EmployeService,
-    private contraService: ContratService,
-    private activatedRoute: ActivatedRoute,
-    private typeContratService: TypeContratService,
-    private fichepaieService: FichepaieService,
+    private employeService: EmployeService,
+    private bureauService: bureauService,
     private immoService: immoService,
-    private employeService:EmployeService,
-    private  bureauService:bureauService,
+    private stockService: entreeSortieStockService 
   ) {}
 
   ngOnInit() {
-
     this.getBureau();
     this.getEmploye();
-
-    const currentDate = new Date();
-    const oneYearFromNow = new Date(currentDate);
-    oneYearFromNow.setFullYear(currentDate.getFullYear() - 1);
-
-console.log(currentDate.toISOString().split('T')[0],oneYearFromNow.toISOString().split('T')[0])
-
-    this.rapportImmoForm = this.formBuilder.group({
-      type_rapport: ['', [Validators.required]],
-      bureau_id: ['', [ ]],
-      employe_id: ['', [ ]],
-      date_fin: [currentDate.toISOString().split('T')[0], []],
-      date_debut: [oneYearFromNow.toISOString().split('T')[0], []],
-    });
-
-    // this.init();
+    this.initForm();
 
     let res = [];
     for (let index = 2024; index < 2050; index++) {
       res.push(index);
     }
-
     this.listAnnee = res;
-
-    this.getListeBanque();
   }
 
+  initForm() {
+    this.rapportStockForm = this.formBuilder.group({
+      type_rapport: ['', [Validators.required]],
+      date_debut: [''],
+      date_fin: [''],
+    });
 
-  init(){
-    const currentDate = new Date();
-    const oneYearFromNow = new Date(currentDate);
-    oneYearFromNow.setFullYear(currentDate.getFullYear() - 1);
+    this.rapportStockForm.get('type_rapport')?.valueChanges.subscribe(value => {
+      this.lstMouvements = [];
+      this.stats = null;
 
-    this.rapportImmoForm.get('date_debut')?.setValue(oneYearFromNow.toISOString().split('T')[0])
-    this.rapportImmoForm.get('date_fin')?.setValue(currentDate.toISOString().split('T')[0])
-  }
+      const dateDebut = this.rapportStockForm.get('date_debut');
+      const dateFin = this.rapportStockForm.get('date_fin');
 
-
-  getEmploye(){
-
-    this.employeService.getAllEmploye().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data ))
-        this.lstEmployer=res.data
-
-      },
-      (error:any)=>{
-
-      });
-  }
-
-  getBureau(){
-
-    this.bureauService.getAll().subscribe(
-      (res: any) => {
-        // alert(JSON.stringify(res.data ))
-        this.lstBureau=res.data.data
-
-      },
-      (error:any)=>{
-
-      });
-  }
-
-
-
-
-  compareObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-  getListeBanque() {
-    this.employeservice.getlisteBanque().subscribe(
-      (data: any) => {
-        // alert(JSON.stringify(data.data.data));
-        this.list_banque = data.data.data;
-      },
-      (error: any) => {}
-    );
-  }
-
-  totalAutrePrime = 0;
-  formAutrePrime = this.formBuilder.group({
-    itemsAutrePrimes: this.formBuilder.array([]),
-  });
-
-  totalAutreRetenue = 0;
-  formAutreRetenue = this.formBuilder.group({
-    itemsAutreRetenues: this.formBuilder.array([]),
-  });
-
-  form = this.formBuilder.group({
-    items: this.formBuilder.array([]),
-  });
-
-  get items() {
-    return this.form.get('items') as FormArray;
-  }
-  initAddFiche() {
-    this.fichepaieService.initgetEmployeForFichepaie().subscribe(
-      (response: any) => {
-        console.log(response.data);
-
-        this.employes_who_has_no_fiche =
-          response.data.employes_who_has_no_fiche;
-
-        this.employes_who_has_fiche = response.data.employes_who_has_fiche;
-      },
-      (error: any) => {
-        console.log(error);
+      // Seuls les rapports d'entrées et sorties requièrent des dates
+      if (value === 'rapport_entree' || value === 'rapport_sortie') {
+        dateDebut?.setValidators([Validators.required]);
+        dateFin?.setValidators([Validators.required]);
+      } else {
+        dateDebut?.clearValidators();
+        dateFin?.clearValidators();
+        dateDebut?.setValue('');
+        dateFin?.setValue('');
       }
-    );
+      dateDebut?.updateValueAndValidity();
+      dateFin?.updateValueAndValidity();
+    });
   }
 
-  compareEmployeObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-
-  telechargerOrdreVirement() {
-    alert(this.urlOrdrevirement);
-    window.open(this.urlOrdrevirement, '_blank');
-  }
-
-  onClickSubmitRapportImmo() {
-    // alert(JSON.stringify(this.rapportImmoForm.value));
-
+  onClickSubmitRapportStock() {
+    if (this.rapportStockForm.invalid) {
+      alert('Veuillez remplir les champs requis (Type et Dates si nécessaire)');
+      return;
+    }
+  
     this.showloader = true;
-    if (this.rapportImmoForm.valid) {
-      $('#spinnerr').removeClass('d-none');
-      this.immoService.immoRapport(this.rapportImmoForm.value)
-        .subscribe(
-          (res: any) => {
-            // alert(JSON.stringify(res.data));
-            if (res.success == true) {
-              $('#spinnerr').addClass('d-none');
-              console.log(res.data.data);
-              this.ordreVierementData = res.data.data.ordre;
-              var url = res.data.url;
-              this.showloader = false;
-
-              // window.open(res.data, '_blank');
-              window.open(url , '_blank');
-              // location.reload();
-            } else {
-              $('#spinnerr').addClass('d-none');
-              this.showloader = false;
-              alert(res.message);
-            }
-          },
-          (error: any) => {
-            $('#spinnerr').addClass('d-none');
-            this.showloader = false;
-            alert("error serveur veuiillez contacter l'administrateur du site");
-          }
-        );
-    } else {
-      $('#spinnerr').addClass('d-none');
-      this.showloader = false;
-      alert('Veuillez bien remplire le formulaire');
+    this.lstMouvements = []; 
+  
+    const params = this.rapportStockForm.value;
+  
+    // --- 1. ETAT CONSOLIDE ---
+    if (params.type_rapport === 'rapport_consolide') {
+      this.stockService.getRapportEtatConsolideData().subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucune donnée consolidée trouvée");
+        },
+        error: (err) => this.handleError(err)
+      });
+    } 
+    // --- 2. ETAT DE STOCK SIMPLE ---
+    else if (params.type_rapport === 'rapport_etat') {
+      this.stockService.getRapportEtatStockData().subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucun article en stock trouvé");
+        },
+        error: (err) => this.handleError(err)
+      });
+    } 
+    // --- 3. RAPPORT DES SORTIES ---
+    else if (params.type_rapport === 'rapport_sortie') {
+      this.stockService.getRapportSortiesData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || []; 
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucune sortie trouvée pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 4. NOUVEAU : RAPPORT DES ACHATS PAR ARTICLE ---
+    else if (params.type_rapport === 'rapport_achat_article') {
+      // Note: Assurez-vous d'avoir créé cette méthode dans votre stockService
+      this.stockService.getRapportAchatsData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          // Ici, res.data contient les articles groupés avec leurs 'details'
+          this.lstMouvements = res.data || []; 
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucun achat trouvé pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 5. RAPPORT DES ENTREES (PAR DÉFAUT) ---
+    else {
+      this.stockService.getRapportEntreesData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || []; 
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucune donnée trouvée");
+        },
+        error: (err) => this.handleError(err)
+      });
     }
   }
 
-  formatDate(date: any) {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
+  // telechargerPdf() {
+  //   if (this.rapportStockForm.invalid) return;
+  //   if (this.lstMouvements.length === 0) {
+  //     alert("Veuillez d'abord afficher les données avant de télécharger le PDF");
+  //     return;
+  //   }
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+  //   this.showloader = true;
+  //   $('#spinnerr').removeClass('d-none');
 
-    return [year, month, day].join('-');
-  }
+  //   const params = this.rapportStockForm.value;
+    
+  //   let exportObservable;
+    
+  //   // Sélection de l'observable selon le type de rapport
+  //   if (params.type_rapport === 'rapport_consolide') {
+  //       exportObservable = this.stockService.exportPdfEtatConsolide();
+  //   } else if (params.type_rapport === 'rapport_etat') {
+  //       exportObservable = this.stockService.exportPdfEtatStock();
+  //   } else if (params.type_rapport === 'rapport_sortie') {
+  //       exportObservable = this.stockService.exportPdfSorties(params);
+  //   } else {
+  //       exportObservable = this.stockService.exportPdfEntrees(params);
+  //   }
 
-  strToNumber(v: any) {
-    return Number(v);
-  }
+  //   exportObservable.subscribe({
+  //       next: (res: any) => {
+  //           $('#spinnerr').addClass('d-none');
+  //           this.showloader = false;
 
-  calculateTotalAutrePrime(listPrime: any) {
-    let mAllprime = 0;
-    listPrime.map((p: any) => {
-      mAllprime = mAllprime + p.montant;
+  //           const url = res.success ? (res.url || res.data?.url) : null;
+            
+  //           if (url) {
+  //               const link = document.createElement('a');
+  //               link.href = url;
+  //               link.target = '_blank';
+  //               link.download = url.split('/').pop();
+  //               document.body.appendChild(link);
+  //               link.click();
+  //               document.body.removeChild(link);
+  //           } else {
+  //               alert("Erreur: URL du PDF introuvable.");
+  //           }
+  //       },
+  //       error: (err: any) => {
+  //           $('#spinnerr').addClass('d-none');
+  //           this.showloader = false;
+  //           alert("Erreur lors de la génération du PDF.");
+  //       }
+  //   });
+  // }
+//  telechargerPdf() {
+//     if (this.rapportStockForm.invalid) return;
+//     if (this.lstMouvements.length === 0) {
+//       alert("Veuillez d'abord afficher les données avant de télécharger le PDF");
+//       return;
+//     }
+
+//     this.showloader = true;
+//     $('#spinnerr').removeClass('d-none');
+
+//     const params = this.rapportStockForm.value;
+//     let exportObservable: Observable<any>;
+    
+//     // Sélection de l'observable
+//     if (params.type_rapport === 'rapport_achat_article') {
+//       exportObservable = this.stockService.exportPdfAchatsParArticle(params);
+//   } else if (params.type_rapport === 'rapport_consolide') {
+//       exportObservable = this.stockService.exportPdfEtatConsolide(); 
+//   } else if (params.type_rapport === 'rapport_etat') {
+//       exportObservable = this.stockService.exportPdfEtatStock();
+//   } else if (params.type_rapport === 'rapport_sortie') {
+//       exportObservable = this.stockService.exportPdfSorties(params);
+//   } else {
+//       exportObservable = this.stockService.exportPdfEntrees(params);
+//   }
+
+//     exportObservable.subscribe({
+//         next: (res: any) => {
+//             $('#spinnerr').addClass('d-none');
+//             this.showloader = false;
+
+//             // CAS 1 : C'est un BLOB (Nouveau rapport consolidé)
+//             if (res instanceof Blob) {
+//                 const url = window.URL.createObjectURL(res);
+//                 const link = document.createElement('a');
+//                 link.href = url;
+//                 link.download = `Rapport_Consolide_${new Date().getTime()}.pdf`;
+//                 document.body.appendChild(link);
+//                 link.click();
+//                 document.body.removeChild(link);
+//                 window.URL.revokeObjectURL(url);
+//             } 
+//             // CAS 2 : C'est du JSON avec une URL (Tes anciens rapports)
+//             else {
+//                 const url = res.success ? (res.url || res.data?.url) : null;
+//                 if (url) {
+//                     const link = document.createElement('a');
+//                     link.href = url;
+//                     link.target = '_blank';
+//                     link.download = url.split('/').pop();
+//                     document.body.appendChild(link);
+//                     link.click();
+//                     document.body.removeChild(link);
+//                 } else {
+//                     alert("Erreur: URL du PDF introuvable.");
+//                 }
+//             }
+//         },
+//         error: (err: any) => {
+//             $('#spinnerr').addClass('d-none');
+//             this.showloader = false;
+//             console.error(err);
+//             alert("Erreur lors de la génération du PDF.");
+//         }
+//     });
+// }
+
+  telechargerPdf() {
+    if (this.rapportStockForm.invalid) return;
+    if (this.lstMouvements.length === 0) {
+      alert("Veuillez d'abord afficher les données avant de télécharger le PDF");
+      return;
+    }
+
+    this.showloader = true;
+    $('#spinnerr').removeClass('d-none');
+
+    const params = this.rapportStockForm.value;
+    let exportObservable: Observable<any>;
+    
+    // Sélection de l'observable selon le type de rapport
+    if (params.type_rapport === 'rapport_achat_article') {
+        exportObservable = this.stockService.exportPdfAchatsParArticle(params);
+    } else if (params.type_rapport === 'rapport_consolide') {
+        exportObservable = this.stockService.exportPdfEtatConsolide(); 
+    } else if (params.type_rapport === 'rapport_etat') {
+        exportObservable = this.stockService.exportPdfEtatStock();
+    } else if (params.type_rapport === 'rapport_sortie') {
+        exportObservable = this.stockService.exportPdfSorties(params);
+    } else {
+        exportObservable = this.stockService.exportPdfEntrees(params);
+    }
+
+    exportObservable.subscribe({
+        next: (res: any) => {
+            $('#spinnerr').addClass('d-none');
+            this.showloader = false;
+
+            // Détection du type de réponse (Blob pour les nouveaux rapports, URL JSON pour les anciens)
+            if (res instanceof Blob) {
+                const url = window.URL.createObjectURL(res);
+                const link = document.createElement('a');
+                link.href = url;
+                // Nom de fichier dynamique selon le type
+                const fileName = params.type_rapport === 'rapport_achat_article' ? 'Achats_Par_Article' : 'Rapport_Stock';
+                link.download = `${fileName}_${new Date().getTime()}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            } 
+            else {
+                const url = res.success ? (res.url || res.data?.url) : null;
+                if (url) {
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.target = '_blank';
+                    link.download = url.split('/').pop();
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert("Erreur: URL du PDF introuvable.");
+                }
+            }
+        },
+        error: (err: any) => {
+            $('#spinnerr').addClass('d-none');
+            this.showloader = false;
+            console.error(err);
+            alert("Erreur lors de la génération du PDF.");
+        }
     });
+  }
+ 
 
-    return mAllprime;
+  private handleError(err: any) {
+    this.showloader = false;
+    console.error(err);
+    alert("Erreur de récupération : " + (err.error?.message || "Serveur injoignable"));
   }
 
-  calculateTotalRetenue(listRe: any) {
-    let mAllprime = 0;
-    listRe.map((p: any) => {
-      mAllprime = mAllprime + p.montant;
+  getEmploye() {
+    this.employeService.getAllEmploye().subscribe({
+      next: (res: any) => this.lstEmployer = res.data,
+      error: (err) => console.error(err)
     });
-
-    return mAllprime;
   }
 
-  titreAction: any;
-  getValideFicheForm(id: any, action: any) {
-    // $('#valide_fiche').modal('show');
-
-    this.valideFichepaieForm.patchValue({
-      id: id,
-      action: action,
+  getBureau() {
+    this.bureauService.getAll().subscribe({
+      next: (res: any) => this.lstBureau = res.data?.data || res.data,
+      error: (err) => console.error(err)
     });
-    this.titreAction = action;
   }
 }

@@ -11,6 +11,7 @@ declare var $: any;
 import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
 import { articleService } from "../../core/services/article/article.service";
 import { fournisseurService } from "../../core/services/fournisseur/fournisseur.service";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-entree-stock',
@@ -23,10 +24,16 @@ export class EntreeStockComponent implements OnInit {
   public lstEntreeStock: Array<any> = [];
   public lstFournisseur: any[] = [];
   public lstArticle: any[] = [];
+
+  // Variables pour le regroupement
+  public lstDetailsArrivage: any[] = [];
+  public refSelectionnee: string = '';
   
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
 
+  public selectedFile: File | null = null;
+  public url = environment.base_url_backend || environment.backend; 
   // pagination variables
   public pageSize = 10;
   public totalData = 0;
@@ -81,12 +88,21 @@ export class EntreeStockComponent implements OnInit {
       quantite: ["", [Validators.required, Validators.min(1)]],
       prix_unitaire: ["", [Validators.required, Validators.min(0)]],
       taux_tva: [0, [Validators.min(0)]],
-      description: [""]
+      description: [""],
+      piece_jointe: [null]
     });
 
     this.deleteEntreeStockForm = this.formBuilder.group({
       id: [0, [Validators.required]],
     });
+  }
+
+  // --- GESTION DU FICHIER ---
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
   }
 
   // --- LOGIQUE DE PAGINATION ---
@@ -130,13 +146,34 @@ export class EntreeStockComponent implements OnInit {
     }
   }
 
+  // --- GESTION DU REGROUPEMENT ET DÉTAILS ---
+
+  /**
+   * Récupère les détails d'un arrivage spécifique par sa référence
+   * Appelée lors du clic sur "Voir détails"
+   */
+  voirDetailsArrivage(reference: string) {
+    this.refSelectionnee = reference;
+    this.lstDetailsArrivage = [];
+    
+    // On utilise le service pour récupérer les lignes spécifiques à cette référence
+    // Note: Assurez-vous que cette méthode getDétailsParRéférence existe dans votre service
+    this.entreeSortieStockService.getDétailsParRéférence(reference).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.lstDetailsArrivage = res.data;
+        }
+      },
+      error: (err) => console.error("Erreur détails arrivage", err)
+    });
+  }
   // --- APPELS SERVICES ---
 
   private getTableData(): void {
     this.lstEntreeStock = [];
     this.serialNumberArray = [];
     
-    // Correction : Utilisation de getAll() conformément au service
+    // Le backend renvoie maintenant des données groupées via indexEntree()
     this.entreeSortieStockService.getAll().subscribe((res: any) => {
       const data = res.data?.data || res.data || [];
       this.totalData = res.data?.total || data.length;
@@ -174,32 +211,40 @@ export class EntreeStockComponent implements OnInit {
 
   onClickSubmitEditEntree(): void {
     if (this.editEntreeStockForm.valid) {
-      $('#spinner').removeClass('d-none'); // Affiche le spinner de chargement
+      $('#spinner').removeClass('d-none');
   
-      this.entreeSortieStockService.edit(this.editEntreeStockForm.value).subscribe({
+      const formData = new FormData();
+      const formValues = this.editEntreeStockForm.value;
+
+      // On ajoute l'ID dans le FormData
+      formData.append('id', formValues.id);
+
+      Object.keys(formValues).forEach(key => {
+        if (formValues[key] !== null && key !== 'piece_jointe' && key !== 'id') {
+          formData.append(key, formValues[key]);
+        }
+      });
+
+      if (this.selectedFile) {
+        formData.append('piece_jointe', this.selectedFile);
+      }
+
+      // Simulation de PUT pour Laravel via POST
+      formData.append('_method', 'PUT');
+
+      // On n'envoie qu'UN SEUL argument (formData) pour respecter la signature du service
+      this.entreeSortieStockService.edit(formData).subscribe({
         next: (res: any) => {
-          // 1. Rafraîchir les données de la liste principale
-          this.getTableData();
-  
-          // 2. Cacher le spinner
           $('#spinner').addClass('d-none');
-  
-          // 3. Fermeture automatique du modal de modification
-          const modalElement = document.getElementById('edit_department');
-          const closeBtn = modalElement?.querySelector('.btn-close') as HTMLElement;
-          
-          if (closeBtn) {
-            closeBtn.click(); // Simule le clic sur la croix de fermeture
-          } else {
-            $('#edit_department').modal('hide'); // Repli sur jQuery si nécessaire
-          }
-  
+          this.closeModal('edit_department');
+          this.getTableData();
+          this.selectedFile = null;
           alert("Mouvement mis à jour avec succès !");
         },
         error: (err) => {
           $('#spinner').addClass('d-none');
           console.error(err);
-          alert(err.error?.message || "Erreur lors de la modification");
+          alert("Erreur lors de la modification. Vérifiez que votre service accepte le FormData.");
         }
       });
     }
@@ -207,10 +252,18 @@ export class EntreeStockComponent implements OnInit {
 
   onClickSubmitDelete(): void {
     if (this.deleteEntreeStockForm.valid) {
-      // Correction : Utilisation de delete() conformément au service
-      this.entreeSortieStockService.delete(this.deleteEntreeStockForm.value).subscribe({
-        next: () => location.reload(),
-        error: (err) => alert("Erreur lors de la suppression")
+      // CORRECTION 404 : Envoyer l'ID numérique uniquement
+      const idToDelete = this.deleteEntreeStockForm.value.id;
+      
+      this.entreeSortieStockService.delete(idToDelete).subscribe({
+        next: () => {
+           this.closeModal('delete_department');
+           this.getTableData();
+        },
+        error: (err) => {
+          console.error(err);
+          alert("Erreur lors de la suppression (Code 404 - ID introuvable)");
+        }
       });
     }
   }
@@ -305,46 +358,90 @@ export class EntreeStockComponent implements OnInit {
 
   validerToutLeStock() {
     if (this.articlesAAjouter.length === 0) {
-      alert("La liste est vide !");
+      alert("La liste des articles est vide !");
       return;
     }
-  
-    const estValide = this.articlesAAjouter.every(item => item.fournisseur_id && item.reference);
-  
-    if (!estValide) {
-      alert("Certaines lignes n'ont pas de fournisseur ou de référence. Veuillez recommencer l'ajout.");
+
+    const formValues = this.addEntreeStockForm.value;
+    if (!formValues.fournisseur_id || !formValues.reference) {
+      alert("Veuillez remplir le fournisseur et la référence.");
       return;
     }
-  
-    this.entreeSortieStockService.saveEntree(this.articlesAAjouter).subscribe({
+
+    $('#spinnerr').removeClass('d-none');
+
+    const formData = new FormData();
+    formData.append('reference', formValues.reference);
+    formData.append('date_mouvement', formValues.date_mouvement);
+    formData.append('fournisseur_id', formValues.fournisseur_id);
+    
+    if (this.selectedFile) {
+      formData.append('piece_jointe', this.selectedFile, this.selectedFile.name);
+    }
+
+    formData.append('articles', JSON.stringify(this.articlesAAjouter));
+
+    this.entreeSortieStockService.saveEntree(formData).subscribe({
       next: (res: any) => {
+        $('#spinnerr').addClass('d-none');
+        
+        // On rafraîchit les données d'abord
         this.getTableData();
-        this.articlesAAjouter = [];
-  
-        this.addEntreeStockForm.reset({
-          date_mouvement: new Date().toISOString().split('T')[0],
-          taux_tva: 0,
-          description: "Entrée de stock"
-        });
-  
-        // --- SOLUTION DE FERMETURE ROBUSTE ---
-        // On cherche le bouton de fermeture à l'intérieur du modal d'ajout
-        const modalElement = document.getElementById('add_department');
-        const closeBtn = modalElement?.querySelector('.btn-close') as HTMLElement;
         
-        if (closeBtn) {
-          closeBtn.click(); // Simule le clic sur la croix
-        } else {
-          // Repli sur jQuery si le bouton n'est pas trouvé
-          $('#add_department').modal('hide');
-        }
+        // On vide les champs (incluant le fichier)
+        this.resetAddForm();
         
-        alert("Stock enregistré avec succès !");
+        // Fermeture automatique : on essaie les IDs courants de votre template
+        this.closeModal('add_department'); 
+        this.closeModal('add_entree'); // Au cas où l'ID est différent
+        
+        // Enfin l'alerte
+        setTimeout(() => {
+            alert("Stock enregistré avec succès !");
+        }, 100);
       },
       error: (err: any) => {
-        console.error(err);
-        alert("Erreur serveur : " + (err.error?.message || "Vérifiez vos données"));
+        $('#spinnerr').addClass('d-none');
+        alert("Erreur serveur : " + (err.error?.message || "Échec de l'envoi"));
       }
     });
+  }
+
+  private resetAddForm() {
+    this.articlesAAjouter = [];
+    this.selectedFile = null;
+    
+    this.addEntreeStockForm.reset({
+      date_mouvement: new Date().toISOString().split('T')[0],
+      taux_tva: 0,
+      description: "Entrée de stock"
+    });
+
+    // Reset physique de TOUS les inputs de type file
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach((input: any) => {
+      input.value = '';
+    });
+  }
+
+  private closeModal(id: string) {
+    // 1. Clic sur le bouton de fermeture natif pour laisser Bootstrap gérer le nettoyage
+    const modalElement = document.getElementById(id);
+    if (modalElement) {
+        const closeBtn = modalElement.querySelector('[data-bs-dismiss="modal"]') as HTMLElement;
+        if (closeBtn) {
+            closeBtn.click();
+        } else {
+            // Fallback jQuery si le bouton n'est pas trouvé
+            $(`#${id}`).modal('hide');
+        }
+    }
+
+    // 2. Nettoyage forcé de sécurité pour éviter le gel de l'écran (Backdrop persistant)
+    setTimeout(() => {
+      $('.modal-backdrop').remove();
+      $('body').removeClass('modal-open');
+      $('body').css({ 'overflow': 'auto', 'padding-right': '0' });
+    }, 300);
   }
 }
