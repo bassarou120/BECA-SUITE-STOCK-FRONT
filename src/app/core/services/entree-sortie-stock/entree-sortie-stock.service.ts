@@ -26,10 +26,13 @@ export class entreeSortieStockService {
   getAll(): Observable<any> {
     return this.http.get<any>(`${this.url}/mouvement_stock`);
   }
-  getAllStock(): Observable<any> {
-    return this.http.get<any>(`${this.url}/stock`);
-  }
+  // getAllStock(): Observable<any> {
+  //   return this.http.get<any>(`${this.url}/stock`);
+  // }
 
+  getAllStock(): Observable<any> {
+    return this.http.get(`${this.url}/get-etat-stock`); 
+  }
 
 
   edit(data:any): Observable<any> {
