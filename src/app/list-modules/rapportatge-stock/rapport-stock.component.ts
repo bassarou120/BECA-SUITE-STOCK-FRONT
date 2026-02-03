@@ -59,7 +59,7 @@ export class rapportStockComponent implements OnInit {
       const dateFin = this.rapportStockForm.get('date_fin');
 
       // Seuls les rapports d'entrées et sorties requièrent des dates
-      if (value === 'rapport_entree' || value === 'rapport_sortie') {
+      if (value === 'rapport_entree' || value === 'rapport_sortie' || value === 'rapport_achat_article' || value === 'rapport_consommation_moyenne') {
         dateDebut?.setValidators([Validators.required]);
         dateFin?.setValidators([Validators.required]);
       } else {
@@ -134,7 +134,19 @@ export class rapportStockComponent implements OnInit {
         error: (err) => this.handleError(err)
       });
     }
-    // --- 5. RAPPORT DES ENTREES (PAR DÉFAUT) ---
+    // --- 5. AJOUT : RAPPORT CONSOMMATIONS MOYENNES ---
+    else if (params.type_rapport === 'rapport_consommation_moyenne') {
+      this.stockService.getConsommationMoyenneData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstMouvements.length === 0) alert("Aucune consommation trouvée pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 6. RAPPORT DES ENTREES (PAR DÉFAUT) ---
     else {
       this.stockService.getRapportEntreesData(params).subscribe({
         next: (res: any) => {
@@ -282,7 +294,9 @@ export class rapportStockComponent implements OnInit {
     // Sélection de l'observable selon le type de rapport
     if (params.type_rapport === 'rapport_achat_article') {
         exportObservable = this.stockService.exportPdfAchatsParArticle(params);
-    } else if (params.type_rapport === 'rapport_consolide') {
+    } else if (params.type_rapport === 'rapport_consommation_moyenne') {
+      exportObservable = this.stockService.exportPdfConsommationMoyenne(params);
+    }else if (params.type_rapport === 'rapport_consolide') {
         exportObservable = this.stockService.exportPdfEtatConsolide(); 
     } else if (params.type_rapport === 'rapport_etat') {
         exportObservable = this.stockService.exportPdfEtatStock();
@@ -303,7 +317,10 @@ export class rapportStockComponent implements OnInit {
                 const link = document.createElement('a');
                 link.href = url;
                 // Nom de fichier dynamique selon le type
-                const fileName = params.type_rapport === 'rapport_achat_article' ? 'Achats_Par_Article' : 'Rapport_Stock';
+                let fileName = 'Rapport_Stock';
+                if(params.type_rapport === 'rapport_achat_article') fileName = 'Achats_Par_Article';
+                // AJOUT : Nom du fichier pour le nouveau rapport
+                if(params.type_rapport === 'rapport_consommation_moyenne') fileName = 'Consommations_Moyennes';
                 link.download = `${fileName}_${new Date().getTime()}.pdf`;
                 document.body.appendChild(link);
                 link.click();

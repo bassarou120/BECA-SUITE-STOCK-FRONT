@@ -178,4 +178,29 @@ export class entreeSortieStockService {
       responseType: 'blob'
     });
   }
+
+  /**
+   * Récupère les données de consommation moyenne (Passage en GET suite à erreur 405)
+   */
+  getConsommationMoyenneData(filters: any): Observable<any> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+    
+    return this.http.get<any>(`${this.url}/rapports/consommations-moyennes-data`, { params });
+  }
+
+  /**
+   * Exportation du PDF de consommation moyenne (Passage en GET si le backend suit la même logique)
+   */
+  exportPdfConsommationMoyenne(filters: any): Observable<Blob> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+
+    return this.http.get(`${this.url}/rapports/export-pdf-consommation`, { 
+      params,
+      responseType: 'blob' 
+    });
+  }
 }
