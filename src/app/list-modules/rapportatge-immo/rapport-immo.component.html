@@ -1,31 +1,25 @@
-<!-- Page Wrapper -->
-
 <div class="page-wrapper">
-  <!-- Page Content -->
   <div class="content container-fluid">
-    <!-- Page Header -->
+    <!-- Header -->
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
-          <h3 class="page-title">Gestion des Rapports d'immobilisations</h3>
+          <h3 class="page-title">Gestion des Rapports des Immobilisations</h3>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a>Tableau de bord</a>
-            </li>
-            <li class="breadcrumb-item active">Rapports immo</li>
+            <li class="breadcrumb-item"><a>Tableau de bord</a></li>
+            <li class="breadcrumb-item active">Rapports Immobilisations</li>
           </ul>
         </div>
-        <div class="col-auto float-end ms-auto"></div>
       </div>
     </div>
-    <!-- /Page Header -->
 
     <div class="container">
-      <div class="card profile-box flex-fill">
+      <div class="card shadow-sm">
         <div class="card-body">
-          <h3 class="card-title">Générer un rapport</h3>
+          <h3 class="card-title">Paramètres du rapport</h3>
 
-          <div id="loader-wrapper_bassarou" *ngIf="showloader == true">
+          <!-- Loader -->
+          <div id="loader-wrapper_bassarou" *ngIf="showloader">
             <div id="loader">
               <div class="loader-ellips">
                 <span class="loader-ellips__dot"></span>
@@ -36,148 +30,495 @@
             </div>
           </div>
 
-          <form
-            [formGroup]="rapportImmoForm"
-            (ngSubmit)="onClickSubmitRapportImmo()"
-          >
+          <form [formGroup]="rapportImmoForm">
             <div class="row">
               <div class="col-md-4">
                 <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Type de rapport </label>
-
+                  <label class="col-form-label">Type de rapport</label>
                   <mat-select
-                    [(ngModel)]="selectedType"
-                    class="user-assets select form-control"
-                    placeholder="Selectionner le type de rapport"
-
+                    class="select form-control"
                     formControlName="type_rapport"
+                    placeholder="Sélectionner un rapport"
                   >
-                    <mat-option  value="fiche_transfert_immo"  >
-                      FICHE DE TRANSFERT D’IMMOBILISATION
-
-                    </mat-option>
-
-                    <mat-option  value="rapport_immo"  >
-                    RAPPORT D’IMMOBILISATION
-                    </mat-option>
-
-                    <mat-option  value="fiche_inventaire_immo"  >
-                      FICHE DE PRISE D’INVENTAIRE
-                    </mat-option>
-
-                    <mat-option  value="fiche_mise_dispo"  >
-                      FICHE DE MISE A DISPO
-                    </mat-option>
-
-                    <mat-option  value="fiche_reparation_immo"  >
-                      FICHE POINT DES REPARATIONS
-                    </mat-option>
-
-                    <mat-option  value="qrcode_immo"  >
-                      GENERER LE CODE QR DES IMMOBILISATION
-                    </mat-option>
-
-
+                    <mat-option value="rapport_general"
+                      >RAPPORT GÉNÉRAL DES IMMOBILISATIONS</mat-option
+                    >
+                    <mat-option value="rapport_transfert"
+                      >RAPPORT DES TRANSFERTS</mat-option
+                    >
+                    <mat-option value="rapport_intervention"
+                      >RAPPORT DES INTERVENTIONS</mat-option
+                    >
+                    <mat-option value="rapport_inventaire"
+                      >FICHE D'INVENTAIRE</mat-option
+                    >
+                    <mat-option value="rapport_mise_dispo"
+                      >FICHE DE MISE À DISPOSITION</mat-option
+                    >
+                    <mat-option value="rapport_qrcode"
+                      >QR CODE DES IMMOBILISATIONS</mat-option
+                    >
                   </mat-select>
                 </div>
               </div>
 
+              <!-- Dates pour transferts, interventions et mise à disposition -->
+              <ng-container
+                *ngIf="
+                  rapportImmoForm.get('type_rapport')?.value ===
+                    'rapport_transfert' ||
+                  rapportImmoForm.get('type_rapport')?.value ===
+                    'rapport_intervention' ||
+                  rapportImmoForm.get('type_rapport')?.value ===
+                    'rapport_mise_dispo'
+                "
+              >
+                <div class="col-md-4">
+                  <div class="input-block mb-3">
+                    <label class="col-form-label">Date de début</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="date_debut"
+                    />
+                  </div>
+                </div>
 
-              <div class="col-md-4" *ngIf="selectedType=='fiche_mise_dispo'">
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Localisation</label>
+                <div class="col-md-4">
+                  <div class="input-block mb-3">
+                    <label class="col-form-label">Date de fin</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="date_fin"
+                    />
+                  </div>
+                </div>
+              </ng-container>
 
-                  <mat-select  class="select mat-cust-select form-control"
-
-                               formControlName="bureau_id" placeholder="Selectionner le bureau">
-                    <mat-option *ngFor="let item of lstBureau" [disabled]="false" [value]="item.id"
-                    >{{ item.libelle }}   </mat-option>
-                  </mat-select>
+              <!-- Messages d'info -->
+              <div
+                class="col-md-8"
+                *ngIf="
+                  rapportImmoForm.get('type_rapport')?.value ===
+                    'rapport_general' ||
+                  rapportImmoForm.get('type_rapport')?.value ===
+                    'rapport_inventaire' ||
+                  rapportImmoForm.get('type_rapport')?.value ===
+                    'rapport_qrcode'
+                "
+              >
+                <div class="alert alert-light border mt-2">
+                  <i class="fa fa-info-circle text-info"></i>
+                  <span
+                    *ngIf="
+                      rapportImmoForm.get('type_rapport')?.value ===
+                      'rapport_general'
+                    "
+                    >Ce rapport affiche la liste complète des immobilisations
+                    avec leurs valeurs.</span
+                  >
+                  <span
+                    *ngIf="
+                      rapportImmoForm.get('type_rapport')?.value ===
+                      'rapport_inventaire'
+                    "
+                    >Fiche d'inventaire physique des immobilisations.</span
+                  >
+                  <span
+                    *ngIf="
+                      rapportImmoForm.get('type_rapport')?.value ===
+                      'rapport_qrcode'
+                    "
+                    >Génération des <strong>QR Codes</strong> pour
+                    identification rapide des immobilisations.</span
+                  >
                 </div>
               </div>
-              <div class="col-md-4" *ngIf="selectedType=='fiche_mise_dispo'">
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Utilisateur</label>
+            </div>
 
-                  <mat-select  class="select mat-cust-select form-control"
+            <div class="row mt-3 text-center">
+              <div class="col-md-12">
+                <button
+                  class="btn btn-info me-2"
+                  type="button"
+                  (click)="onClickSubmitRapportImmo()"
+                  *ngIf="
+                    rapportImmoForm.get('type_rapport')?.value !==
+                    'rapport_qrcode'
+                  "
+                >
+                  <i class="fa fa-list"></i> Afficher la liste
+                </button>
 
-                               formControlName="employe_id" placeholder="Selectionner l'employé">
-                    <mat-option *ngFor="let item of lstEmployer" [disabled]="false" [value]="item.id"
-                    >{{ item.nom }} {{ item.prenom }}    </mat-option>
-                  </mat-select>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Date de debut </label>
-
-                  <input type="date"  class="user-assets select form-control"
-                         placeholder=""
-
-                         formControlName="date_debut">
-
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="input-block mb-3">
-                  <label class="col-form-label" for=""> Date de fin </label>
-
-                  <input type="date"  class="user-assets select form-control"
-                         placeholder=""
-
-                         formControlName="date_fin">
-
-                </div>
-              </div>
-
-
-
-              <div class="submit-section">
-                <button class="btn btn-primary submit-btn">Valider <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span></button>
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  (click)="telechargerPdf()"
+                  *ngIf="
+                    (lstDonnees.length > 0 &&
+                      rapportImmoForm.get('type_rapport')?.value !==
+                        'rapport_qrcode') ||
+                    rapportImmoForm.get('type_rapport')?.value ===
+                      'rapport_qrcode'
+                  "
+                >
+                  <i class="fa fa-file-pdf-o"></i> Télécharger le PDF
+                  <span
+                    class="fa fa-spinner fa-spin d-none"
+                    id="spinnerr"
+                  ></span>
+                </button>
               </div>
             </div>
           </form>
 
-          <br />
-
+          <!-- TABLEAU DYNAMIQUE -->
           <div
-            *ngIf="ordreVierementData.length != 0"
-            class="table-responsive table-newdatatable"
+            class="table-responsive mt-4"
+            *ngIf="lstDonnees && lstDonnees.length > 0"
           >
-            <div class="row">
-              <a
-                (click)="telechargerOrdreVirement()"
-                class="btn btn-success w-2"
-              >
-                Télécharger
-              </a>
-            </div>
-
-            <table class="table table-new custom-table mb-0 datatable">
+            <!-- CAS 1 : RAPPORT GÉNÉRAL DES IMMOBILISATIONS -->
+            <table
+              class="table table-striped custom-table mb-0"
+              *ngIf="
+                rapportImmoForm.get('type_rapport')?.value === 'rapport_general'
+              "
+            >
               <thead>
                 <tr>
-                  <th class="tg-i68j">Nº</th>
-                  <th class="tg-nxfp">Nom et prénoms</th>
-                  <th class="tg-nxfp">Nº compte</th>
-                  <th class="tg-gljr">Montant</th>
+                  <th>Code</th>
+                  <th>Désignation</th>
+                  <th>Localisation</th>
+                  <th>Site</th>
+                  <th class="text-end">Valeur Origine</th>
+                  <th class="text-center">État</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let c of ordreVierementData; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ c.employe }}</td>
-                  <td>{{ c.rib }}</td>
-                  <td>{{ c.salaire_net | number }}</td>
+                <tr *ngFor="let immo of lstDonnees">
+                  <td>
+                    <span class="badge bg-dark">{{ immo.code }}</span>
+                  </td>
+                  <td class="fw-bold">{{ immo.designation }}</td>
+                  <td>{{ immo.localisation?.nom_localisation || "N/A" }}</td>
+                  <td>
+                    <span class="badge bg-info">{{
+                      immo.localisation?.site?.nom_site || "N/A"
+                    }}</span>
+                  </td>
+                  <td class="text-end fw-bold">
+                    {{ immo.valeur_origine | number }} FCFA
+                  </td>
+                  <td class="text-center">
+                    <!-- <span class="badge"
+                          [ngClass]="{
+                            'bg-success': immo.etat === 'Bon',
+                            'bg-warning': immo.etat === 'Moyen',
+                            'bg-danger': immo.etat === 'Mauvais'
+                          }"> -->
+                    {{ immo.etat || "N/A" }}
+                    <!-- </span> -->
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="stats" class="bg-light fw-bold">
+                <tr>
+                  <td colspan="4" class="text-end">
+                    TOTAL ({{ stats.total_immos }} immobilisations)
+                  </td>
+                  <td class="text-end text-success">
+                    {{ stats.total_valeur | number }} FCFA
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <!-- CAS 2 : RAPPORT DES TRANSFERTS -->
+            <div
+              style="overflow-x: auto; max-width: 100%"
+              *ngIf="
+                rapportImmoForm.get('type_rapport')?.value ===
+                'rapport_transfert'
+              "
+            >
+              <table class="table table-striped custom-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Immobilisation</th>
+                    <th>Ancien utilisateur</th>
+                    <th>Nouveau utilisateur</th>
+                    <th>Ancienne localisation</th>
+                    <th>Nouvelle localisation</th>
+                    <th>Motif</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let transfert of lstDonnees">
+                    <td>{{ transfert.date_transfert | date: "dd/MM/yyyy" }}</td>
+                    <td class="fw-bold">
+                      {{ transfert.immobilisation?.designation }}
+                    </td>
+                    <td>
+                      {{ transfert.ancien_utilisateur?.nom }}
+                      {{ transfert.ancien_utilisateur?.prenom }}
+                    </td>
+                    <td class="text-primary fw-bold">
+                      {{ transfert.nouveau_utilisateur?.nom }}
+                      {{ transfert.nouveau_utilisateur?.prenom }}
+                    </td>
+                    <td>
+                      {{
+                        transfert.ancienne_localisation?.nom_localisation ||
+                          "N/A"
+                      }}
+                    </td>
+                    <td class="text-success">
+                      {{
+                        transfert.nouvelle_localisation?.nom_localisation ||
+                          "N/A"
+                      }}
+                    </td>
+                    <td>
+                      <small class="text-muted">{{
+                        transfert.motif_transfert
+                      }}</small>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- CAS 3 : RAPPORT DES INTERVENTIONS -->
+            <table
+              class="table table-striped custom-table mb-0"
+              *ngIf="
+                rapportImmoForm.get('type_rapport')?.value ===
+                'rapport_intervention'
+              "
+            >
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Immobilisations concernées</th>
+                  <th>Description</th>
+                  <th class="text-end">Coût total</th>
+                  <th class="text-center">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let intervention of lstDonnees">
+                  <td>
+                    {{ intervention.date_intervention | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td>
+                    <span class="badge bg-inverse-primary">{{
+                      intervention.type_intervention
+                    }}</span>
+                  </td>
+                  <td>
+                    <span
+                      *ngFor="let immo of intervention.immobilisations"
+                      class="badge bg-secondary me-1"
+                    >
+                      {{ immo.designation }}
+                    </span>
+                  </td>
+                  <td>
+                    <small>{{ intervention.description_intervention }}</small>
+                  </td>
+                  <td class="text-end fw-bold">
+                    {{ intervention.cout_total | number }} FCFA
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="badge"
+                      [ngClass]="{
+                        'bg-success': intervention.statut === 'Terminée',
+                        'bg-warning': intervention.statut === 'En cours',
+                        'bg-secondary': intervention.statut === 'Planifiée',
+                      }"
+                    >
+                      {{ intervention.statut }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="stats" class="bg-light fw-bold">
+                <tr>
+                  <td colspan="4" class="text-end">
+                    TOTAL ({{ stats.total_interventions }} interventions)
+                  </td>
+                  <td class="text-end text-danger">
+                    {{ stats.cout_total | number }} FCFA
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <!-- CAS 4 : FICHE D'INVENTAIRE -->
+            <table
+              class="table table-bordered custom-table mb-0"
+              *ngIf="
+                rapportImmoForm.get('type_rapport')?.value ===
+                'rapport_inventaire'
+              "
+            >
+              <thead class="bg-light">
+                <tr>
+                  <th style="width: 5%">N°</th>
+                  <th>Code</th>
+                  <th>Désignation</th>
+                  <th>Date d’entrée</th>
+                  <th>Valeur d’origine</th>
+                  <th>Durée amort.</th>
+                  <th>Date fin amort.</th>
+                  <th>Localisation</th>
+                  <th>Site</th>
+                  <th class="text-center" style="width: 15%">État physique</th>
+                  <th style="width: 20%">Observations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let immo of lstDonnees; let i = index">
+                  <td class="text-center">{{ i + 1 }}</td>
+                  <td>{{ immo.code }}</td>
+                  <td class="fw-bold">{{ immo.designation }}</td>
+                  <td class="text-center">
+                    {{ immo.date_entree | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td class="text-end">
+                    {{ immo.valeur_origine | number }} FCFA
+                  </td>
+                  <td class="text-center">
+                    {{ immo.duree_amortissement ?? "-" }}
+                  </td>
+                  <td class="text-center">
+                    {{ immo.date_fin_amortissement | date: "dd/MM/yyyy" }}
+                  </td>
+                  <td>{{ immo.localisation?.nom_localisation || "N/A" }}</td>
+                  <td>{{ immo.localisation?.site?.nom_site || "N/A" }}</td>
+                  <td>{{ immo?.etat || "N/A" }}</td>
+                  <td>{{ immo.bien_amortissable ?? "-" }}</td>
                 </tr>
               </tbody>
             </table>
-            <br /><br /><br />
+
+            <!-- CAS 5 : MISE À DISPOSITION -->
+            <table
+              class="table table-striped custom-table mb-0"
+              *ngIf="
+                rapportImmoForm.get('type_rapport')?.value ===
+                'rapport_mise_dispo'
+              "
+            >
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Immobilisation</th>
+                  <th>Utilisateur</th>
+                  <th>Localisation</th>
+                  <th>Direction</th>
+                  <th class="text-end">Valeur</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let mise of lstDonnees">
+                  <td>{{ mise.date_transfert | date: "dd/MM/yyyy" }}</td>
+                  <td class="fw-bold">
+                    {{ mise.immobilisation?.designation }}
+                  </td>
+                  <td>
+                    <i class="fa fa-user text-primary"></i>
+                    {{ mise.nouveau_utilisateur?.nom }}
+                    {{ mise.nouveau_utilisateur?.prenom }}
+                  </td>
+                  <td>
+                    {{ mise.nouvelle_localisation?.nom_localisation }}<br />
+                    <small class="text-muted">{{
+                      mise.nouvelle_localisation?.site?.nom_site
+                    }}</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-dark">{{
+                      mise.nouvelle_direction?.code
+                    }}</span>
+                    {{ mise.nouvelle_direction?.intitule }}
+                  </td>
+                  <td class="text-end fw-bold">
+                    {{ mise.immobilisation?.valeur_origine | number }} FCFA
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Statistiques générales -->
+          <div class="row mt-4" *ngIf="stats && lstDonnees.length > 0">
+            <div class="col-md-12">
+              <div class="card bg-light">
+                <div class="card-body py-2">
+                  <div class="row text-center">
+                    <div class="col-md-4" *ngIf="stats.total_immos">
+                      <small class="text-muted text-uppercase"
+                        >Total Immobilisations</small
+                      >
+                      <h4 class="mb-0">{{ stats.total_immos | number }}</h4>
+                    </div>
+                    <div class="col-md-4" *ngIf="stats.total_transferts">
+                      <small class="text-muted text-uppercase"
+                        >Total Transferts</small
+                      >
+                      <h4 class="mb-0">
+                        {{ stats.total_transferts | number }}
+                      </h4>
+                    </div>
+                    <div class="col-md-4" *ngIf="stats.total_interventions">
+                      <small class="text-muted text-uppercase"
+                        >Total Interventions</small
+                      >
+                      <h4 class="mb-0">
+                        {{ stats.total_interventions | number }}
+                      </h4>
+                    </div>
+                    <div class="col-md-4" *ngIf="stats.total_mises">
+                      <small class="text-muted text-uppercase"
+                        >Total Mises à Disposition</small
+                      >
+                      <h4 class="mb-0">{{ stats.total_mises | number }}</h4>
+                    </div>
+                    <div class="col-md-4" *ngIf="stats.periode">
+                      <small class="text-muted text-uppercase">Période</small>
+                      <h6 class="mb-0">{{ stats.periode }}</h6>
+                    </div>
+                    <div class="col-md-4" *ngIf="stats.genere_le">
+                      <small class="text-muted text-uppercase">Généré le</small>
+                      <h6 class="mb-0">{{ stats.genere_le }}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="alert alert-info mt-4 text-center"
+            *ngIf="
+              lstDonnees &&
+              lstDonnees.length === 0 &&
+              !showloader &&
+              rapportImmoForm.get('type_rapport')?.value !== 'rapport_qrcode'
+            "
+          >
+            Aucun résultat trouvé. Veuillez modifier vos filtres ou choisir un
+            type de rapport.
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- /Page Wrapper -->
