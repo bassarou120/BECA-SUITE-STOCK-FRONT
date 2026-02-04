@@ -10,273 +10,200 @@ import {immoService} from "../../core/services/immo/immo.service";
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import * as bootstrap from 'bootstrap';
 import * as $ from 'jquery';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-ordrevirement',
   templateUrl: './rapport-immo.component.html',
   styleUrls: ['./rapport-immo.component.scss'],
 })
 export class rapportImmoComponent implements OnInit {
-  curentEmploye: any;
-  idEmploye: any;
 
-  employes_who_has_no_fiche: any;
-  employes_who_has_fiche: any;
-  list_banque: any;
-
-  selectedEmp: any;
-  selectedFiche: any;
-
-  showloader = false;
-
-  editMode = false;
-
-  ordreVierementData: any = [];
-  urlOrdrevirement: any;
-
-  public addEmployeFichePaieForm!: FormGroup;
-  public valideFichepaieForm!: FormGroup;
+ public showloader = false;
   public rapportImmoForm!: FormGroup;
-  listAnnee: any;
-  listMois = [
-    { id: 1, name: 'Janvier' },
-    { id: 2, name: 'Février' },
-    { id: 3, name: 'Mars' },
-    { id: 4, name: 'Avril' },
-    { id: 5, name: 'Mai' },
-    { id: 6, name: 'Juin' },
-    { id: 7, name: 'Jueillet' },
-    { id: 8, name: 'Août' },
-    { id: 9, name: 'Septemnbre' },
-    { id: 10, name: 'Octobre' },
-    { id: 11, name: 'Novemvre' },
-    { id: 12, name: 'Decembre' },
-  ];
 
-  lstEmployer:any;
-  lstBureau:any;
+  public lstDonnees: any[] = [];
+  public stats: any = null;
 
-  selectedType:any;
   constructor(
     private ngZone: NgZone,
     private formBuilder: FormBuilder,
-    private employeservice: EmployeService,
-    private contraService: ContratService,
-    private activatedRoute: ActivatedRoute,
-    private typeContratService: TypeContratService,
-    private fichepaieService: FichepaieService,
-    private immoService: immoService,
-    private employeService:EmployeService,
-    private  bureauService:bureauService,
+    private immoService: immoService
   ) {}
 
   ngOnInit() {
+    this.initForm();
+  }
 
-    this.getBureau();
-    this.getEmploye();
-
-    const currentDate = new Date();
-    const oneYearFromNow = new Date(currentDate);
-    oneYearFromNow.setFullYear(currentDate.getFullYear() - 1);
-
-console.log(currentDate.toISOString().split('T')[0],oneYearFromNow.toISOString().split('T')[0])
-
+  initForm() {
     this.rapportImmoForm = this.formBuilder.group({
       type_rapport: ['', [Validators.required]],
-      bureau_id: ['', [ ]],
-      employe_id: ['', [ ]],
-      date_fin: [currentDate.toISOString().split('T')[0], []],
-      date_debut: [oneYearFromNow.toISOString().split('T')[0], []],
+      date_debut: [''],
+      date_fin: [''],
     });
 
-    // this.init();
+    this.rapportImmoForm.get('type_rapport')?.valueChanges.subscribe(value => {
+      this.lstDonnees = [];
+      this.stats = null;
 
-    let res = [];
-    for (let index = 2024; index < 2050; index++) {
-      res.push(index);
-    }
+      const dateDebut = this.rapportImmoForm.get('date_debut');
+      const dateFin = this.rapportImmoForm.get('date_fin');
 
-    this.listAnnee = res;
-
-    this.getListeBanque();
-  }
-
-
-  init(){
-    const currentDate = new Date();
-    const oneYearFromNow = new Date(currentDate);
-    oneYearFromNow.setFullYear(currentDate.getFullYear() - 1);
-
-    this.rapportImmoForm.get('date_debut')?.setValue(oneYearFromNow.toISOString().split('T')[0])
-    this.rapportImmoForm.get('date_fin')?.setValue(currentDate.toISOString().split('T')[0])
-  }
-
-
-  getEmploye(){
-
-    this.employeService.getAllEmploye().subscribe(
-      (res: any) => {
-
-        // alert(JSON.stringify(res.data ))
-        this.lstEmployer=res.data
-
-      },
-      (error:any)=>{
-
-      });
-  }
-
-  getBureau(){
-
-    this.bureauService.getAll().subscribe(
-      (res: any) => {
-        // alert(JSON.stringify(res.data ))
-        this.lstBureau=res.data.data
-
-      },
-      (error:any)=>{
-
-      });
-  }
-
-
-
-
-  compareObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-  getListeBanque() {
-    this.employeservice.getlisteBanque().subscribe(
-      (data: any) => {
-        // alert(JSON.stringify(data.data.data));
-        this.list_banque = data.data.data;
-      },
-      (error: any) => {}
-    );
-  }
-
-  totalAutrePrime = 0;
-  formAutrePrime = this.formBuilder.group({
-    itemsAutrePrimes: this.formBuilder.array([]),
-  });
-
-  totalAutreRetenue = 0;
-  formAutreRetenue = this.formBuilder.group({
-    itemsAutreRetenues: this.formBuilder.array([]),
-  });
-
-  form = this.formBuilder.group({
-    items: this.formBuilder.array([]),
-  });
-
-  get items() {
-    return this.form.get('items') as FormArray;
-  }
-  initAddFiche() {
-    this.fichepaieService.initgetEmployeForFichepaie().subscribe(
-      (response: any) => {
-        console.log(response.data);
-
-        this.employes_who_has_no_fiche =
-          response.data.employes_who_has_no_fiche;
-
-        this.employes_who_has_fiche = response.data.employes_who_has_fiche;
-      },
-      (error: any) => {
-        console.log(error);
+      // Rapports nécessitant des dates
+      if (value === 'rapport_transfert' || value === 'rapport_intervention' || value === 'rapport_mise_dispo') {
+        dateDebut?.setValidators([Validators.required]);
+        dateFin?.setValidators([Validators.required]);
+      } else {
+        dateDebut?.clearValidators();
+        dateFin?.clearValidators();
+        dateDebut?.setValue('');
+        dateFin?.setValue('');
       }
-    );
-  }
-
-  compareEmployeObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-
-  telechargerOrdreVirement() {
-    alert(this.urlOrdrevirement);
-    window.open(this.urlOrdrevirement, '_blank');
+      dateDebut?.updateValueAndValidity();
+      dateFin?.updateValueAndValidity();
+    });
   }
 
   onClickSubmitRapportImmo() {
-    // alert(JSON.stringify(this.rapportImmoForm.value));
+    if (this.rapportImmoForm.invalid) {
+      alert('Veuillez remplir les champs requis (Type et Dates si nécessaire)');
+      return;
+    }
 
     this.showloader = true;
-    if (this.rapportImmoForm.valid) {
-      $('#spinnerr').removeClass('d-none');
-      this.immoService.immoRapport(this.rapportImmoForm.value)
-        .subscribe(
-          (res: any) => {
-            // alert(JSON.stringify(res.data));
-            if (res.success == true) {
-              $('#spinnerr').addClass('d-none');
-              console.log(res.data.data);
-              this.ordreVierementData = res.data.data.ordre;
-              var url = res.data.url;
-              this.showloader = false;
+    this.lstDonnees = [];
 
-              // window.open(res.data, '_blank');
-              window.open(url , '_blank');
-              location.reload();
-            } else {
-              $('#spinnerr').addClass('d-none');
-              this.showloader = false;
-              alert(res.message);
-            }
-          },
-          (error: any) => {
-            $('#spinnerr').addClass('d-none');
-            this.showloader = false;
-            alert("error serveur veuillez contacter l'administrateur du site");
-          }
-        );
-    } else {
-      $('#spinnerr').addClass('d-none');
-      this.showloader = false;
-      alert('Veuillez bien remplire le formulaire');
+    const params = this.rapportImmoForm.value;
+
+    // --- 1. RAPPORT GÉNÉRAL DES IMMOBILISATIONS ---
+    if (params.type_rapport === 'rapport_general') {
+      this.immoService.getRapportImmo().subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstDonnees = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstDonnees.length === 0) alert("Aucune immobilisation trouvée");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 2. RAPPORT DES TRANSFERTS ---
+    else if (params.type_rapport === 'rapport_transfert') {
+      this.immoService.getRapportTransfert(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstDonnees = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstDonnees.length === 0) alert("Aucun transfert trouvé pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 3. RAPPORT DES INTERVENTIONS ---
+    else if (params.type_rapport === 'rapport_intervention') {
+      this.immoService.getRapportIntervention(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstDonnees = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstDonnees.length === 0) alert("Aucune intervention trouvée pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 4. FICHE D'INVENTAIRE ---
+    else if (params.type_rapport === 'rapport_inventaire') {
+      this.immoService.getRapportInventaire().subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstDonnees = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstDonnees.length === 0) alert("Aucune immobilisation en inventaire");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 5. MISE À DISPOSITION ---
+    else if (params.type_rapport === 'rapport_mise_dispo') {
+      this.immoService.getRapportMiseADispo(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstDonnees = res.data || [];
+          this.stats = res.statistiques;
+          if (this.lstDonnees.length === 0) alert("Aucune mise à disposition trouvée");
+        },
+        error: (err) => this.handleError(err)
+      });
     }
   }
 
-  formatDate(date: any) {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
+  telechargerPdf() {
+    if (this.rapportImmoForm.invalid) return;
+    if (this.rapportImmoForm.get('type_rapport')?.value !== 'rapport_qrcode' && this.lstDonnees.length === 0) {
+      alert("Veuillez d'abord afficher les données avant de télécharger le PDF");
+      return;
+    }
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+    this.showloader = true;
+    $('#spinnerr').removeClass('d-none');
 
-    return [year, month, day].join('-');
-  }
+    const params = this.rapportImmoForm.value;
+    let exportObservable: Observable<Blob>;
 
-  strToNumber(v: any) {
-    return Number(v);
-  }
+    // Sélection de l'observable selon le type de rapport
+    if (params.type_rapport === 'rapport_general') {
+        exportObservable = this.immoService.exportPdfRapportImmo();
+    } else if (params.type_rapport === 'rapport_transfert') {
+        exportObservable = this.immoService.exportPdfRapportTransfert(params);
+    } else if (params.type_rapport === 'rapport_intervention') {
+        exportObservable = this.immoService.exportPdfRapportIntervention(params);
+    } else if (params.type_rapport === 'rapport_inventaire') {
+        exportObservable = this.immoService.exportPdfInventaire();
+    } else if (params.type_rapport === 'rapport_mise_dispo') {
+        exportObservable = this.immoService.exportPdfRapportMiseADispo(params);
+    } else {
+        // QR Code
+        exportObservable = this.immoService.exportPdfQrCodeImmo();
+    }
 
-  calculateTotalAutrePrime(listPrime: any) {
-    let mAllprime = 0;
-    listPrime.map((p: any) => {
-      mAllprime = mAllprime + p.montant;
+    exportObservable.subscribe({
+        next: (blob: Blob) => {
+            $('#spinnerr').addClass('d-none');
+            this.showloader = false;
+
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+
+            // Nom de fichier dynamique selon le type
+            let fileName = 'Rapport_Immobilisations';
+            switch(params.type_rapport) {
+              case 'rapport_general': fileName = 'Rapport_Immobilisations'; break;
+              case 'rapport_transfert': fileName = 'Rapport_Transferts_Immo'; break;
+              case 'rapport_intervention': fileName = 'Rapport_Interventions'; break;
+              case 'rapport_inventaire': fileName = 'Fiche_Inventaire'; break;
+              case 'rapport_mise_dispo': fileName = 'Fiche_Mise_A_Disposition'; break;
+              case 'rapport_qrcode': fileName = 'QR_Code_Immobilisations'; break;
+            }
+
+            link.download = `${fileName}_${new Date().getTime()}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        },
+        error: (err: any) => {
+            $('#spinnerr').addClass('d-none');
+            this.showloader = false;
+            console.error(err);
+            alert("Erreur lors de la génération du PDF.");
+        }
     });
-
-    return mAllprime;
   }
 
-  calculateTotalRetenue(listRe: any) {
-    let mAllprime = 0;
-    listRe.map((p: any) => {
-      mAllprime = mAllprime + p.montant;
-    });
-
-    return mAllprime;
-  }
-
-  titreAction: any;
-  getValideFicheForm(id: any, action: any) {
-    // $('#valide_fiche').modal('show');
-
-    this.valideFichepaieForm.patchValue({
-      id: id,
-      action: action,
-    });
-    this.titreAction = action;
+  private handleError(err: any) {
+    this.showloader = false;
+    console.error(err);
+    alert("Erreur de récupération : " + (err.error?.message || "Serveur injoignable"));
   }
 }

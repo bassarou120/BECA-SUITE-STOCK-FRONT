@@ -18,6 +18,7 @@ import {CategorieArticleComponent} from "./categorie-article/categorie-article.c
 import {ArticleComponent} from "./article/article.component";
 import {FournisseurComponent} from "./fournisseur/fournisseur.component";
 import { CategorieFournisseurComponent } from './categorie-fournisseur/categorie-fournisseur.component';
+import {ReparationPeriodiqueComponent} from "./reparation-periodique/reparation-periodique.component";
 
 
 
@@ -40,6 +41,7 @@ const routes: Routes = [
     { path: "article", component: ArticleComponent },
     { path: "fournisseur", component: FournisseurComponent },
     { path: "categorie-fournisseur", component: CategorieFournisseurComponent },
+    { path: "reparation-periodique", component: ReparationPeriodiqueComponent },
 
     { path: "role", component: RoleComponent },
 

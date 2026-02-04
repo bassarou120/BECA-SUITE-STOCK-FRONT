@@ -237,6 +237,12 @@ export class DataService {
               base: 'parametrage/fournisseur',
               haseSubSubMenu: false,
             },
+     {
+              menuValue: 'Réparation Périodique',
+              route: "parametrage/reparation-periodique",
+              base: 'parametrage/reparation-periodique',
+              haseSubSubMenu: false,
+            },
             {
               menuValue: 'Catégorie Fournisseurs',
               route: "parametrage/categorie-fournisseur",

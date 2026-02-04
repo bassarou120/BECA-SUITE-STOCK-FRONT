@@ -43,15 +43,22 @@ export class entreeSortieStockService {
   }
 
   /**
-   * Modifie un mouvement existant (via FormData pour supporter les fichiers)
-   */
+ * Modifie un mouvement (supporte FormData pour les fichiers)
+ */
   edit(data: FormData): Observable<any> {
-    const id = data.get('id'); 
-    return this.http.post<any>(`${this.url}/mouvement_stock/${id}`, data);
+    const id = data.get('id'); // L'ID doit être présent dans le FormData
+    // On utilise POST car on a ajouté _method: PUT dans le FormData côté composant
+    return this.http.post<any>(`${this.url}/mouvements/entrees/${id}`, data);
   }
 
-  delete(data: any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/mouvement_stock/${data.id}`);
+  /**
+  * Supprime un mouvement
+  * @param id L'identifiant numérique directement
+  */
+  delete(id: any): Observable<any> {
+    // Si l'ID arrive en tant qu'objet {id: 25}, on extrait la valeur
+    const numericId = typeof id === 'object' ? id.id : id;
+    return this.http.delete<any>(`${this.url}/mouvements/entrees/${numericId}`);
   }
 
   getStockByArticle(data: any): Observable<Object> {
@@ -145,5 +152,55 @@ export class entreeSortieStockService {
   // Lancer la génération du PDF côté serveur
   exportPdfSorties(params: any): Observable<any> {
     return this.http.get(`${this.url}/rapports/sorties/pdf`, { params });
+  }
+
+  /**
+   * Récupère les données consolidées du stock par famille (JSON)
+   */
+  getRapportEtatConsolideData(): Observable<any> {
+    return this.http.get<any>(`${this.url}/rapports/etat-stock-consolide/data`);
+  }
+
+  exportPdfEtatConsolide(): Observable<any> {
+    // L'ajout de responseType: 'blob' empêche l'erreur de parsing JSON (status 200 ok: false)
+    return this.http.get(`${this.url}/rapports/etat-stock-consolide/pdf`, {
+      responseType: 'blob'
+    });
+  }
+  
+  getRapportAchatsData(params: any): Observable<any> {
+    return this.http.post(`${this.url}/rapports/rapport-achats-data`, params);
+  }
+
+  // 2. Exportation du PDF (BLOB)
+  exportPdfAchatsParArticle(params: any): Observable<Blob> {
+    return this.http.post(`${this.url}/rapports/export-pdf-achats`, params, {
+      responseType: 'blob'
+    });
+  }
+
+  /**
+   * Récupère les données de consommation moyenne (Passage en GET suite à erreur 405)
+   */
+  getConsommationMoyenneData(filters: any): Observable<any> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+    
+    return this.http.get<any>(`${this.url}/rapports/consommations-moyennes-data`, { params });
+  }
+
+  /**
+   * Exportation du PDF de consommation moyenne (Passage en GET si le backend suit la même logique)
+   */
+  exportPdfConsommationMoyenne(filters: any): Observable<Blob> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+
+    return this.http.get(`${this.url}/rapports/export-pdf-consommation`, { 
+      params,
+      responseType: 'blob' 
+    });
   }
 }
