@@ -113,7 +113,7 @@
                   <label class="col-form-label fw-bold">Localisation / Site <span class="text-danger">*</span></label>
                   <select class="form-select" formControlName="localisation_id">
                     <option value="">-- Sélectionner --</option>
-                    <option *ngFor="let loc of lstLocalisations" [value]="loc.id">{{ loc.nom_localisation }}</option>
+                    <option *ngFor="let loc of lstLocalisations" [value]="loc.id">{{ loc.nom_localisation }} - {{ loc.site.nom_site }}</option>
                   </select>
                 </div>
               </div>
