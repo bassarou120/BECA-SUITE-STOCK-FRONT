@@ -103,7 +103,7 @@ export class ArticleComponent implements OnInit {
       $('#spinnerr').removeClass('d-none');
       this.articleService.save(this.addArticleForm.value).subscribe(
         (data: any) => {
-          // location.reload();
+          location.reload();
         }
       )
     } else {
