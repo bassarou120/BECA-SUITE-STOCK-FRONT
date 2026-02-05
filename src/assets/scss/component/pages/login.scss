@@ -12,9 +12,9 @@
                 margin-bottom: 30px;
                 text-align: $__center;
                 img {
-                    width: 100px;
+                    width: 180px;
                     @include respond-below(custom575) {
-                        width: 70px;
+                        width: 90px;
                     }
                 }
             }
