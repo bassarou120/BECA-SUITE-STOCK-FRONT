@@ -50,8 +50,7 @@
                       >ACHATS DÉTAILLÉS PAR ARTICLE</mat-option
                     >
                     <mat-option value="rapport_consommation_moyenne"
-                      >CONSOMMATION MOYENNE</mat-option
-                    >
+                      >CONSOMMATION MOYENNE</mat-option>
                     <mat-option value="rapport_etat"
                       >RAPPORT ETAT DU STOCK (ACTUEL)</mat-option
                     >
@@ -388,6 +387,7 @@
                         <td class="text-end text-primary">
                           {{ groupe.total_valeur | number }}
                         </td>
+                        <td class="text-end text-primary">{{ groupe.total_valeur | number }}</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -502,6 +502,36 @@
                 </tr>
               </tbody>
             </table>
+
+            <!-- CAS 6 : TOTAL SORTIES PAR ARTICLE (NOUVEAU) -->
+            <table class="table table-striped custom-table mb-0" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_total_sortie_article'">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Désignation Article</th>
+                  <th class="text-center">Famille</th>
+                  <th class="text-center">Qté Totale Sortie</th>
+                  <th class="text-end">Valeur Totale HT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of lstMouvements">
+                  <td>{{ row.code }}</td>
+                  <td class="fw-bold">{{ row.designation }}</td>
+                  <td class="text-center text-muted">{{ row.famille_nom }}</td>
+                  <td class="text-center fw-bold">{{ row.quantite_totale | number:'1.0-2' }}</td>
+                  <td class="text-end text-primary fw-bold">{{ row.valeur_totale | number }} FCFA</td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="stats">
+                <tr class="bg-dark text-white fw-bold">
+                  <td colspan="3" class="text-end">TOTAL GÉNÉRAL DES SORTIES</td>
+                  <td class="text-center">{{ stats.total_general_quantite | number:'1.0-2' }}</td>
+                  <td class="text-end">{{ stats.total_general_valeur | number }} FCFA</td>
+                </tr>
+              </tfoot>
+            </table>
+
           </div>
 
           <!-- Statistiques (Affichage conditionnel) -->
@@ -552,6 +582,7 @@
             Aucun résultat trouvé. Veuillez modifier vos filtres ou choisir un
             type de rapport.
           </div>
+
         </div>
       </div>
     </div>
