@@ -57,6 +57,9 @@
                     <mat-option value="rapport_consolide"
                       >ÉTAT CONSOLIDÉ DU STOCK (AVEC FAMILLES)</mat-option
                     >
+                    <mat-option value="rapport_total_sortie_article"
+                      >TOTAL PAR ARTICLE</mat-option
+                    >
                     <mat-option value="rapport_total_famille"
                       >TOTAL PAR FAMILLE</mat-option
                     >
@@ -77,6 +80,8 @@
                     'rapport_total_famille' ||
                   rapportStockForm.get('type_rapport')?.value ===
                     'rapport_achat_article' ||
+                  rapportStockForm.get('type_rapport')?.value ===
+                    'rapport_total_sortie_article' ||
                   rapportStockForm.get('type_rapport')?.value ===
                     'rapport_consommation_moyenne' ||
                      rapportStockForm.get('type_rapport')?.value === 'rapport_centre'
@@ -118,7 +123,10 @@
                   rapportStockForm.get('type_rapport')?.value ===
                     'rapport_total_famille' ||
                   rapportStockForm.get('type_rapport')?.value ===
-                    'rapport_consommation_moyenne' ||
+                    'rapport_total_sortie_article' ||
+                  rapportStockForm.get('type_rapport')?.value ===
+                    'rapport_consommation_moyenne'
+                    ||
                       rapportStockForm.get('type_rapport')?.value === 'rapport_centre'
                 "
               >
@@ -157,6 +165,7 @@
                     >Historique détaillé des
                     <strong>Entrées en stock</strong> groupé par article.</span
                   >
+                  <span *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_total_sortie_article'">Synthèse valorisée du <strong>Volume total des sorties</strong> par article sur la période choisie.</span>
                   <span
                     *ngIf="
                       rapportStockForm.get('type_rapport')?.value ===
@@ -597,6 +606,8 @@
               rapportStockForm.get('type_rapport')?.value !== 'rapport_etat' &&
               rapportStockForm.get('type_rapport')?.value !==
                 'rapport_total_famille' &&
+              rapportStockForm.get('type_rapport')?.value !==
+                'rapport_total_sortie_article' &&
               rapportStockForm.get('type_rapport')?.value !==
                 'rapport_consolide' &&
               rapportStockForm.get('type_rapport')?.value !==
