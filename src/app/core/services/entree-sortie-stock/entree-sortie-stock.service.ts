@@ -39,7 +39,7 @@ export class entreeSortieStockService {
   }
 
   getAllStock(): Observable<any> {
-    return this.http.get(`${this.url}/get-etat-stock`); 
+    return this.http.get(`${this.url}/get-etat-stock`);
   }
 
   /**
@@ -72,7 +72,7 @@ export class entreeSortieStockService {
     let params = new HttpParams()
       .set('date_debut', filters.date_debut)
       .set('date_fin', filters.date_fin);
-    
+
     return this.http.get<any>(`${this.url}/rapports/entrees/data`, { params });
   }
 
@@ -145,6 +145,9 @@ export class entreeSortieStockService {
   getRapportSortiesData(params: any): Observable<any> {
     return this.http.get(`${this.url}/rapports/sorties/data`, { params });
 }
+  getRapportTotalFamilleData(params: any): Observable<any> {
+    return this.http.get(`${this.url}/rapports/total-famille/data`, { params });
+}
 
   /**
    * Génère l'URL pour le téléchargement du PDF des sorties
@@ -153,6 +156,16 @@ export class entreeSortieStockService {
   exportPdfSorties(params: any): Observable<any> {
     return this.http.get(`${this.url}/rapports/sorties/pdf`, { params });
   }
+  exportPdfTotalFamille(params: any): Observable<Blob> {
+  return this.http.get(
+    `${this.url}/rapports/total-famille/pdf`,
+    {
+      params,
+      responseType: 'blob'
+    }
+  );
+}
+
 
   /**
    * Récupère les données consolidées du stock par famille (JSON)
@@ -167,7 +180,7 @@ export class entreeSortieStockService {
       responseType: 'blob'
     });
   }
-  
+
   getRapportAchatsData(params: any): Observable<any> {
     return this.http.post(`${this.url}/rapports/rapport-achats-data`, params);
   }
@@ -186,7 +199,7 @@ export class entreeSortieStockService {
     let params = new HttpParams()
       .set('date_debut', filters.date_debut)
       .set('date_fin', filters.date_fin);
-    
+
     return this.http.get<any>(`${this.url}/rapports/consommations-moyennes-data`, { params });
   }
 
@@ -198,9 +211,9 @@ export class entreeSortieStockService {
       .set('date_debut', filters.date_debut)
       .set('date_fin', filters.date_fin);
 
-    return this.http.get(`${this.url}/rapports/export-pdf-consommation`, { 
+    return this.http.get(`${this.url}/rapports/export-pdf-consommation`, {
       params,
-      responseType: 'blob' 
+      responseType: 'blob'
     });
   }
 }
