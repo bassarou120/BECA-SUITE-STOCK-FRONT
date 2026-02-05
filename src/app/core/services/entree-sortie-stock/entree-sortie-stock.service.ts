@@ -203,4 +203,25 @@ export class entreeSortieStockService {
       responseType: 'blob' 
     });
   }
+
+  /** Récupère les données de Total par article*/
+  getTotalSortiesParArticleData(filters: any): Observable<any> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+    
+    return this.http.get<any>(`${this.url}/rapports/sorties-par-article-data`, { params });
+  }
+
+  /** Exportation du PDF de Total par article */
+  exportPdfTotalSortiesParArticle(filters: any): Observable<Blob> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+
+    return this.http.get(`${this.url}/rapports/export-pdf-total-sorties`, { 
+      params,
+      responseType: 'blob' 
+    });
+  }
 }

@@ -59,7 +59,7 @@ export class rapportStockComponent implements OnInit {
       const dateFin = this.rapportStockForm.get('date_fin');
 
       // Seuls les rapports d'entrées et sorties requièrent des dates
-      if (value === 'rapport_entree' || value === 'rapport_sortie' || value === 'rapport_achat_article' || value === 'rapport_consommation_moyenne') {
+      if (value === 'rapport_entree' || value === 'rapport_sortie' || value === 'rapport_achat_article' || value === 'rapport_consommation_moyenne' || value === 'rapport_total_sortie_article') {
         dateDebut?.setValidators([Validators.required]);
         dateFin?.setValidators([Validators.required]);
       } else {
@@ -146,7 +146,19 @@ export class rapportStockComponent implements OnInit {
         error: (err) => this.handleError(err)
       });
     }
-    // --- 6. RAPPORT DES ENTREES (PAR DÉFAUT) ---
+    // --- 6. TOTAL SORTIES PAR ARTICLE ---
+    else if (params.type_rapport === 'rapport_total_sortie_article') {
+      this.stockService.getTotalSortiesParArticleData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || [];
+          this.stats = res.stats; // Note: On utilise 'stats' (nommé ainsi dans le back envoyé plus tôt)
+          if (this.lstMouvements.length === 0) alert("Aucune sortie trouvée pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+    // --- 7. RAPPORT DES ENTREES (PAR DÉFAUT) ---
     else {
       this.stockService.getRapportEntreesData(params).subscribe({
         next: (res: any) => {
@@ -298,6 +310,8 @@ export class rapportStockComponent implements OnInit {
       exportObservable = this.stockService.exportPdfConsommationMoyenne(params);
     }else if (params.type_rapport === 'rapport_consolide') {
         exportObservable = this.stockService.exportPdfEtatConsolide(); 
+    }else if (params.type_rapport === 'rapport_total_sortie_article') {
+        exportObservable = this.stockService.exportPdfTotalSortiesParArticle(params);
     } else if (params.type_rapport === 'rapport_etat') {
         exportObservable = this.stockService.exportPdfEtatStock();
     } else if (params.type_rapport === 'rapport_sortie') {
@@ -321,6 +335,7 @@ export class rapportStockComponent implements OnInit {
                 if(params.type_rapport === 'rapport_achat_article') fileName = 'Achats_Par_Article';
                 // AJOUT : Nom du fichier pour le nouveau rapport
                 if(params.type_rapport === 'rapport_consommation_moyenne') fileName = 'Consommations_Moyennes';
+                if(params.type_rapport === 'rapport_total_sortie_article') fileName = 'Total_Sorties_Par_Article';
                 link.download = `${fileName}_${new Date().getTime()}.pdf`;
                 document.body.appendChild(link);
                 link.click();
