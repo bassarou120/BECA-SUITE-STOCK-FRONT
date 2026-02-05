@@ -18,6 +18,7 @@ export class rapportStockComponent implements OnInit {
 
   public lstMouvements: any[] = [];
   public stats: any = null;
+  public totaux: any;
 
   public listAnnee: any;
   public lstEmployer: any;
@@ -59,7 +60,7 @@ export class rapportStockComponent implements OnInit {
       const dateFin = this.rapportStockForm.get('date_fin');
 
       // Seuls les rapports d'entrées et sorties requièrent des dates
-      if (value === 'rapport_entree' || value === 'rapport_sortie' || value === 'rapport_achat_article' || value === 'rapport_consommation_moyenne'||  value === 'rapport_total_sortie_article'  || value === 'rapport_total_famille') {
+      if (value === 'rapport_entree' || value === 'rapport_sortie' || value === 'rapport_achat_article' || value === 'rapport_consommation_moyenne'||  value === 'rapport_total_sortie_article'  || value === 'rapport_total_famille'|| value === 'rapport_centre') {
         dateDebut?.setValidators([Validators.required]);
         dateFin?.setValidators([Validators.required]);
       } else {
@@ -178,6 +179,22 @@ export class rapportStockComponent implements OnInit {
         error: (err) => this.handleError(err)
       });
     }
+    // --- 7. RAPPORT DES ENTREES (PAR DÉFAUT) ---
+
+    // --- 6. RAPPORT PAR CENTRE ---
+    else if (params.type_rapport === 'rapport_centre') {
+      this.stockService.getConsommationParCentreData(params).subscribe({
+        next: (res: any) => {
+          this.showloader = false;
+          this.lstMouvements = res.data || [];
+          //this.stats = res.statistiques;
+          this.totaux = res.totaux || null;
+          if (this.lstMouvements.length === 0) alert("Aucune sortie trouvée pour cette période");
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+
     // --- 7. RAPPORT DES ENTREES (PAR DÉFAUT) ---
     else {
       this.stockService.getRapportEntreesData(params).subscribe({
@@ -337,8 +354,11 @@ export class rapportStockComponent implements OnInit {
     } else if (params.type_rapport === 'rapport_etat') {
         exportObservable = this.stockService.exportPdfEtatStock();
     } else if (params.type_rapport === 'rapport_sortie') {
-        exportObservable = this.stockService.exportPdfSorties(params);
-    } else {
+      exportObservable = this.stockService.exportPdfSorties(params);
+    } else if (params.type_rapport === 'rapport_centre') {
+      exportObservable = this.stockService.exportPdfConsommationParCentre(params);
+    }
+    else {
         exportObservable = this.stockService.exportPdfEntrees(params);
     }
 
@@ -358,6 +378,8 @@ export class rapportStockComponent implements OnInit {
                 // AJOUT : Nom du fichier pour le nouveau rapport
                 if(params.type_rapport === 'rapport_consommation_moyenne') fileName = 'Consommations_Moyennes';
                 if(params.type_rapport === 'rapport_total_sortie_article') fileName = 'Total_Sorties_Par_Article';
+
+                if(params.type_rapport === 'rapport_centre') fileName = 'Rapport_Par_Centre';
                 link.download = `${fileName}_${new Date().getTime()}.pdf`;
                 document.body.appendChild(link);
                 link.click();

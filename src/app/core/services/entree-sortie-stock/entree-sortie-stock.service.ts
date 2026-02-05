@@ -237,4 +237,26 @@ export class entreeSortieStockService {
       responseType: 'blob'
     });
   }
+
+  getConsommationParCentreData(filters: any): Observable<any> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+
+    return this.http.get<any>(`${this.url}/rapports/consommations-parcentre-data`, { params });
+  }
+
+  exportPdfConsommationParCentre(filters: any): Observable<Blob> {
+    let params = new HttpParams()
+      .set('date_debut', filters.date_debut)
+      .set('date_fin', filters.date_fin);
+
+    return this.http.get(`${this.url}/rapports/export-pdf-consommation-parcentre`, {
+      params,
+      responseType: 'blob'
+    });
+  }
+
+
+
 }

@@ -60,6 +60,8 @@
                     <mat-option value="rapport_total_famille"
                       >TOTAL PAR FAMILLE</mat-option
                     >
+
+                    <mat-option value="rapport_centre">RAPPORT PAR CENTRE</mat-option>
                   </mat-select>
                 </div>
               </div>
@@ -76,7 +78,8 @@
                   rapportStockForm.get('type_rapport')?.value ===
                     'rapport_achat_article' ||
                   rapportStockForm.get('type_rapport')?.value ===
-                    'rapport_consommation_moyenne'
+                    'rapport_consommation_moyenne' ||
+                     rapportStockForm.get('type_rapport')?.value === 'rapport_centre'
                 "
               >
                 <div class="col-md-4">
@@ -115,7 +118,8 @@
                   rapportStockForm.get('type_rapport')?.value ===
                     'rapport_total_famille' ||
                   rapportStockForm.get('type_rapport')?.value ===
-                    'rapport_consommation_moyenne'
+                    'rapport_consommation_moyenne' ||
+                      rapportStockForm.get('type_rapport')?.value === 'rapport_centre'
                 "
               >
                 <div class="alert alert-light border mt-2">
@@ -161,6 +165,8 @@
                     >Analyse de la <strong>Consommation Moyenne</strong> basée
                     sur les sorties de la période.</span
                   >
+                  <span *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_centre'">Ce rapport affiche la liste des <strong>Consommation Total par centre</strong> basée sur les sorties de la période.</span>
+
                 </div>
               </div>
             </div>
@@ -531,6 +537,54 @@
                 </tr>
               </tfoot>
             </table>
+
+            <!-- CAS 6 : TOTAL DES SORTIES PAR CENTRE -->
+            <table class="table table-striped custom-table mb-0" *ngIf="rapportStockForm.get('type_rapport')?.value === 'rapport_centre'">
+              <thead>
+                <tr class="table-head">
+                  <th rowspan="2">Centre</th>
+                  <th rowspan="2">Intitulé</th>
+                  <th rowspan="2" class="text-center">Pièces</th>
+                  <th colspan="3" class="text-center">Consommations</th>
+                </tr>
+                <tr class="table-head">
+                  <th class="text-center">Montant</th>
+                  <th class="text-center">Retours</th>
+                  <th class="text-center">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Affichage dynamique des données -->
+                <tr *ngFor="let item of lstMouvements">
+                  <td>{{ item.code }}</td>
+                  <td>{{ item.intitule }}</td>
+                  <td class="text-center">{{ item.pieces | number }}</td>
+                  <td class="text-end">{{ item.montant | number:'1.0-0' }}</td>
+                  <td class="text-end">{{ item.retours > 0 ? (item.retours | number:'1.0-0') : '' }}</td>
+                  <td class="text-end">{{ item.total | number:'1.0-0' }}</td>
+                </tr>
+
+                <!-- Message si aucune donnée -->
+                <tr *ngIf="lstMouvements.length === 0">
+                  <td colspan="6" class="text-center text-muted py-4">
+                    <i class="bi bi-inbox"></i> Aucune donnée disponible pour cette période
+                  </td>
+                </tr>
+              </tbody>
+
+              <tfoot *ngIf="lstMouvements.length > 0 && totaux">
+                <tr class="table-total">
+                  <td><strong>Total</strong></td>
+                  <td><strong>Centres*</strong></td>
+                  <td class="text-center"><strong>{{ totaux.total_pieces | number }}</strong></td>
+                  <td class="text-end"><strong>{{ totaux.total_montant | number:'1.0-0' }}</strong></td>
+                  <td class="text-end"><strong>{{ totaux.total_retours > 0 ? (totaux.total_retours | number:'1.0-0') : '' }}</strong></td>
+                  <td class="text-end"><strong>{{ totaux.total_general | number:'1.0-0' }}</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+
+
 
           </div>
 
