@@ -201,6 +201,12 @@ export class DataService {
               haseSubSubMenu: false,
             },
             {
+              menuValue: 'Liste des Familles immobilisation',
+              route: "parametrage/famille-immo",
+              base: 'parametrage/famille-immo',
+              haseSubSubMenu: false,
+            },
+            {
               menuValue: 'Liste des Sites',
               route: "parametrage/site",
               base: 'parametrage/site',

@@ -12,6 +12,7 @@ import {ParametrageComponent} from "./parametrage.component";
 
 import {BureauComponent} from "./bureau/bureau.component";
 import {FamilleComponent} from "./famille/famille.component";
+import {FamilleImmoComponent} from "./famille-immo/famille-immo.component";
 import {SiteComponent} from "./site/site.component";
 import {LocalisationComponent} from "./localisation/localisation.component";
 import {DirectionCentreComponent} from "./directionCentre/directionCentre.component";
@@ -47,6 +48,7 @@ import {ReparationPeriodiqueComponent} from "./reparation-periodique/reparation-
     BureauComponent,
     DirectionCentreComponent,
     FamilleComponent,
+    FamilleImmoComponent,
     SiteComponent,
     LocalisationComponent,
     AttributionRoleComponent,

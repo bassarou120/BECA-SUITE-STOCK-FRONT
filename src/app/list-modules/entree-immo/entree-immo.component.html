@@ -274,66 +274,45 @@
             (ngSubmit)="onClickSubmitAddImmo()"
             novalidate
           >
-            <div class="input-block mb-3">
-              <label class="col-form-label" for=""
-                >Code<span class="text-danger">*</span></label
+
+          <div class="input-block mb-3">
+            <label>Famille Immo <span class="text-danger">*</span></label>
+            <mat-select
+              class="select mat-cust-select form-control"
+              [class.invalid]="
+                addEntreeImmoForm.get('familleimmo_id')?.invalid &&
+                addEntreeImmoForm.get('familleimmo_id')?.touched
+              "
+              formControlName="familleimmo_id"
+              placeholder="Selectionner la famille"
+            >
+              <mat-option
+                *ngFor="let item of lstFamilleImmo"
+                [value]="item.id"
               >
-              <input
-                class="form-control"
-                type="text"
-                [class.invalid]="
-                  addEntreeImmoForm.get('code')?.invalid &&
-                  addEntreeImmoForm.get('code')?.touched
-                "
-                formControlName="code"
-              />
-              <div
-                *ngIf="
-                  addEntreeImmoForm.get('code')?.invalid &&
-                  addEntreeImmoForm.get('code')?.touched
-                "
-              >
-                <small
-                  *ngIf="
-                    addEntreeImmoForm.get('code')?.invalid &&
-                    addEntreeImmoForm.get('code')?.touched
-                  "
-                  class="text-danger"
-                >
-                  *le code est obligatoire</small
-                >
-              </div>
-            </div>
-            <div class="input-block mb-3">
-              <label class="col-form-label" for=""
-                >Désignation<span class="text-danger">*</span></label
-              >
-              <input
-                class="form-control"
-                type="text"
-                [class.invalid]="
-                  addEntreeImmoForm.get('designation')?.invalid &&
-                  addEntreeImmoForm.get('designation')?.touched
-                "
-                formControlName="designation"
-              />
-              <div
-                *ngIf="
-                  addEntreeImmoForm.get('designation')?.invalid &&
-                  addEntreeImmoForm.get('designation')?.touched
-                "
-              >
-                <small
-                  *ngIf="
-                    addEntreeImmoForm.get('designation')?.invalid &&
-                    addEntreeImmoForm.get('designation')?.touched
-                  "
-                  class="text-danger"
-                >
-                  *la designation est obligatoire</small
-                >
-              </div>
-            </div>
+                {{ item.intitule }}
+              </mat-option>
+            </mat-select>
+          </div>
+
+          <div class="input-block mb-3">
+            <label class="col-form-label">
+              Code <span class="text-danger">*</span>
+            </label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="code"
+              readonly
+              style="background-color: #f5f5f5; cursor: not-allowed;"
+            />
+            <small class="text-muted">
+              <i class="fa fa-info-circle"></i> Le code est généré automatiquement
+            </small>
+          </div>
+
+            <div class="input-block mb-3"> <label class="col-form-label" for="" >Désignation<span class="text-danger">*</span></label > <input class="form-control" type="text" [class.invalid]=" addEntreeImmoForm.get('designation')?.invalid && addEntreeImmoForm.get('designation')?.touched " formControlName="designation" /> <div *ngIf=" addEntreeImmoForm.get('designation')?.invalid && addEntreeImmoForm.get('designation')?.touched " > <small *ngIf=" addEntreeImmoForm.get('designation')?.invalid && addEntreeImmoForm.get('designation')?.touched " class="text-danger" > *la designation est obligatoire</small > </div> </div>
+
 
             <div class="input-block mb-3">
               <label class="col-form-label" for=""
@@ -642,6 +621,28 @@
                 >
               </div>
             </div>
+
+                <div class="input-block mb-3">
+                  <label>Famille Immo <span class="text-danger">*</span></label>
+                    <mat-select
+                      class="select mat-cust-select form-control"
+                      [class.invalid]="
+                        editEntreeImmoForm.get('familleimmo_id')?.invalid &&
+                        editEntreeImmoForm.get('familleimmo_id')?.touched
+                      "
+                      formControlName="familleimmo_id"
+                      placeholder="Selectionner la famille"
+                    >
+                      <mat-option
+                        *ngFor="let item of lstFamilleImmo"
+                        [disabled]="false"
+                        [value]="item.id"
+                        >{{ item.intitule }} 
+                      </mat-option>
+                    </mat-select>
+                </div>
+
+
 
             <div class="input-block mb-3">
               <label class="col-form-label" for=""

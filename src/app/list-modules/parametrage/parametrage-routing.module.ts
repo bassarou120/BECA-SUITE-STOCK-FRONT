@@ -11,6 +11,7 @@ import { RoleComponent } from './role/role.component';
 import { ParametrageComponent } from './parametrage.component';
 import {BureauComponent} from "./bureau/bureau.component";
 import {FamilleComponent} from "./famille/famille.component";
+import {FamilleImmoComponent} from "./famille-immo/famille-immo.component";
 import {SiteComponent} from "./site/site.component";
 import {LocalisationComponent} from "./localisation/localisation.component";
 import {DirectionCentreComponent} from "./directionCentre/directionCentre.component";
@@ -34,6 +35,7 @@ const routes: Routes = [
     { path: "banque", component: BanqueComponent },
     { path: "bureau", component: BureauComponent },
     { path: "famille", component: FamilleComponent },
+    { path: "famille-immo", component: FamilleImmoComponent },
     { path: "site", component: SiteComponent },
     { path: "localisation", component: LocalisationComponent },
     { path: "directionCentre", component: DirectionCentreComponent },

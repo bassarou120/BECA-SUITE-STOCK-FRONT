@@ -958,6 +958,12 @@ export interface getFamille {
   code: string;
   intitule: string;
 }
+export interface getFamilleImmo {
+  id: number;
+  code: string;
+  intitule: string;
+}
+
 export interface getSite {
   id: number;
   nom_site: string;
@@ -974,8 +980,6 @@ export interface getDirectionCentre {
   code: string;
   intitule: string;
 }
-
-
 
 export interface getFournisseur {
   id: number;

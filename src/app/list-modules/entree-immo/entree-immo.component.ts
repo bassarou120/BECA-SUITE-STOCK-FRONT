@@ -13,6 +13,8 @@ import * as XLSX from 'xlsx';
 import { LocalisationService } from "../../core/services/localisation/localisation.service";
 import { immoService } from "../../core/services/immo/immo.service";
 
+import { FamilleImmoService } from "../../core/services/famille-immo/famille-immo.service";
+import { getFamilleImmo} from 'src/app/core/core.index';
 
 
 @Component({
@@ -26,8 +28,9 @@ export class EntreeImmoComponent implements OnInit {
 
   public lstPst: Array<any> = [];
 
-
   public lstEntreeImmo: Array<any> = [];
+  public lstFamilleImmo:  Array<getFamilleImmo> = [];
+  lstDesignation: any[] = [];
 
   lstLocalisation: any;
 
@@ -59,15 +62,17 @@ export class EntreeImmoComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, public router: Router,
     private localisationService: LocalisationService,
     private immoService: immoService,
+    private familleImmoService: FamilleImmoService,
     private exp: ExportsService) { }
 
 
   ngOnInit(): void {
     this.getTableData();
     this.getLocalisation();
-
+    this.loadFamilleImmo();
+    
     this.addEntreeImmoForm = this.formBuilder.group({
-
+      familleimmo_id: ["", [Validators.required]],
       designation: ["", [Validators.required]],
       date_entree: ["", [Validators.required]],
       valeur_origine: ["", [Validators.required]],
@@ -79,8 +84,11 @@ export class EntreeImmoComponent implements OnInit {
       bien_amortissable: ["oui", [Validators.required]],
     });
 
+    this.setupCodeGeneration();
+
     this.editEntreeImmoForm = this.formBuilder.group({
       id: [0, [Validators.required]],
+      familleimmo_id: ["", [Validators.required]],
       designation: ["", [Validators.required]],
       date_entree: ["", [Validators.required]],
       valeur_origine: ["", [Validators.required]],
@@ -95,6 +103,44 @@ export class EntreeImmoComponent implements OnInit {
     });
     this.initBienAmortissableListener();
     this.applyBienAmortissableValidators();
+  }
+
+setupCodeGeneration() {
+  this.addEntreeImmoForm.get('familleimmo_id')?.valueChanges.subscribe(
+    (familleId) => {
+      if (familleId) {
+        console.log('Famille sélectionnée:', familleId); // Pour débugger
+        this.generateCode(familleId);
+      }
+    }
+  );
+}
+
+  generateCode(familleId: number) {
+    const familleSelectionnee = this.lstFamilleImmo.find(
+      (f) => f.id === familleId
+    );
+
+    if (familleSelectionnee) {
+      const prefixe = familleSelectionnee.intitule
+        .substring(0, 3)
+        .toUpperCase();
+
+      this.immoService.getNextNumero().subscribe({
+        next: (response) => {
+          const numero = String(response.nextNumero).padStart(3, '0');
+          const codeGenere = `${prefixe}-${numero}`;
+          
+          console.log("Code généré:", codeGenere);
+          
+          // Mettre à jour le champ code
+          this.addEntreeImmoForm.get('code')?.setValue(codeGenere);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la génération du code:', err);
+        }
+      });
+    }
   }
 
   hideAlert() {
@@ -168,8 +214,21 @@ export class EntreeImmoComponent implements OnInit {
       });
   }
 
+  loadFamilleImmo(): void {
+    this.familleImmoService.getAll().subscribe({
+      next: (res: any) => {
+        console.log('famille API:', res);
 
+        // ✅ ICI EST LA CLÉ
+        this.lstFamilleImmo = res.data.data;
 
+        console.log('Liste des famille immo:', this.lstFamilleImmo);
+      },
+      error: (err) => {
+        console.error('Erreur chargement famille immo', err);
+      }
+    });
+  }
 
   onClickSubmitAddImmo() {
 

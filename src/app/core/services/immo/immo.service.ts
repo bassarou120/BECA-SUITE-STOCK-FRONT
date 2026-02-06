@@ -69,7 +69,11 @@ export class immoService {
     return this.http.post(`${this.url}/immo-rapport`, data);
   }
 
-
+  getNextNumero(): Observable<{ nextNumero: number }> {
+    return this.http.get<{ nextNumero: number }>(
+      `${this.url}/immobilisations/next-numero`
+    );
+  }
 
   saveRepation(data: any): Observable<Object> {
     return this.http.post(`${this.url}/interventions`, data);
@@ -87,7 +91,9 @@ export class immoService {
     return this.http.delete<any>(`${this.url}/interventions/${data.id}`);
   }
 
-
+  getByFamille(id: number): Observable<any> {
+    return this.http.get(`${this.url}/immos/famille/${id}`);
+  }
 
 
 
