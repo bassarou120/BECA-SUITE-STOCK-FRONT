@@ -15,7 +15,7 @@ import { immoService } from "../../core/services/immo/immo.service";
 
 import { FamilleImmoService } from "../../core/services/famille-immo/famille-immo.service";
 import { getFamilleImmo} from 'src/app/core/core.index';
-
+//import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-banque',
@@ -70,14 +70,16 @@ export class EntreeImmoComponent implements OnInit {
     this.getTableData();
     this.getLocalisation();
     this.loadFamilleImmo();
-    
+
     this.addEntreeImmoForm = this.formBuilder.group({
       familleimmo_id: ["", [Validators.required]],
       designation: ["", [Validators.required]],
       date_entree: ["", [Validators.required]],
       valeur_origine: ["", [Validators.required]],
-      duree_amortissement: [""],
-      date_fin_amortissement: [""],
+      //duree_amortissement: [""],
+      duree_amortissement: ["", [Validators.required, Validators.min(0)]],
+      //date_fin_amortissement: [""],
+      date_fin_amortissement: [{ value: "", disabled: true }, [Validators.required]],
       code: ["", [Validators.required]],
       localisation_id: ["", [Validators.required]],
       etat: ["", [Validators.required]],
@@ -103,7 +105,30 @@ export class EntreeImmoComponent implements OnInit {
     });
     this.initBienAmortissableListener();
     this.applyBienAmortissableValidators();
+
+    this.addEntreeImmoForm.get('date_entree')?.valueChanges.subscribe(() => {
+      this.calculateDateFin();
+    });
+
+    this.addEntreeImmoForm.get('duree_amortissement')?.valueChanges.subscribe(() => {
+      this.calculateDateFin();
+    });
   }
+
+  calculateDateFin() {
+  const dateEntree = this.addEntreeImmoForm.get('date_entree')?.value;
+  const duree = this.addEntreeImmoForm.get('duree_amortissement')?.value;
+
+  if (dateEntree && duree >= 0) {
+    const date = new Date(dateEntree);
+    date.setFullYear(date.getFullYear() + Number(duree));
+
+    const formattedDate = date.toISOString().split('T')[0];
+
+    this.addEntreeImmoForm.get('date_fin_amortissement')?.setValue(formattedDate);
+  }
+}
+
 
 setupCodeGeneration() {
   this.addEntreeImmoForm.get('familleimmo_id')?.valueChanges.subscribe(
@@ -130,9 +155,9 @@ setupCodeGeneration() {
         next: (response) => {
           const numero = String(response.nextNumero).padStart(3, '0');
           const codeGenere = `${prefixe}-${numero}`;
-          
+
           console.log("Code généré:", codeGenere);
-          
+
           // Mettre à jour le champ code
           this.addEntreeImmoForm.get('code')?.setValue(codeGenere);
         },
@@ -236,9 +261,15 @@ setupCodeGeneration() {
 
     if (this.addEntreeImmoForm.valid) {
       $('#spinnerr').removeClass('d-none');
-      this.immoService.save(this.addEntreeImmoForm.value).subscribe(
+      this.immoService.save(this.addEntreeImmoForm.getRawValue()).subscribe(
         (data: any) => {
-          location.reload();
+          this.getTableData();
+          const closeBtn = document.querySelector('#add_immo .btn-close') as HTMLElement;
+          closeBtn?.click();
+
+          alert("Immobilisation enrégistré avec succès");
+          //location.reload();
+         
         }
       )
     } else {
@@ -246,7 +277,7 @@ setupCodeGeneration() {
       this.messageAlert = "Attention ! Desolé le formulaire n'est pas bien renseigné"
       this.showAlert = true;
 
-      // alert("desole le formulaire n'est pas bien renseigné")
+      alert("desole le formulaire n'est pas bien renseigné")
     }
 
 
@@ -258,9 +289,14 @@ setupCodeGeneration() {
     if (this.editEntreeImmoForm.valid) {
       const id = this.editEntreeImmoForm.value.id;
       $('#spinner').removeClass('d-none');
-      this.immoService.edit(this.editEntreeImmoForm.value).subscribe(
+      this.immoService.edit(this.editEntreeImmoForm.getRawValue()).subscribe(
         (data: any) => {
-          location.reload();
+          //location.reload();
+          this.getTableData();
+          const closeBtn = document.querySelector('#edit_immo .btn-close') as HTMLElement;
+          closeBtn?.click();
+
+          alert("Immobilisation mise à jour avec succès");
         }
       )
       console.log("success")
@@ -279,8 +315,12 @@ setupCodeGeneration() {
       this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
         (data: any) => {
 
-          // alert(JSON.stringify(data))
-          location.reload();
+          this.getTableData();
+          const closeBtn = document.querySelector('#delete_immo .btn-close') as HTMLElement;
+          closeBtn?.click();
+
+          alert("Immobilisation supprimé avec succès");
+          //location.reload();
         }
       )
       console.log("success")
@@ -296,9 +336,11 @@ setupCodeGeneration() {
   getEditForm(row: any) {
   this.editEntreeImmoForm.patchValue({
     id: row.id,
+    familleimmo_id: row.familleimmo_id,
     designation: row.designation,
     date_entree: row.date_entree,
     valeur_origine: row.valeur_origine,
+    //valeur_origine: Number(row.valeur_origine),
     duree_amortissement: row.duree_amortissement,
     date_fin_amortissement: row.date_fin_amortissement,
     code: row.code,
