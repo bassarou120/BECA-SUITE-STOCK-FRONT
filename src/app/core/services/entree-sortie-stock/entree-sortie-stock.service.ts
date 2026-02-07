@@ -23,6 +23,11 @@ export class entreeSortieStockService {
     return this.http.post(`${this.url}/article`, data);
   }
 
+  getNextReferenceEntree() {
+  return this.http.get<any>(`${this.url}/mouvements/entree/next-reference`);
+}
+
+
   /**
    * Récupère la liste groupée des mouvements
    */
@@ -109,6 +114,18 @@ export class entreeSortieStockService {
   saveSortie(data: any): Observable<any> {
     return this.http.post(`${this.url}/mouvement_stock/sortie`, data);
   }
+
+  getNextReferenceSortie() {
+  return this.http.get<any>(`${this.url}/mouvements/sortie/next-reference`);
+}
+
+exportPdfSortie(reference: string): Observable<Blob> {
+  return this.http.get(
+    `${this.url}/sorties/pdf/${reference}`,
+    { responseType: 'blob' }
+  );
+}
+
 
   /**
    * Récupérer la liste des sorties

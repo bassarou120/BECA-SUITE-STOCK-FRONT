@@ -20,24 +20,24 @@ import * as $ from 'jquery';
 export class SortieStockComponent implements OnInit {
   public routes = routes;
 
-  
+
   // Listes de données pour les dropdowns
   public lstSortieStock: Array<any> = []; // Liste groupée par référence
   public lstArticles: any[] = [];
   public lstLocalisations: any[] = [];
   public lstDirections: any[] = [];
-  
-  
+
+
   // Liste temporaire pour le bon de sortie en cours de création
   public lstArticlesAajouter: any[] = [];
-  
+
   // Détails pour la vue "Détails"
   public lstArticlesDetails: any[] = [];
   public refSelectionnee = "";
 
   public stockDisponible = 0;
   public showloader = false;
-  
+
   // Formulaires
   public addSortieForm!: FormGroup;
   public itemToDelete: any;
@@ -66,6 +66,7 @@ export class SortieStockComponent implements OnInit {
     this.initForms();
     this.loadInitialData();
     this.getTableData();
+    this.loadNextReference();
   }
 
   private initForms() {
@@ -84,7 +85,7 @@ export class SortieStockComponent implements OnInit {
   private loadInitialData() {
     // Articles
     this.articleService.getAll().subscribe(res => this.lstArticles = res.data?.data || res.data);
-    
+
     // Localisations
     this.localisationService.getAll().subscribe(res => this.lstLocalisations = res.data?.data || res.data);
 
@@ -142,6 +143,31 @@ export class SortieStockComponent implements OnInit {
     this.lstArticlesAajouter.splice(index, 1);
   }
 
+  loadNextReference() {
+  this.stockService.getNextReferenceSortie().subscribe(res => {
+    this.addSortieForm.patchValue({
+      reference: res.reference
+    });
+  });
+}
+
+telechargerPdfSortie(reference: string) {
+  this.stockService.exportPdfSortie(reference).subscribe({
+    next: (blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `bon_sortie_${reference}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: () => {
+      alert('Erreur lors du téléchargement du PDF');
+    }
+  });
+}
+
+
   /**
    * Enregistrement final du bon de sortie au backend
    */
@@ -177,6 +203,7 @@ export class SortieStockComponent implements OnInit {
       next: () => {
         $('#spinnerr').addClass('d-none');
         this.lstArticlesAajouter = [];
+        alert("Sortie enregistrée avec succès !");
         location.reload();
       },
       error: (err) => {
@@ -228,43 +255,45 @@ export class SortieStockComponent implements OnInit {
 
   public onClickSubmitDelete() {
     if (!this.itemToDelete) return;
-  
+
     const reference = this.itemToDelete.reference;
     this.showloader = true;
-  
+
     // On lance la suppression via le service
     this.stockService.deleteSortieByRef(reference).subscribe({
       next: (res) => {
         // --- ÉTAPE 1 : FERMETURE MANUELLE DU MODAL ---
         // On récupère l'élément par son ID (celui défini dans votre HTML)
         const modalElement = document.getElementById('delete_sortie');
-        
+
         if (modalElement) {
           // On retire les classes Bootstrap qui affichent le modal
           modalElement.classList.remove('show');
           modalElement.style.display = 'none';
           modalElement.setAttribute('aria-hidden', 'true');
         }
-  
+
         // --- ÉTAPE 2 : NETTOYAGE DU BACKDROP (LE VOILE NOIR) ---
         // C'est souvent lui qui bloque l'écran si on ne le supprime pas
         const backdrops = document.querySelectorAll('.modal-backdrop');
         backdrops.forEach(backdrop => backdrop.remove());
-  
+
         // On redonne au corps de la page la possibilité de scroller
         document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
         document.body.style.paddingRight = '';
-  
+
         // --- ÉTAPE 3 : MISE À JOUR DE LA VUE ---
         // On rafraîchit la liste des données immédiatement
         this.getTableData();
-        
+
         this.showloader = false;
+        alert("Supprimé avec avec succès !");
         console.log("Suppression réussie et interface nettoyée.");
       },
       error: (err) => {
         this.showloader = false;
+        alert(err.error?.message || "Erreur lors de la suppression.");
         console.error("Erreur lors de la suppression", err);
         // Optionnel : afficher un message d'erreur à l'utilisateur ici
       }
