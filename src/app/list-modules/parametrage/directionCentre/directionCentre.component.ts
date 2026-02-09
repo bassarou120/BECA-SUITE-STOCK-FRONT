@@ -73,6 +73,8 @@ export class DirectionCentreComponent implements OnInit {
     $('#spinnerr').removeClass('d-none');
     this.data.save(this.addDirectionCentreForm.value).subscribe(
       (data:any)=>{
+        $('#spinner').addClass('d-none');
+          alert("Direction Centre ajouté avec succès");
         location.reload();
       }
     )
@@ -92,6 +94,8 @@ onClickSubmitEditDirectionCentre(){
       const id = this.editDirectionCentreForm.value.id;
       this.data.edit(this.editDirectionCentreForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+            alert("Direction Centre modifié avec succès");
           location.reload();
         }
       )
@@ -110,6 +114,8 @@ onClickSubmitDeleteDirectionCentre(){
       const id = this.deleteDirectionCentreForm.value.id;
       this.data.delete(this.deleteDirectionCentreForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+            alert("Direction Centre supprimé avec succès"); 
           location.reload();
         }
       )

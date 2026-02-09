@@ -72,6 +72,8 @@ export class CategorieFournisseurComponent implements OnInit {
       $('#spinnerr').removeClass('d-none');
       this.categorieService.save(this.addCategorieForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("Catégorie de fournisseur ajoutée avec succès");
           location.reload();
         },
         (error) => {
@@ -88,6 +90,8 @@ export class CategorieFournisseurComponent implements OnInit {
       $('#spinner').removeClass('d-none');
       this.categorieService.edit(this.editCategorieForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("Catégorie de fournisseur modifiée avec succès");
           location.reload();
         },
         (error) => {
@@ -102,6 +106,7 @@ export class CategorieFournisseurComponent implements OnInit {
     if (this.deleteCategorieForm.valid) {
       this.categorieService.delete(this.deleteCategorieForm.value.id).subscribe(
         (data: any) => {
+          alert("Catégorie de fournisseur supprimée avec succès");
           location.reload();
         }
       );

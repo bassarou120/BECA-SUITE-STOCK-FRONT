@@ -75,6 +75,8 @@ export class LocalisationComponent implements OnInit {
     $('#spinnerr').removeClass('d-none');
     this.data.save(this.addLocalisationForm.value).subscribe(
       (data:any)=>{
+        $('#spinner').addClass('d-none');
+          alert("la localisation a été ajouté avec succès");
         location.reload();
       }
     )
@@ -94,6 +96,8 @@ onClickSubmitEditLocalisation(){
       const id = this.editLocalisationForm.value.id;
       this.data.edit(this.editLocalisationForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+            alert("la localisation a été modifié avec succès");
           location.reload();
         }
       )
@@ -112,6 +116,8 @@ onClickSubmitDeleteLocalisation(){
       const id = this.deleteLocalisationForm.value.id;
       this.data.delete(this.deleteLocalisationForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+            alert("la localisation a été supprimé avec succès");
           location.reload();
         }
       )

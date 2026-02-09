@@ -70,6 +70,8 @@ export class SiteComponent implements OnInit {
     $('#spinnerr').removeClass('d-none');
     this.data.save(this.addSiteForm.value).subscribe(
       (data:any)=>{
+        $('#spinner').addClass('d-none');
+          alert("le site a été ajouté avec succès");
         location.reload();
       }
     )
@@ -89,6 +91,8 @@ onClickSubmitEditSite(){
       const id = this.editSiteForm.value.id;
       this.data.edit(this.editSiteForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+            alert("le site a été modifié avec succès");
           location.reload();
         }
       )
@@ -107,6 +111,8 @@ onClickSubmitDeleteSite(){
       const id = this.deleteSiteForm.value.id;
       this.data.delete(this.deleteSiteForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+            alert("le site a été supprimé avec succès");
           location.reload();
         }
       )
