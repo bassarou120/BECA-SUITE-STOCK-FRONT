@@ -18,6 +18,8 @@ import {
 } from 'ng-apexcharts';
 import { routes } from 'src/app/core/helpers/routes/routes';
 import { TableauBordService } from 'src/app/core/services/tableauBord/tableaubord.service';
+import { entreeSortieStockService } from "src/app/core/services/entree-sortie-stock/entree-sortie-stock.service";
+import { MatTableDataSource } from '@angular/material/table';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
@@ -48,8 +50,23 @@ export class AdminDashboardComponent implements OnInit {
   public layoutWidth = '1';
   public routes = routes;
 
+  public lstEtatStock: Array<any> = [];
+  public serialNumberArray: Array<number> = [];
+  dataSource!: MatTableDataSource<any>;
+
+    // Pagination
+    public pageSize = 10;
+    public totalData = 0;
+    public skip = 0;
+    public limit: number = this.pageSize;
+    public pageIndex = 0;
+    public currentPage = 1;
+    public pageNumberArray: Array<number> = [];
+    public pageSelection: Array<any> = [];
+    public totalPages = 0;
+
   dataTableauBord: any = [];
-  constructor(private tableauBordService: TableauBordService) {
+  constructor(private tableauBordService: TableauBordService, private entreeSortieStockService: entreeSortieStockService) {
     this.chartOptions2 = {
       series: [
         {
@@ -159,6 +176,8 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getTableauBord() {
+    this.lstEtatStock = [];
+    this.serialNumberArray = [];
     this.tableauBordService.getDataTableauBordStock().subscribe(
       (data: any) => {
         // alert(JSON.stringify(data.data));
@@ -166,5 +185,43 @@ export class AdminDashboardComponent implements OnInit {
       },
       (error: any) => {}
     );
+
+    this.entreeSortieStockService.getAllStock().subscribe({
+      next: (res: any) => {
+        // 1. Récupération des données
+        const data = res.data || [];
+    
+        // 2. Tri par criticité : 
+        // On calcule le ratio (quantité / seuil). Plus le ratio est petit, plus c'est critique.
+        // Les articles en rupture (quantité <= 0) apparaîtront en premier.
+        const sortedData = data.sort((a: any, b: any) => {
+          const ratioA = a.seuil_alerte > 0 ? a.quantite / a.seuil_alerte : 1;
+          const ratioB = b.seuil_alerte > 0 ? b.quantite / b.seuil_alerte : 1;
+          return ratioA - ratioB;
+        });
+    
+        // 3. Limiter aux 10 premiers
+        this.lstEtatStock = sortedData.slice(0, 10);
+        
+        // 4. Mise à jour de la table et pagination
+        this.totalData = this.lstEtatStock.length;
+        this.dataSource = new MatTableDataSource<any>(this.lstEtatStock);
+        this.calculateTotalPages(this.totalData, this.pageSize);
+      },
+      error: (err) => console.error("Erreur lors de la récupération du stock", err)
+    });
+
   }
+
+
+
+  private calculateTotalPages(totalData: number, pageSize: number): void {
+    this.pageNumberArray = [];
+    this.totalPages = Math.ceil(totalData / pageSize);
+    for (let i = 1; i <= this.totalPages; i++) {
+      this.pageNumberArray.push(i);
+      this.pageSelection.push({ skip: (i - 1) * pageSize, limit: i * pageSize });
+    }
+  }
+
 }
