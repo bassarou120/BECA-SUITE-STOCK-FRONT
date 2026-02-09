@@ -64,6 +64,7 @@ export class ArticleComponent implements OnInit {
       famille_id: ["", [Validators.required]],
       code: ["", [Validators.required]],
       designation: ["", [Validators.required]],
+      seuil_alerte: [0, [Validators.required]],
       description: ["", []],
     });
     this.editArticleForm = this.formBuilder.group({
@@ -71,6 +72,7 @@ export class ArticleComponent implements OnInit {
       famille_id: ["", [Validators.required]],
       code: ["", [Validators.required]],
       designation: ["", [Validators.required]],
+      seuil_alerte: [0, [Validators.required]],
       description: ["", []],
     });
     this.deleteArticleForm = this.formBuilder.group({
@@ -160,6 +162,7 @@ export class ArticleComponent implements OnInit {
       famille_id: row.famille_id,
       description: row.description,
       designation: row.designation,
+      seuil_alerte: row.seuil_alerte
     })
   }
 
