@@ -33,4 +33,9 @@ export class articleService {
     return this.http.delete<any>(`${this.url}/article/${data.id}`);
   }
 
+  getNextCodeArticle() {
+  return this.http.get<any>(`${this.url}/articles/next-code`);
+ }
+
+
 }

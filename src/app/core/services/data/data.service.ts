@@ -66,14 +66,14 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
-              menuValue: 'Entrées de stock',
+              menuValue: 'Achat/Entrées de stock',
               route: "entree-stock",
               // route: routes.mes_contrats,
               base: 'entree-stock',
               haseSubSubMenu: false,
             },
             {
-              menuValue: 'Sorties de stock',
+              menuValue: 'Consommation/Sorties de stock',
               route: "sortie-stock",
               base: 'sortie-stock',
               haseSubSubMenu: false,
@@ -677,14 +677,14 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
-              menuValue: 'Entrées de stock',
+              menuValue: 'Achats/Entrées de stock',
               route: "entree-stock",
               // route: routes.mes_contrats,
               base: 'entree-stock',
               haseSubSubMenu: false,
             },
             {
-              menuValue: 'Sorties de stock',
+              menuValue: 'Consommation/Sorties de stock',
               route: "sortie-stock",
               base: 'sortie-stock',
               haseSubSubMenu: false,

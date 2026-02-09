@@ -10,6 +10,7 @@ declare var $: any;
 
 import { entreeSortieStockService } from "../../core/services/entree-sortie-stock/entree-sortie-stock.service";
 import { articleService } from "../../core/services/article/article.service";
+import { FamilleService } from "../../core/services/famille/famille.service";
 import { fournisseurService } from "../../core/services/fournisseur/fournisseur.service";
 import { environment } from 'src/environments/environment';
 
@@ -23,17 +24,22 @@ export class EntreeStockComponent implements OnInit {
 
   public lstEntreeStock: Array<any> = [];
   public lstFournisseur: any[] = [];
-  public lstArticle: any[] = [];
+  // public lstArticle: any[] = [];
+
+  lstFamilles: any[] = [];
+  lstArticle: any[] = [];
+  filteredArticles: any[] = [];
+
 
   // Variables pour le regroupement
   public lstDetailsArrivage: any[] = [];
   public refSelectionnee: string = '';
-  
+
   public searchDataValue = '';
   dataSource!: MatTableDataSource<any>;
 
   public selectedFile: File | null = null;
-  public url = environment.base_url_backend || environment.backend; 
+  public url = environment.base_url_backend || environment.backend;
   // pagination variables
   public pageSize = 10;
   public totalData = 0;
@@ -54,15 +60,18 @@ export class EntreeStockComponent implements OnInit {
     private formBuilder: FormBuilder,
     public router: Router,
     private articleService: articleService,
+    private familleService: FamilleService,
     private fournisseurService: fournisseurService,
     private entreeSortieStockService: entreeSortieStockService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForms();
     this.getTableData();
     this.getFournisseurs();
     this.getArticles();
+    this.getFamilles();
+    this.loadNextReference();
   }
 
   private initForms(): void {
@@ -70,7 +79,7 @@ export class EntreeStockComponent implements OnInit {
       article_id: ["", [Validators.required]],
       famille_id: ["", [Validators.required]],
       fournisseur_id: ["", [Validators.required]],
-      reference: ["", [Validators.required]],
+      reference: [{ value: '', disabled: true }],
       date_mouvement: [new Date().toISOString().split('T')[0], [Validators.required]],
       quantite: ["", [Validators.required, Validators.min(1)]],
       prix_unitaire: ["", [Validators.required, Validators.min(0)]],
@@ -155,7 +164,7 @@ export class EntreeStockComponent implements OnInit {
   voirDetailsArrivage(reference: string) {
     this.refSelectionnee = reference;
     this.lstDetailsArrivage = [];
-    
+
     // On utilise le service pour récupérer les lignes spécifiques à cette référence
     // Note: Assurez-vous que cette méthode getDétailsParRéférence existe dans votre service
     this.entreeSortieStockService.getDétailsParRéférence(reference).subscribe({
@@ -172,12 +181,12 @@ export class EntreeStockComponent implements OnInit {
   private getTableData(): void {
     this.lstEntreeStock = [];
     this.serialNumberArray = [];
-    
+
     // Le backend renvoie maintenant des données groupées via indexEntree()
     this.entreeSortieStockService.getAll().subscribe((res: any) => {
       const data = res.data?.data || res.data || [];
       this.totalData = res.data?.total || data.length;
-      
+
       this.lstEntreeStock = data;
       this.dataSource = new MatTableDataSource<any>(this.lstEntreeStock);
       this.calculateTotalPages(this.totalData, this.pageSize);
@@ -195,6 +204,34 @@ export class EntreeStockComponent implements OnInit {
       this.lstArticle = res.data?.data || res.data || res;
     });
   }
+  getFamilles(): void {
+    this.familleService.getAll().subscribe((res: any) => {
+      this.lstFamilles = res.data?.data || res.data || res;
+    });
+  }
+
+  onFamilleChange(event: any) {
+    const familleId = event.target.value;
+
+    // Réinitialiser l'article sélectionné
+    this.addEntreeStockForm.patchValue({ article_id: '' });
+
+    if (!familleId) {
+      this.filteredArticles = [];
+      return;
+    }
+
+    this.filteredArticles = this.lstArticle.filter(a => a.famille_id == familleId);
+  }
+
+  loadNextReference() {
+  this.entreeSortieStockService.getNextReferenceEntree().subscribe(res => {
+    this.addEntreeStockForm.patchValue({
+      reference: res.reference
+    });
+  });
+}
+
 
   onClickSubmitAddEntreeStock(): void {
     if (this.addEntreeStockForm.valid) {
@@ -212,7 +249,7 @@ export class EntreeStockComponent implements OnInit {
   onClickSubmitEditEntree(): void {
     if (this.editEntreeStockForm.valid) {
       $('#spinner').removeClass('d-none');
-  
+
       const formData = new FormData();
       const formValues = this.editEntreeStockForm.value;
 
@@ -254,11 +291,12 @@ export class EntreeStockComponent implements OnInit {
     if (this.deleteEntreeStockForm.valid) {
       // CORRECTION 404 : Envoyer l'ID numérique uniquement
       const idToDelete = this.deleteEntreeStockForm.value.id;
-      
+
       this.entreeSortieStockService.delete(idToDelete).subscribe({
         next: () => {
-           this.closeModal('delete_department');
-           this.getTableData();
+          this.closeModal('delete_department');
+          this.getTableData();
+          alert("Mouvement supprimé avec succès !");
         },
         error: (err) => {
           console.error(err);
@@ -320,15 +358,15 @@ export class EntreeStockComponent implements OnInit {
 
   ajouterLigneALaListe() {
     const formValues = this.addEntreeStockForm.value;
-    
+
     // Trouver l'article sélectionné pour récupérer son nom et sa famille
     const selectedArticle = this.lstArticle.find(a => a.id == formValues.article_id);
-  
-    if (!selectedArticle || !formValues.quantite || !formValues.prix_unitaire) {
-      alert("Veuillez sélectionner un article, une quantité et un prix.");
+
+    if (!formValues.famille_id || !formValues.article_id || !formValues.quantite || !formValues.prix_unitaire) {
+      alert("Veuillez sélectionner une famille, un article, une quantité et un prix.");
       return;
     }
-  
+
     const nouvelleLigne = {
       article_id: formValues.article_id,
       designation: selectedArticle.designation, // Pour l'affichage dans le tableau HTML
@@ -341,9 +379,9 @@ export class EntreeStockComponent implements OnInit {
       taux_tva: formValues.taux_tva || 0,
       description: formValues.description || 'Entrée groupée'
     };
-  
+
     this.articlesAAjouter.push(nouvelleLigne);
-    
+
     // On reset uniquement les champs de saisie d'article pour le suivant
     this.addEntreeStockForm.patchValue({
       article_id: '',
@@ -357,12 +395,13 @@ export class EntreeStockComponent implements OnInit {
   }
 
   validerToutLeStock() {
+    console.log( "voici tt le formulaiire ", this.addEntreeStockForm.getRawValue() );
     if (this.articlesAAjouter.length === 0) {
       alert("La liste des articles est vide !");
       return;
     }
 
-    const formValues = this.addEntreeStockForm.value;
+    const formValues = this.addEntreeStockForm.getRawValue(); // getRawValue pour inclure les champs désactivés comme 'reference'
     if (!formValues.fournisseur_id || !formValues.reference) {
       alert("Veuillez remplir le fournisseur et la référence.");
       return;
@@ -374,7 +413,7 @@ export class EntreeStockComponent implements OnInit {
     formData.append('reference', formValues.reference);
     formData.append('date_mouvement', formValues.date_mouvement);
     formData.append('fournisseur_id', formValues.fournisseur_id);
-    
+
     if (this.selectedFile) {
       formData.append('piece_jointe', this.selectedFile, this.selectedFile.name);
     }
@@ -384,20 +423,20 @@ export class EntreeStockComponent implements OnInit {
     this.entreeSortieStockService.saveEntree(formData).subscribe({
       next: (res: any) => {
         $('#spinnerr').addClass('d-none');
-        
+
         // On rafraîchit les données d'abord
         this.getTableData();
-        
+
         // On vide les champs (incluant le fichier)
         this.resetAddForm();
-        
+
         // Fermeture automatique : on essaie les IDs courants de votre template
-        this.closeModal('add_department'); 
+        this.closeModal('add_department');
         this.closeModal('add_entree'); // Au cas où l'ID est différent
-        
+
         // Enfin l'alerte
         setTimeout(() => {
-            alert("Stock enregistré avec succès !");
+          alert("Stock enregistré avec succès !");
         }, 100);
       },
       error: (err: any) => {
@@ -410,7 +449,7 @@ export class EntreeStockComponent implements OnInit {
   private resetAddForm() {
     this.articlesAAjouter = [];
     this.selectedFile = null;
-    
+
     this.addEntreeStockForm.reset({
       date_mouvement: new Date().toISOString().split('T')[0],
       taux_tva: 0,
@@ -428,13 +467,13 @@ export class EntreeStockComponent implements OnInit {
     // 1. Clic sur le bouton de fermeture natif pour laisser Bootstrap gérer le nettoyage
     const modalElement = document.getElementById(id);
     if (modalElement) {
-        const closeBtn = modalElement.querySelector('[data-bs-dismiss="modal"]') as HTMLElement;
-        if (closeBtn) {
-            closeBtn.click();
-        } else {
-            // Fallback jQuery si le bouton n'est pas trouvé
-            $(`#${id}`).modal('hide');
-        }
+      const closeBtn = modalElement.querySelector('[data-bs-dismiss="modal"]') as HTMLElement;
+      if (closeBtn) {
+        closeBtn.click();
+      } else {
+        // Fallback jQuery si le bouton n'est pas trouvé
+        $(`#${id}`).modal('hide');
+      }
     }
 
     // 2. Nettoyage forcé de sécurité pour éviter le gel de l'écran (Backdrop persistant)

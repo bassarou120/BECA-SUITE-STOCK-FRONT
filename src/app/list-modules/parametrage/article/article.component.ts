@@ -59,6 +59,7 @@ export class ArticleComponent implements OnInit {
   ngOnInit(): void {
     this.getTableData();
     this.getFamille();
+    this.loadNextCodeArticle();
 
     this.addArticleForm = this.formBuilder.group({
       famille_id: ["", [Validators.required]],
@@ -96,6 +97,13 @@ export class ArticleComponent implements OnInit {
 
 
   }
+
+  loadNextCodeArticle() {
+  this.articleService.getNextCodeArticle().subscribe(res => {
+    this.addArticleForm.patchValue({ code: res.code });
+  });
+}
+
 
   onClickSubmitAddArticle() {
 

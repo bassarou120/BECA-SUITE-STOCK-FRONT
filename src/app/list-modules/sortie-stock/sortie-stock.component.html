@@ -1,19 +1,24 @@
 <!-- Page Content -->
 <div class="page-wrapper">
   <div class="content container-fluid">
-
     <!-- Page Header -->
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
           <h3 class="page-title">Gestion des Sorties de Stock</h3>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+            </li>
             <li class="breadcrumb-item active">Sorties de Stock</li>
           </ul>
         </div>
         <div class="col-auto float-end ms-auto">
-          <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_sortie">
+          <a
+            class="btn add-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#add_sortie"
+          >
             <i class="fa-solid fa-plus"></i> Nouveau Bon de Sortie
           </a>
         </div>
@@ -25,43 +30,79 @@
       <div class="col-md-12">
         <!-- Table Principal (Liste des Bons groupés par référence) -->
         <div class="table-responsive">
-          <table matSort (matSortChange)="sortData($event)" class="table table-striped custom-table datatable mb-0">
+          <table
+            matSort
+            (matSortChange)="sortData($event)"
+            class="table table-striped custom-table datatable mb-0"
+          >
             <thead>
               <tr>
-                <th style="width: 30px;">#</th>
+                <th style="width: 30px">#</th>
                 <th mat-sort-header="date">Date</th>
                 <th mat-sort-header="reference">Référence</th>
                 <th mat-sort-header="direction">Direction (Destinataire)</th>
                 <th mat-sort-header="localisation">Localisation (Site)</th>
+                <th class="text-center">Bon PDF</th>
                 <th class="text-end">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of lstSortieStock; let i = index;">
+              <tr *ngFor="let item of lstSortieStock; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ item.date_mouvement | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ item.date_mouvement | date: "dd/MM/yyyy" }}</td>
                 <td>
-                  <span class="badge bg-inverse-danger" style="cursor: pointer;" (click)="voirDetails(item.reference)" data-bs-toggle="modal" data-bs-target="#view_details">
+                  <span
+                    class="badge bg-inverse-danger"
+                    style="cursor: pointer"
+                    (click)="voirDetails(item.reference)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#view_details"
+                  >
                     <i class="fa fa-file-invoice me-1"></i> {{ item.reference }}
                   </span>
                 </td>
                 <td>{{ getDirectionLibelle(item.direction_id) }}</td>
                 <td>{{ getLocalisationLibelle(item.localisation_id) }}</td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="telechargerPdfSortie(item.reference)"
+                  >
+                    <i class="fa fa-file-pdf me-1"></i> Bon
+                  </button>
+                </td>
+
                 <td class="text-end">
                   <div class="dropdown dropdown-action">
-                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
                       <i class="material-icons">more_vert</i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" (click)="voirDetails(item.reference)" data-bs-toggle="modal" data-bs-target="#view_details">
+                      <a
+                        class="dropdown-item"
+                        (click)="voirDetails(item.reference)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#view_details"
+                      >
                         <i class="fa-solid fa-eye m-r-5"></i> Voir les articles
                       </a>
-                      <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_sortie" (click)="getDeleteForm(item)">
-                        <i class="fa-regular fa-trash-can m-r-5"></i> Supprimer le bon
+                      <a
+                        class="dropdown-item"
+                        data-bs-toggle="modal"
+                        data-bs-target="#delete_sortie"
+                        (click)="getDeleteForm(item)"
+                      >
+                        <i class="fa-regular fa-trash-can m-r-5"></i> Supprimer
+                        le bon
                       </a>
                     </div>
                   </div>
                 </td>
+                <br /><br /><br /><br />
               </tr>
               <tr *ngIf="lstSortieStock.length === 0">
                 <td colspan="6" class="text-center">
@@ -81,7 +122,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Créer un Bon de Sortie</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="addSortieForm">
@@ -89,31 +135,56 @@
             <div class="row bg-light p-3 rounded mb-4">
               <div class="col-sm-6">
                 <div class="input-block mb-3">
-                  <label class="col-form-label fw-bold">N° Référence <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text" formControlName="reference" placeholder="Ex: SORTIE-2024-001">
+                  <label class="col-form-label fw-bold"
+                    >N° Référence <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    formControlName="reference"
+                    placeholder="Ex: SORTIE-2024-001"
+                  />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="input-block mb-3">
-                  <label class="col-form-label fw-bold">Date <span class="text-danger">*</span></label>
-                  <input class="form-control" type="date" formControlName="date_mouvement">
+                  <label class="col-form-label fw-bold"
+                    >Date <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="date"
+                    formControlName="date_mouvement"
+                  />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="input-block mb-3">
-                  <label class="col-form-label fw-bold">Direction <span class="text-danger">*</span></label>
+                  <label class="col-form-label fw-bold"
+                    >Direction <span class="text-danger">*</span></label
+                  >
                   <select class="form-select" formControlName="direction_id">
                     <option value="">-- Sélectionner --</option>
-                    <option *ngFor="let dir of lstDirections" [value]="dir.id">{{dir.code}} - {{dir.intitule}}</option>
+                    <option *ngFor="let dir of lstDirections" [value]="dir.id">
+                      {{ dir.code }} - {{ dir.intitule }}
+                    </option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="input-block mb-3">
-                  <label class="col-form-label fw-bold">Localisation / Site <span class="text-danger">*</span></label>
+                  <label class="col-form-label fw-bold"
+                    >Localisation / Site
+                    <span class="text-danger">*</span></label
+                  >
                   <select class="form-select" formControlName="localisation_id">
                     <option value="">-- Sélectionner --</option>
-                    <option *ngFor="let loc of lstLocalisations" [value]="loc.id">{{ loc.nom_localisation }} - {{ loc.site.nom_site }}</option>
+                    <option
+                      *ngFor="let loc of lstLocalisations"
+                      [value]="loc.id"
+                    >
+                      {{ loc.nom_localisation }} - {{ loc.site.nom_site }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -121,26 +192,44 @@
 
             <!-- Section : Ajout dynamique d'articles -->
             <div class="border-top pt-3">
-              <h6 class="text-primary fw-bold"><i class="fa fa-cart-plus me-2"></i>Articles à sortir</h6>
+              <h6 class="text-primary fw-bold">
+                <i class="fa fa-cart-plus me-2"></i>Articles à sortir
+              </h6>
               <div class="row align-items-end">
                 <div class="col-sm-5">
                   <div class="input-block mb-3">
                     <label class="col-form-label">Article</label>
-                    <select class="form-select" formControlName="temp_article_id" (change)="onChangeArticle()">
+                    <select
+                      class="form-select"
+                      formControlName="temp_article_id"
+                      (change)="onChangeArticle()"
+                    >
                       <option value="">Choisir un article</option>
-                      <option *ngFor="let art of lstArticles" [value]="art.id">{{ art.designation }}</option>
+                      <option *ngFor="let art of lstArticles" [value]="art.id">
+                        {{ art.designation }}
+                      </option>
                     </select>
                   </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="input-block mb-3">
                     <label class="col-form-label">Quantité</label>
-                    <input class="form-control" type="number" formControlName="temp_quantite">
-                    <small class="text-info" *ngIf="stockDisponible > 0">Dispo : {{ stockDisponible }}</small>
+                    <input
+                      class="form-control"
+                      type="number"
+                      formControlName="temp_quantite"
+                    />
+                    <small class="text-info" *ngIf="stockDisponible > 0"
+                      >Dispo : {{ stockDisponible }}</small
+                    >
                   </div>
                 </div>
                 <div class="col-sm-4">
-                  <button type="button" class="btn btn-secondary w-100 mb-3" (click)="ajouterArticleALaListe()">
+                  <button
+                    type="button"
+                    class="btn btn-secondary w-100 mb-3"
+                    (click)="ajouterArticleALaListe()"
+                  >
                     <i class="fa fa-plus"></i> Ajouter au bon
                   </button>
                 </div>
@@ -148,7 +237,10 @@
             </div>
 
             <!-- Tableau récapitulatif du bon en cours -->
-            <div class="table-responsive" *ngIf="lstArticlesAajouter.length > 0">
+            <div
+              class="table-responsive"
+              *ngIf="lstArticlesAajouter.length > 0"
+            >
               <table class="table table-sm table-hover table-bordered">
                 <thead class="bg-dark text-white">
                   <tr>
@@ -162,7 +254,11 @@
                     <td>{{ line.designation }}</td>
                     <td class="text-center">{{ line.quantite }}</td>
                     <td class="text-end">
-                      <button type="button" class="btn btn-sm btn-outline-danger" (click)="retirerArticle(idx)">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        (click)="retirerArticle(idx)"
+                      >
                         <i class="fa fa-trash"></i>
                       </button>
                     </td>
@@ -172,7 +268,13 @@
             </div>
 
             <div class="submit-section mt-4">
-              <button class="btn btn-primary submit-btn" (click)="onClickSubmitAddSortie()" [disabled]="addSortieForm.invalid || lstArticlesAajouter.length === 0">
+              <button
+                class="btn btn-primary submit-btn"
+                (click)="onClickSubmitAddSortie()"
+                [disabled]="
+                  addSortieForm.invalid || lstArticlesAajouter.length === 0
+                "
+              >
                 <i class="fa fa-save me-2"></i>Enregistrer le Bon Complet
                 <span id="spinnerr" class="fa fa-spinner fa-spin d-none"></span>
               </button>
@@ -188,8 +290,14 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Détails du bon : <strong>{{ refSelectionnee }}</strong></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <h5 class="modal-title">
+            Détails du bon : <strong>{{ refSelectionnee }}</strong>
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
         </div>
         <div class="modal-body">
           <table class="table table-striped table-bordered">
@@ -201,7 +309,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let det of lstArticlesDetails">
-                <td>{{ det.article?.designation || 'Article inconnu' }}</td>
+                <td>{{ det.article?.designation || "Article inconnu" }}</td>
                 <td class="text-center fw-bold">{{ det.quantite }}</td>
               </tr>
             </tbody>
@@ -219,15 +327,28 @@
           <div class="form-header text-center">
             <i class="fa fa-exclamation-triangle text-danger fa-3x mb-3"></i>
             <h3>Supprimer le bon complet ?</h3>
-            <p>Tous les articles liés à cette référence seront annulés. Cette action est irréversible.</p>
+            <p>
+              Tous les articles liés à cette référence seront annulés. Cette
+              action est irréversible.
+            </p>
           </div>
           <div class="modal-btn delete-action">
             <div class="row">
               <div class="col-6">
-                <button class="btn btn-danger continue-btn w-100" (click)="onClickSubmitDelete()">Confirmer</button>
+                <button
+                  class="btn btn-danger continue-btn w-100"
+                  (click)="onClickSubmitDelete()"
+                >
+                  Confirmer
+                </button>
               </div>
               <div class="col-6">
-                <button data-bs-dismiss="modal" class="btn btn-secondary cancel-btn w-100">Annuler</button>
+                <button
+                  data-bs-dismiss="modal"
+                  class="btn btn-secondary cancel-btn w-100"
+                >
+                  Annuler
+                </button>
               </div>
             </div>
           </div>

@@ -1,18 +1,23 @@
 <div class="page-wrapper">
   <div class="content container-fluid">
-
     <!-- Page Header -->
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
           <h3 class="page-title">Liste des entrées de stock</h3>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a [routerLink]="routes.adminDashboard">Tableau de bord</a></li>
+            <li class="breadcrumb-item">
+              <a [routerLink]="routes.adminDashboard">Tableau de bord</a>
+            </li>
             <li class="breadcrumb-item active">Stock</li>
           </ul>
         </div>
         <div class="col-auto float-end ms-auto">
-          <a class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department">
+          <a
+            class="btn add-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#add_department"
+          >
             <i class="fa-solid fa-plus"></i> Ajouter une entrée
           </a>
         </div>
@@ -28,7 +33,11 @@
               <div class="dataTables_length">
                 <label>
                   Afficher
-                  <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize()" class="form-control form-control-sm">
+                  <select
+                    [(ngModel)]="pageSize"
+                    (ngModelChange)="changePageSize()"
+                    class="form-control form-control-sm"
+                  >
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -42,10 +51,14 @@
 
         <!-- Table Principal -->
         <div id="to_export" class="table-responsive">
-          <table matSort (matSortChange)="sortData($event)" class="table table-striped custom-table datatable mb-0">
+          <table
+            matSort
+            (matSortChange)="sortData($event)"
+            class="table table-striped custom-table datatable mb-0"
+          >
             <thead>
               <tr>
-                <th style="width: 30px;">#</th>
+                <th style="width: 30px">#</th>
                 <th mat-sort-header="date">Date</th>
                 <th mat-sort-header="ref">Référence</th>
                 <th mat-sort-header="fournisseur">Fournisseur</th>
@@ -55,37 +68,61 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of lstEntreeStock; let i = index;">
+              <tr *ngFor="let item of lstEntreeStock; let i = index">
                 <td>{{ i + 1 }}</td>
-                <td>{{ item.date_mouvement | date : "dd-MM-yyyy" }}</td>
+                <td>{{ item.date_mouvement | date: "dd-MM-yyyy" }}</td>
                 <td>
-                  <span class="badge bg-inverse-info" style="cursor: pointer;" (click)="voirDetailsArrivage(item.reference)" data-bs-toggle="modal" data-bs-target="#view_details">
+                  <span
+                    class="badge bg-inverse-info"
+                    style="cursor: pointer"
+                    (click)="voirDetailsArrivage(item.reference)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#view_details"
+                  >
                     <i class="fa fa-eye me-1"></i> {{ item.reference }}
                   </span>
                 </td>
-                <td>{{ item.fournisseur?.intitule || 'N/A' }}</td>
+                <td>{{ item.fournisseur?.intitule || "N/A" }}</td>
                 <td class="text-center">
-                   <!-- Affiche le nombre d'articles si votre backend le renvoie, sinon "Voir" -->
-                   <button class="btn btn-sm btn-info text-white" (click)="voirDetailsArrivage(item.reference)" data-bs-toggle="modal" data-bs-target="#view_details">
+                  <!-- Affiche le nombre d'articles si votre backend le renvoie, sinon "Voir" -->
+                  <button
+                    class="btn btn-sm btn-info text-white"
+                    (click)="voirDetailsArrivage(item.reference)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#view_details"
+                  >
                     <i class="fa fa-list"></i> Voir
-                   </button>
+                  </button>
                 </td>
                 <td class="text-center">
-                  <a *ngIf="item.piece_jointe" 
-                     [href]="url + '/storage/' + item.piece_jointe" 
-                     target="_blank" 
-                     class="btn btn-sm btn-outline-primary">
+                  <a
+                    *ngIf="item.piece_jointe"
+                    [href]="url + '/storage/' + item.piece_jointe"
+                    target="_blank"
+                    class="btn btn-sm btn-outline-primary"
+                  >
                     <i class="fa fa-download"></i>
                   </a>
-                  <span *ngIf="!item.piece_jointe" class="text-muted small">-</span>
+                  <span *ngIf="!item.piece_jointe" class="text-muted small"
+                    >-</span
+                  >
                 </td>
                 <td class="text-end">
                   <div class="dropdown dropdown-action">
-                    <a class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
                       <i class="material-icons">more_vert</i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" (click)="voirDetailsArrivage(item.reference)" data-bs-toggle="modal" data-bs-target="#view_details">
+                      <a
+                        class="dropdown-item"
+                        (click)="voirDetailsArrivage(item.reference)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#view_details"
+                      >
                         <i class="fa-solid fa-list m-r-5"></i> Voir articles
                       </a>
                     </div>
@@ -93,7 +130,9 @@
                 </td>
               </tr>
               <tr *ngIf="lstEntreeStock.length === 0">
-                <td colspan="7" class="text-center"><h5>Aucun mouvement trouvé</h5></td>
+                <td colspan="7" class="text-center">
+                  <h5>Aucun mouvement trouvé</h5>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -103,20 +142,46 @@
         <div class="table_footer">
           <div class="col-sm-12 col-md-5">
             <div class="dataTables_info">
-              Affichage de {{ skip + 1 }} à {{ (skip + pageSize > totalData) ? totalData : skip + pageSize }} sur {{ totalData }}
+              Affichage de {{ skip + 1 }} à
+              {{
+                skip + pageSize > totalData ? totalData : skip + pageSize
+              }}
+              sur {{ totalData }}
             </div>
           </div>
           <div class="col-sm-12 col-md-7">
             <div class="pagination_section">
               <ul class="pagination">
                 <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);">Précédent</a>
+                  <a
+                    (click)="getMoreData('previous')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    >Précédent</a
+                  >
                 </li>
-                <li class="page-item" *ngFor="let item of pageNumberArray" [class.active]="item === currentPage">
-                  <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">{{ item }}</a>
+                <li
+                  class="page-item"
+                  *ngFor="let item of pageNumberArray"
+                  [class.active]="item === currentPage"
+                >
+                  <a
+                    (click)="moveToPage(item)"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    >{{ item }}</a
+                  >
                 </li>
-                <li class="page-item" [class.disabled]="currentPage === totalPages">
-                  <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Suivant</a>
+                <li
+                  class="page-item"
+                  [class.disabled]="currentPage === totalPages"
+                >
+                  <a
+                    (click)="getMoreData('next')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    >Suivant</a
+                  >
                 </li>
               </ul>
             </div>
@@ -132,19 +197,27 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Articles de la référence : <span class="text-primary">{{ refSelectionnee }}</span></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">
+            Articles de la référence :
+            <span class="text-primary">{{ refSelectionnee }}</span>
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <div class="table-responsive">
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                <th>Désignation</th>
-                <th class="text-center">Qté</th>
-                <th class="text-end">P.U HT</th>
-                <th class="text-end">Total</th>
-                <th class="text-end">Actions</th>
+                  <th>Désignation</th>
+                  <th class="text-center">Qté</th>
+                  <th class="text-end">P.U HT</th>
+                  <th class="text-end">Total</th>
+                  <th class="text-end">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,29 +225,37 @@
                   <td>{{ det.article?.designation }}</td>
                   <td class="text-center">{{ det.quantite }}</td>
                   <td class="text-end">{{ det.prix_unitaire | number }}</td>
-                  <td class="text-end fw-bold">{{ det.quantite * det.prix_unitaire | number }}</td>
+                  <td class="text-end fw-bold">
+                    {{ det.quantite * det.prix_unitaire | number }}
+                  </td>
                   <td class="text-end">
-                  <div class="btn-group">
-                  <!-- Bouton Modifier l'article -->
-                    <button class="btn btn-sm btn-outline-primary me-1"
-                    (click)="getEditForm(det)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_department">
-                    <i class="fa fa-pencil"></i>
-                    </button>
-                  <!-- Bouton Supprimer l'article -->
-                    <button class="btn btn-sm btn-outline-danger"
-                    (click)="getDeleteForm(det)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete_department">
-                    <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
+                    <div class="btn-group">
+                      <!-- Bouton Modifier l'article -->
+                      <button
+                        class="btn btn-sm btn-outline-primary me-1"
+                        (click)="getEditForm(det)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#edit_department"
+                      >
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                      <!-- Bouton Supprimer l'article -->
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        (click)="getDeleteForm(det)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#delete_department"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
-                  <tr *ngIf="lstDetailsArrivage.length === 0">
-                    <td colspan="5" class="text-center">Chargement des détails...</td>
-                  </tr>
+                <tr *ngIf="lstDetailsArrivage.length === 0">
+                  <td colspan="5" class="text-center">
+                    Chargement des détails...
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -189,7 +270,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Nouvelle entrée de stock</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="addEntreeStockForm">
@@ -197,13 +283,23 @@
               <div class="col-md-3">
                 <div class="input-block mb-3">
                   <label>Date <span class="text-danger">*</span></label>
-                  <input class="form-control" type="date" formControlName="date_mouvement">
+                  <input
+                    class="form-control"
+                    type="date"
+                    formControlName="date_mouvement"
+                  />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="input-block mb-3">
                   <label>Référence <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text" formControlName="reference" placeholder="Ex: FAC-001">
+                  <input
+                    class="form-control"
+                    type="text"
+                    formControlName="reference"
+                    placeholder="Ex: FAC-001"
+                    readonly
+                  />
                 </div>
               </div>
               <div class="col-md-3">
@@ -211,38 +307,84 @@
                   <label>Fournisseur <span class="text-danger">*</span></label>
                   <select class="form-control" formControlName="fournisseur_id">
                     <option value="">-- Sélectionner --</option>
-                    <option *ngFor="let f of lstFournisseur" [value]="f.id">{{ f.intitule }}</option>
+                    <option *ngFor="let f of lstFournisseur" [value]="f.id">
+                      {{ f.intitule }}
+                    </option>
                   </select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="input-block mb-3">
                   <label>Pièce Jointe</label>
-                  <input class="form-control" type="file" (change)="onFileSelected($event)" accept=".pdf,.png,.jpg,.jpeg">
+                  <input
+                    class="form-control"
+                    type="file"
+                    (change)="onFileSelected($event)"
+                    accept=".pdf,.png,.jpg,.jpeg"
+                  />
                 </div>
               </div>
             </div>
 
-            <hr>
+            <hr />
             <h6>Ajouter un article à la liste</h6>
-            <div class="row align-items-end bg-light p-3 mb-3 rounded shadow-sm">
+            <div
+              class="row align-items-end bg-light p-3 mb-3 rounded shadow-sm"
+            >
               <div class="col-md-4">
-                <label class="fw-bold">Article</label>
-                <select class="form-control" formControlName="article_id">
-                  <option value="">-- Sélectionner --</option>
-                  <option *ngFor="let art of lstArticle" [value]="art.id">{{ art.designation }}</option>
+                <label class="fw-bold">Famille</label>
+                <select
+                  class="form-control"
+                  formControlName="famille_id"
+                  (change)="onFamilleChange($event)"
+                >
+                  <option value="">-- Sélectionner une famille --</option>
+                  <option *ngFor="let fam of lstFamilles" [value]="fam.id">
+                    {{ fam.intitule }}
+                  </option>
                 </select>
               </div>
+
+              <div class="col-md-4">
+                <label class="fw-bold">Article</label>
+                <select
+                  class="form-control"
+                  formControlName="article_id"
+                  [disabled]="filteredArticles.length === 0"
+                >
+                  <option value="">-- Sélectionner un article --</option>
+                  <option *ngFor="let art of filteredArticles" [value]="art.id">
+                    {{ art.designation }}
+                  </option>
+                </select>
+              </div>
+
               <div class="col-md-2">
                 <label class="fw-bold">Qté</label>
-                <input class="form-control" type="number" formControlName="quantite" min="1">
+                <input
+                  class="form-control"
+                  type="number"
+                  formControlName="quantite"
+                  min="1"
+                />
               </div>
-              <div class="col-md-3">
-                <label class="fw-bold">P.U HT</label>
-                <input class="form-control" type="number" formControlName="prix_unitaire" min="0">
+
+              <div class="col-md-2">
+                <label class="fw-bold">P.U TTC</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  formControlName="prix_unitaire"
+                  min="0"
+                />
               </div>
-              <div class="col-md-3">
-                <button type="button" class="btn btn-info w-100 text-white" (click)="ajouterLigneALaListe()">
+
+              <div class="col-md-12 mt-3">
+                <button
+                  type="button"
+                  class="btn btn-info w-100 text-white"
+                  (click)="ajouterLigneALaListe()"
+                >
                   <i class="fa fa-plus-circle"></i> Ajouter à la liste
                 </button>
               </div>
@@ -256,7 +398,7 @@
                     <th class="text-center">Qté</th>
                     <th class="text-end">P.U</th>
                     <th class="text-end">Total</th>
-                    <th class="text-center" style="width: 50px;">Action</th>
+                    <th class="text-center" style="width: 50px">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -264,9 +406,13 @@
                     <td>{{ item.designation }}</td>
                     <td class="text-center">{{ item.quantite }}</td>
                     <td class="text-end">{{ item.prix_unitaire | number }}</td>
-                    <td class="text-end fw-bold">{{ item.quantite * item.prix_unitaire | number }} FCFA</td>
+                    <td class="text-end fw-bold">
+                      {{ item.quantite * item.prix_unitaire | number }} FCFA
+                    </td>
                     <td class="text-center">
-                      <a (click)="retirerLigne(i)" class="text-danger pointer"><i class="fa-solid fa-trash-can"></i></a>
+                      <a (click)="retirerLigne(i)" class="text-danger pointer"
+                        ><i class="fa-solid fa-trash-can"></i
+                      ></a>
                     </td>
                   </tr>
                 </tbody>
@@ -274,10 +420,13 @@
             </div>
 
             <div class="submit-section">
-              <button class="btn btn-primary submit-btn" type="button" 
-                      (click)="validerToutLeStock()" 
-                      [disabled]="articlesAAjouter.length === 0">
-                <i class="fa fa-save"></i> Enregistrer le mouvement 
+              <button
+                class="btn btn-primary submit-btn"
+                type="button"
+                (click)="validerToutLeStock()"
+                [disabled]="articlesAAjouter.length === 0"
+              >
+                <i class="fa fa-save"></i> Enregistrer le mouvement
                 <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span>
               </button>
             </div>
@@ -293,21 +442,37 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Modifier le mouvement</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
-          <form [formGroup]="editEntreeStockForm" (ngSubmit)="onClickSubmitEditEntree()">
+          <form
+            [formGroup]="editEntreeStockForm"
+            (ngSubmit)="onClickSubmitEditEntree()"
+          >
             <div class="row">
               <div class="col-md-6">
                 <div class="input-block mb-3">
                   <label>Référence</label>
-                  <input class="form-control" type="text" formControlName="reference">
+                  <input
+                    class="form-control"
+                    type="text"
+                    formControlName="reference"
+                  />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="input-block mb-3">
                   <label>Pièce Jointe</label>
-                  <input class="form-control" type="file" (change)="onFileSelected($event)">
+                  <input
+                    class="form-control"
+                    type="file"
+                    (change)="onFileSelected($event)"
+                  />
                 </div>
               </div>
             </div>
@@ -316,7 +481,9 @@
                 <div class="input-block mb-3">
                   <label>Article</label>
                   <select class="form-control" formControlName="article_id">
-                    <option *ngFor="let a of lstArticle" [value]="a.id">{{ a.designation }}</option>
+                    <option *ngFor="let a of lstArticle" [value]="a.id">
+                      {{ a.designation }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -324,7 +491,9 @@
                 <div class="input-block mb-3">
                   <label>Fournisseur</label>
                   <select class="form-control" formControlName="fournisseur_id">
-                    <option *ngFor="let f of lstFournisseur" [value]="f.id">{{ f.intitule }}</option>
+                    <option *ngFor="let f of lstFournisseur" [value]="f.id">
+                      {{ f.intitule }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -333,19 +502,31 @@
               <div class="col-md-6">
                 <div class="input-block mb-3">
                   <label>Quantité</label>
-                  <input class="form-control" type="number" formControlName="quantite">
+                  <input
+                    class="form-control"
+                    type="number"
+                    formControlName="quantite"
+                  />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="input-block mb-3">
                   <label>Prix Unitaire</label>
-                  <input class="form-control" type="number" formControlName="prix_unitaire">
+                  <input
+                    class="form-control"
+                    type="number"
+                    formControlName="prix_unitaire"
+                  />
                 </div>
               </div>
             </div>
             <div class="submit-section">
-              <button class="btn btn-primary submit-btn" type="submit" [disabled]="editEntreeStockForm.invalid">
-                <i class="fa fa-refresh"></i> Mettre à jour 
+              <button
+                class="btn btn-primary submit-btn"
+                type="submit"
+                [disabled]="editEntreeStockForm.invalid"
+              >
+                <i class="fa fa-refresh"></i> Mettre à jour
                 <span class="fa fa-spinner fa-spin d-none" id="spinner"></span>
               </button>
             </div>
@@ -368,10 +549,20 @@
           <div class="modal-btn delete-action">
             <div class="row">
               <div class="col-6">
-                <button (click)="onClickSubmitDelete()" class="btn btn-danger continue-btn w-100">Supprimer</button>
+                <button
+                  (click)="onClickSubmitDelete()"
+                  class="btn btn-danger continue-btn w-100"
+                >
+                  Supprimer
+                </button>
               </div>
               <div class="col-6">
-                <button data-bs-dismiss="modal" class="btn btn-secondary cancel-btn w-100">Annuler</button>
+                <button
+                  data-bs-dismiss="modal"
+                  class="btn btn-secondary cancel-btn w-100"
+                >
+                  Annuler
+                </button>
               </div>
             </div>
           </div>
