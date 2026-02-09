@@ -91,6 +91,8 @@ export class FournisseurComponent implements OnInit {
       $('#spinnerr').removeClass('d-none');
       this.fournisseurService.save(this.addFournisseurForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("Fournisseur ajouté avec succès");
           location.reload();
         },
         (error) => {
@@ -108,6 +110,8 @@ export class FournisseurComponent implements OnInit {
       $('#spinner').removeClass('d-none');
       this.fournisseurService.edit(this.editFournisseurForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("Fournisseur modifié avec succès");
           location.reload();
         },
         (error) => {
@@ -124,6 +128,7 @@ export class FournisseurComponent implements OnInit {
     if (this.deleteFournisseurForm.valid) {
       this.fournisseurService.delete(this.deleteFournisseurForm.value.id).subscribe(
         (data: any) => {
+          alert("Fournisseur supprimé avec succès");
           location.reload();
         }
       );

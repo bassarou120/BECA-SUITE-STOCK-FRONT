@@ -113,6 +113,8 @@ export class ArticleComponent implements OnInit {
       $('#spinnerr').removeClass('d-none');
       this.articleService.save(this.addArticleForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("l'article a été ajouté avec succès");
           location.reload();
         }
       )
@@ -132,6 +134,8 @@ export class ArticleComponent implements OnInit {
       const id = this.editArticleForm.value.id;
       this.articleService.edit(this.editArticleForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("l'article a été modifié avec succès");
           location.reload();
         }
       )
@@ -150,7 +154,7 @@ export class ArticleComponent implements OnInit {
       const id = this.deleteArticleForm.value.id;
       this.articleService.delete(this.deleteArticleForm.value).subscribe(
         (data: any) => {
-
+          alert("l'article a été supprimé avec succès");
           // alert(JSON.stringify(data))
           location.reload();
         }

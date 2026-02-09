@@ -203,7 +203,7 @@ telechargerPdfSortie(reference: string) {
       next: () => {
         $('#spinnerr').addClass('d-none');
         this.lstArticlesAajouter = [];
-        alert("Sortie enregistrée avec succès !");
+        alert("Bon de sortie enregistré avec succès !");
         location.reload();
       },
       error: (err) => {

@@ -72,12 +72,14 @@ export class FamilleComponent implements OnInit {
     $('#spinnerr').removeClass('d-none');
     this.data.save(this.addFamilleForm.value).subscribe(
       (data:any)=>{
+        $('#spinner').addClass('d-none');
+          alert("Famille ajouté avec succès");
         location.reload();
       }
     )
   }else {
     $('#spinnerr').addClass('d-none');
-    alert("desole le formulaire n'est pas bien renseigné")
+    alert("Désole le formulaire n'est pas bien renseigné")
   }
 
 
@@ -91,6 +93,8 @@ onClickSubmitEditFamille(){
       const id = this.editFamilleForm.value.id;
       this.data.edit(this.editFamilleForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+          alert("Famille modifiée avec succès");
           location.reload();
         }
       )
@@ -109,6 +113,8 @@ onClickSubmitDeleteFamille(){
       const id = this.deleteFamilleForm.value.id;
       this.data.delete(this.deleteFamilleForm.value).subscribe(
         (data:any)=>{
+          $('#spinner').addClass('d-none');
+          alert("Famille supprimée avec succès");
           location.reload();
         }
       )
