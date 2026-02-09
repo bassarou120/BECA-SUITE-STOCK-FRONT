@@ -177,6 +177,7 @@ export class SortieStockComponent implements OnInit {
       next: () => {
         $('#spinnerr').addClass('d-none');
         this.lstArticlesAajouter = [];
+        alert("Bon de sortie enregistré avec succès !");
         location.reload();
       },
       error: (err) => {
