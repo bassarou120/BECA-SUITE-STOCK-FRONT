@@ -250,6 +250,8 @@ export class ReparationImmoComponent implements OnInit {
     if (this.addReparationImmoForm.valid) {
       this.immoService.saveRepation(this.addReparationImmoForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("Reparation Immo ajouté avec succès");
           location.reload();
         }
       )
@@ -270,6 +272,8 @@ export class ReparationImmoComponent implements OnInit {
       const id = this.editReparationImmoForm.value.id;
       this.immoService.edit(this.editReparationImmoForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("Reparation Immo modifié avec succès");
           location.reload();
         }
       )
@@ -288,7 +292,7 @@ export class ReparationImmoComponent implements OnInit {
       const id = this.deleteReparationImmoForm.value.id;
       this.immoService.deleteRepartion(this.deleteReparationImmoForm.value).subscribe(
         (data: any) => {
-
+          alert("Reparation Immo supprimé avec succès");
           // alert(JSON.stringify(data))
           location.reload();
         }

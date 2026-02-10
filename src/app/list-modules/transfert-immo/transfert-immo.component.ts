@@ -303,6 +303,8 @@ export class TransfertImmoComponent implements OnInit {
       $('#spinnerr').removeClass('d-none');
       this.immoService.saveTransfert(this.addTransfertImmoForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("Transfert ajouté avec succès !");
           location.reload();
         }
       )
@@ -346,6 +348,7 @@ export class TransfertImmoComponent implements OnInit {
       const id = this.editTransfertImmoForm.value.id;
       this.immoService.editTransfert(this.editTransfertImmoForm.value).subscribe(
         (data: any) => {
+          alert("Transfert modifié avec succès !");
           location.reload();
         }
       )
@@ -364,7 +367,7 @@ export class TransfertImmoComponent implements OnInit {
       const id = this.deleteEntreeImmoForm.value.id;
       this.immoService.deleteTransfertImmo(this.deleteEntreeImmoForm.value).subscribe(
         (data: any) => {
-
+          alert("Transfert supprimé avec succès !");
           // alert(JSON.stringify(data))
           location.reload();
         }
