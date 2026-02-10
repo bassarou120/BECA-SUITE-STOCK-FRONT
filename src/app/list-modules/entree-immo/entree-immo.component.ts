@@ -284,70 +284,87 @@ setupCodeGeneration() {
   }
 
   onClickSubmitEditArticle() {
-    console.log(this.editEntreeImmoForm.value)
-
     if (this.editEntreeImmoForm.valid) {
-      const id = this.editEntreeImmoForm.value.id;
-      $('#spinner').removeClass('d-none');
-      this.immoService.edit(this.editEntreeImmoForm.getRawValue()).subscribe(
-        (data: any) => {
-          //location.reload();
+      $('#spinner').removeClass('d-none'); // On active le spinner seulement ici
+      this.immoService.edit(this.editEntreeImmoForm.getRawValue()).subscribe({
+        next: (data: any) => {
+          $('#spinner').addClass('d-none'); // On cache le spinner après succès
           this.getTableData();
           const closeBtn = document.querySelector('#edit_immo .btn-close') as HTMLElement;
           closeBtn?.click();
-
           alert("Immobilisation mise à jour avec succès");
+        },
+        error: (err) => {
+          $('#spinner').addClass('d-none'); // On cache le spinner si erreur serveur
+          alert("Erreur lors de la mise à jour");
         }
-      )
-      console.log("success")
+      });
     } else {
+      // Si le formulaire est invalide, on s'assure que le spinner est caché
       $('#spinner').addClass('d-none');
-      alert("desole le formulaire n'est pas bien renseigné")
+      alert("desole le formulaire n'est pas bien renseigné");
     }
-
   }
 
   onClickSubmitDeleteImmo() {
-    console.log(this.deleteEntreeImmoForm.value)
-
     if (this.deleteEntreeImmoForm.valid) {
-      const id = this.deleteEntreeImmoForm.value.id;
-      this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe(
-        (data: any) => {
-
+      this.immoService.delete(this.deleteEntreeImmoForm.value).subscribe({
+        next: (data: any) => {
+          // 1. Rafraîchir les données
           this.getTableData();
-          const closeBtn = document.querySelector('#delete_immo .btn-close') as HTMLElement;
-          closeBtn?.click();
 
-          alert("Immobilisation supprimé avec succès");
-          //location.reload();
+          // 2. FERMETURE MANUELLE RIGOUREUSE (Solution sans jQuery)
+          // On cherche le bouton "Annuler" qui possède l'attribut de fermeture Bootstrap
+          const cancelBtn = document.querySelector('#delete_immo .cancel-btn') as HTMLElement;
+          if (cancelBtn) {
+            cancelBtn.click();
+          } else {
+            // Si le bouton n'est pas trouvé, on force la suppression des classes Bootstrap
+            const modalElement = document.getElementById('delete_immo');
+            if (modalElement) {
+              modalElement.classList.remove('show');
+              modalElement.style.display = 'none';
+              document.body.classList.remove('modal-open');
+              // On supprime le fond sombre (backdrop)
+              const backdrop = document.querySelector('.modal-backdrop');
+              if (backdrop) {
+                backdrop.remove();
+              }
+            }
+          }
+
+          // 3. Alerte après fermeture pour ne pas bloquer le thread UI
+          setTimeout(() => {
+            alert("Immobilisation supprimée avec succès");
+          }, 100);
+        },
+        error: (err) => {
+          console.error(err);
+          alert("Erreur lors de la suppression");
         }
-      )
-      console.log("success")
+      });
     } else {
-
-      alert("desole le formulaire n'est pas bien renseigné")
+      alert("Désolé, le formulaire n'est pas bien renseigné");
     }
-
   }
 
 
-
   getEditForm(row: any) {
-  this.editEntreeImmoForm.patchValue({
-    id: row.id,
-    familleimmo_id: row.familleimmo_id,
-    designation: row.designation,
-    date_entree: row.date_entree,
-    valeur_origine: row.valeur_origine,
-    //valeur_origine: Number(row.valeur_origine),
-    duree_amortissement: row.duree_amortissement,
-    date_fin_amortissement: row.date_fin_amortissement,
-    code: row.code,
-    localisation_id: row.localisation_id,
-    etat: row.etat,
-  });
-}
+    this.editEntreeImmoForm.patchValue({
+      id: row.id,
+      familleimmo_id: row.familleimmo_id,
+      designation: row.designation,
+      date_entree: row.date_entree,
+      valeur_origine: row.valeur_origine,
+      duree_amortissement: row.duree_amortissement,
+      date_fin_amortissement: row.date_fin_amortissement,
+      code: row.code,
+      localisation_id: row.localisation_id,
+      etat: row.etat,
+    });
+    // On s'assure que le spinner est caché quand on ouvre le formulaire
+    $('#spinner').addClass('d-none');
+  }
 
 
   getDeleteForm(row: any) {
