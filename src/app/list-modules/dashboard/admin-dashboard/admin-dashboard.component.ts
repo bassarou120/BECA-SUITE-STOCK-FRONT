@@ -20,6 +20,7 @@ import { routes } from 'src/app/core/helpers/routes/routes';
 import { TableauBordService } from 'src/app/core/services/tableauBord/tableaubord.service';
 import { entreeSortieStockService } from "src/app/core/services/entree-sortie-stock/entree-sortie-stock.service";
 import { MatTableDataSource } from '@angular/material/table';
+import { immoService } from './../../../core/services/immo/immo.service';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
@@ -52,7 +53,14 @@ export class AdminDashboardComponent implements OnInit {
 
   public lstEtatStock: Array<any> = [];
   public serialNumberArray: Array<number> = [];
+  public totalArticlesStock: number = 0; 
   dataSource!: MatTableDataSource<any>;
+
+  public lstImmo: Array<any> = [];
+  public lstImmoDefectueux: any[] = [];
+  public lstImmoFonctionnel: any[] = [];
+  public nbImmoDefectueux: number = 0;
+  public nbImmoFonctionnel: number = 0;
 
     // Pagination
     public pageSize = 10;
@@ -64,9 +72,10 @@ export class AdminDashboardComponent implements OnInit {
     public pageNumberArray: Array<number> = [];
     public pageSelection: Array<any> = [];
     public totalPages = 0;
+    public nbArticlesAlerte: number = 0;
 
   dataTableauBord: any = [];
-  constructor(private tableauBordService: TableauBordService, private entreeSortieStockService: entreeSortieStockService) {
+  constructor(private tableauBordService: TableauBordService, private entreeSortieStockService: entreeSortieStockService, private immoservice: immoService) {
     this.chartOptions2 = {
       series: [
         {
@@ -173,6 +182,7 @@ export class AdminDashboardComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getTableauBord();
+    this.loadImmo();
   }
 
   getTableauBord() {
@@ -190,6 +200,16 @@ export class AdminDashboardComponent implements OnInit {
       next: (res: any) => {
         // 1. Récupération des données
         const data = res.data || [];
+
+        // --- CALCUL DU TOTAL DES ARTICLES EN STOCK ---
+        this.totalArticlesStock = data.length;
+        //  Articles en alerte (quantité <= seuil)
+        const articlesEnAlerte = data.filter((item: any) => 
+          item.seuil_alerte > 0 && item.quantite <= item.seuil_alerte
+        );
+
+        // Nombre total d'articles en alerte
+        this.nbArticlesAlerte = articlesEnAlerte.length;
     
         // 2. Tri par criticité : 
         // On calcule le ratio (quantité / seuil). Plus le ratio est petit, plus c'est critique.
@@ -213,7 +233,34 @@ export class AdminDashboardComponent implements OnInit {
 
   }
 
+  loadImmo(): void {
+    this.immoservice.getAll().subscribe({
+      next: (res: any) => {
+        console.log('immo API:', res);
+        this.lstImmo = res.data.data;
 
+        // Immos défectueux
+      this.lstImmoDefectueux = this.lstImmo.filter(
+        (immo: any) => immo.etat === 'Défectueux'
+      );
+      this.nbImmoDefectueux = this.lstImmoDefectueux.length;
+      console.log("check", this.lstImmoDefectueux.length);
+
+      // Immos fonctionnels
+      this.lstImmoFonctionnel = this.lstImmo.filter(
+        (immo: any) => immo.etat === 'Fonctionnel'
+      );
+      this.nbImmoFonctionnel = this.lstImmoFonctionnel.length;
+
+
+
+        console.log('Liste des immo:', this.lstImmo);
+      },
+      error: (err) => {
+        console.error('Erreur chargement immo', err);
+      }
+    });
+  }
 
   private calculateTotalPages(totalData: number, pageSize: number): void {
     this.pageNumberArray = [];

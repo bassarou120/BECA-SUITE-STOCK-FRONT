@@ -73,7 +73,7 @@ export class ReparationPeriodiqueComponent implements OnInit {
     this.data.save(this.addForm.value).subscribe(
       (data:any)=>{
         $('#spinner').addClass('d-none');
-          alert("success");
+          alert("Reparation ajouté avec succès");
         location.reload();
       }
     )
@@ -94,7 +94,7 @@ onClickSubmitEditSite(){
       this.data.edit(this.editSiteForm.value).subscribe(
         (data:any)=>{
           $('#spinner').addClass('d-none');
-            alert("success");
+          alert("Modification effectuée avec succès");
           location.reload();
         }
       )
@@ -114,7 +114,7 @@ onClickSubmitDeleteSite(){
       this.data.delete(this.deleteSiteForm.value).subscribe(
         (data:any)=>{
           $('#spinner').addClass('d-none');
-            alert("success");
+            alert("Suppression effectuée avec succès");
           location.reload();
         }
       )

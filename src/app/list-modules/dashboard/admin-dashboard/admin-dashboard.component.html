@@ -24,7 +24,7 @@
         <div class="card-body">
           <span class="dash-widget-icon"><i class="fa-solid fa-solid fa-boxes-stacked "></i></span>
           <div class="dash-widget-info">
-            <h3>{{ dataTableauBord?.immo_fonctionnel }}</h3>
+            <h3>{{ nbImmoFonctionnel  }}</h3>
             <span>Immo. Fonctionnel</span>
           </div>
         </div>
@@ -39,7 +39,7 @@
 <!--            <i class="fa-solid fa-user-minus"></i>-->
           </span>
           <div class="dash-widget-info">
-            <h3>{{ dataTableauBord?.immo_defectueux }}</h3>
+            <h3>{{ nbImmoDefectueux }}</h3>
             <span>Immo. Défectueux</span>
           </div>
         </div>
@@ -49,11 +49,11 @@
       <div class="card dash-widget">
         <div class="card-body">
           <span class="dash-widget-icon">
-            <i class="fa-solid fa-comment-dots"></i>
+            <i class="fa-solid fa-boxes-stacked"></i> <!-- Optionnel : changé l'icône pour des articles -->
           </span>
           <div class="dash-widget-info">
-            <h3>{{ dataTableauBord?.mis_au_rebus }}</h3>
-            <span>Immo. Mis au rebus</span>
+            <h3>{{ totalArticlesStock }}</h3> <!-- Utilisation de la variable calculée -->
+            <span>Nombre total d'articles en stock</span>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
             <i class="fa-regular fa-face-frown"></i>
           </span>
           <div class="dash-widget-info">
-            <h3>{{ dataTableauBord?.top10_stock_en_alert }}</h3>
+            <h3>{{ nbArticlesAlerte }}</h3>
             <span>Nombre d'article en alerte</span>
           </div>
         </div>
@@ -96,15 +96,15 @@
               <tbody>
               <tr
                 *ngFor="
-                    let emp of dataTableauBord.top10_immo?.data;
+                    let emp of lstImmo;
                     let i = index
                   "
               >
                 <td>{{ emp.code }}</td>
                 <td>{{ emp.designation }} </td>
 
-                <td>{{ emp.montant_ttc }}</td>
-                <td>{{ emp.date_mouvement | date : "dd/MM/YYYY" }}</td>
+                <td>{{ emp.valeur_origine }}</td>
+                <td>{{ emp.date_entree | date : "dd/MM/YYYY" }}</td>
               </tr>
 
               <!--
