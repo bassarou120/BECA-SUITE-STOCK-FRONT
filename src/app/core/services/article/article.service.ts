@@ -33,4 +33,9 @@ export class articleService {
     return this.http.delete<any>(`${this.url}/article/${data.id}`);
   }
 
+  importArticles(formData: FormData): Observable<any> {
+    // L'URL complète de l'endpoint d'importation
+    return this.http.post(`${this.url}/article/import`, formData);
+  }
+
 }
