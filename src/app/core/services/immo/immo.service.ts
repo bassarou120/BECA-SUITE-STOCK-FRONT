@@ -151,5 +151,9 @@ export class immoService {
     return this.http.get(`${this.url}/rapports/immos/qrcode/pdf`, { responseType: 'blob' });
   }
 
+  import(data: FormData): Observable<any> {
+    // On ajoute explicitement le chemin défini dans Laravel
+    return this.http.post(`${this.url}/immobilisations/import`, data);
+}
 
 }

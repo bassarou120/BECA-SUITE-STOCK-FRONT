@@ -523,6 +523,44 @@ setupCodeGeneration() {
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+  
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+  
+      // On affiche un spinner (réutilisation de votre logique existante)
+      $('#spinnerr').removeClass('d-none');
+  
+      this.immoService.import(formData).subscribe({
+        next: (res: any) => {
+          $('#spinnerr').addClass('d-none');
+          
+          // Rafraîchir la table
+          this.getTableData();
+  
+          // Affichage du résumé
+          alert(res.message);
+  
+          // Si il y a des détails sur les lignes ignorées, on peut les logger
+          if (res.ignored_details && res.ignored_details.length > 0) {
+            console.warn('Lignes ignorées:', res.ignored_details);
+          }
+          
+          // Réinitialiser l'input file pour permettre une nouvelle sélection
+          event.target.value = '';
+        },
+        error: (err: any) => {
+          $('#spinnerr').addClass('d-none');
+          console.error('Erreur import:', err);
+          alert("Erreur lors de l'importation : " + (err.error?.error || "Serveur injoignable"));
+          event.target.value = '';
+        }
+      });
+    }
+  }
 }
 export interface pageSelection {
   skip: number;

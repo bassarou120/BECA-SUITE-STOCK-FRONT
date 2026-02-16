@@ -84,7 +84,7 @@
                   DUREE AMORTISSEMENT
                 </th>
                 <th mat-sort-header="duree_amortissement">
-                  DUREE AMORTISSEMENT
+                  DATE AMORTISSEMENT
                 </th>
                 <th mat-sort-header="localisation">SITE</th>
                 <th mat-sort-header="localisation">LOCALISATION</th>
@@ -551,6 +551,10 @@
               </div>
             </div>
 
+            <!-- Bouton pour ouvrir le modal d'importation (À placer dans votre Header ou Toolbar) -->
+
+            <button type="button" class="btn btn-outline-success btn-lg px-4" data-bs-toggle="modal" data-bs-target="#importImmoExcel">
+              <i class="fa fa-upload me-2"></i>Importer Excel</button>
             <div class="submit-section">
               <button
                 [disabled]="isDisabledBtn"
@@ -946,4 +950,54 @@
     </div>
   </div>
   <!-- /Delete Department Modal -->
+
+  <!-- MODAL : Importation des Immobilisations par Excel -->
+
+  <!-- MODAL : Importation des Immobilisations par Excel -->
+  <div id="importImmoExcel" class="modal fade" tabindex="-1" aria-labelledby="importImmoExcelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importImmoExcelLabel">Importer des immobilisations</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <i class="fa fa-file-excel-o fa-3x text-success mb-3"></i>
+            <p class="text-secondary">Sélectionnez votre fichier Excel (.xlsx, .xls). L'importation débutera automatiquement après la sélection.</p>
+          </div>
+        
+            <div class="mb-3">
+              <label for="excelFileImmo" class="form-label">Fichier Excel d'inventaire</label>
+              <!-- Utilisation de la seule fonction existante dans votre TS -->
+              <input 
+                type="file" 
+                class="form-control" 
+                id="excelFileImmo" 
+                accept=".xlsx, .xls" 
+                (change)="onFileSelected($event)"
+              >
+            </div>
+        
+            <!-- Le spinner 'spinnerr' est déjà géré par jQuery dans votre TS (onFileSelected) -->
+            <div id="spinnerr" class="text-center d-none my-3">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+              <p class="mt-2">Importation en cours, veuillez patienter...</p>
+            </div>
+        
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button 
+                type="button" 
+                class="btn btn-light px-4" 
+                data-bs-dismiss="modal"
+              >
+                Fermer
+              </button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
