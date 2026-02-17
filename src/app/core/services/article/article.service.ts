@@ -37,5 +37,9 @@ export class articleService {
   return this.http.get<any>(`${this.url}/articles/next-code`);
  }
 
+ importArticles(formData: FormData): Observable<any> {
+  // L'URL complète de l'endpoint d'importation
+  return this.http.post(`${this.url}/article/import`, formData);
+}
 
 }
