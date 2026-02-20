@@ -7,7 +7,6 @@
         <div class="account-logo">
           <a href="javascript:void(0);">
             <img src="assets/img/arcep.png"  alt="" />
-
           </a>
         </div>
         <!-- /Account Logo -->
@@ -25,13 +24,13 @@
 
         <div class="account-box">
           <div class="account-wrapper">
-            <h3 class="account-title">BECA-SUITE-GMS</h3>
+            <h3 class="account-title">BECA-SUITE-STOCK</h3>
             <p class="account-subtitle">Accès au tableau de bord</p>
 
             <div *ngIf="errorMessage" class="alert alert-danger center-text">{{ errorMessage }}</div>
 
             <!-- Account Form -->
-            <form [formGroup]="form" (ngSubmit)="submit()">
+            <form    *ngIf="loginStep === 'LOGIN'"  [formGroup]="form" (ngSubmit)="submit()">
               <div class="input-block mb-3">
                 <label class="col-form-label" for="">Email </label>
                 <input
@@ -107,6 +106,7 @@
                   type="submit"
                 >
                   Se Connecter
+                  <span class="fa fa-spinner fa-spin d-none" id="spinner"></span>
                 </button>
               </div>
               <!--              <div class="account-footer">-->
@@ -114,10 +114,47 @@
               <!--              </div>-->
             </form>
 
+
+            <form *ngIf="loginStep === 'OTP'" (ngSubmit)="verifyOtp()">
+
+              <div class="input-block mb-3 text-center">
+                <p>
+                  Un code de vérification a été envoyé à votre email
+                </p>
+
+                <input
+                  type="text"
+                  class="form-control text-center"
+                  maxlength="6"
+                  [(ngModel)]="otp"
+                  name="otp"
+                  placeholder="Code OTP"
+                  required
+                />
+
+                <div *ngIf="otpError" class="text-danger mt-2">
+                  {{ otpError }}
+                </div>
+              </div>
+
+              <div class="input-block text-center">
+                <button class="btn btn-primary" type="submit">
+                  Valider le code
+                </button>
+              </div>
+
+              <div class="text-center mt-3">
+                <a href="javascript:void(0)" (click)="loginStep = 'LOGIN'">
+                  ⬅ Retour
+                </a>
+              </div>
+
+            </form>
+
             <div class="col-auto d-flex justify-content-center" id="forgot-password-button">
-              <a class="custom-link" [routerLink]="'/passwordMail'">
-                Mot de passe oubilié ?
-              </a>
+              <!--              <a class="custom-link" [routerLink]="'/passwordMail'">-->
+              <!--                Mot de passe oubilié ?-->
+              <!--              </a>-->
             </div>
 
             <!-- /Account Form -->

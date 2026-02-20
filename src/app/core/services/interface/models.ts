@@ -57,6 +57,14 @@ export interface SubSubMenu {
   dot?: boolean;
 }
 
+export enum UserRole {
+  SUPER_ADMIN = 'SUPER ADMIN',
+  DRH = 'DRH',
+  DAF = 'DAF',
+  ML = 'ML',
+}
+
+
 export interface routerlink {
   id?: number;
   type?: number;
@@ -731,6 +739,13 @@ export interface getDesignations {
   designation: string;
   departmentName: string;
 }
+
+export interface  Param {
+  cle: string;
+  valeur_txt: string;
+}
+
+
 export interface lstEmployee {
   firstname: string;
   lastname: string;
@@ -1166,7 +1181,7 @@ export interface ImportReport {
   success_count: number;
   total_rows_processed: number;
   ignored: string[];
-} 
+}
 
 /**
  * Définition d'un type pour l'objet d'erreur d'importation

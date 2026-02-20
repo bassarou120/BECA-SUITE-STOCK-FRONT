@@ -1413,10 +1413,8 @@ export class DataService {
   ];
 
 
-public sideBar =
-    this.authService.userRole && this.authService.userRole <= 3
-      ? this.adminSideBar
-      : this.gsmSideBar;
+// public sideBar = this.authService.userRole && this.authService.userRole <= 3 ? this.adminSideBar : this.gsmSideBar;
+public sideBar =  this.adminSideBar  ;
 
   // public sideBar = this.authService.userRole && this.authService.userRole == 1
   //     ? this.adminSideBar
