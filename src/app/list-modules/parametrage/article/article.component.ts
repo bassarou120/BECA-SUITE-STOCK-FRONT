@@ -13,8 +13,8 @@ import { bureauService } from "../../../core/services/bureau/bureau.service";
 import { articleService } from "../../../core/services/article/article.service";
 import { FamilleService } from "../../../core/services/famille/famille.service";
 import { categorieArticleService } from "../../../core/services/categorie-article/categorie-article.service";
-import { ImportReport, ImportError } from 'src/app/core/services/interface/models';
-declare var bootstrap: any;
+
+
 
 @Component({
   selector: 'app-banque',
@@ -45,23 +45,6 @@ export class ArticleComponent implements OnInit {
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
   //** / pagination variables
-  alertImportVisible: boolean = false;
-  isImporting: boolean = false;
-
-  public toastVisible: boolean = false;
-  public toastType: 'success' | 'danger' | 'warning' | 'black' = 'success'; // Type d'alerte Bootstrap
-  public toastTitle: string = '';
-  public toastMessage: string = '';
-  public ignoredLines: string[] = []; // Pour stocker les lignes ignorées
-
-
-  importReport: ImportReport | null = null;
-  importError: ImportError | null = null;
-
-  selectedFile: File | null = null;
-  selectedImage: string | ArrayBuffer | null = null;
-
-  showIgnoredDetails: boolean = false;
 
   public addArticleForm!: FormGroup;
   public editArticleForm!: FormGroup
@@ -76,6 +59,7 @@ export class ArticleComponent implements OnInit {
   ngOnInit(): void {
     this.getTableData();
     this.getFamille();
+    this.loadNextCodeArticle();
 
     this.addArticleForm = this.formBuilder.group({
       famille_id: ["", [Validators.required]],
@@ -114,6 +98,13 @@ export class ArticleComponent implements OnInit {
 
   }
 
+  loadNextCodeArticle() {
+  this.articleService.getNextCodeArticle().subscribe(res => {
+    this.addArticleForm.patchValue({ code: res.code });
+  });
+}
+
+
   onClickSubmitAddArticle() {
 
     console.log("les entree", this.addArticleForm.value)
@@ -122,7 +113,9 @@ export class ArticleComponent implements OnInit {
       $('#spinnerr').removeClass('d-none');
       this.articleService.save(this.addArticleForm.value).subscribe(
         (data: any) => {
-          // location.reload();
+          $('#spinner').addClass('d-none');
+          alert("l'article a été ajouté avec succès");
+          location.reload();
         }
       )
     } else {
@@ -141,6 +134,8 @@ export class ArticleComponent implements OnInit {
       const id = this.editArticleForm.value.id;
       this.articleService.edit(this.editArticleForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("l'article a été modifié avec succès");
           location.reload();
         }
       )
@@ -159,7 +154,7 @@ export class ArticleComponent implements OnInit {
       const id = this.deleteArticleForm.value.id;
       this.articleService.delete(this.deleteArticleForm.value).subscribe(
         (data: any) => {
-
+          alert("l'article a été supprimé avec succès");
           // alert(JSON.stringify(data))
           location.reload();
         }
@@ -335,190 +330,6 @@ export class ArticleComponent implements OnInit {
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
-
-// ============================================
-// FONCTION showToast() COMPLÈTE
-// ============================================
-
-showToast(type: 'success' | 'danger' | 'warning' | 'black', title: string, message: string): void {
-    this.toastType = type;
-    this.toastTitle = title;
-    this.toastMessage = message;
-    this.toastVisible = true;
-
-    // Masquer le toast automatiquement après 60 secondes
-    setTimeout(() => {
-        this.toastVisible = false;
-        this.ignoredLines = [];
-    }, 60000);
-}
-
-// ============================================
-// FONCTION closeToast() - Optionnelle
-// ============================================
-
-closeToast(): void {
-    this.toastVisible = false;
-    this.ignoredLines = [];
-}
-
-// ============================================
-// FONCTION closeAlert() - Optionnelle
-// ============================================
-
-closeAlert(): void {
-    this.alertImportVisible = false;
-    this.showIgnoredDetails = false;
-}
-
-onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0]; // Assignez le fichier à `selectedFile`
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.selectedImage = reader.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
-}
-
-  /**
-   * Envoie le fichier Excel sélectionné au backend pour importation.
-   */
-  /**
-   * Envoie le fichier Excel sélectionné au backend pour importation.
-   */
-uploadExcelFile(): void {
-    if (!this.selectedFile) {
-        const modal = document.getElementById('importArticlesExcel');
-        const bsModal = bootstrap.Modal.getInstance(modal);
-        bsModal?.hide();
-        this.showToast('warning', 'Sélection de Fichier', 'Veuillez sélectionner un fichier Excel à importer.');
-        return;
-    }
-
-    this.isImporting = true;
-    this.importReport = null;
-    this.importError = null;
-    this.showIgnoredDetails = false; // Réinitialiser l'affichage des détails
-
-    const spinner = document.querySelector('.spinner-import-article');
-    if (spinner) {
-        spinner.classList.remove('d-none');
-    }
-
-    const formData = new FormData();
-    formData.append('file', this.selectedFile, this.selectedFile.name);
-
-    this.articleService.importArticles(formData).subscribe({
-        next: (response: any) => {
-            console.log('✅ Importation réussie:', response);
-            
-            // Rafraîchir la liste des articles
-            this.getTableData();
-
-            this.isImporting = false;
-            if (spinner) {
-                spinner.classList.add('d-none');
-            }
-
-// Fermer le modal en simulant un clic sur le bouton X
-            const modal = document.getElementById('importArticlesExcel');
-            if (modal) {
-                const closeButton = modal.querySelector('.btn-close') as HTMLButtonElement;
-                closeButton?.click();
-            }
-
-            // Stocker le rapport d'importation
-            this.importReport = {
-                message: response.message,
-                success_count: response.success_count,
-                total_rows_processed: response.total_rows_processed,
-                ignored: response.ignored_details || []
-            };
-
-            // 👇 AFFICHER L'ALERTE DE SUCCÈS
-            this.alertImportVisible = true;
-            
-            // Masquer l'alerte après 10 secondes
-            setTimeout(() => {
-                this.alertImportVisible = false;
-                this.showIgnoredDetails = false;
-            }, 10000);
-
-            // ✅ Afficher le toast en fonction du résultat
-            if (this.importReport.ignored.length > 0) {
-                // Import partiel avec des lignes ignorées
-                this.ignoredLines = this.importReport.ignored;
-                this.showToast(
-                    'warning',
-                    'Importation Partielle',
-                    `${this.importReport.success_count} articles(s) importé(s), ${this.importReport.ignored.length} ligne(s) ignorée(s).`
-                );
-            } else {
-                // Import complet sans erreur
-                this.ignoredLines = [];
-                this.showToast(
-                    'success',
-                    'Importation Réussie !',
-                    `${this.importReport.success_count} articles(s) importé(s) avec succès.`
-                );
-
-                const modal = document.getElementById('importArticlesExcel');
-                if (modal) {
-                    const closeButton = modal.querySelector('.btn-close') as HTMLButtonElement;
-                    closeButton?.click();
-                }
-            }
-
-            // Réinitialiser le fichier sélectionné
-            this.selectedFile = null;
-            const fileInput = document.getElementById('excelFile') as HTMLInputElement;
-            if (fileInput) {
-                fileInput.value = '';
-            }
-        },
-        error: (error) => {
-            console.error('❌ Erreur lors de l\'importation des articles:', error);
-
-            this.isImporting = false;
-            if (spinner) {
-                spinner.classList.add('d-none');
-            }
-
-            // GESTION DE L'ERREUR
-            let errorMessage = 'Une erreur est survenue lors de l\'importation. Veuillez vérifier le fichier et réessayer.';
-            let errorTitle = 'Erreur d\'Importation';
-
-            if (error.error) {
-                if (error.error.errors) {
-                    // Erreur de validation (422)
-                    let validationErrors = [];
-                    for (const key in error.error.errors) {
-                        if (error.error.errors.hasOwnProperty(key)) {
-                            validationErrors.push(error.error.errors[key].join(', '));
-                        }
-                    }
-                    errorMessage = 'Erreurs de validation : ' + validationErrors.join('; ');
-                    errorTitle = 'Fichier Invalide';
-                } else if (error.error.error) {
-                    // Erreur du backend
-                    errorMessage = error.error.error;
-                    if (error.error.details) {
-                        errorMessage += ` Détails: ${error.error.details}`;
-                    }
-                    errorTitle = 'Erreur Serveur';
-                }
-            }
-
-            this.ignoredLines = [];
-            this.showToast('danger', errorTitle, errorMessage);
-        }
-    });
-}
-
-
 }
 export interface pageSelection {
   skip: number;
