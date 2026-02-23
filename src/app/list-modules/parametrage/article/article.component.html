@@ -87,6 +87,7 @@
               <td>{{ item.description }}</td>
               <td>{{ item.famille.code }}</td>
               <td>{{ item.famille.intitule }}</td>
+              <td>{{ item.seuil_alerte }}</td>
               <!-- <td>{{item.stock_alert}}</td> -->
               <td class="text-end" id="exclusion-2">
                 <div class="dropdown dropdown-action">
@@ -366,6 +367,19 @@
                       class="text-danger"> *le stock d'alerte  est obligatoire</small>
                   </div>
                 </div> -->
+          
+                <div class="input-block mb-3">
+                  <label class="col-form-label" for="">Stock d'alerte<span class="text-danger">*</span></label>
+                  <input class="form-control" type="number"
+                        [class.invalid]="addArticleForm.get('seuil_alerte')?.invalid && addArticleForm.get('seuil_alerte')?.touched"
+                        formControlName="seuil_alerte">
+                    <div
+                      *ngIf="addArticleForm.get('seuil_alerte')?.invalid && addArticleForm.get('seuil_alerte')?.touched">
+                      <small
+                        *ngIf="addArticleForm.get('seuil_alerte')?.invalid && addArticleForm.get('seuil_alerte')?.touched"
+                        class="text-danger"> *le stock d'alerte est obligatoire</small>
+                    </div>
+              </div>
 
           <div class="input-block mb-3">
             <label class="col-form-label" for=""
@@ -522,6 +536,19 @@
                 *la famille est obligatoire</small
               >
             </div>
+          </div>
+
+          <div class="input-block mb-3">
+            <label class="col-form-label" for="">Stock d'alerte<span class="text-danger">*</span></label>
+            <input class="form-control" type="number"
+                  [class.invalid]="editArticleForm.get('seuil_alerte')?.invalid && editArticleForm.get('seuil_alerte')?.touched"
+                  formControlName="seuil_alerte">
+              <div
+                *ngIf="editArticleForm.get('seuil_alerte')?.invalid && editArticleForm.get('seuil_alerte')?.touched">
+                <small
+                  *ngIf="editArticleForm.get('seuil_alerte')?.invalid && editArticleForm.get('seuil_alerte')?.touched"
+                  class="text-danger"> *le stock d'alerte est obligatoire</small>
+              </div>
           </div>
 
           <div class="input-block mb-3">
