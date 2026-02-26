@@ -12,6 +12,7 @@ export interface SideBar {
   separateRoute: boolean;
   materialicons?: string;
   menu: SideBarMenu[];
+  roles?: UserRole[];
 }
 
 export interface SideBarMenu {
@@ -26,8 +27,27 @@ export interface SideBarMenu {
   subMenus?: SubMenu[];
   dot?: boolean;
   changeLogVersion?: boolean;
-  isActive?: boolean,
+  isActive?: boolean;
+  roles?: UserRole[];
 }
+
+/* export interface SubMenu {
+  menuValue: string;
+  route?: string;
+  base: string;
+  base2?: string;
+  base3?: string;
+  base4?: string;
+  base5?: string;
+  base6?: string;
+  base7?: string;
+  base8?: string;
+  haseSubSubMenu?: boolean;
+  SubSubMenu?: SubSubMenu[];
+  showSubSubRoute?: boolean;
+  currentActive?: boolean;
+  isActive?: boolean,
+} */
 
 export interface SubMenu {
   menuValue: string;
@@ -45,6 +65,7 @@ export interface SubMenu {
   showSubSubRoute?: boolean;
   currentActive?: boolean;
   isActive?: boolean,
+  roles?: UserRole[],
 }
 
 export interface SubSubMenu {
@@ -55,6 +76,7 @@ export interface SubSubMenu {
   materialicons?: string;
   currentActive?: boolean;
   dot?: boolean;
+  roles?: UserRole[];
 }
 
 export enum UserRole {
@@ -63,7 +85,6 @@ export enum UserRole {
   DAF = 'DAF',
   ML = 'ML',
 }
-
 
 export interface routerlink {
   id?: number;

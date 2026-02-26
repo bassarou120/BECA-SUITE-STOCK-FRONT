@@ -36,6 +36,10 @@ export class routes {
     return this.baseUrl + '/dashboard/employee';
   }
 
+  public static get famille(): string {
+    return this.baseUrl + '/dashboard/famille';
+  }
+
   public static get employee_page(): string {
     return this.baseUrl + '/employes/employe-page';
   }
