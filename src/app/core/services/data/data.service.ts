@@ -1,19 +1,23 @@
 import { AuthService } from 'src/app/core/core.index';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, map } from 'rxjs';
+
 import {
   SideBar,
   SideBarMenu,
   apiResultFormat,
   routes,
+  UserRole,
 } from '../../core.index';
 import { HttpClient } from '@angular/common/http';
+import { GRHGuard } from './../auth/guards.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   allAppliedCandidates!: Array<object>;
-
+  userRole!: UserRole;
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   public adminSideBar: SideBar[] = [
@@ -33,6 +37,7 @@ export class DataService {
           materialicons: 'home',
           dot: false,
           isActive: false,
+          roles: [UserRole.SUPER_ADMIN, UserRole.ML],
           subMenus: [
             {
               menuValue: 'Admin Dashboard',
@@ -63,6 +68,7 @@ export class DataService {
           base: 'employees',
           dot: false,
           isActive: false,
+          roles: [UserRole.SUPER_ADMIN, UserRole.ML],
           materialicons: 'people',
           subMenus: [
             {
@@ -97,6 +103,7 @@ export class DataService {
           base: 'employees',
           dot: false,
           isActive: false,
+          roles: [UserRole.SUPER_ADMIN, UserRole.ML],
           materialicons: 'people',
           subMenus: [
             {
@@ -136,6 +143,7 @@ export class DataService {
       icon: 'layers',
       showAsTab: false,
       separateRoute: false,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ML],
       menu: [
 
         {
@@ -175,6 +183,7 @@ export class DataService {
       tittle: 'PARAMETRAGE',
       icon: 'set',
       showAsTab: false,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ML],
       separateRoute: false,
       menu: [
         {
@@ -199,6 +208,7 @@ export class DataService {
               route: "parametrage/famille",
               base: 'parametrage/famille',
               haseSubSubMenu: false,
+              
             },
             {
               menuValue: 'Liste des Familles immobilisation',
@@ -674,6 +684,7 @@ export class DataService {
           base: 'employees',
           dot: false,
           isActive: false,
+          roles: [UserRole.SUPER_ADMIN, UserRole.ML],
           materialicons: 'people',
           subMenus: [
             {
@@ -1196,7 +1207,7 @@ export class DataService {
     */
   ];
 
-  public asgsmSideBar: SideBar[] = [
+/*   public asgsmSideBar: SideBar[] = [
     {
       tittle: 'Menu principal',
       icon: 'airplay',
@@ -1407,14 +1418,64 @@ export class DataService {
 
       ],
     },
-    */
+    
 
 
-  ];
+  ]; */
+
+  public get sideBar(): SideBar[] {
+    const baseSideBar =
+      this.authService.userRole &&
+      [
+        UserRole.SUPER_ADMIN,
+        UserRole.DRH,
+        UserRole.DAF,
+        UserRole.ML,
+      ].includes(this.authService.userRole)
+        ? this.adminSideBar
+        : this.gsmSideBar;
+
+    // Filtrer la sidebar selon le rôle
+    return this.filterSideBarByRole(baseSideBar);
+  }
+
+  
+  private filterSideBarByRole(sidebar: SideBar[]): SideBar[] {
+    return sidebar
+      .map(section => ({
+        ...section,
+        menu: section.menu
+          .filter(menuItem => this.hasAccess(menuItem.roles))
+          .map(menuItem => ({
+            ...menuItem,
+            subMenus: menuItem.subMenus
+              ?.filter(subMenu => this.hasAccess(subMenu.roles))
+              .map(subMenu => ({
+                ...subMenu,
+                SubSubMenu: subMenu.SubSubMenu?.filter(subSubMenu =>
+                  this.hasAccess(subSubMenu.roles)
+                ),
+              })),
+          })),
+      }))
+      .filter(
+        section => this.hasAccess(section.roles) && section.menu.length > 0
+      );
+  }
+
+      // ← NOUVELLE MÉTHODE : Vérifier l'accès selon les rôles
+      private hasAccess(allowedRoles?: UserRole[]): boolean {
+        // Si pas de rôles définis, accessible à tous
+        if (!allowedRoles || allowedRoles.length === 0) {
+          return true;
+        }
+        // Vérifier si l'utilisateur a un des rôles autorisés
+        return this.authService.hasRole(allowedRoles);
+      }
 
 
 // public sideBar = this.authService.userRole && this.authService.userRole <= 3 ? this.adminSideBar : this.gsmSideBar;
-public sideBar =  this.adminSideBar  ;
+//public sideBar =  this.adminSideBar  ;
 
   // public sideBar = this.authService.userRole && this.authService.userRole == 1
   //     ? this.adminSideBar

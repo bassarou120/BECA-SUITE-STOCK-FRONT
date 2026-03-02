@@ -76,6 +76,7 @@
               <th mat-sort-header="codeFamille">Code Famille</th>
               <th mat-sort-header="familleArticle">Famille</th>
               <!-- <th mat-sort-header="departmentName">Stock d'alert</th> -->
+              <th mat-sort-header="familleArticle">Seuil Alerte</th>
               <th class="text-end" id="exclusion-1">Actions</th>
             </tr>
           </thead>
@@ -87,6 +88,7 @@
               <td>{{ item.description }}</td>
               <td>{{ item.famille.code }}</td>
               <td>{{ item.famille.intitule }}</td>
+              <td>{{ item.seuil_alerte }}</td>
               <!-- <td>{{item.stock_alert}}</td> -->
               <td class="text-end" id="exclusion-2">
                 <div class="dropdown dropdown-action">
@@ -354,18 +356,18 @@
             </div>
           </div>
 
-          <!-- <div class="input-block mb-3">
-                  <label class="col-form-label" for="">Stock d'alerte<span class="text-danger">*</span></label>
-                  <input class="form-control" type="number"
-                         [class.invalid]="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched"
-                         formControlName="stock_alert">
-                  <div
-                    *ngIf="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched">
-                    <small
-                      *ngIf="addArticleForm.get('stock_alert')?.invalid && addArticleForm.get('stock_alert')?.touched"
-                      class="text-danger"> *le stock d'alerte  est obligatoire</small>
-                  </div>
-                </div> -->
+          <div class="input-block mb-3">
+              <label class="col-form-label" for="">Stock d'alerte<span class="text-danger">*</span></label>
+              <input class="form-control" type="number"
+                    [class.invalid]="addArticleForm.get('seuil_alerte')?.invalid && addArticleForm.get('seuil_alerte')?.touched"
+                    formControlName="seuil_alerte">
+                <div
+                  *ngIf="addArticleForm.get('seuil_alerte')?.invalid && addArticleForm.get('seuil_alerte')?.touched">
+                  <small
+                    *ngIf="addArticleForm.get('seuil_alerte')?.invalid && addArticleForm.get('seuil_alerte')?.touched"
+                    class="text-danger"> *le stock d'alerte est obligatoire</small>
+                </div>
+          </div>
 
           <div class="input-block mb-3">
             <label class="col-form-label" for=""
@@ -390,18 +392,96 @@
               Enrégister
               <span class="fa fa-spinner fa-spin d-none" id="spinnerr"></span>
             </button>
+
+            <button type="button" class="btn btn-outline-success btn-lg px-4" data-bs-toggle="modal" data-bs-target="#importArticlesExcel">
+              <i class="feather icon-upload me-2"></i>Importer Excel
+            </button>
+
           </div>
-
         </form>
-
-        <button type="button" class="btn btn-outline-success btn-lg w-100 mt-3 mb-2" data-bs-toggle="modal" data-bs-target="#importArticlesExcel">
-          <i class="feather icon-upload me-2"></i>Importer Excel
-        </button>
       </div>
     </div>
   </div>
 </div>
 <!-- /Add Poste Modal -->
+
+<!-- NOUVEAU MODAL : Importation des articles par Excel -->
+<div id="importArticlesExcel" class="modal fade" tabindex="-1" aria-labelledby="importArticlesExcelLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="importArticlesExcelLabel">Importer des employés par fichier Excel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-secondary mb-3">Veuillez sélectionner un fichier Excel (.xlsx, .xls) contenant les données des articles à importer.</p>
+        <div class="mb-3">
+          <label for="excelFile" class="form-label">Fichier Excel</label>
+          <input type="file" class="form-control" id="excelFile" accept=".xlsx, .xls" (change)="onFileSelected($event)">
+        </div>
+        <div class="d-flex justify-content-center gap-2 mt-4">
+          <button type="button" class="btn btn-primary" (click)="uploadExcelFile()" [disabled]="isImporting">
+            <span *ngIf="isImporting" class="spinner-border spinner-border-sm text-light me-2 spinner-import-article" role="status" aria-hidden="true"></span>
+            <i *ngIf="!isImporting" class="btn-icon-prepend" data-feather="upload" appFeatherIcon></i>
+            {{ isImporting ? 'Importation en cours...' : 'Importer' }}
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="toastVisible"
+  class="toast-container-center position-fixed top-50 start-50 translate-middle p-3"
+  style="z-index: 9999;">
+  <div
+    class="toast show"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true">
+    <div
+      class="toast-header"
+      [ngClass]="{
+        'bg-success text-white': toastType === 'success',
+        'bg-danger text-white': toastType === 'danger',
+        'bg-warning text-dark': toastType === 'warning',
+        'bg-dark text-white': toastType === 'black'
+      }">
+      <i class="mdi me-2"
+         [ngClass]="{
+           'mdi-check-circle': toastType === 'success',
+           'mdi-alert-circle': toastType === 'danger' || toastType === 'warning',
+           'mdi-information': toastType === 'black'
+         }"></i>
+      <strong class="me-auto">{{ toastTitle }}</strong>
+      <button
+        type="button"
+        class="btn-close"
+        [ngClass]="{'btn-close-white': toastType !== 'warning'}"
+        (click)="toastVisible = false">
+      </button>
+    </div>
+    <div class="toast-body">
+      {{ toastMessage }}
+
+      <!-- Liste des lignes ignorées dans le toast -->
+      <div *ngIf="ignoredLines && ignoredLines.length > 0" class="mt-2">
+        <hr class="my-2">
+        <small class="text-muted d-block mb-1">Lignes ignorées :</small>
+        <ul class="list-unstyled mb-0">
+          <li *ngFor="let line of ignoredLines.slice(0, 3)" class="mb-1">
+            <small>• {{ line }}</small>
+          </li>
+          <li *ngIf="ignoredLines.length > 3">
+            <small class="text-muted">... et {{ ignoredLines.length - 3 }} autre(s)</small>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Edit poste Modal -->
 <div id="edit_article" class="modal custom-modal fade" role="dialog">
@@ -525,6 +605,20 @@
           </div>
 
           <div class="input-block mb-3">
+              <label class="col-form-label" for="">Stock d'alerte<span class="text-danger">*</span></label>
+              <input class="form-control" type="number"
+                    [class.invalid]="editArticleForm.get('seuil_alerte')?.invalid && editArticleForm.get('seuil_alerte')?.touched"
+                    formControlName="seuil_alerte">
+                <div
+                  *ngIf="editArticleForm.get('seuil_alerte')?.invalid && editArticleForm.get('seuil_alerte')?.touched">
+                  <small
+                    *ngIf="editArticleForm.get('seuil_alerte')?.invalid && editArticleForm.get('seuil_alerte')?.touched"
+                    class="text-danger"> *le stock d'alerte est obligatoire</small>
+                </div>
+          </div>
+
+
+          <div class="input-block mb-3">
             <label class="col-form-label" for=""
               >Description<span class="text-danger"></span
             ></label>
@@ -547,6 +641,7 @@
               Enrégister
               <span class="fa fa-spinner fa-spin d-none" id="spinner"></span>
             </button>
+
           </div>
         </form>
       </div>
@@ -556,7 +651,7 @@
 <!-- /Edit Department Modal -->
 
 <!-- Delete Department Modal -->
-<div class="modal custom-modal fade" id="delete_department" role="dialog">
+<div class="modal custom-modal fade" id="delete_article" role="dialog">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
@@ -596,83 +691,3 @@
   </div>
 </div>
 <!-- /Delete Department Modal -->
-
-
-<!-- NOUVEAU MODAL : Importation des articles par Excel -->
-<div id="importArticlesExcel" class="modal fade" tabindex="-1" aria-labelledby="importArticlesExcelLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="importArticlesExcelLabel">Importer des articles par fichier Excel</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p class="text-secondary mb-3">Veuillez sélectionner un fichier Excel (.xlsx, .xls) contenant les données des articles à importer.</p>
-        <div class="mb-3">
-          <label for="excelFile" class="form-label">Fichier Excel</label>
-          <input type="file" class="form-control" id="excelFile" accept=".xlsx, .xls" (change)="onFileSelected($event)">
-        </div>
-        <div class="d-flex justify-content-center gap-2 mt-4">
-          <button type="button" class="btn btn-primary" (click)="uploadExcelFile()" [disabled]="isImporting">
-            <span *ngIf="isImporting" class="spinner-border spinner-border-sm text-light me-2 spinner-import-article" role="status" aria-hidden="true"></span>
-            <i *ngIf="!isImporting" class="btn-icon-prepend" data-feather="upload" appFeatherIcon></i>
-            {{ isImporting ? 'Importation en cours...' : 'Importer' }}
-          </button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div
-  *ngIf="toastVisible"
-  class="toast-container-center position-fixed top-50 start-50 translate-middle p-3"
-  style="z-index: 9999;">
-  <div
-    class="toast show"
-    role="alert"
-    aria-live="assertive"
-    aria-atomic="true">
-    <div
-      class="toast-header"
-      [ngClass]="{
-        'bg-success text-white': toastType === 'success',
-        'bg-danger text-white': toastType === 'danger',
-        'bg-warning text-dark': toastType === 'warning',
-        'bg-dark text-white': toastType === 'black'
-      }">
-      <i class="mdi me-2"
-         [ngClass]="{
-           'mdi-check-circle': toastType === 'success',
-           'mdi-alert-circle': toastType === 'danger' || toastType === 'warning',
-           'mdi-information': toastType === 'black'
-         }"></i>
-      <strong class="me-auto">{{ toastTitle }}</strong>
-      <button
-        type="button"
-        class="btn-close"
-        [ngClass]="{'btn-close-white': toastType !== 'warning'}"
-        (click)="toastVisible = false">
-      </button>
-    </div>
-    <div class="toast-body">
-      {{ toastMessage }}
-
-      <!-- Liste des lignes ignorées dans le toast -->
-      <div *ngIf="ignoredLines && ignoredLines.length > 0" class="mt-2">
-        <hr class="my-2">
-        <small class="text-muted d-block mb-1">Lignes ignorées :</small>
-        <ul class="list-unstyled mb-0">
-          <li *ngFor="let line of ignoredLines.slice(0, 3)" class="mb-1">
-            <small>• {{ line }}</small>
-          </li>
-          <li *ngIf="ignoredLines.length > 3">
-            <small class="text-muted">... et {{ ignoredLines.length - 3 }} autre(s)</small>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>

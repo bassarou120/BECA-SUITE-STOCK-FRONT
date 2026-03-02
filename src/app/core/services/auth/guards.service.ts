@@ -13,10 +13,10 @@ export class SuperAdminGuard implements CanActivate {
     const userRole = this.authService.userRole;
 
     // Seul Super Admin a accès
-    if (userRole === UserRole.SUPER_ADMIN) {
+    if (userRole === UserRole.SUPER_ADMIN || userRole === UserRole.ML) {
       return true;
     }
-    this.router.navigate(['/dashboard/employee']);
+    this.router.navigate(['/dashboard/admin']);
     return false;
   }
 
@@ -36,11 +36,11 @@ export class AdminGuard implements CanActivate {
     const userRole = this.authService.userRole;
 
     // Admin ou Supérieur (Super Admin)
-    if ([UserRole.SUPER_ADMIN, UserRole.DRH, UserRole.DAF, UserRole.ML].includes(userRole!)) {
+    if ([UserRole.SUPER_ADMIN, UserRole.ML].includes(userRole!)) {
       return true;
     }
 
-    this.router.navigate(['/dashboard/employee']);
+    this.router.navigate(['/dashboard/admin']);
     return false;
   }
 }
@@ -55,11 +55,11 @@ export class GRHGuard implements CanActivate {
     const userRole = this.authService.userRole;
 
     // GRH + Admin + SuperAdmin
-    if ([UserRole.SUPER_ADMIN, UserRole.DRH, UserRole.DAF, UserRole.ML].includes(userRole!)) {
+    if ([UserRole.SUPER_ADMIN, UserRole.ML].includes(userRole!)) {
       return true;
     }
 
-    this.router.navigate(['/dashboard/employee']);
+    this.router.navigate(['/dashboard/admin']);
     return false;
   }
 }
@@ -74,7 +74,7 @@ export class EmployeGuard implements CanActivate {
     const userRole = this.authService.userRole;
 
     // Tout le monde sauf rôles inconnus
-    if ([UserRole.SUPER_ADMIN, UserRole.DRH, UserRole.DAF, UserRole.ML].includes(userRole!)) {
+    if ([UserRole.SUPER_ADMIN, UserRole.ML].includes(userRole!)) {
       return true;
     }
 

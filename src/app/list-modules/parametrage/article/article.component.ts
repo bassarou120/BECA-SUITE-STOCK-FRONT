@@ -16,6 +16,7 @@ import { categorieArticleService } from "../../../core/services/categorie-articl
 import { ImportReport, ImportError } from 'src/app/core/services/interface/models';
 declare var bootstrap: any;
 
+
 @Component({
   selector: 'app-banque',
   templateUrl: './article.component.html',
@@ -26,7 +27,21 @@ export class ArticleComponent implements OnInit {
   selected = 'option1';
 
   public lstPst: Array<any> = [];
+  alertImportVisible: boolean = false;
+  isImporting: boolean = false;
 
+  public toastVisible: boolean = false;
+  public toastType: 'success' | 'danger' | 'warning' | 'black' = 'success'; // Type d'alerte Bootstrap
+  public toastTitle: string = '';
+  public toastMessage: string = '';
+  public ignoredLines: string[] = []; // Pour stocker les lignes ignorées
+
+  importReport: ImportReport | null = null;
+  importError: ImportError | null = null;
+  selectedFile: File | null = null;
+  selectedImage: string | ArrayBuffer | null = null;
+
+  showIgnoredDetails: boolean = false;
 
   public lstArticle: Array<any> = [];
   lstFamille: any;
@@ -45,23 +60,6 @@ export class ArticleComponent implements OnInit {
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
   //** / pagination variables
-  alertImportVisible: boolean = false;
-  isImporting: boolean = false;
-
-  public toastVisible: boolean = false;
-  public toastType: 'success' | 'danger' | 'warning' | 'black' = 'success'; // Type d'alerte Bootstrap
-  public toastTitle: string = '';
-  public toastMessage: string = '';
-  public ignoredLines: string[] = []; // Pour stocker les lignes ignorées
-
-
-  importReport: ImportReport | null = null;
-  importError: ImportError | null = null;
-
-  selectedFile: File | null = null;
-  selectedImage: string | ArrayBuffer | null = null;
-
-  showIgnoredDetails: boolean = false;
 
   public addArticleForm!: FormGroup;
   public editArticleForm!: FormGroup
@@ -76,11 +74,13 @@ export class ArticleComponent implements OnInit {
   ngOnInit(): void {
     this.getTableData();
     this.getFamille();
+    this.loadNextCodeArticle();
 
     this.addArticleForm = this.formBuilder.group({
       famille_id: ["", [Validators.required]],
       code: ["", [Validators.required]],
       designation: ["", [Validators.required]],
+      seuil_alerte: [0, [Validators.required]],
       description: ["", []],
     });
     this.editArticleForm = this.formBuilder.group({
@@ -88,6 +88,7 @@ export class ArticleComponent implements OnInit {
       famille_id: ["", [Validators.required]],
       code: ["", [Validators.required]],
       designation: ["", [Validators.required]],
+      seuil_alerte: [0, [Validators.required]],
       description: ["", []],
     });
     this.deleteArticleForm = this.formBuilder.group({
@@ -112,6 +113,13 @@ export class ArticleComponent implements OnInit {
 
   }
 
+  loadNextCodeArticle() {
+  this.articleService.getNextCodeArticle().subscribe(res => {
+    this.addArticleForm.patchValue({ code: res.code });
+  });
+}
+
+
   onClickSubmitAddArticle() {
 
     console.log("les entree", this.addArticleForm.value)
@@ -120,7 +128,9 @@ export class ArticleComponent implements OnInit {
       $('#spinnerr').removeClass('d-none');
       this.articleService.save(this.addArticleForm.value).subscribe(
         (data: any) => {
-          // location.reload();
+          $('#spinner').addClass('d-none');
+          alert("l'article a été ajouté avec succès");
+          location.reload();
         }
       )
     } else {
@@ -139,6 +149,8 @@ export class ArticleComponent implements OnInit {
       const id = this.editArticleForm.value.id;
       this.articleService.edit(this.editArticleForm.value).subscribe(
         (data: any) => {
+          $('#spinner').addClass('d-none');
+          alert("l'article a été modifié avec succès");
           location.reload();
         }
       )
@@ -157,7 +169,7 @@ export class ArticleComponent implements OnInit {
       const id = this.deleteArticleForm.value.id;
       this.articleService.delete(this.deleteArticleForm.value).subscribe(
         (data: any) => {
-
+          alert("l'article a été supprimé avec succès");
           // alert(JSON.stringify(data))
           location.reload();
         }
@@ -177,6 +189,7 @@ export class ArticleComponent implements OnInit {
       famille_id: row.famille_id,
       description: row.description,
       designation: row.designation,
+      seuil_alerte: row.seuil_alerte
     })
   }
 
@@ -333,21 +346,21 @@ export class ArticleComponent implements OnInit {
     }
   }
 
-// ============================================
+  // ============================================
 // FONCTION showToast() COMPLÈTE
 // ============================================
 
 showToast(type: 'success' | 'danger' | 'warning' | 'black', title: string, message: string): void {
-    this.toastType = type;
-    this.toastTitle = title;
-    this.toastMessage = message;
-    this.toastVisible = true;
+  this.toastType = type;
+  this.toastTitle = title;
+  this.toastMessage = message;
+  this.toastVisible = true;
 
-    // Masquer le toast automatiquement après 60 secondes
-    setTimeout(() => {
-        this.toastVisible = false;
-        this.ignoredLines = [];
-    }, 60000);
+  // Masquer le toast automatiquement après 60 secondes
+  setTimeout(() => {
+      this.toastVisible = false;
+      this.ignoredLines = [];
+  }, 60000);
 }
 
 // ============================================
@@ -355,8 +368,8 @@ showToast(type: 'success' | 'danger' | 'warning' | 'black', title: string, messa
 // ============================================
 
 closeToast(): void {
-    this.toastVisible = false;
-    this.ignoredLines = [];
+  this.toastVisible = false;
+  this.ignoredLines = [];
 }
 
 // ============================================
@@ -364,29 +377,23 @@ closeToast(): void {
 // ============================================
 
 closeAlert(): void {
-    this.alertImportVisible = false;
-    this.showIgnoredDetails = false;
+  this.alertImportVisible = false;
+  this.showIgnoredDetails = false;
 }
 
 onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0]; // Assignez le fichier à `selectedFile`
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.selectedImage = reader.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.selectedFile = input.files[0]; // Assignez le fichier à `selectedFile`
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.selectedImage = reader.result;
+    };
+    reader.readAsDataURL(this.selectedFile);
+  }
 }
 
-  /**
-   * Envoie le fichier Excel sélectionné au backend pour importation.
-   */
-  /**
-   * Envoie le fichier Excel sélectionné au backend pour importation.
-   */
-uploadExcelFile(): void {
+  uploadExcelFile(): void {
     if (!this.selectedFile) {
         const modal = document.getElementById('importArticlesExcel');
         const bsModal = bootstrap.Modal.getInstance(modal);
@@ -412,7 +419,7 @@ uploadExcelFile(): void {
         next: (response: any) => {
             console.log('✅ Importation réussie:', response);
             
-            // Rafraîchir la liste des articles
+            // Rafraîchir la liste des employés
             this.getTableData();
 
             this.isImporting = false;
@@ -459,7 +466,7 @@ uploadExcelFile(): void {
                 this.showToast(
                     'success',
                     'Importation Réussie !',
-                    `${this.importReport.success_count} articles(s) importé(s) avec succès.`
+                    `${this.importReport.success_count} article(s) importé(s) avec succès.`
                 );
 
                 const modal = document.getElementById('importArticlesExcel');
@@ -514,6 +521,7 @@ uploadExcelFile(): void {
         }
     });
 }
+
 
 
 }
